@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBook.Test", "MoneyBook.Test\MoneyBook.Test.csproj", "{4C2F87A2-6880-456A-8999-30DFF6B9CE96}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBook.Data", "MoneyBook.Data\MoneyBook.Data.csproj", "{DAC74477-D5DD-4EAD-962B-0F54136F4FDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBookTools", "MoneyBookTools\MoneyBookTools.csproj", "{4FA47752-DD17-4C3A-848F-96F531B4B996}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4C2F87A2-6880-456A-8999-30DFF6B9CE96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C2F87A2-6880-456A-8999-30DFF6B9CE96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C2F87A2-6880-456A-8999-30DFF6B9CE96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C2F87A2-6880-456A-8999-30DFF6B9CE96}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAC74477-D5DD-4EAD-962B-0F54136F4FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAC74477-D5DD-4EAD-962B-0F54136F4FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAC74477-D5DD-4EAD-962B-0F54136F4FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAC74477-D5DD-4EAD-962B-0F54136F4FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FA47752-DD17-4C3A-848F-96F531B4B996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FA47752-DD17-4C3A-848F-96F531B4B996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FA47752-DD17-4C3A-848F-96F531B4B996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FA47752-DD17-4C3A-848F-96F531B4B996}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4BFDC604-5458-4346-B5BF-CAE31F256604}
+		SolutionGuid = {2A6481E7-329D-4042-AA4D-FAB673CFCCF3}
 	EndGlobalSection
 EndGlobal
