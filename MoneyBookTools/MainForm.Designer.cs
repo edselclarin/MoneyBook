@@ -36,8 +36,8 @@ namespace MoneyBookTools
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabTransactions = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonLoad = new System.Windows.Forms.Button();
             this.dateTimeEnd = new System.Windows.Forms.DateTimePicker();
-            this.buttonSave = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonImport = new System.Windows.Forms.Button();
             this.dateTimeStart = new System.Windows.Forms.DateTimePicker();
@@ -82,10 +82,10 @@ namespace MoneyBookTools
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 105);
+            this.dataGridView1.Location = new System.Drawing.Point(6, 69);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(568, 282);
+            this.dataGridView1.Size = new System.Drawing.Size(568, 318);
             this.dataGridView1.TabIndex = 1;
             // 
             // tabControl1
@@ -114,48 +114,50 @@ namespace MoneyBookTools
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.buttonLoad);
             this.groupBox1.Controls.Add(this.dateTimeEnd);
-            this.groupBox1.Controls.Add(this.buttonSave);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.buttonImport);
             this.groupBox1.Controls.Add(this.dateTimeStart);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(568, 93);
+            this.groupBox1.Size = new System.Drawing.Size(568, 57);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
+            // 
+            // buttonLoad
+            // 
+            this.buttonLoad.Location = new System.Drawing.Point(6, 20);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(75, 23);
+            this.buttonLoad.TabIndex = 4;
+            this.buttonLoad.Text = "Load";
+            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
             // 
             // dateTimeEnd
             // 
             this.dateTimeEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimeEnd.Location = new System.Drawing.Point(73, 51);
+            this.dateTimeEnd.Location = new System.Drawing.Point(432, 18);
             this.dateTimeEnd.Name = "dateTimeEnd";
             this.dateTimeEnd.Size = new System.Drawing.Size(101, 23);
             this.dateTimeEnd.TabIndex = 3;
-            // 
-            // buttonSave
-            // 
-            this.buttonSave.Enabled = false;
-            this.buttonSave.Location = new System.Drawing.Point(295, 51);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(75, 23);
-            this.buttonSave.TabIndex = 3;
-            this.buttonSave.Text = "Save";
-            this.buttonSave.UseVisualStyleBackColor = true;
+            this.dateTimeEnd.Visible = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 57);
+            this.label2.Location = new System.Drawing.Point(360, 22);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 15);
             this.label2.TabIndex = 2;
             this.label2.Text = "End Date:";
+            this.label2.Visible = false;
             // 
             // buttonImport
             // 
-            this.buttonImport.Location = new System.Drawing.Point(194, 51);
+            this.buttonImport.Location = new System.Drawing.Point(87, 20);
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(75, 23);
             this.buttonImport.TabIndex = 2;
@@ -166,19 +168,21 @@ namespace MoneyBookTools
             // dateTimeStart
             // 
             this.dateTimeStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimeStart.Location = new System.Drawing.Point(73, 22);
+            this.dateTimeStart.Location = new System.Drawing.Point(244, 18);
             this.dateTimeStart.Name = "dateTimeStart";
             this.dateTimeStart.Size = new System.Drawing.Size(101, 23);
             this.dateTimeStart.TabIndex = 1;
+            this.dateTimeStart.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 28);
+            this.label1.Location = new System.Drawing.Point(177, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Start Date:";
+            this.label1.Visible = false;
             // 
             // MainForm
             // 
@@ -212,11 +216,11 @@ namespace MoneyBookTools
         private TabControl tabControl1;
         private TabPage tabTransactions;
         private Button buttonImport;
-        private Button buttonSave;
         private GroupBox groupBox1;
         private DateTimePicker dateTimeEnd;
         private Label label2;
         private DateTimePicker dateTimeStart;
         private Label label1;
+        private Button buttonLoad;
     }
 }
