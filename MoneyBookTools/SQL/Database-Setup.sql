@@ -36,16 +36,17 @@ BEGIN
 		[AcctId] INT PRIMARY KEY IDENTITY (1, 1),
 		[Name] VARCHAR(64) NOT NULL DEFAULT('ACCT'),
 		[Description] VARCHAR (128) NOT NULL DEFAULT(''),
+		[ExtAcctId] VARCHAR (128) NOT NULL DEFAULT(''),
 		[InstId] INT NOT NULL DEFAULT(0),
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	);
 
-	INSERT INTO [Accounts]([Name],[Description],[InstId]) VALUES('SFCHK', 'SchoolsFirst FCU - Checking', 1);
-	INSERT INTO [Accounts]([Name],[Description],[InstId]) VALUES('SFSAV1', 'SchoolsFirst FCU - Primary Savings', 1);
-	INSERT INTO [Accounts]([Name],[Description],[InstId]) VALUES('SFSAV2', 'SchoolsFirst FCU - Secondary Savings', 1);
-	INSERT INTO [Accounts]([Name],[Description],[InstId]) VALUES('SFSAV3-ED', 'SchoolsFirst FCU - Personal Savings', 1);
-	INSERT INTO [Accounts]([Name],[Description],[InstId]) VALUES('SFSAV4-CP', 'SchoolsFirst FCU - Cal Poly Checking', 1);
-	INSERT INTO [Accounts]([Name],[Description],[InstId]) VALUES('SUMMERSAVER', 'SchoolsFirst FCU - Summer Saver Savings', 1);
+	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFCHK', '70', 'SchoolsFirst FCU - Checking', 1);
+	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV1', '01', 'SchoolsFirst FCU - Primary Savings', 1);
+	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV2', '02', 'SchoolsFirst FCU - Secondary Savings', 1);
+	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV3-ED', '03', 'SchoolsFirst FCU - Personal Savings', 1);
+	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV4-CP', '01', 'SchoolsFirst FCU - Cal Poly Checking', 1);
+	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SUMMERSAVER', '20', 'SchoolsFirst FCU - Summer Saver Savings', 1);
 END
 
 -- Create Transactions table.
@@ -56,7 +57,7 @@ BEGIN
 		[Date] DATE NOT NULL DEFAULT(GETDATE()),
 		[TrnsType] VARCHAR(16) NOT NULL DEFAULT('DEBIT'),
 		[RefNum] VARCHAR(128) DEFAULT(''),
-		[Payee] VARCHAR(16) NOT NULL DEFAULT(''),
+		[Payee] VARCHAR(128) NOT NULL DEFAULT(''),
 		[Memo] VARCHAR(256) DEFAULT(''),
 		[State] VARCHAR(2) NOT NULL DEFAULT('U'),
 		[Amount] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),

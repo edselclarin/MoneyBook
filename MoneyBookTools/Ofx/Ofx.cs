@@ -2,6 +2,10 @@
 
 namespace Ofx
 {
+	/// <summary>
+	/// Classes below define the structure of the OFX file downloaded from from the bank.
+	/// </summary>
+
 	[XmlRoot(ElementName = "STATUS")]
 	public class STATUS
 	{
