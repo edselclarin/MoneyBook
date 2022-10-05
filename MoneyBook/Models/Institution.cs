@@ -10,6 +10,8 @@ namespace MoneyBook.Models
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        public string InstType { get; set; }
 
         public bool IsDeleted { get; set; }
     }

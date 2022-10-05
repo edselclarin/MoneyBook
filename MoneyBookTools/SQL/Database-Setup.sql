@@ -13,9 +13,14 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Categories' and xtype='U')
 BEGIN
 	CREATE TABLE [Categories] (
 		[CatId] INT PRIMARY KEY IDENTITY (1, 1),
-		[Name] VARCHAR(128) NOT NULL DEFAULT('Unknown Category'),
+		[Name] VARCHAR(128) NOT NULL DEFAULT('New Category'),
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
-	)
+	);
+
+	INSERT INTO [Categories] (
+		[Name])
+	VALUES (
+		'Uncategorized');
 END
 
 -- Create Institutions table.
@@ -23,10 +28,15 @@ IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Institutions' and xtype='U')
 BEGIN
 	CREATE TABLE [Institutions] (
 		[InstId] INT PRIMARY KEY IDENTITY (1, 1),
-		[Name] VARCHAR(128) NOT NULL DEFAULT('Unknown Institution'),
+		[Name] VARCHAR(128) NOT NULL DEFAULT('New Institution'),
+		[InstType] VARCHAR(128) NOT NULL DEFAULT('BANK'),
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	);
-	INSERT INTO [Institutions]([Name]) VALUES('SchoolsFirst FCU');
+
+	INSERT INTO [Institutions] (
+		[Name], [InstType])
+	VALUES (
+		'SchoolsFirst FCU', 'CREDIT UNION');
 END
 
 -- Create Accounts table.
@@ -35,18 +45,45 @@ BEGIN
 	CREATE TABLE [Accounts] (
 		[AcctId] INT PRIMARY KEY IDENTITY (1, 1),
 		[Name] VARCHAR(64) NOT NULL DEFAULT('ACCT'),
-		[Description] VARCHAR (128) NOT NULL DEFAULT(''),
+		[Description] VARCHAR (128) DEFAULT(''),
+		[AcctType] VARCHAR (128) NOT NULL DEFAULT('SAVINGS'),
+		[ReserveAmount] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),
+		[ImportFilename] VARCHAR (128) DEFAULT(''),
+		[ImportFileType] VARCHAR (128) DEFAULT(''),
 		[ExtAcctId] VARCHAR (128) NOT NULL DEFAULT(''),
 		[InstId] INT NOT NULL DEFAULT(0),
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	);
 
-	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFCHK', '70', 'SchoolsFirst FCU - Checking', 1);
-	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV1', '01', 'SchoolsFirst FCU - Primary Savings', 1);
-	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV2', '02', 'SchoolsFirst FCU - Secondary Savings', 1);
-	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV3-ED', '03', 'SchoolsFirst FCU - Personal Savings', 1);
-	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SFSAV4-CP', '01', 'SchoolsFirst FCU - Cal Poly Checking', 1);
-	INSERT INTO [Accounts]([Name],[ExtAcctId],[Description],[InstId]) VALUES('SUMMERSAVER', '20', 'SchoolsFirst FCU - Summer Saver Savings', 1);
+	INSERT INTO [Accounts](
+		[Name], [Description], [AcctType], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
+	VALUES (
+		'SFCHK', 'Checking', 'CHECKING', 0.00, 'SFCHK.OFX', 'OFX', '70', 1);
+
+	INSERT INTO [Accounts](
+		[Name], [Description], [AcctType], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
+	VALUES (
+		'SFSAV1', 'Primary Savings', 'SAVINGS', 5.00, 'SFSAV1.OFX', 'OFX', '01', 1);
+
+	INSERT INTO [Accounts](
+		[Name], [Description], [AcctType], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
+	VALUES (
+		'SFSAV2', 'Secondary Savings', 'SAVINGS', 5.00, 'SFSAV2.OFX', 'OFX', '02', 1);
+
+	INSERT INTO [Accounts](
+		[Name], [Description], [AcctType], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
+	VALUES (
+		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 5.00, 'SFSAV3-ED.OFX', 'OFX', '03', 1);
+
+	INSERT INTO [Accounts](
+		[Name], [Description], [AcctType], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
+	VALUES (
+		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 5.00, 'SFSAV5-CP.OFX', 'OFX', '01', 1);
+
+	INSERT INTO [Accounts](
+		[Name], [Description], [AcctType], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
+	VALUES (
+		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 5.00, 'SUMMERSAVER.OFX', 'OFX', '20', 1);
 END
 
 -- Create Transactions table.

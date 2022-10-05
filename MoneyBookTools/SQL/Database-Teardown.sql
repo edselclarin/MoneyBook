@@ -44,3 +44,10 @@ BEGIN
                 DROP DATABASE [MoneyBook];';
     EXEC (@SQL);
 END;
+
+-- OTHER COMMANDS --
+
+-- Delete all transactions. --
+USE [MoneyBook]
+GO
+DELETE FROM [Transactions]
