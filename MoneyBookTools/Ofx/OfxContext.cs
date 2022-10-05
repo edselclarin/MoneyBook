@@ -2,6 +2,7 @@
 {
     public class OfxContext
     {
+        public string ImportFilePath { get; set; }
         public OfxAccount AcctFrom { get; set; }
         public IList<OfxTransaction> Transactions { get; set; }
     }

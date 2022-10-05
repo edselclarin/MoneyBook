@@ -1,5 +1,6 @@
 ﻿using MoneyBook.Models;
 using MoneyBookTools.Ofx;
+using System.Diagnostics;
 
 namespace MoneyBookTools.Data
 {
@@ -7,8 +8,15 @@ namespace MoneyBookTools.Data
     {
         public static void Import(string filename)
         {
-            var context = new OfxContext();
+            Debug.WriteLine($"Importing from {filename}");
+
+            var context = new OfxContext()
+            {
+                ImportFilePath = filename
+            };
+
             context.FromFile(filename);
+
             Import(context);
         }
 
@@ -20,12 +28,28 @@ namespace MoneyBookTools.Data
             // Work with the first institution for now.
             var inst = db.Institutions.First();
 
-            // Detect account from.
-            var acct = db.Accounts.First(x => x.ExtAcctId == context.AcctFrom.AcctId);
+            // Detect which account to import into.
+            string filename = Path.GetFileName(context.ImportFilePath);
+            var acct = db.Accounts.FirstOrDefault(x => x.ImportFilename.ToUpper() == filename.ToUpper());
 
-            var transactions = db.Set<Transaction>();
+            if (acct == null)
+            {
+                throw new Exception($"{context.ImportFilePath} is not associated with an account.");
+            }
+
+            // Set all imported transactions to first category.
+            var cat = db.Categories.First();
+
             foreach (var tr in context.Transactions)
             {
+                Debug.WriteLine(String.Join(" | ", new string[]
+                {
+                    tr.DatePosted.ToString("MM-dd-yyyy"),
+                    tr.Memo,
+                    tr.TransactionAmount.ToString("0.00"),
+                    tr.TransactionType
+                }));
+
                 bool exists = db.Transactions
                     .Where(x => x.Date == tr.DatePosted &&
                                 x.Payee == tr.Memo &&
@@ -46,7 +70,7 @@ namespace MoneyBookTools.Data
                         ExtTrnsId = tr.TransactionId,
                         InstId = inst.InstId,
                         AcctId = acct.AcctId,
-                        CatId = 0
+                        CatId = cat.CatId
                     };
 
                     db.Transactions.Add(trNew);

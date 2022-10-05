@@ -13,6 +13,15 @@ namespace MoneyBook.Models
         public string Description { get; set; }
 
         [Required]
+        public string AcctType { get; set; }
+
+        public decimal ReserveAmount { get; set; }
+
+        public string ImportFilename { get; set; }
+
+        public string ImportFileType { get; set; }
+
+        [Required]
         public string ExtAcctId { get; set; }
 
         [Required]
