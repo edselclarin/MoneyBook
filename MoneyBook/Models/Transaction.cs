@@ -13,12 +13,12 @@ namespace MoneyBook.Models
         [Required] 
         public string TrnsType { get; set; }
         
-        public string RefNum { get; set; }
+        public string? RefNum { get; set; }
 
         [Required] 
         public string Payee { get; set; }
         
-        public string Memo { get; set; }
+        public string? Memo { get; set; }
 
         [Required] 
         public string State { get; set; }

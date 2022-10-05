@@ -32,15 +32,19 @@ namespace MoneyBookTools
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvTransactions = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabOverview = new System.Windows.Forms.TabPage();
+            this.dgvOverview = new System.Windows.Forms.DataGridView();
             this.tabTransactions = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonImport = new System.Windows.Forms.Button();
             this.buttonOpen = new System.Windows.Forms.Button();
+            this.buttonImport = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransactions)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabOverview.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOverview)).BeginInit();
             this.tabTransactions.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -51,7 +55,7 @@ namespace MoneyBookTools
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(590, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(520, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -70,34 +74,57 @@ namespace MoneyBookTools
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // dataGridView1
+            // dgvTransactions
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dgvTransactions.AllowUserToAddRows = false;
+            this.dgvTransactions.AllowUserToDeleteRows = false;
+            this.dgvTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 65);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(568, 322);
-            this.dataGridView1.TabIndex = 1;
+            this.dgvTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTransactions.Location = new System.Drawing.Point(6, 65);
+            this.dgvTransactions.Name = "dgvTransactions";
+            this.dgvTransactions.ReadOnly = true;
+            this.dgvTransactions.Size = new System.Drawing.Size(568, 322);
+            this.dgvTransactions.TabIndex = 1;
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.tabOverview);
             this.tabControl1.Controls.Add(this.tabTransactions);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(590, 423);
+            this.tabControl1.Size = new System.Drawing.Size(520, 311);
             this.tabControl1.TabIndex = 2;
+            // 
+            // tabOverview
+            // 
+            this.tabOverview.Controls.Add(this.dgvOverview);
+            this.tabOverview.Location = new System.Drawing.Point(4, 24);
+            this.tabOverview.Name = "tabOverview";
+            this.tabOverview.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOverview.Size = new System.Drawing.Size(512, 283);
+            this.tabOverview.TabIndex = 1;
+            this.tabOverview.Text = "Overview";
+            this.tabOverview.UseVisualStyleBackColor = true;
+            // 
+            // dgvOverview
+            // 
+            this.dgvOverview.AllowUserToOrderColumns = true;
+            this.dgvOverview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOverview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvOverview.Location = new System.Drawing.Point(3, 3);
+            this.dgvOverview.Name = "dgvOverview";
+            this.dgvOverview.RowTemplate.Height = 25;
+            this.dgvOverview.Size = new System.Drawing.Size(506, 277);
+            this.dgvOverview.TabIndex = 0;
             // 
             // tabTransactions
             // 
             this.tabTransactions.Controls.Add(this.groupBox1);
-            this.tabTransactions.Controls.Add(this.dataGridView1);
+            this.tabTransactions.Controls.Add(this.dgvTransactions);
             this.tabTransactions.Location = new System.Drawing.Point(4, 24);
             this.tabTransactions.Name = "tabTransactions";
             this.tabTransactions.Padding = new System.Windows.Forms.Padding(3);
@@ -118,16 +145,6 @@ namespace MoneyBookTools
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
-            // buttonImport
-            // 
-            this.buttonImport.Location = new System.Drawing.Point(91, 20);
-            this.buttonImport.Name = "buttonImport";
-            this.buttonImport.Size = new System.Drawing.Size(75, 23);
-            this.buttonImport.TabIndex = 2;
-            this.buttonImport.Text = "Import";
-            this.buttonImport.UseVisualStyleBackColor = true;
-            this.buttonImport.Click += new System.EventHandler(this.buttonImport_Click);
-            // 
             // buttonOpen
             // 
             this.buttonOpen.Location = new System.Drawing.Point(10, 20);
@@ -138,11 +155,21 @@ namespace MoneyBookTools
             this.buttonOpen.UseVisualStyleBackColor = true;
             this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
             // 
+            // buttonImport
+            // 
+            this.buttonImport.Location = new System.Drawing.Point(91, 20);
+            this.buttonImport.Name = "buttonImport";
+            this.buttonImport.Size = new System.Drawing.Size(75, 23);
+            this.buttonImport.TabIndex = 2;
+            this.buttonImport.Text = "Import";
+            this.buttonImport.UseVisualStyleBackColor = true;
+            this.buttonImport.Click += new System.EventHandler(this.buttonImport_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(590, 447);
+            this.ClientSize = new System.Drawing.Size(520, 335);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -151,8 +178,10 @@ namespace MoneyBookTools
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTransactions)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabOverview.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOverview)).EndInit();
             this.tabTransactions.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -165,11 +194,13 @@ namespace MoneyBookTools
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
-        private DataGridView dataGridView1;
+        private DataGridView dgvTransactions;
         private TabControl tabControl1;
         private TabPage tabTransactions;
         private Button buttonImport;
         private GroupBox groupBox1;
         private Button buttonOpen;
+        private TabPage tabOverview;
+        private DataGridView dgvOverview;
     }
 }

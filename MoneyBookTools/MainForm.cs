@@ -1,5 +1,6 @@
 ﻿using MoneyBookTools.Data;
 using MoneyBookTools.Ofx;
+using MoneyBookTools.ViewModels;
 
 namespace MoneyBookTools
 {
@@ -10,11 +11,22 @@ namespace MoneyBookTools
             InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             try
             {
-                WindowState = FormWindowState.Maximized;
+                var summaries = await Task.Run(() =>
+                {
+                    return GetAccountSummaries();
+                });
+
+                dgvOverview.ReadOnly = true;
+                dgvOverview.RowHeadersVisible = false;
+                dgvOverview.DataSource = summaries.ToList();
+                foreach (DataGridViewColumn col in dgvOverview.Columns)
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                }
             }
             catch (Exception ex)
             {
@@ -50,9 +62,9 @@ namespace MoneyBookTools
                     var context = new OfxContext();
                     context.FromFile(ofd.FileName);
 
-                    dataGridView1.ReadOnly = true;
-                    dataGridView1.DataSource = context.Transactions;
-                    foreach (DataGridViewColumn col in dataGridView1.Columns)
+                    dgvTransactions.ReadOnly = true;
+                    dgvTransactions.DataSource = context.Transactions;
+                    foreach (DataGridViewColumn col in dgvTransactions.Columns)
                     {
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
@@ -128,6 +140,42 @@ namespace MoneyBookTools
             }
 
             Cursor = Cursors.Default;
+        }
+
+        private List<AccountSummary> GetAccountSummaries()
+        {
+            var summaries = new List<AccountSummary>();
+
+            using (var db = new MoneyBookDbContext())
+            {
+                var accts = db.Accounts.ToList();
+
+                foreach (var acct in accts)
+                {
+                    var summary = new AccountSummary()
+                    {
+                        AccountName = acct.Name,
+                        ReserveAmount = acct.ReserveAmount
+                    };
+
+                    /////////////////////////////////////
+                    // NOTE: This should be calculated elsewhere.
+                    var transactions = db.Transactions
+                        .Where(x => x.AcctId == acct.AcctId && x.Date >= new DateTime(2021, 1, 1))
+                        .OrderBy(x => x.Date)
+                        .ToList();
+
+                    summary.AvailableBalance = 
+                        acct.StartingBalance +
+                        transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount) -
+                        transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
+                    /////////////////////////////////////
+
+                    summaries.Add(summary);
+                }
+            }
+
+            return summaries;
         }
     }
 }

@@ -15,6 +15,9 @@ namespace MoneyBook.Models
         [Required]
         public string AcctType { get; set; }
 
+        [Required]
+        public decimal StartingBalance { get; set; }
+
         public decimal ReserveAmount { get; set; }
 
         public string ImportFilename { get; set; }
