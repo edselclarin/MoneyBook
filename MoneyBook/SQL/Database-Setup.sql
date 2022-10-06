@@ -1,4 +1,4 @@
--- Create database.
+	-- Create database.
 
 IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'MoneyBook')
 BEGIN
@@ -59,32 +59,32 @@ BEGIN
 	INSERT INTO [Accounts](
 		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFCHK', 'Checking', 'CHECKING', 3218.97, 0.00, 'SFCHK.OFX', 'OFX', '70', 1);
+		'SFCHK', 'Checking', 'CHECKING', 1646.52, 0.00, 'SFCHK.OFX', 'OFX', '70', 1);
 
 	INSERT INTO [Accounts](
 		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV1', 'Primary Savings', 'SAVINGS', 3813.19, 5.00, 'SFSAV1.OFX', 'OFX', '01', 1);
+		'SFSAV1', 'Primary Savings', 'SAVINGS', 16201.82, 5.00, 'SFSAV1.OFX', 'OFX', '01', 1);
 
 	INSERT INTO [Accounts](
 		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV2', 'Secondary Savings', 'SAVINGS', -38470.43, 5.00, 'SFSAV2.OFX', 'OFX', '02', 1);
+		'SFSAV2', 'Secondary Savings', 'SAVINGS', -35936.12, 5.00, 'SFSAV2.OFX', 'OFX', '02', 1);
 
 	INSERT INTO [Accounts](
 		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 292.68, 5.00, 'SFSAV3-ED.OFX', 'OFX', '03', 1);
+		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 601.23, 5.00, 'SFSAV3-ED.OFX', 'OFX', '03', 1);
 
 	INSERT INTO [Accounts](
 		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 20.00, 5.00, 'SFSAV5-CP.OFX', 'OFX', '01', 1);
+		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 25.00, 5.00, 'SFSAV5-CP.OFX', 'OFX', '01', 1);
 
 	INSERT INTO [Accounts](
 		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 6801.36, 0.00, 'SUMMERSAVER.OFX', 'OFX', '20', 1);
+		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 762.47, 0.00, 'SUMMERSAVER.OFX', 'OFX', '20', 1);
 END
 
 -- Create Transactions table.

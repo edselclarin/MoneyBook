@@ -1,4 +1,4 @@
-﻿namespace MoneyBookTools.Ofx
+﻿namespace Ofx
 {
     public class OfxContext
     {
