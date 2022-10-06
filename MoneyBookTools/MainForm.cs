@@ -1,6 +1,7 @@
 ﻿using MoneyBook.Data;
 using MoneyBook.ViewModels;
 using Ofx;
+using System.IO;
 
 namespace MoneyBookTools
 {
@@ -55,7 +56,7 @@ namespace MoneyBookTools
                 var ofd = new OpenFileDialog()
                 {
                     InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                    Filter = "OFX Files|*.ofx|All Files|*.*",
+                    Filter = "OFX/QFX Files|*.ofx;*.qfx|All Files|*.*",
                 };
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
@@ -96,32 +97,33 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.OK)
                 {
-                    var filenames = Directory.EnumerateFiles(dlg.SelectedPath, "*.ofx");
+                    //var filenames = Directory.EnumerateFiles(dlg.SelectedPath, "*.ofx, *.qfx");
+                    var directory = new DirectoryInfo(dlg.SelectedPath);
+                    var masks = new[] { "*.ofx", "*.qfx" };
+                    var fileinfos = masks.SelectMany(directory.EnumerateFiles);
 
-                    if (filenames.Count() > 0)
+                    if (fileinfos.Count() > 0)
                     {
                         answer = MessageBox.Show(this,
                             $"Are you sure you want to import the transactions from these files into the database?" +
                             Environment.NewLine +
                             Environment.NewLine +
-                            String.Join(Environment.NewLine, filenames),
+                            String.Join(Environment.NewLine, fileinfos),
                             this.Text,
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                         if (answer == DialogResult.Yes)
                         {
-                            foreach (var filename in filenames)
+                            foreach (var fi in fileinfos)
                             {
                                 try
                                 {
-                                    TransactionImporter.Import(filename);
+                                    TransactionImporter.Import(fi.FullName);
                                 }
                                 catch (Exception ex)
                                 {
-                                    MessageBox.Show(this, $"Import failed on {filename}. Reason: {ex.Message}", this.Text, 
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    throw new Exception($"Import failed on {fi.FullName}. Reason: {ex.Message}");
                                 }
-
                             }
 
                             MessageBox.Show(this, "Import complete.", this.Text);

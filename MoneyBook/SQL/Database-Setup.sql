@@ -84,7 +84,7 @@ BEGIN
 	INSERT INTO [Accounts](
 		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ImportFilename], [ImportFileType], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 762.47, 0.00, 'SUMMERSAVER.OFX', 'OFX', '20', 1);
+		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 762.47, 0.00, 'SUMMERSAVER.QFX', 'QFX', '20', 1);
 END
 
 -- Create Transactions table.
