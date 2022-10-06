@@ -2,7 +2,7 @@
 using MoneyBook.Models;
 using System.Configuration;
 
-namespace MoneyBookTools.Data
+namespace MoneyBook.Data
 {
     public class MoneyBookDbContext : DbContext
     {

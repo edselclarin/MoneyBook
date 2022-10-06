@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MoneyBookTools.ViewModels
+namespace MoneyBook.ViewModels
 {
     public class AccountSummary
     {
@@ -9,8 +9,5 @@ namespace MoneyBookTools.ViewModels
 
         [DisplayName("Available Balance")]
         public decimal AvailableBalance { get; set; }
-
-        [DisplayName("Reserve Amount")]
-        public decimal ReserveAmount { get; set; }
     }
 }

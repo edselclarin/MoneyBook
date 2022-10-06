@@ -1,6 +1,6 @@
-﻿using MoneyBookTools.Data;
-using MoneyBookTools.Ofx;
-using MoneyBookTools.ViewModels;
+﻿using MoneyBook.Data;
+using MoneyBook.ViewModels;
+using Ofx;
 
 namespace MoneyBookTools
 {
@@ -148,28 +148,15 @@ namespace MoneyBookTools
 
             using (var db = new MoneyBookDbContext())
             {
-                var accts = db.Accounts.ToList();
+                var details = db.GetAccountDetails();
 
-                foreach (var acct in accts)
+                foreach (var detail in details)
                 {
                     var summary = new AccountSummary()
                     {
-                        AccountName = acct.Name,
-                        ReserveAmount = acct.ReserveAmount
+                        AccountName = detail.Account.Name,
+                        AvailableBalance = detail.AvailableBalance
                     };
-
-                    /////////////////////////////////////
-                    // NOTE: This should be calculated elsewhere.
-                    var transactions = db.Transactions
-                        .Where(x => x.AcctId == acct.AcctId && x.Date >= new DateTime(2021, 1, 1))
-                        .OrderBy(x => x.Date)
-                        .ToList();
-
-                    summary.AvailableBalance = 
-                        acct.StartingBalance +
-                        transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount) -
-                        transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
-                    /////////////////////////////////////
 
                     summaries.Add(summary);
                 }

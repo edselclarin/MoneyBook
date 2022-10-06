@@ -1,6 +1,4 @@
-﻿using Ofx;
-
-namespace MoneyBookTools.Ofx
+﻿namespace Ofx
 {
     public static class OfxExtension
     {

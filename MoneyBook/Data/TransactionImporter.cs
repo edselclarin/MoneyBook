@@ -1,8 +1,8 @@
 ﻿using MoneyBook.Models;
-using MoneyBookTools.Ofx;
+using Ofx;
 using System.Diagnostics;
 
-namespace MoneyBookTools.Data
+namespace MoneyBook.Data
 {
     public static class TransactionImporter
     {
