@@ -1,33 +1,28 @@
 ﻿using MoneyBook.Data;
-using MoneyBook.ViewModels;
+using MoneyBookTools.ViewModels;
 using Ofx;
-using System.IO;
 
 namespace MoneyBookTools
 {
     public partial class MainForm : Form
     {
+        private MoneyBookDbContext m_db = null;
+
         public MainForm()
         {
             InitializeComponent();
+
+            dgvOverview.ReadOnly = true;
+            dgvTransactions.ReadOnly = true;
         }
 
-        private async void MainForm_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             try
             {
-                var summaries = await Task.Run(() =>
-                {
-                    return GetAccountSummaries();
-                });
+                m_db = new MoneyBookDbContext();
 
-                dgvOverview.ReadOnly = true;
-                dgvOverview.RowHeadersVisible = false;
-                dgvOverview.DataSource = summaries.ToList();
-                foreach (DataGridViewColumn col in dgvOverview.Columns)
-                {
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
+                refreshToolStripMenuItem.PerformClick();
             }
             catch (Exception ex)
             {
@@ -63,7 +58,6 @@ namespace MoneyBookTools
                     var context = new OfxContext();
                     context.FromFile(ofd.FileName);
 
-                    dgvTransactions.ReadOnly = true;
                     dgvTransactions.DataSource = context.Transactions;
                     foreach (DataGridViewColumn col in dgvTransactions.Columns)
                     {
@@ -144,24 +138,52 @@ namespace MoneyBookTools
             Cursor = Cursors.Default;
         }
 
+        private async void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+
+            try
+            {
+                if (tabControl1.SelectedTab == tabOverview)
+                {
+                    dgvOverview.DataSource = null;
+
+                    var summaries = await Task.Run(() =>
+                    {
+                        return GetAccountSummaries();
+                    });
+
+                    dgvOverview.RowHeadersVisible = false;
+                    dgvOverview.DataSource = summaries.ToList();
+                    foreach (DataGridViewColumn col in dgvOverview.Columns)
+                    {
+                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+
+            Cursor = Cursors.Default;
+        }
+
         private List<AccountSummary> GetAccountSummaries()
         {
             var summaries = new List<AccountSummary>();
 
-            using (var db = new MoneyBookDbContext())
+            var details = m_db.GetAccountDetails();
+
+            foreach (var detail in details)
             {
-                var details = db.GetAccountDetails();
-
-                foreach (var detail in details)
+                var summary = new AccountSummary()
                 {
-                    var summary = new AccountSummary()
-                    {
-                        AccountName = detail.Account.Name,
-                        AvailableBalance = detail.AvailableBalance
-                    };
+                    AccountName = detail.Account.Name,
+                    AvailableBalance = detail.AvailableBalance
+                };
 
-                    summaries.Add(summary);
-                }
+                summaries.Add(summary);
             }
 
             return summaries;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MoneyBook.ViewModels
+namespace MoneyBookTools.ViewModels
 {
     public class AccountSummary
     {

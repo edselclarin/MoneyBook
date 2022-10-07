@@ -32,6 +32,8 @@ namespace MoneyBookTools
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvTransactions = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabOverview = new System.Windows.Forms.TabPage();
@@ -52,7 +54,8 @@ namespace MoneyBookTools
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(520, 24);
@@ -73,6 +76,22 @@ namespace MoneyBookTools
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "&View";
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Text = "&Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // dgvTransactions
             // 
@@ -128,7 +147,7 @@ namespace MoneyBookTools
             this.tabTransactions.Location = new System.Drawing.Point(4, 24);
             this.tabTransactions.Name = "tabTransactions";
             this.tabTransactions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTransactions.Size = new System.Drawing.Size(582, 395);
+            this.tabTransactions.Size = new System.Drawing.Size(512, 283);
             this.tabTransactions.TabIndex = 0;
             this.tabTransactions.Text = "Transactions";
             this.tabTransactions.UseVisualStyleBackColor = true;
@@ -202,5 +221,7 @@ namespace MoneyBookTools
         private Button buttonOpen;
         private TabPage tabOverview;
         private DataGridView dgvOverview;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem refreshToolStripMenuItem;
     }
 }
