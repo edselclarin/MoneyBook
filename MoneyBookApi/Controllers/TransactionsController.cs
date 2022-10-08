@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MoneyBook.Models;
 using MoneyBookApi.Data;
+using MoneyBookApi.Models;
 
 namespace MoneyBookApi.Controllers
 {
@@ -9,19 +9,33 @@ namespace MoneyBookApi.Controllers
     public class TransactionsController : ControllerBase
     {
         private readonly ILogger<TransactionsController> _logger;
+        private MoneyBookApiDbContext m_db;
 
         public TransactionsController(ILogger<TransactionsController> logger)
         {
             _logger = logger;
+
+            m_db = new MoneyBookApiDbContext();
         }
 
         [HttpGet(Name = "GetTransactions")]
-        public IEnumerable<Transaction> Get()
+        public async Task<IActionResult> Get([FromQuery] PaginationFilter filter, int acctId)
         {
-            using (var db = new MoneyBookApiDbContext())
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+
+            var results = await m_db.GetTransactionsAsync(acctId);
+
+            var pagedData = results
+                           .Skip((filter.PageNumber - 1) * filter.PageSize)
+                           .Take(filter.PageSize);
+
+            var response = new PagedResponse<IEnumerable<TransactionInfo>>(pagedData, validFilter.PageNumber, validFilter.PageSize)
             {
-                return db.Transactions.Take(50).ToArray();
-            }
+                TotalRecords = results.Count(),
+                TotalPages = results.Count() / validFilter.PageSize
+            };
+
+            return Ok(response);
         }
     }
 }
