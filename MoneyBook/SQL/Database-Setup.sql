@@ -85,6 +85,49 @@ BEGIN
 		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 762.47, 0.00, '20', 1);
 END
 
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'AccountDetails' and xtype = 'U')
+BEGIN
+	CREATE TABLE [AccountDetails] (
+		[AcctDetId] INT PRIMARY KEY IDENTITY(1, 1),
+		[AcctId] INT NOT NULL FOREIGN KEY REFERENCES [Accounts],
+		[Debits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[Credits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[AvailableBalance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[ActualBalance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[DateModified] DATE
+	)
+
+	INSERT INTO [AccountDetails] (
+		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
+	VALUES (
+		1, 0, 0, 0, 0);
+
+	INSERT INTO [AccountDetails] (
+		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
+	VALUES (
+		2, 0, 0, 0, 0);
+
+	INSERT INTO [AccountDetails] (
+		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
+	VALUES (
+		3, 0, 0, 0, 0);
+
+	INSERT INTO [AccountDetails] (
+		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
+	VALUES (
+		4, 0, 0, 0, 0);
+
+	INSERT INTO [AccountDetails] (
+		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
+	VALUES (
+		5, 0, 0, 0, 0);
+
+	INSERT INTO [AccountDetails] (
+		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
+	VALUES (
+		6, 0, 0, 0, 0);
+END
+
 -- Create Transactions table.
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Transactions' and xtype='U')
 BEGIN

@@ -2,9 +2,10 @@ IF EXISTS(SELECT * FROM sys.databases WHERE name = 'MoneyBook')
 BEGIN
 	USE [MoneyBook]
 
-	IF EXISTS(SELECT 1 FROM sys.views WHERE Name = 'GetAccountDetail')
+	-- Drop Transactions table.
+	IF EXISTS (SELECT * FROM sysobjects WHERE name='AccountDetails' and xtype='U')
 	BEGIN
-		DROP VIEW [GetAccountDetail]
+		DROP TABLE [AccountDetails]
 	END
 
 	-- Drop Transactions table.
