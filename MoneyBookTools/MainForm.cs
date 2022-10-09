@@ -1,6 +1,8 @@
 ﻿using MoneyBook.Data;
 using MoneyBookTools.ViewModels;
 using Ofx;
+using System.Configuration;
+using System.IO;
 
 namespace MoneyBookTools
 {
@@ -81,53 +83,39 @@ namespace MoneyBookTools
 
             try
             {
-                var dlg = new FolderBrowserDialog()
+                var files = AppSettings.Instance.Imports.ToArray();
+
+                if (files.Count() > 0)
                 {
-                    Description = "Select path to OFX files:",
-                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                };
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want to import the transactions from these files into the database?" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        String.Join(Environment.NewLine, files.Select(x => $"{x.Path} --> {x.Account}")),
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
-                var answer = dlg.ShowDialog();
-
-                if (answer == DialogResult.OK)
-                {
-                    //var filenames = Directory.EnumerateFiles(dlg.SelectedPath, "*.ofx, *.qfx");
-                    var directory = new DirectoryInfo(dlg.SelectedPath);
-                    var masks = new[] { "*.ofx", "*.qfx" };
-                    var fileinfos = masks.SelectMany(directory.EnumerateFiles);
-
-                    if (fileinfos.Count() > 0)
+                    if (answer == DialogResult.Yes)
                     {
-                        answer = MessageBox.Show(this,
-                            $"Are you sure you want to import the transactions from these files into the database?" +
-                            Environment.NewLine +
-                            Environment.NewLine +
-                            String.Join(Environment.NewLine, fileinfos),
-                            this.Text,
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                        if (answer == DialogResult.Yes)
+                        foreach (var file in files)
                         {
-                            foreach (var fi in fileinfos)
+                            try
                             {
-                                try
-                                {
-                                    TransactionImporter.Import(fi.FullName);
-                                }
-                                catch (Exception ex)
-                                {
-                                    throw new Exception($"Import failed on {fi.FullName}. Reason: {ex.Message}");
-                                }
+                                TransactionImporter.Import(file.Path, file.Account);
                             }
-
-                            MessageBox.Show(this, "Import complete.", this.Text);
+                            catch (Exception ex)
+                            {
+                                throw new Exception($"Import failed on {file.Path}. Reason: {ex.Message}");
+                            }
                         }
+
+                        MessageBox.Show(this, "Import complete.", this.Text);
                     }
-                    else
-                    {
-                        MessageBox.Show(this, $"No OFX files found in {dlg.SelectedPath}.", this.Text,
-                            MessageBoxButtons.OK, MessageBoxIcon.None);
-                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, $"No files to import.", this.Text,
+                        MessageBoxButtons.OK, MessageBoxIcon.None);
                 }
             }
             catch (Exception ex)

@@ -70,7 +70,7 @@
                 throw new Exception("ofx is null.");
             }
 
-            context.AcctFrom = ofx.GetAccountFrom();
+            context.OfxAccount = ofx.GetAccountFrom();
             context.Transactions = ofx.GetTransactions();
         }
     }

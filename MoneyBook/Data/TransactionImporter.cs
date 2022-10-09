@@ -6,13 +6,14 @@ namespace MoneyBook.Data
 {
     public static class TransactionImporter
     {
-        public static void Import(string filename)
+        public static void Import(string filename, string account)
         {
             Debug.WriteLine($"Importing from {filename}");
 
             var context = new OfxContext()
             {
-                ImportFilePath = filename
+                ImportFilePath = filename,
+                AccountTo = account
             };
 
             context.FromFile(filename);
@@ -28,13 +29,11 @@ namespace MoneyBook.Data
             // Work with the first institution for now.
             var inst = db.Institutions.First();
 
-            // Detect which account to import into.
-            string filename = Path.GetFileName(context.ImportFilePath);
-            var acct = db.Accounts.FirstOrDefault(x => x.ImportFilename.ToUpper() == filename.ToUpper());
-
+            // Get account to import into.
+            var acct = db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
             if (acct == null)
             {
-                throw new Exception($"{context.ImportFilePath} is not associated with an account.");
+                throw new Exception($"Could not find account '{context.AccountTo.ToUpper()}'.");
             }
 
             // Set all imported transactions to first category.

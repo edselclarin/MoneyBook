@@ -58,7 +58,7 @@ namespace MoneyBookTools
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(520, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(680, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -89,7 +89,7 @@ namespace MoneyBookTools
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
@@ -104,7 +104,7 @@ namespace MoneyBookTools
             this.dgvTransactions.Location = new System.Drawing.Point(6, 65);
             this.dgvTransactions.Name = "dgvTransactions";
             this.dgvTransactions.ReadOnly = true;
-            this.dgvTransactions.Size = new System.Drawing.Size(568, 322);
+            this.dgvTransactions.Size = new System.Drawing.Size(658, 399);
             this.dgvTransactions.TabIndex = 1;
             // 
             // tabControl1
@@ -115,7 +115,7 @@ namespace MoneyBookTools
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(520, 311);
+            this.tabControl1.Size = new System.Drawing.Size(680, 500);
             this.tabControl1.TabIndex = 2;
             // 
             // tabOverview
@@ -147,7 +147,7 @@ namespace MoneyBookTools
             this.tabTransactions.Location = new System.Drawing.Point(4, 24);
             this.tabTransactions.Name = "tabTransactions";
             this.tabTransactions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTransactions.Size = new System.Drawing.Size(512, 283);
+            this.tabTransactions.Size = new System.Drawing.Size(672, 472);
             this.tabTransactions.TabIndex = 0;
             this.tabTransactions.Text = "Transactions";
             this.tabTransactions.UseVisualStyleBackColor = true;
@@ -160,7 +160,7 @@ namespace MoneyBookTools
             this.groupBox1.Controls.Add(this.buttonImport);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(568, 53);
+            this.groupBox1.Size = new System.Drawing.Size(728, 53);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
@@ -188,7 +188,7 @@ namespace MoneyBookTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(520, 335);
+            this.ClientSize = new System.Drawing.Size(680, 524);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
