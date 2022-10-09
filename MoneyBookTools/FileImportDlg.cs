@@ -33,13 +33,13 @@ namespace MoneyBookTools
                             foreach (var file in files)
                             {
                                 var importer = TransactionImporter.Create();
-
-                                importer.OnLog += Importer_OnLog;
-
+                                importer.OnLog += OnLog;
                                 importer.Import(file.Path, file.Account);
-
-                                WriteLine(String.Empty);
                             }
+
+                            var updater = AccountDetailsUpdater.Create();
+                            updater.OnLog += OnLog;
+                            updater.UpdateAll();
                         });
 
                         WriteLine("Import complete.");
@@ -56,11 +56,11 @@ namespace MoneyBookTools
             }
         }
 
-        private void Importer_OnLog(string str)
+        private void OnLog(string str)
         {
             if (InvokeRequired)
             {
-                Invoke(Importer_OnLog, str);
+                Invoke(OnLog, str);
             }
             else
             {

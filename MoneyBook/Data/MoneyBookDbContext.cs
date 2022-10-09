@@ -7,6 +7,7 @@ namespace MoneyBook.Data
     public class MoneyBookDbContext : DbContext
     {
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountDetail> AccountDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }

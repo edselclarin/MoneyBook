@@ -14,12 +14,12 @@ namespace MoneyBook.Data
             return new TransactionImporter();
         }
 
-        public void Import(string filename, string account)
+        public void Import(string filename, string accountName)
         {
             var context = new OfxContext()
             {
                 ImportFilePath = filename,
-                AccountTo = account
+                AccountTo = accountName
             };
 
             OnLog?.Invoke($"Reading {filename}.");

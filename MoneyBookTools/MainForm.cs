@@ -103,15 +103,16 @@ namespace MoneyBookTools
             {
                 if (tabControl1.SelectedTab == tabOverview)
                 {
-                    dgvOverview.DataSource = null;
-
-                    var summaries = await Task.Run(() =>
-                    {
-                        return GetAccountSummaries();
-                    });
+                    var details = m_db.AccountDetails
+                        .Join(m_db.Accounts, ad => ad.AcctId, a => a.AcctId, (ad, a) => new AccountSummary()
+                        {
+                            AccountName = a.Name,
+                            AvailableBalance = ad.AvailableBalance,
+                        })
+                        .ToList();
 
                     dgvOverview.RowHeadersVisible = false;
-                    dgvOverview.DataSource = summaries.ToList();
+                    dgvOverview.DataSource = details;
                     foreach (DataGridViewColumn col in dgvOverview.Columns)
                     {
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -126,24 +127,26 @@ namespace MoneyBookTools
             Cursor = Cursors.Default;
         }
 
-        private List<AccountSummary> GetAccountSummaries()
-        {
-            var summaries = new List<AccountSummary>();
+        //private List<AccountSummary> GetAccountSummaries()
+        //{
 
-            var details = m_db.GetAccountDetails();
 
-            foreach (var detail in details)
-            {
-                var summary = new AccountSummary()
-                {
-                    AccountName = detail.Account.Name,
-                    AvailableBalance = detail.AvailableBalance
-                };
+        //    var summaries = new List<AccountSummary>();
 
-                summaries.Add(summary);
-            }
+        //    var details = m_db.GetAccountDetails();
 
-            return summaries;
-        }
+        //    foreach (var detail in details)
+        //    {
+        //        var summary = new AccountSummary()
+        //        {
+        //            AccountName = detail.Account.Name,
+        //            AvailableBalance = detail.AvailableBalance
+        //        };
+
+        //        summaries.Add(summary);
+        //    }
+
+        //    return summaries;
+        //}
     }
 }

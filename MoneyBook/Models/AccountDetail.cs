@@ -1,19 +1,28 @@
-﻿namespace MoneyBook.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MoneyBook.Models
 {
     public class AccountDetail
     {
-        public Account Account { get; set; }
-        public Institution Institution { get; set; }
-        public IList<Transaction> Transactions { get; set; }
-        public decimal AvailableBalance
-        {
-            get
-            {
-                decimal credits = Transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
-                decimal debits = Transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
-                decimal availableBalance = Account.StartingBalance + credits - debits - Account.ReserveAmount;
-                return availableBalance;
-            }
-        }
+        [Key]
+        public int AcctDetId { get; set; }
+
+        [ForeignKey("AcctId")]
+		public int AcctId { get; set; }
+
+        [Required]
+        public decimal Debits { get; set; }
+
+        [Required]
+        public decimal Credits { get; set; }
+
+        [Required]
+        public decimal AvailableBalance { get; set; }
+
+        [Required]
+        public decimal ActualBalance { get; set; }
+
+        public DateTime? DateModified { get; set; }
     }
 }
