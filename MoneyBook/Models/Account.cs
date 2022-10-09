@@ -20,10 +20,6 @@ namespace MoneyBook.Models
 
         public decimal ReserveAmount { get; set; }
 
-        public string ImportFilename { get; set; }
-
-        public string ImportFileType { get; set; }
-
         [Required]
         public string ExtAcctId { get; set; }
 
