@@ -1,31 +1,34 @@
 ﻿using MoneyBook.Models;
 using Ofx;
-using System.Diagnostics;
 
 namespace MoneyBook.Data
 {
-    public static class TransactionImporter
+    public class TransactionImporter
     {
-        public static void Import(string filename, string account)
-        {
-            Debug.WriteLine($"Importing from {filename}");
+        public delegate void LogHandler(string str);
 
+        public event LogHandler OnLog;
+
+        public static TransactionImporter Create()
+        {
+            return new TransactionImporter();
+        }
+
+        public void Import(string filename, string account)
+        {
             var context = new OfxContext()
             {
                 ImportFilePath = filename,
                 AccountTo = account
             };
 
+            OnLog?.Invoke($"Reading {filename}.");
+
             context.FromFile(filename);
 
-            Import(context);
-        }
-
-        public static void Import(OfxContext context)
-        {
             using var db = new MoneyBookDbContext();
             using var tc = db.Database.BeginTransaction();
-                
+
             // Work with the first institution for now.
             var inst = db.Institutions.First();
 
@@ -33,22 +36,17 @@ namespace MoneyBook.Data
             var acct = db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
             if (acct == null)
             {
-                throw new Exception($"Could not find account '{context.AccountTo.ToUpper()}'.");
+                OnLog?.Invoke($"Could not find account named '{context.AccountTo.ToUpper()}'.");
+                return;
             }
+
+            OnLog?.Invoke($"Importing {context.Transactions.Count()} transactions to account '{acct.Name}'...");
 
             // Set all imported transactions to first category.
             var cat = db.Categories.First();
 
             foreach (var tr in context.Transactions)
             {
-                Debug.WriteLine(String.Join(" | ", new string[]
-                {
-                    tr.DatePosted.ToString("MM-dd-yyyy"),
-                    tr.Memo,
-                    tr.TransactionAmount.ToString("0.00"),
-                    tr.TransactionType
-                }));
-
                 bool exists = db.Transactions
                     .Where(x => x.Date == tr.DatePosted &&
                                 x.Payee == tr.Memo &&

@@ -38,7 +38,7 @@ namespace MoneyBookTools
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabOverview = new System.Windows.Forms.TabPage();
             this.dgvOverview = new System.Windows.Forms.DataGridView();
-            this.tabTransactions = new System.Windows.Forms.TabPage();
+            this.tabFiles = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonImport = new System.Windows.Forms.Button();
@@ -47,7 +47,7 @@ namespace MoneyBookTools
             this.tabControl1.SuspendLayout();
             this.tabOverview.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOverview)).BeginInit();
-            this.tabTransactions.SuspendLayout();
+            this.tabFiles.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,7 +110,7 @@ namespace MoneyBookTools
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabOverview);
-            this.tabControl1.Controls.Add(this.tabTransactions);
+            this.tabControl1.Controls.Add(this.tabFiles);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
@@ -124,7 +124,7 @@ namespace MoneyBookTools
             this.tabOverview.Location = new System.Drawing.Point(4, 24);
             this.tabOverview.Name = "tabOverview";
             this.tabOverview.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOverview.Size = new System.Drawing.Size(512, 283);
+            this.tabOverview.Size = new System.Drawing.Size(672, 472);
             this.tabOverview.TabIndex = 1;
             this.tabOverview.Text = "Overview";
             this.tabOverview.UseVisualStyleBackColor = true;
@@ -137,20 +137,20 @@ namespace MoneyBookTools
             this.dgvOverview.Location = new System.Drawing.Point(3, 3);
             this.dgvOverview.Name = "dgvOverview";
             this.dgvOverview.RowTemplate.Height = 25;
-            this.dgvOverview.Size = new System.Drawing.Size(506, 277);
+            this.dgvOverview.Size = new System.Drawing.Size(666, 466);
             this.dgvOverview.TabIndex = 0;
             // 
-            // tabTransactions
+            // tabFiles
             // 
-            this.tabTransactions.Controls.Add(this.groupBox1);
-            this.tabTransactions.Controls.Add(this.dgvTransactions);
-            this.tabTransactions.Location = new System.Drawing.Point(4, 24);
-            this.tabTransactions.Name = "tabTransactions";
-            this.tabTransactions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTransactions.Size = new System.Drawing.Size(672, 472);
-            this.tabTransactions.TabIndex = 0;
-            this.tabTransactions.Text = "Transactions";
-            this.tabTransactions.UseVisualStyleBackColor = true;
+            this.tabFiles.Controls.Add(this.groupBox1);
+            this.tabFiles.Controls.Add(this.dgvTransactions);
+            this.tabFiles.Location = new System.Drawing.Point(4, 24);
+            this.tabFiles.Name = "tabFiles";
+            this.tabFiles.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFiles.Size = new System.Drawing.Size(672, 472);
+            this.tabFiles.TabIndex = 0;
+            this.tabFiles.Text = "Files";
+            this.tabFiles.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -160,7 +160,7 @@ namespace MoneyBookTools
             this.groupBox1.Controls.Add(this.buttonImport);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(728, 53);
+            this.groupBox1.Size = new System.Drawing.Size(658, 53);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
@@ -201,7 +201,7 @@ namespace MoneyBookTools
             this.tabControl1.ResumeLayout(false);
             this.tabOverview.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOverview)).EndInit();
-            this.tabTransactions.ResumeLayout(false);
+            this.tabFiles.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -215,7 +215,7 @@ namespace MoneyBookTools
         private ToolStripMenuItem exitToolStripMenuItem;
         private DataGridView dgvTransactions;
         private TabControl tabControl1;
-        private TabPage tabTransactions;
+        private TabPage tabFiles;
         private Button buttonImport;
         private GroupBox groupBox1;
         private Button buttonOpen;

@@ -1,8 +1,6 @@
 ﻿using MoneyBook.Data;
 using MoneyBookTools.ViewModels;
 using Ofx;
-using System.Configuration;
-using System.IO;
 
 namespace MoneyBookTools
 {
@@ -83,40 +81,11 @@ namespace MoneyBookTools
 
             try
             {
-                var files = AppSettings.Instance.Imports.ToArray();
-
-                if (files.Count() > 0)
+                var dlg = new FileImportDlg()
                 {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want to import the transactions from these files into the database?" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        String.Join(Environment.NewLine, files.Select(x => $"{x.Path} --> {x.Account}")),
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
-                    {
-                        foreach (var file in files)
-                        {
-                            try
-                            {
-                                TransactionImporter.Import(file.Path, file.Account);
-                            }
-                            catch (Exception ex)
-                            {
-                                throw new Exception($"Import failed on {file.Path}. Reason: {ex.Message}");
-                            }
-                        }
-
-                        MessageBox.Show(this, "Import complete.", this.Text);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, $"No files to import.", this.Text,
-                        MessageBoxButtons.OK, MessageBoxIcon.None);
-                }
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                dlg.ShowDialog();
             }
             catch (Exception ex)
             {
