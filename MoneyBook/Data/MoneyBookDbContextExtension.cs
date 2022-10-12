@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyBook.BusinessModels;
+using MoneyBook.Models;
 
 namespace MoneyBook.Data
 {
@@ -54,10 +55,38 @@ namespace MoneyBook.Data
             return results;
         }
 
-        public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookDbContext db, int acctId)
+        public enum DateFilter : int
         {
-            var results = await db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId)
+            TwoWeeks,
+            ThisMonth,
+            ThisYear
+        }
+
+        public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookDbContext db, int acctId, DateFilter dateFilter)
+        {
+            List<Transaction> results;
+
+            switch (dateFilter)
+            {
+                case DateFilter.TwoWeeks:
+                default:
+                    results = await db.Transactions
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date >= DateTime.Now.AddDays(-14))
+                        .ToListAsync();
+                    break;
+                case DateFilter.ThisMonth:
+                    results = await db.Transactions
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Month == DateTime.Now.Month)
+                        .ToListAsync();
+                    break;
+                case DateFilter.ThisYear:
+                    results = await  db.Transactions
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == DateTime.Now.Year)
+                        .ToListAsync();
+                    break;
+            }
+
+            return results
                 .Select(trn => new TransactionInfo
                 {
                     TrnsId = trn.TrnsId,
@@ -71,10 +100,7 @@ namespace MoneyBook.Data
                     InstId = trn.InstId,
                     AcctId = trn.AcctId,
                     CatId = trn.CatId
-                })
-                .ToListAsync();
-
-            return results;
+                });
         }
     }
 }

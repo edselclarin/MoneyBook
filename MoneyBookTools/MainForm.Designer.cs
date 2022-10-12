@@ -39,28 +39,27 @@ namespace MoneyBookTools
             this.tabAccounts = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelAvailableBalance = new System.Windows.Forms.Label();
             this.comboAccounts = new System.Windows.Forms.ComboBox();
+            this.comboFilter = new System.Windows.Forms.ComboBox();
+            this.labelAvailableBalance = new System.Windows.Forms.Label();
+            this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.tabFiles = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonImport = new System.Windows.Forms.Button();
             this.tabOverview = new System.Windows.Forms.TabPage();
             this.dgvOverview = new System.Windows.Forms.DataGridView();
-            this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFileTransactions)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabAccounts.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.tabFiles.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabOverview.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOverview)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -105,7 +104,7 @@ namespace MoneyBookTools
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
-            // dgvTransactions
+            // dgvFileTransactions
             // 
             this.dgvFileTransactions.AllowUserToAddRows = false;
             this.dgvFileTransactions.AllowUserToDeleteRows = false;
@@ -114,7 +113,7 @@ namespace MoneyBookTools
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvFileTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvFileTransactions.Location = new System.Drawing.Point(6, 65);
-            this.dgvFileTransactions.Name = "dgvTransactions";
+            this.dgvFileTransactions.Name = "dgvFileTransactions";
             this.dgvFileTransactions.ReadOnly = true;
             this.dgvFileTransactions.Size = new System.Drawing.Size(658, 399);
             this.dgvFileTransactions.TabIndex = 1;
@@ -148,7 +147,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.dgvAccountTransactions, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.tableLayoutPanel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -160,52 +159,58 @@ namespace MoneyBookTools
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.tableLayoutPanel2);
+            this.panel1.Controls.Add(this.comboAccounts);
+            this.panel1.Controls.Add(this.comboFilter);
+            this.panel1.Controls.Add(this.labelAvailableBalance);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(666, 31);
             this.panel1.TabIndex = 1;
             // 
-            // tableLayoutPanel2
+            // comboAccounts
             // 
-            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 109F));
-            this.tableLayoutPanel2.Controls.Add(this.labelAvailableBalance, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.comboAccounts, 0, 0);
-            this.tableLayoutPanel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(272, 25);
-            this.tableLayoutPanel2.TabIndex = 0;
+            this.comboAccounts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboAccounts.FormattingEnabled = true;
+            this.comboAccounts.Location = new System.Drawing.Point(5, 4);
+            this.comboAccounts.Name = "comboAccounts";
+            this.comboAccounts.Size = new System.Drawing.Size(121, 23);
+            this.comboAccounts.TabIndex = 3;
+            this.comboAccounts.SelectedIndexChanged += new System.EventHandler(this.comboAccounts_SelectedIndexChanged);
+            // 
+            // comboFilter
+            // 
+            this.comboFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboFilter.FormattingEnabled = true;
+            this.comboFilter.Location = new System.Drawing.Point(132, 4);
+            this.comboFilter.Name = "comboFilter";
+            this.comboFilter.Size = new System.Drawing.Size(121, 23);
+            this.comboFilter.TabIndex = 2;
+            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.comboFilter_SelectedIndexChanged);
             // 
             // labelAvailableBalance
             // 
+            this.labelAvailableBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelAvailableBalance.BackColor = System.Drawing.Color.Gainsboro;
             this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.Location = new System.Drawing.Point(163, 1);
-            this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.labelAvailableBalance.Location = new System.Drawing.Point(259, 4);
+            this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(107, 23);
+            this.labelAvailableBalance.Size = new System.Drawing.Size(402, 23);
             this.labelAvailableBalance.TabIndex = 0;
-            this.labelAvailableBalance.Text = "0.00";
+            this.labelAvailableBalance.Text = "Available: 0.00";
             this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // comboAccounts
+            // dgvAccountTransactions
             // 
-            this.comboAccounts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboAccounts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboAccounts.FormattingEnabled = true;
-            this.comboAccounts.Location = new System.Drawing.Point(2, 1);
-            this.comboAccounts.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.comboAccounts.Name = "comboAccounts";
-            this.comboAccounts.Size = new System.Drawing.Size(158, 23);
-            this.comboAccounts.TabIndex = 1;
-            this.comboAccounts.SelectedIndexChanged += new System.EventHandler(this.comboAccounts_SelectedIndexChanged);
+            this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAccountTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 40);
+            this.dgvAccountTransactions.Name = "dgvAccountTransactions";
+            this.dgvAccountTransactions.RowTemplate.Height = 25;
+            this.dgvAccountTransactions.Size = new System.Drawing.Size(666, 429);
+            this.dgvAccountTransactions.TabIndex = 2;
             // 
             // tabFiles
             // 
@@ -273,16 +278,6 @@ namespace MoneyBookTools
             this.dgvOverview.Size = new System.Drawing.Size(666, 466);
             this.dgvOverview.TabIndex = 0;
             // 
-            // dgvAccountTransactions
-            // 
-            this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAccountTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 40);
-            this.dgvAccountTransactions.Name = "dgvAccountTransactions";
-            this.dgvAccountTransactions.RowTemplate.Height = 25;
-            this.dgvAccountTransactions.Size = new System.Drawing.Size(666, 429);
-            this.dgvAccountTransactions.TabIndex = 2;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -301,12 +296,11 @@ namespace MoneyBookTools
             this.tabAccounts.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.tabFiles.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.tabOverview.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOverview)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -329,10 +323,10 @@ namespace MoneyBookTools
         private ToolStripMenuItem refreshToolStripMenuItem;
         private TabPage tabAccounts;
         private TableLayoutPanel tableLayoutPanel1;
-        private TableLayoutPanel tableLayoutPanel2;
         private Label labelAvailableBalance;
-        private ComboBox comboAccounts;
         private Panel panel1;
         private DataGridView dgvAccountTransactions;
+        private ComboBox comboFilter;
+        private ComboBox comboAccounts;
     }
 }
