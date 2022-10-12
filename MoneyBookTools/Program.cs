@@ -13,7 +13,8 @@ namespace MoneyBookTools
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm()
             {
-                StartPosition = FormStartPosition.CenterScreen
+                StartPosition = FormStartPosition.CenterScreen,
+                WindowState = FormWindowState.Maximized
             });
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MoneyBook.Data;
 using MoneyBookApi.Data;
 using MoneyBookApi.Models;
 
@@ -9,13 +10,13 @@ namespace MoneyBookApi.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ILogger<CategoriesController> _logger;
-        private MoneyBookApiDbContext m_db;
+        private MoneyBookDbContext m_db;
 
         public CategoriesController(ILogger<CategoriesController> logger)
         {
             _logger = logger;
 
-            m_db = new MoneyBookApiDbContext();
+            m_db = MoneyBookDbContext.Create(MoneyBookApiDbContextConfig.Instance);
         }
 
         [HttpGet(Name = "GetCategories")]

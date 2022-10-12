@@ -1,20 +1,12 @@
-﻿using MoneyBook.Models;
+﻿using MoneyBook.Data;
+using MoneyBook.Models;
 using Ofx;
 
-namespace MoneyBook.Data
+namespace MoneyBookTools.Data
 {
-    public class TransactionImporter
+    public static class MoneyBookToolsDbContextExtension
     {
-        public delegate void LogHandler(string str);
-
-        public event LogHandler OnLog;
-
-        public static TransactionImporter Create()
-        {
-            return new TransactionImporter();
-        }
-
-        public void Import(string filename, string accountName)
+        public static void ImportTransactions(this MoneyBookDbContext db, string filename, string accountName)
         {
             var context = new OfxContext()
             {
@@ -22,12 +14,7 @@ namespace MoneyBook.Data
                 AccountTo = accountName
             };
 
-            OnLog?.Invoke($"Reading {filename}.");
-
             context.FromFile(filename);
-
-            using var db = new MoneyBookDbContext();
-            using var tc = db.Database.BeginTransaction();
 
             // Work with the first institution for now.
             var inst = db.Institutions.First();
@@ -36,11 +23,8 @@ namespace MoneyBook.Data
             var acct = db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
             if (acct == null)
             {
-                OnLog?.Invoke($"Could not find account named '{context.AccountTo.ToUpper()}'.");
-                return;
+                throw new Exception($"Could not find account named '{context.AccountTo.ToUpper()}'.");
             }
-
-            OnLog?.Invoke($"Importing {context.Transactions.Count()} transactions to account '{acct.Name}'...");
 
             // Set all imported transactions to first category.
             var cat = db.Categories.First();
@@ -75,8 +59,31 @@ namespace MoneyBook.Data
             }
 
             db.SaveChanges();
+        }
 
-            tc.Commit();
+        public static void UpdateAccountDetails(this MoneyBookDbContext db)
+        {
+            foreach (var acct in db.Accounts.ToList())
+            {
+                var transactions = db.Transactions
+                    .Where(x => x.IsDeleted == false &&
+                                x.AcctId == acct.AcctId)
+                    .ToList();
+
+                var acctDet = db.AccountDetails.FirstOrDefault(x => x.AcctId == acct.AcctId);
+                if (acctDet == null)
+                {
+                    throw new Exception($"ERROR: Cannot find details for account '{acct.Name}'.");
+                }
+
+                acctDet.Credits = transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
+                acctDet.Debits = transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
+                acctDet.ActualBalance = acct.StartingBalance + acctDet.Credits - acctDet.Debits;
+                acctDet.AvailableBalance = acctDet.ActualBalance - acct.ReserveAmount;
+                acctDet.DateModified = DateTime.Now.Date;
+            }
+
+            db.SaveChanges();
         }
     }
 }

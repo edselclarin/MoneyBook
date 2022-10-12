@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using MoneyBook.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MoneyBook.Data;
 using MoneyBookApi.Models;
-using System;
 
 namespace MoneyBookApi.Data
 {
     public static class MoneyBookApiDbContextExtension
     {
-        public static async Task<IEnumerable<AccountInfo>> GetAccountsAsync(this MoneyBookApiDbContext db)
+        public static async Task<IEnumerable<AccountInfo>> GetAccountsAsync(this MoneyBookDbContext db)
         {
             var results = await db.Accounts
                 .Where(x => x.IsDeleted == false)
@@ -28,7 +26,7 @@ namespace MoneyBookApi.Data
             return results;
         }
 
-        public static async Task<IEnumerable<InstitutionInfo>> GetInstitutionsAsync(this MoneyBookApiDbContext db)
+        public static async Task<IEnumerable<InstitutionInfo>> GetInstitutionsAsync(this MoneyBookDbContext db)
         {
             var results = await db.Institutions
                 .Where(x => x.IsDeleted == false)
@@ -43,7 +41,7 @@ namespace MoneyBookApi.Data
             return results;
         }
 
-        public static async Task<IEnumerable<CategoryInfo>> GetCategoriesAsync(this MoneyBookApiDbContext db)
+        public static async Task<IEnumerable<CategoryInfo>> GetCategoriesAsync(this MoneyBookDbContext db)
         {
             var results = await db.Categories
                 .Where(x => x.IsDeleted == false)
@@ -57,7 +55,7 @@ namespace MoneyBookApi.Data
             return results;
         }
 
-        public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookApiDbContext db, int acctId)
+        public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookDbContext db, int acctId)
         {
             var results = await db.Transactions
                 .Where(x => x.IsDeleted == false && x.AcctId == acctId)
