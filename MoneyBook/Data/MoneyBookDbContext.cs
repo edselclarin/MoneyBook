@@ -1,21 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyBook.Models;
-using System.Configuration;
 
 namespace MoneyBook.Data
 {
     public class MoneyBookDbContext : DbContext
     {
+        private readonly string m_connStr;
+
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountDetail> AccountDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
+        public static MoneyBookDbContext Create(IDbContextConfig config)
+        {
+            return new MoneyBookDbContext(config.ConnectionStr);
+        }
+
+        protected MoneyBookDbContext(string connStr)
+        {
+            m_connStr = connStr;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            string connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-            options.UseSqlServer(connStr);
+            options.UseSqlServer(m_connStr);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

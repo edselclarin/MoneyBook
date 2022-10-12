@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookTools", "MoneyBook
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBook", "MoneyBook\MoneyBook.csproj", "{86C7BCFD-62B8-4ED9-97AE-FC5709826754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBookApi", "MoneyBookApi\MoneyBookApi.csproj", "{16DBF542-C6CC-4226-9287-2943B72418AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookApi", "MoneyBookApi\MoneyBookApi.csproj", "{16DBF542-C6CC-4226-9287-2943B72418AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

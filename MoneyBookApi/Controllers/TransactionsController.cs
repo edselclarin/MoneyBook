@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MoneyBook.Data;
 using MoneyBookApi.Data;
 using MoneyBookApi.Models;
 
@@ -9,13 +10,13 @@ namespace MoneyBookApi.Controllers
     public class TransactionsController : ControllerBase
     {
         private readonly ILogger<TransactionsController> _logger;
-        private MoneyBookApiDbContext m_db;
+        private MoneyBookDbContext m_db;
 
         public TransactionsController(ILogger<TransactionsController> logger)
         {
             _logger = logger;
 
-            m_db = new MoneyBookApiDbContext();
+            m_db = MoneyBookDbContext.Create(MoneyBookApiDbContextConfig.Instance);
         }
 
         [HttpGet(Name = "GetTransactions")]

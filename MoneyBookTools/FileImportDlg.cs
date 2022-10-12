@@ -1,4 +1,5 @@
 ﻿using MoneyBook.Data;
+using MoneyBookTools.Data;
 using System.Data;
 
 namespace MoneyBookTools
@@ -30,16 +31,17 @@ namespace MoneyBookTools
                     {
                         await Task.Run(() =>
                         {
+                            using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                            using var tr = db.Database.BeginTransaction();
+
                             foreach (var file in files)
                             {
-                                var importer = TransactionImporter.Create();
-                                importer.OnLog += OnLog;
-                                importer.Import(file.Path, file.Account);
+                                db.ImportTransactions(file.Path, file.Account);
                             }
 
-                            var updater = AccountDetailsUpdater.Create();
-                            updater.OnLog += OnLog;
-                            updater.UpdateAll();
+                            db.UpdateAccountDetails();
+
+                            tr.Commit();
                         });
 
                         WriteLine("Import complete.");
@@ -53,18 +55,6 @@ namespace MoneyBookTools
             catch (Exception ex)
             {
                 this.ShowException(ex);
-            }
-        }
-
-        private void OnLog(string str)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(OnLog, str);
-            }
-            else
-            {
-                textOutput.AppendText(str + Environment.NewLine);
             }
         }
 

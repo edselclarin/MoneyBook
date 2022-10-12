@@ -1,4 +1,5 @@
 ﻿using MoneyBook.Data;
+using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
 using Ofx;
 
@@ -13,14 +14,17 @@ namespace MoneyBookTools
             InitializeComponent();
 
             dgvOverview.ReadOnly = true;
-            dgvTransactions.ReadOnly = true;
+            dgvFileTransactions.ReadOnly = true;
+            dgvAccountTransactions.ReadOnly = true;
+
+            comboAccounts.MouseWheel += ComboAccounts_MouseWheel;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
             {
-                m_db = new MoneyBookDbContext();
+                m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
                 refreshToolStripMenuItem.PerformClick();
             }
@@ -58,8 +62,8 @@ namespace MoneyBookTools
                     var context = new OfxContext();
                     context.FromFile(ofd.FileName);
 
-                    dgvTransactions.DataSource = context.Transactions;
-                    foreach (DataGridViewColumn col in dgvTransactions.Columns)
+                    dgvFileTransactions.DataSource = context.Transactions;
+                    foreach (DataGridViewColumn col in dgvFileTransactions.Columns)
                     {
                         col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
@@ -101,9 +105,9 @@ namespace MoneyBookTools
 
             try
             {
-                if (tabControl1.SelectedTab == tabOverview)
+                if (tabControl1.SelectedTab == tabAccounts)
                 {
-                    var details = m_db.AccountDetails
+                    var accounts = m_db.AccountDetails
                         .Join(m_db.Accounts, ad => ad.AcctId, a => a.AcctId, (ad, a) => new AccountSummary()
                         {
                             AccountName = a.Name,
@@ -111,12 +115,8 @@ namespace MoneyBookTools
                         })
                         .ToList();
 
-                    dgvOverview.RowHeadersVisible = false;
-                    dgvOverview.DataSource = details;
-                    foreach (DataGridViewColumn col in dgvOverview.Columns)
-                    {
-                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    }
+                    comboAccounts.DisplayMember = "AccountName";
+                    comboAccounts.DataSource = accounts;
                 }
             }
             catch (Exception ex)
@@ -127,26 +127,30 @@ namespace MoneyBookTools
             Cursor = Cursors.Default;
         }
 
-        //private List<AccountSummary> GetAccountSummaries()
-        //{
+        private void comboAccounts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var acct = comboAccounts.SelectedItem as AccountSummary;
 
+                labelAvailableBalance.Text = $"{acct?.AvailableBalance}";
 
-        //    var summaries = new List<AccountSummary>();
+                LoadTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
 
-        //    var details = m_db.GetAccountDetails();
+        private void ComboAccounts_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            // Disable scrolling the combobox with the mouse wheel.
+            ((HandledMouseEventArgs)e).Handled = true;
+        }
 
-        //    foreach (var detail in details)
-        //    {
-        //        var summary = new AccountSummary()
-        //        {
-        //            AccountName = detail.Account.Name,
-        //            AvailableBalance = detail.AvailableBalance
-        //        };
-
-        //        summaries.Add(summary);
-        //    }
-
-        //    return summaries;
-        //}
+        private void LoadTransactions()
+        {
+        }
     }
 }
