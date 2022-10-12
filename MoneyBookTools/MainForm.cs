@@ -8,6 +8,12 @@ namespace MoneyBookTools
     public partial class MainForm : Form
     {
         private MoneyBookDbContext m_db = null;
+        private string[] m_filtersNames = new string[]
+        {
+            "Two Weeks",
+            "This Month",
+            "This Year"
+        };
 
         public MainForm()
         {
@@ -17,7 +23,10 @@ namespace MoneyBookTools
             dgvFileTransactions.ReadOnly = true;
             dgvAccountTransactions.ReadOnly = true;
 
-            comboAccounts.MouseWheel += ComboAccounts_MouseWheel;
+            comboAccounts.MouseWheel += Combo_MouseWheel;
+
+            comboFilter.MouseWheel += Combo_MouseWheel;
+            comboFilter.DataSource = m_filtersNames;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -110,6 +119,7 @@ namespace MoneyBookTools
                     var accounts = m_db.AccountDetails
                         .Join(m_db.Accounts, ad => ad.AcctId, a => a.AcctId, (ad, a) => new AccountSummary()
                         {
+                            AcctId = a.AcctId,
                             AccountName = a.Name,
                             AvailableBalance = ad.AvailableBalance,
                         })
@@ -131,10 +141,6 @@ namespace MoneyBookTools
         {
             try
             {
-                var acct = comboAccounts.SelectedItem as AccountSummary;
-
-                labelAvailableBalance.Text = $"{acct?.AvailableBalance}";
-
                 LoadTransactions();
             }
             catch (Exception ex)
@@ -143,14 +149,42 @@ namespace MoneyBookTools
             }
         }
 
-        private void ComboAccounts_MouseWheel(object? sender, MouseEventArgs e)
+        private void comboFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void Combo_MouseWheel(object? sender, MouseEventArgs e)
         {
             // Disable scrolling the combobox with the mouse wheel.
             ((HandledMouseEventArgs)e).Handled = true;
         }
 
-        private void LoadTransactions()
+        private async void LoadTransactions()
         {
+            if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
+            {
+                var acct = comboAccounts.SelectedItem as AccountSummary;
+                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
+
+                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
+
+                dgvAccountTransactions.DataSource = transactions.ToList();
+                dgvAccountTransactions.RowHeadersDefaultCellStyle.BackColor = Color.LightBlue;
+                foreach (DataGridViewColumn col in dgvAccountTransactions.Columns)
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                }
+
+                labelAvailableBalance.Text = $"{acct?.AvailableBalance}";
+            }
         }
     }
 }

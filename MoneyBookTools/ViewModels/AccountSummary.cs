@@ -4,6 +4,9 @@ namespace MoneyBookTools.ViewModels
 {
     public class AccountSummary
     {
+        [Browsable(false)]
+        public int AcctId { get; set; }
+
         [DisplayName("Account")]
         public string AccountName { get; set; }
 
