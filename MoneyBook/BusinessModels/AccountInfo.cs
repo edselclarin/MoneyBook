@@ -1,4 +1,4 @@
-﻿namespace MoneyBookApi.Models
+﻿namespace MoneyBook.BusinessModels
 {
     public class AccountInfo
     {

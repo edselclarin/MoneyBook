@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoneyBook.Data;
-using MoneyBookApi.Models;
+using MoneyBook.BusinessModels;
 
-namespace MoneyBookApi.Data
+namespace MoneyBook.Data
 {
-    public static class MoneyBookApiDbContextExtension
+    public static class MoneyBookDbContextExtension
     {
         public static async Task<IEnumerable<AccountInfo>> GetAccountsAsync(this MoneyBookDbContext db)
         {
