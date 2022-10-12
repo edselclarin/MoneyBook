@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MoneyBook.BusinessModels;
 using MoneyBook.Data;
 using MoneyBookApi.Data;
-using MoneyBookApi.Models;
 
 namespace MoneyBookApi.Controllers
 {
