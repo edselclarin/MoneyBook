@@ -29,6 +29,9 @@ namespace MoneyBookTools
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,15 +39,17 @@ namespace MoneyBookTools
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvFileTransactions = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabAccounts = new System.Windows.Forms.TabPage();
+            this.dgvAccounts = new System.Windows.Forms.DataGridView();
             this.tabLedger = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.comboAccounts = new System.Windows.Forms.ComboBox();
             this.comboFilter = new System.Windows.Forms.ComboBox();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
-            this.dgvLedger = new System.Windows.Forms.DataGridView();
-            this.tabAccounts = new System.Windows.Forms.TabPage();
-            this.dgvAccounts = new System.Windows.Forms.DataGridView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.dgvStagedTransactions = new System.Windows.Forms.DataGridView();
+            this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.tabFiles = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonOpen = new System.Windows.Forms.Button();
@@ -52,12 +57,17 @@ namespace MoneyBookTools
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFileTransactions)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabAccounts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccounts)).BeginInit();
             this.tabLedger.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLedger)).BeginInit();
-            this.tabAccounts.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccounts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStagedTransactions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.tabFiles.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -130,6 +140,28 @@ namespace MoneyBookTools
             this.tabControl1.Size = new System.Drawing.Size(680, 500);
             this.tabControl1.TabIndex = 2;
             // 
+            // tabAccounts
+            // 
+            this.tabAccounts.Controls.Add(this.dgvAccounts);
+            this.tabAccounts.Location = new System.Drawing.Point(4, 24);
+            this.tabAccounts.Name = "tabAccounts";
+            this.tabAccounts.Padding = new System.Windows.Forms.Padding(3);
+            this.tabAccounts.Size = new System.Drawing.Size(672, 472);
+            this.tabAccounts.TabIndex = 1;
+            this.tabAccounts.Text = "Accounts";
+            this.tabAccounts.UseVisualStyleBackColor = true;
+            // 
+            // dgvAccounts
+            // 
+            this.dgvAccounts.AllowUserToOrderColumns = true;
+            this.dgvAccounts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAccounts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAccounts.Location = new System.Drawing.Point(3, 3);
+            this.dgvAccounts.Name = "dgvAccounts";
+            this.dgvAccounts.RowTemplate.Height = 25;
+            this.dgvAccounts.Size = new System.Drawing.Size(666, 466);
+            this.dgvAccounts.TabIndex = 0;
+            // 
             // tabLedger
             // 
             this.tabLedger.Controls.Add(this.tableLayoutPanel1);
@@ -145,7 +177,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dgvLedger, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -202,37 +234,67 @@ namespace MoneyBookTools
             this.labelAvailableBalance.Text = "Available: 0.00";
             this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 40);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.dgvStagedTransactions);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.dgvAccountTransactions);
+            this.splitContainer1.Size = new System.Drawing.Size(666, 429);
+            this.splitContainer1.SplitterDistance = 128;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // dgvStagedTransactions
+            // 
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStagedTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvStagedTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStagedTransactions.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvStagedTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvStagedTransactions.Location = new System.Drawing.Point(0, 0);
+            this.dgvStagedTransactions.Name = "dgvStagedTransactions";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvStagedTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvStagedTransactions.RowTemplate.Height = 25;
+            this.dgvStagedTransactions.Size = new System.Drawing.Size(666, 128);
+            this.dgvStagedTransactions.TabIndex = 0;
+            // 
             // dgvLedger
             // 
-            this.dgvLedger.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLedger.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvLedger.Location = new System.Drawing.Point(3, 40);
-            this.dgvLedger.Name = "dgvLedger";
-            this.dgvLedger.RowTemplate.Height = 25;
-            this.dgvLedger.Size = new System.Drawing.Size(666, 429);
-            this.dgvLedger.TabIndex = 2;
-            // 
-            // tabAccounts
-            // 
-            this.tabAccounts.Controls.Add(this.dgvAccounts);
-            this.tabAccounts.Location = new System.Drawing.Point(4, 24);
-            this.tabAccounts.Name = "tabAccounts";
-            this.tabAccounts.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAccounts.Size = new System.Drawing.Size(672, 472);
-            this.tabAccounts.TabIndex = 1;
-            this.tabAccounts.Text = "Accounts";
-            this.tabAccounts.UseVisualStyleBackColor = true;
-            // 
-            // dgvAccounts
-            // 
-            this.dgvAccounts.AllowUserToOrderColumns = true;
-            this.dgvAccounts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAccounts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAccounts.Location = new System.Drawing.Point(3, 3);
-            this.dgvAccounts.Name = "dgvAccounts";
-            this.dgvAccounts.RowTemplate.Height = 25;
-            this.dgvAccounts.Size = new System.Drawing.Size(666, 466);
-            this.dgvAccounts.TabIndex = 0;
+            this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAccountTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAccountTransactions.Location = new System.Drawing.Point(0, 0);
+            this.dgvAccountTransactions.Name = "dgvLedger";
+            this.dgvAccountTransactions.RowTemplate.Height = 25;
+            this.dgvAccountTransactions.Size = new System.Drawing.Size(666, 297);
+            this.dgvAccountTransactions.TabIndex = 2;
             // 
             // tabFiles
             // 
@@ -293,12 +355,17 @@ namespace MoneyBookTools
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFileTransactions)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabAccounts.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccounts)).EndInit();
             this.tabLedger.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvLedger)).EndInit();
-            this.tabAccounts.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccounts)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStagedTransactions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.tabFiles.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -325,8 +392,10 @@ namespace MoneyBookTools
         private TableLayoutPanel tableLayoutPanel1;
         private Label labelAvailableBalance;
         private Panel panel1;
-        private DataGridView dgvLedger;
+        private DataGridView dgvAccountTransactions;
         private ComboBox comboFilter;
         private ComboBox comboAccounts;
+        private SplitContainer splitContainer1;
+        private DataGridView dgvStagedTransactions;
     }
 }
