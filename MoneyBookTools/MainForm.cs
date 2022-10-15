@@ -31,11 +31,20 @@ namespace MoneyBookTools
             tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void Combo_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            // Disable scrolling the combobox with the mouse wheel.
+            ((HandledMouseEventArgs)e).Handled = true;
+        }
+
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             try
             {
-                m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                await Task.Run(() =>
+                {
+                    m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                });
 
                 refreshToolStripMenuItem.PerformClick();
             }
@@ -74,11 +83,7 @@ namespace MoneyBookTools
                     var context = new OfxContext();
                     context.FromFile(ofd.FileName);
 
-                    dgvFileTransactions.DataSource = context.Transactions;
-                    foreach (DataGridViewColumn col in dgvFileTransactions.Columns)
-                    {
-                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    }
+                    dgvFileTransactions.SetDataSource(context.Transactions, true);
 
                     buttonImport.Enabled = true;
                 }
@@ -141,17 +146,25 @@ namespace MoneyBookTools
 
         private async void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
             try
             {
                 if (tabControl1.SelectedTab == tabLedger)
                 {
-                    LoadAccounts();
+                    using var hg = this.CreateHourglass();
+
+                    var accounts = await m_db.GetAccountsAsync();
+
+                    // NOTE: This will trigger comboAccounts_SelectedIndexChanged().
+                    comboAccounts.DisplayMember = "Account";
+                    comboAccounts.DataSource = accounts.AsViewAccounts().ToList();
                 }
                 else if (tabControl1.SelectedTab == tabAccounts)
                 {
-                    LoadAccountDetails();
+                    using var hg = this.CreateHourglass();
+
+                    var accounts = await m_db.GetAccountsAsync();
+
+                    dgvAccounts.SetDataSource(accounts.AsViewAccounts().ToList(), true);
                 }
             }
             catch (Exception ex)
@@ -160,13 +173,13 @@ namespace MoneyBookTools
             }
         }
 
-        private void comboAccounts_SelectedIndexChanged(object sender, EventArgs e)
+        private async void comboAccounts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
             try
             {
-                LoadTransactions();
+                using var hg = this.CreateHourglass();
+
+                LoadAccountsAndTransactions();
             }
             catch (Exception ex)
             {
@@ -174,76 +187,43 @@ namespace MoneyBookTools
             }
         }
 
-        private void comboFilter_SelectedIndexChanged(object sender, EventArgs e)
+        private async void comboFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
             try
             {
-                LoadTransactions();
+                using var hg = this.CreateHourglass();
+
+                LoadAccountsAndTransactions();
             }
             catch (Exception ex)
             {
                 this.ShowException(ex);
             }
-        }
-
-        private void Combo_MouseWheel(object? sender, MouseEventArgs e)
-        {
-            // Disable scrolling the combobox with the mouse wheel.
-            ((HandledMouseEventArgs)e).Handled = true;
         }
 
         private async void TabControl1_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            using var hg = this.CreateHourglass();
-            
             if (tabControl1.SelectedTab == tabLedger)
             {
                 if (comboAccounts.DataSource == null)
                 {
-                    LoadAccounts();
+                    refreshToolStripMenuItem.PerformClick();
                 }
             }
         }
 
-        private async void LoadAccounts()
-        {
-            var accounts = await m_db.GetAccountsAsync();
-
-            // NOTE: This will trigger comboAccounts_SelectedIndexChanged().
-            comboAccounts.DisplayMember = "Account";
-            comboAccounts.DataSource = accounts.AsViewAccounts().ToList();
-        }
-
-        private async void LoadAccountDetails()
-        {
-            var accounts = await m_db.GetAccountsAsync();
-
-            dgvAccounts.DataSource = accounts.AsViewAccounts().ToList();
-            foreach (DataGridViewColumn col in dgvAccounts.Columns)
-            {
-                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            }
-        }
-
-        private async void LoadTransactions()
+        private async void LoadAccountsAndTransactions()
         {
             if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
             {
                 var acct = comboAccounts.SelectedItem as ViewAccount;
-                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
-
-                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
-
-                dgvAccountTransactions.DataSource = transactions.ToList();
-                dgvAccountTransactions.RowHeadersDefaultCellStyle.BackColor = Color.LightBlue;
-                foreach (DataGridViewColumn col in dgvAccountTransactions.Columns)
-                {
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
 
                 labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
+
+                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
+                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
+
+                dgvAccountTransactions.SetDataSource(transactions.AsViewTransactions().ToList(), true);
             }
         }
     }

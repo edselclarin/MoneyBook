@@ -11,7 +11,7 @@ namespace MoneyBookTools.ViewModels
 
         [Browsable(false)]
         public string TrnsType { get; set; }
-        
+
         public string? RefNum { get; set; }
         
         public string Payee { get; set; }
@@ -19,8 +19,9 @@ namespace MoneyBookTools.ViewModels
         public string? Memo { get; set; }
         
         public string State { get; set; }
-        
-        public decimal Amount { get; set; }
+
+        [Browsable(false)]
+        public decimal TrnsAmount { get; set; }
 
         [Browsable(false)]
         public int InstId { get; set; }
@@ -30,5 +31,7 @@ namespace MoneyBookTools.ViewModels
 
         [Browsable(false)]
         public int CatId { get; set; }
+
+        public decimal Amount => TrnsType == "DEBIT" ? 0 - TrnsAmount : TrnsAmount;
     }
 }
