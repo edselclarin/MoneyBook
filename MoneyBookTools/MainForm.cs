@@ -1,7 +1,6 @@
 ﻿using MoneyBook.BusinessModels;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
-using MoneyBookTools.ViewModels;
 using Ofx;
 
 namespace MoneyBookTools
@@ -90,17 +89,49 @@ namespace MoneyBookTools
             Cursor = Cursors.Default;
         }
 
-        private void buttonImport_Click(object sender, EventArgs e)
+        private async void buttonImport_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
 
             try
             {
-                var dlg = new FileImportDlg()
+                var files = AppSettings.Instance.Imports.ToArray();
+
+                if (files.Length > 0)
                 {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-                dlg.ShowDialog();
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want to import the transactions from these files into these accounts?" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        String.Join(Environment.NewLine, files.Select(x => $"{x.Path} --> {x.Account}")),
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        await Task.Run(() =>
+                        {
+                            using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                            using var tr = db.Database.BeginTransaction();
+
+                            foreach (var file in files)
+                            {
+                                db.ImportTransactions(file.Path, file.Account);
+                            }
+
+                            db.UpdateAccountDetails();
+
+                            tr.Commit();
+                        });
+
+                        MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "No files to import.  Check imports in appSettings.json.",
+                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
             catch (Exception ex)
             {
