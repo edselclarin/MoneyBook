@@ -120,8 +120,8 @@ namespace MoneyBookTools
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabLedger);
             this.tabControl1.Controls.Add(this.tabAccounts);
+            this.tabControl1.Controls.Add(this.tabLedger);
             this.tabControl1.Controls.Add(this.tabFiles);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
