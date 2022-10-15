@@ -11,7 +11,7 @@
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.SandyBrown;
         }
 
-        public static void SetDataSource(this DataGridView dgv, object dataSource, bool resizeCells)
+        public static void ResizeAllCells(this DataGridView dgv, object dataSource)
         {
             dgv.DataSource = dataSource;
 

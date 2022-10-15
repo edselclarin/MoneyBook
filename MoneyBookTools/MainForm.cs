@@ -83,7 +83,7 @@ namespace MoneyBookTools
                     var context = new OfxContext();
                     context.FromFile(ofd.FileName);
 
-                    dgvFileTransactions.SetDataSource(context.Transactions, true);
+                    dgvFileTransactions.ResizeAllCells(context.Transactions);
 
                     buttonImport.Enabled = true;
                 }
@@ -164,7 +164,7 @@ namespace MoneyBookTools
 
                     var accounts = await m_db.GetAccountsAsync();
 
-                    dgvAccounts.SetDataSource(accounts.AsViewAccounts().ToList(), true);
+                    dgvAccounts.ResizeAllCells(accounts.AsViewAccounts().ToList());
                 }
             }
             catch (Exception ex)
@@ -188,7 +188,7 @@ namespace MoneyBookTools
                     var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
                     var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
 
-                    dgvAccountTransactions.SetDataSource(transactions.AsViewTransactions().ToList(), true);
+                    dgvAccountTransactions.ResizeAllCells(transactions.AsViewTransactions().ToList());
                 }
             }
             catch (Exception ex)
