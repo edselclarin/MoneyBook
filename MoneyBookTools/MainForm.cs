@@ -7,13 +7,7 @@ namespace MoneyBookTools
 {
     public partial class MainForm : Form
     {
-        private MoneyBookDbContext m_db = null;
-        private string[] m_filtersNames = new string[]
-        {
-            "Two Weeks",
-            "This Month",
-            "This Year"
-        };
+        private MoneyBookDbContext m_db;
 
         public MainForm()
         {
@@ -24,12 +18,18 @@ namespace MoneyBookTools
             dgvFileTransactions.ReadOnly = true;
 
             comboAccounts.MouseWheel += Combo_MouseWheel;
-
             comboFilter.MouseWheel += Combo_MouseWheel;
-            comboFilter.DataSource = m_filtersNames;
 
-            tabAccounts.Enter += TabAccounts_Enter;
+            comboFilter.DataSource = new string[]
+            {
+                "Two Weeks",
+                "This Month",
+                "This Year"
+            };
+
+            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
         }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
@@ -58,7 +58,7 @@ namespace MoneyBookTools
 
         private void buttonOpen_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
+            using var hg = this.CreateHourglass();
 
             try
             {
@@ -67,6 +67,7 @@ namespace MoneyBookTools
                     InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
                     Filter = "OFX/QFX Files|*.ofx;*.qfx|All Files|*.*",
                 };
+
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     var context = new OfxContext();
@@ -85,13 +86,11 @@ namespace MoneyBookTools
             {
                 this.ShowException(ex);
             }
-
-            Cursor = Cursors.Default;
         }
 
         private async void buttonImport_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
+            using var hg = this.CreateHourglass();
 
             try
             {
@@ -137,44 +136,33 @@ namespace MoneyBookTools
             {
                 this.ShowException(ex);
             }
-
-            Cursor = Cursors.Default;
         }
 
         private async void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
+            using var hg = this.CreateHourglass();
 
             try
             {
                 if (tabControl1.SelectedTab == tabLedger)
                 {
-                    var accounts = await m_db.GetAccountsAsync();
-
-                    comboAccounts.DisplayMember = "AccountName";
-                    comboAccounts.DataSource = accounts.ToList();
+                    LoadAccounts();
                 }
                 else if (tabControl1.SelectedTab == tabAccounts)
                 {
-                    var accounts = await m_db.GetAccountsAsync();
-
-                    dgvAccounts.DataSource = accounts.ToList();
-                    foreach (DataGridViewColumn col in dgvAccounts.Columns)
-                    {
-                        col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    }
+                    LoadAccountDetails();
                 }
             }
             catch (Exception ex)
             {
                 this.ShowException(ex);
             }
-
-            Cursor = Cursors.Default;
         }
 
         private void comboAccounts_SelectedIndexChanged(object sender, EventArgs e)
         {
+            using var hg = this.CreateHourglass();
+
             try
             {
                 LoadTransactions();
@@ -187,6 +175,8 @@ namespace MoneyBookTools
 
         private void comboFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
+            using var hg = this.CreateHourglass();
+
             try
             {
                 LoadTransactions();
@@ -203,17 +193,33 @@ namespace MoneyBookTools
             ((HandledMouseEventArgs)e).Handled = true;
         }
 
-        private async void TabAccounts_Enter(object? sender, EventArgs e)
+        private async void TabControl1_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab == tabAccounts && dgvAccounts.DataSource == null)
+            using var hg = this.CreateHourglass();
+            
+            if (tabControl1.SelectedTab == tabLedger)
             {
-                var accounts = await m_db.GetAccountsAsync();
+                LoadAccounts();
+            }
+        }
 
-                dgvAccounts.DataSource = accounts.ToList();
-                foreach (DataGridViewColumn col in dgvAccounts.Columns)
-                {
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
+        private async void LoadAccounts()
+        {
+            var accounts = await m_db.GetAccountsAsync();
+
+            // NOTE: This will trigger comboAccounts_SelectedIndexChanged().
+            comboAccounts.DisplayMember = "AccountName";
+            comboAccounts.DataSource = accounts.ToList();
+        }
+
+        private async void LoadAccountDetails()
+        {
+            var accounts = await m_db.GetAccountsAsync();
+
+            dgvAccounts.DataSource = accounts.ToList();
+            foreach (DataGridViewColumn col in dgvAccounts.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
         }
 
