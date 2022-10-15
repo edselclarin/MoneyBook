@@ -199,7 +199,10 @@ namespace MoneyBookTools
             
             if (tabControl1.SelectedTab == tabLedger)
             {
-                LoadAccounts();
+                if (comboAccounts.DataSource == null)
+                {
+                    LoadAccounts();
+                }
             }
         }
 
