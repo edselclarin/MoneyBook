@@ -1,10 +1,4 @@
 ﻿using MoneyBook.BusinessModels;
-using MoneyBook.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MoneyBookTools.ViewModels
 {
@@ -21,18 +15,28 @@ namespace MoneyBookTools.ViewModels
                 Credits = acct.Credits,
                 Debits = acct.Debits,
                 Balance = acct.Balance,
-                AvailableBalance = acct.Balance,
+                AvailableBalance = acct.AvailableBalance,
                 DateModified = acct.DateModified,
                 InstId = acct.InstId
             });
         }
 
-        //public static IEnumerable<ViewTransaction> AsViewTransactions(this IEnumerable<TransactionInfo> transactions)
-        //{
-        //    return transactions.Select(tran => new ViewTransaction
-        //    {
-
-        //    });
-        //}
+        public static IEnumerable<ViewTransaction> AsViewTransactions(this IEnumerable<TransactionInfo> transactions)
+        {
+            return transactions.Select(tran => new ViewTransaction
+            {
+                TrnsId = tran.TrnsId,
+                Date = tran.Date,
+                TrnsType = tran.TrnsType,
+                RefNum = tran.RefNum,
+                Payee = tran.Payee,
+                Memo = tran.Memo,
+                State = tran.State,
+                TrnsAmount = tran.Amount,
+                InstId = tran.InstId,
+                AcctId = tran.AcctId,
+                CatId = tran.CatId,
+            });
+        }
     }
 }

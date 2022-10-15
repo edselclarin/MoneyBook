@@ -10,5 +10,15 @@
             dgv.EnableHeadersVisualStyles = false; // To allow custom header style.
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.SandyBrown;
         }
+
+        public static void SetDataSource(this DataGridView dgv, object dataSource, bool resizeCells)
+        {
+            dgv.DataSource = dataSource;
+
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            }
+        }
     }
 }
