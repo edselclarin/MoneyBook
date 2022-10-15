@@ -18,6 +18,12 @@ namespace MoneyBook.Data
                     AcctType = acct.AcctType,
                     StartingBalance = acct.StartingBalance,
                     ReserveAmount = acct.ReserveAmount,
+                    Credits = acct.Credits,
+                    Debits = acct.Debits,
+                    Balance = acct.Balance,
+                    AvailableBalance = acct.AvailableBalance,
+                    DateAdded = acct.DateAdded,
+                    DateModified = acct.DateModified,
                     InstId = inst.InstId,
                     InstitutionName = inst.Name
                 })

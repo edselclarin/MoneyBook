@@ -22,6 +22,12 @@ namespace MoneyBook.BusinessModels
 
         public decimal Amount { get; set; }
 
+        [Browsable(false)]
+        public DateTime DateAdded { get; set; }
+
+        [Browsable(false)]
+        public DateTime DateModified { get; set; }
+        
         [Browsable(false)] 
         public int InstId { get; set; }
 
