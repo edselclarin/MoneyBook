@@ -1,6 +1,6 @@
-﻿using MoneyBook.BusinessModels;
-using MoneyBook.Data;
+﻿using MoneyBook.Data;
 using MoneyBookTools.Data;
+using MoneyBookTools.ViewModels;
 using Ofx;
 
 namespace MoneyBookTools
@@ -13,9 +13,10 @@ namespace MoneyBookTools
         {
             InitializeComponent();
 
-            dgvAccounts.ReadOnly = true;
-            dgvLedger.ReadOnly = true;
-            dgvFileTransactions.ReadOnly = true;
+            dgvAccounts.SetDataGridViewStyle();
+            dgvAccountTransactions.SetDataGridViewStyle();
+            dgvStagedTransactions.SetDataGridViewStyle();
+            dgvFileTransactions.SetDataGridViewStyle();
 
             comboAccounts.MouseWheel += Combo_MouseWheel;
             comboFilter.MouseWheel += Combo_MouseWheel;
@@ -211,15 +212,15 @@ namespace MoneyBookTools
             var accounts = await m_db.GetAccountsAsync();
 
             // NOTE: This will trigger comboAccounts_SelectedIndexChanged().
-            comboAccounts.DisplayMember = "AccountName";
-            comboAccounts.DataSource = accounts.ToList();
+            comboAccounts.DisplayMember = "Account";
+            comboAccounts.DataSource = accounts.AsViewAccounts().ToList();
         }
 
         private async void LoadAccountDetails()
         {
             var accounts = await m_db.GetAccountsAsync();
 
-            dgvAccounts.DataSource = accounts.ToList();
+            dgvAccounts.DataSource = accounts.AsViewAccounts().ToList();
             foreach (DataGridViewColumn col in dgvAccounts.Columns)
             {
                 col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -230,14 +231,14 @@ namespace MoneyBookTools
         {
             if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
             {
-                var acct = comboAccounts.SelectedItem as AccountInfo;
+                var acct = comboAccounts.SelectedItem as ViewAccount;
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
 
                 var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
 
-                dgvLedger.DataSource = transactions.ToList();
-                dgvLedger.RowHeadersDefaultCellStyle.BackColor = Color.LightBlue;
-                foreach (DataGridViewColumn col in dgvLedger.Columns)
+                dgvAccountTransactions.DataSource = transactions.ToList();
+                dgvAccountTransactions.RowHeadersDefaultCellStyle.BackColor = Color.LightBlue;
+                foreach (DataGridViewColumn col in dgvAccountTransactions.Columns)
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 }
