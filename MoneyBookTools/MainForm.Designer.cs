@@ -208,7 +208,7 @@ namespace MoneyBookTools
             this.comboAccounts.Name = "comboAccounts";
             this.comboAccounts.Size = new System.Drawing.Size(121, 23);
             this.comboAccounts.TabIndex = 3;
-            this.comboAccounts.SelectedIndexChanged += new System.EventHandler(this.comboAccounts_SelectedIndexChanged);
+            this.comboAccounts.SelectedIndexChanged += new System.EventHandler(this.AccountsTabCombo_SelectedIndexChanged);
             // 
             // comboFilter
             // 
@@ -218,7 +218,7 @@ namespace MoneyBookTools
             this.comboFilter.Name = "comboFilter";
             this.comboFilter.Size = new System.Drawing.Size(121, 23);
             this.comboFilter.TabIndex = 2;
-            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.comboFilter_SelectedIndexChanged);
+            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountsTabCombo_SelectedIndexChanged);
             // 
             // labelAvailableBalance
             // 

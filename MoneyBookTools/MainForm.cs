@@ -173,27 +173,23 @@ namespace MoneyBookTools
             }
         }
 
-        private async void comboAccounts_SelectedIndexChanged(object sender, EventArgs e)
+        private async void AccountsTabCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                using var hg = this.CreateHourglass();
+                if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
+                {
+                    using var hg = this.CreateHourglass();
 
-                LoadAccountsAndTransactions();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
+                    var acct = comboAccounts.SelectedItem as ViewAccount;
 
-        private async void comboFilter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                using var hg = this.CreateHourglass();
+                    labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
 
-                LoadAccountsAndTransactions();
+                    var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
+                    var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
+
+                    dgvAccountTransactions.SetDataSource(transactions.AsViewTransactions().ToList(), true);
+                }
             }
             catch (Exception ex)
             {
@@ -209,21 +205,6 @@ namespace MoneyBookTools
                 {
                     refreshToolStripMenuItem.PerformClick();
                 }
-            }
-        }
-
-        private async void LoadAccountsAndTransactions()
-        {
-            if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
-            {
-                var acct = comboAccounts.SelectedItem as ViewAccount;
-
-                labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
-
-                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
-                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
-
-                dgvAccountTransactions.SetDataSource(transactions.AsViewTransactions().ToList(), true);
             }
         }
     }
