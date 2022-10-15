@@ -4,7 +4,8 @@
     {
         Uncleared,
         Cleared,
-        Reconciled
+        Reconciled,
+        Staged,
     }
 
     public static class State

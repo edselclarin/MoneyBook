@@ -70,17 +70,11 @@ namespace MoneyBookTools.Data
                                 x.AcctId == acct.AcctId)
                     .ToList();
 
-                var acctDet = db.AccountDetails.FirstOrDefault(x => x.AcctId == acct.AcctId);
-                if (acctDet == null)
-                {
-                    throw new Exception($"ERROR: Cannot find details for account '{acct.Name}'.");
-                }
-
-                acctDet.Credits = transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
-                acctDet.Debits = transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
-                acctDet.ActualBalance = acct.StartingBalance + acctDet.Credits - acctDet.Debits;
-                acctDet.AvailableBalance = acctDet.ActualBalance - acct.ReserveAmount;
-                acctDet.DateModified = DateTime.Now.Date;
+                acct.Credits = transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
+                acct.Debits = transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
+                acct.Balance = acct.StartingBalance + acct.Credits - acct.Debits;
+                acct.AvailableBalance = acct.Balance - acct.ReserveAmount;
+                acct.DateModified = DateTime.Now;
             }
 
             db.SaveChanges();

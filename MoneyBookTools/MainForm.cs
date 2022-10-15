@@ -116,12 +116,12 @@ namespace MoneyBookTools
             {
                 if (tabControl1.SelectedTab == tabAccounts)
                 {
-                    var accounts = m_db.AccountDetails
-                        .Join(m_db.Accounts, ad => ad.AcctId, a => a.AcctId, (ad, a) => new AccountSummary()
+                    var accounts = m_db.Accounts
+                        .Select(x => new AccountSummary()
                         {
-                            AcctId = a.AcctId,
-                            AccountName = a.Name,
-                            AvailableBalance = ad.AvailableBalance,
+                            AcctId = x.AcctId,
+                            AccountName = x.Name,
+                            AvailableBalance = x.AvailableBalance,
                         })
                         .ToList();
 
