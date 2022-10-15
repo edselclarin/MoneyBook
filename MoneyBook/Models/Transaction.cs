@@ -10,31 +10,37 @@ namespace MoneyBook.Models
         [Required]
         public DateTime Date { get; set; }
 
-        [Required] 
+        [Required]
         public string TrnsType { get; set; }
-        
+
         public string? RefNum { get; set; }
 
-        [Required] 
+        [Required]
         public string Payee { get; set; }
-        
+
         public string? Memo { get; set; }
 
-        [Required] 
+        [Required]
         public string State { get; set; }
 
-        [Required] 
+        [Required]
         public decimal Amount { get; set; }
-        
+
         public string ExtTrnsId { get; set; }
 
-        [Required] 
+        [Required]
+        public DateTime DateAdded { get; set; }
+
+        [Required]
+        public DateTime DateModified { get; set; }
+
+        [Required]
         public int InstId { get; set; }
 
-        [Required] 
+        [Required]
         public int AcctId { get; set; }
 
-        [Required] 
+        [Required]
         public int CatId { get; set; }
         
         public bool IsDeleted { get; set; }

@@ -1,4 +1,4 @@
-	-- Create database.
+-- Create database.
 
 IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'MoneyBook')
 BEGIN
@@ -49,83 +49,46 @@ BEGIN
 		[AcctType] VARCHAR (128) NOT NULL DEFAULT('SAVINGS'),
 		[StartingBalance] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),
 		[ReserveAmount] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),
+		[Credits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[Debits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[Balance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[AvailableBalance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
+		[DateAdded] DATE NOT NULL DEFAULT(GETDATE()),
+		[DateModified] DATE NOT NULL DEFAULT(GETDATE()),
 		[ExtAcctId] VARCHAR (128) NOT NULL DEFAULT(''),
 		[InstId] INT NOT NULL DEFAULT(0),
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFCHK', 'Checking', 'CHECKING', 1646.52, 0.00, '70', 1);
+		'SFCHK', 'Checking', 'CHECKING', 0.00, '70', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV1', 'Primary Savings', 'SAVINGS', 16201.82, 5.00, '01', 1);
+		'SFSAV1', 'Primary Savings', 'SAVINGS', 5.00, '01', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV2', 'Secondary Savings', 'SAVINGS', -35936.12, 5.00, '02', 1);
+		'SFSAV2', 'Secondary Savings', 'SAVINGS', 5.00, '02', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 601.23, 5.00, '03', 1);
+		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 5.00, '03', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 25.00, 5.00, '01', 1);
+		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 5.00, '01', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [StartingBalance], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 762.47, 0.00, '20', 1);
-END
-
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'AccountDetails' and xtype = 'U')
-BEGIN
-	CREATE TABLE [AccountDetails] (
-		[AcctDetId] INT PRIMARY KEY IDENTITY(1, 1),
-		[AcctId] INT NOT NULL FOREIGN KEY REFERENCES [Accounts],
-		[Debits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
-		[Credits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
-		[AvailableBalance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
-		[ActualBalance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
-		[DateModified] DATE
-	)
-
-	INSERT INTO [AccountDetails] (
-		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
-	VALUES (
-		1, 0, 0, 0, 0);
-
-	INSERT INTO [AccountDetails] (
-		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
-	VALUES (
-		2, 0, 0, 0, 0);
-
-	INSERT INTO [AccountDetails] (
-		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
-	VALUES (
-		3, 0, 0, 0, 0);
-
-	INSERT INTO [AccountDetails] (
-		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
-	VALUES (
-		4, 0, 0, 0, 0);
-
-	INSERT INTO [AccountDetails] (
-		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
-	VALUES (
-		5, 0, 0, 0, 0);
-
-	INSERT INTO [AccountDetails] (
-		[AcctId], [Debits], [Credits], [AvailableBalance], [ActualBalance])
-	VALUES (
-		6, 0, 0, 0, 0);
+		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 0.00, '20', 1);
 END
 
 -- Create Transactions table.
@@ -141,6 +104,8 @@ BEGIN
 		[State] VARCHAR(2) NOT NULL DEFAULT('U'),
 		[Amount] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),
 		[ExtTrnsId] VARCHAR(128) DEFAULT(''),
+		[DateAdded] DATE NOT NULL DEFAULT(GETDATE()),
+		[DateModified] DATE NOT NULL DEFAULT(GETDATE()),
 		[InstId] INT NOT NULL DEFAULT(0),
 		[AcctId] INT NOT NULL DEFAULT(0),
 		[CatId] INT NOT NULL DEFAULT(0),
