@@ -32,6 +32,7 @@ namespace MoneyBookTools
         }
 
         public IEnumerable<AccountData> Accounts { get; set; }
+        public IList<RepeatingTransaction> RepeatingTransactions { get; set; }
     }
 
     public class AccountData
@@ -39,12 +40,12 @@ namespace MoneyBookTools
         public string Name { get; set; }
         public decimal StartingBalance { get; set; }
         public string ImportFilePath { get; set; }
-        public IList<RepeatingTransaction> RepeatingTransactions { get; set; }
     }
 
     public class RepeatingTransaction
     {
         public DateTime DueDate { get; set; }
+        public string Account { get; set; }
         public string TrnsType { get; set; }
         public string Payee { get; set; }
         public string Memo { get; set; }

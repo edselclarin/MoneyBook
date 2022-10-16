@@ -297,12 +297,12 @@ namespace MoneyBookTools
 
             try
             {
-                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
+                var repeatingTransactions = AppSettings.Instance.RepeatingTransactions;
 
-                if (accountDataArr.Length > 0)
+                if (repeatingTransactions.Count > 0)
                 {
                     var answer = MessageBox.Show(this,
-                        $"Are you sure you want to import repeating transactions for all accounts?",
+                        $"Are you sure you want to import repeating transactions?",
                         this.Text,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
@@ -312,10 +312,7 @@ namespace MoneyBookTools
                         {
                             using var tr = m_db.Database.BeginTransaction();
 
-                            foreach (var ad in accountDataArr)
-                            {
-                                m_db.ImportRecurringTransactions(ad.Name, ad.RepeatingTransactions);
-                            }
+                            m_db.ImportRecurringTransactions(repeatingTransactions);
 
                             tr.Commit();
                         });
