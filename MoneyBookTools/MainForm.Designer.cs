@@ -52,6 +52,7 @@ namespace MoneyBookTools
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.tabFiles = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonUpdateStartBalances = new System.Windows.Forms.Button();
             this.buttonOpen = new System.Windows.Forms.Button();
             this.buttonImport = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
@@ -252,7 +253,7 @@ namespace MoneyBookTools
             this.splitContainer1.SplitterDistance = 95;
             this.splitContainer1.TabIndex = 3;
             // 
-            // dgvStagedTransactions
+            // dgvRecurringTransactions
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -273,7 +274,7 @@ namespace MoneyBookTools
             this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvRecurringTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecurringTransactions.Location = new System.Drawing.Point(0, 0);
-            this.dgvRecurringTransactions.Name = "dgvStagedTransactions";
+            this.dgvRecurringTransactions.Name = "dgvRecurringTransactions";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -312,6 +313,7 @@ namespace MoneyBookTools
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.buttonUpdateStartBalances);
             this.groupBox1.Controls.Add(this.buttonOpen);
             this.groupBox1.Controls.Add(this.buttonImport);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
@@ -319,6 +321,16 @@ namespace MoneyBookTools
             this.groupBox1.Size = new System.Drawing.Size(658, 53);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
+            // 
+            // buttonUpdateStartBalances
+            // 
+            this.buttonUpdateStartBalances.Location = new System.Drawing.Point(172, 20);
+            this.buttonUpdateStartBalances.Name = "buttonUpdateStartBalances";
+            this.buttonUpdateStartBalances.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdateStartBalances.TabIndex = 4;
+            this.buttonUpdateStartBalances.Text = "Update";
+            this.buttonUpdateStartBalances.UseVisualStyleBackColor = true;
+            this.buttonUpdateStartBalances.Click += new System.EventHandler(this.buttonUpdateStartBalances_Click);
             // 
             // buttonOpen
             // 
@@ -397,5 +409,6 @@ namespace MoneyBookTools
         private ComboBox comboAccounts;
         private SplitContainer splitContainer1;
         private DataGridView dgvRecurringTransactions;
+        private Button buttonUpdateStartBalances;
     }
 }
