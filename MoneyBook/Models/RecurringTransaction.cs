@@ -8,7 +8,7 @@ namespace MoneyBook.Models
         public int RecTrnsId { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime DueDate { get; set; }
 
         [Required]
         public string TrnsType { get; set; }
@@ -16,8 +16,7 @@ namespace MoneyBook.Models
         [Required]
         public string Payee { get; set; }
 
-        [Required]
-        public string State { get; set; }
+        public string Memo { get; set; }
 
         [Required]
         public decimal Amount { get; set; }
