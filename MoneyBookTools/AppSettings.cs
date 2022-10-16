@@ -2,12 +2,6 @@
 
 namespace MoneyBookTools
 {
-    internal class ImportContext
-    {
-        public string Account { get; set; }
-        public string Path { get; set; }
-    }
-
     internal class AppSettings
     {
         private static string m_filename = "appSettings.json";
@@ -28,7 +22,7 @@ namespace MoneyBookTools
                     {
                         m_instance = new AppSettings()
                         {
-                            Imports = new List<ImportContext>()
+                            Accounts = new List<AccountData>()
                         };
                     }
                 }
@@ -37,6 +31,14 @@ namespace MoneyBookTools
             }
         }
 
-        public IEnumerable<ImportContext> Imports { get; set; }
+        public IEnumerable<AccountData> Accounts { get; set; }
     }
+
+    internal class AccountData
+    {
+        public string Name { get; set; }
+        public decimal StartingBalance { get; set; }
+        public string ImportFilePath { get; set; }
+    }
+
 }

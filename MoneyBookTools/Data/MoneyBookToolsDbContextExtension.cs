@@ -75,5 +75,27 @@ namespace MoneyBookTools.Data
 
             db.SaveChanges();
         }
+
+        public static void UpdateStartingBalance(this MoneyBookDbContext db, string acctName, decimal startingBalance)
+        {
+            var acct = db.Accounts.FirstOrDefault(x => x.Name == acctName);
+            if (acct != null)
+            {
+                acct.StartingBalance = startingBalance;
+
+                var transactions = db.Transactions
+                    .Where(x => x.IsDeleted == false &&
+                                x.AcctId == acct.AcctId)
+                    .ToList();
+
+                acct.Credits = transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
+                acct.Debits = transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
+                acct.Balance = acct.StartingBalance + acct.Credits - acct.Debits;
+                acct.AvailableBalance = acct.Balance - acct.ReserveAmount;
+                acct.DateModified = DateTime.Now;
+
+                db.SaveChanges();
+            }
+        }
     }
 }

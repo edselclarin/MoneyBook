@@ -101,15 +101,15 @@ namespace MoneyBookTools
 
             try
             {
-                var files = AppSettings.Instance.Imports.ToArray();
+                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
 
-                if (files.Length > 0)
+                if (accountDataArr.Length > 0)
                 {
                     var answer = MessageBox.Show(this,
                         $"Are you sure you want to import the transactions from these files into these accounts?" +
                         Environment.NewLine +
                         Environment.NewLine +
-                        String.Join(Environment.NewLine, files.Select(x => $"{x.Path} --> {x.Account}")),
+                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.ImportFilePath} --> {x.Name}")),
                         this.Text,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
@@ -117,15 +117,14 @@ namespace MoneyBookTools
                     {
                         await Task.Run(() =>
                         {
-                            using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
-                            using var tr = db.Database.BeginTransaction();
+                            using var tr = m_db.Database.BeginTransaction();
 
-                            foreach (var file in files)
+                            foreach (var ad in accountDataArr)
                             {
-                                db.ImportTransactions(file.Path, file.Account);
+                                m_db.ImportTransactions(ad.ImportFilePath, ad.Name);
                             }
 
-                            db.UpdateAccountDetails();
+                            m_db.UpdateAccountDetails();
 
                             tr.Commit();
                         });
@@ -135,7 +134,52 @@ namespace MoneyBookTools
                 }
                 else
                 {
-                    MessageBox.Show(this, "No files to import.  Check imports in appSettings.json.",
+                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
+                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void buttonUpdateStartBalances_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
+
+                if (accountDataArr.Length > 0)
+                {
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want update the starting balances of these accounts?" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.Name} --> {x.StartingBalance}")),
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        await Task.Run(() =>
+                        {
+                            using var tr = m_db.Database.BeginTransaction();
+
+                            foreach (var ad in accountDataArr)
+                            {
+                                m_db.UpdateStartingBalance(ad.Name, ad.StartingBalance);
+                            }
+
+                            tr.Commit();
+                        });
+
+                        MessageBox.Show(this, "Update complete.", this.Text, MessageBoxButtons.OK);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
                         this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
