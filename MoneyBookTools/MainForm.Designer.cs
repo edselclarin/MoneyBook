@@ -44,6 +44,7 @@ namespace MoneyBookTools
             this.tabLedger = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.comboDateOrder = new System.Windows.Forms.ComboBox();
             this.comboAccounts = new System.Windows.Forms.ComboBox();
             this.comboFilter = new System.Windows.Forms.ComboBox();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
@@ -192,6 +193,7 @@ namespace MoneyBookTools
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.comboDateOrder);
             this.panel1.Controls.Add(this.comboAccounts);
             this.panel1.Controls.Add(this.comboFilter);
             this.panel1.Controls.Add(this.labelAvailableBalance);
@@ -200,6 +202,16 @@ namespace MoneyBookTools
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(666, 31);
             this.panel1.TabIndex = 1;
+            // 
+            // comboDateOrder
+            // 
+            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboDateOrder.FormattingEnabled = true;
+            this.comboDateOrder.Location = new System.Drawing.Point(259, 4);
+            this.comboDateOrder.Name = "comboDateOrder";
+            this.comboDateOrder.Size = new System.Drawing.Size(121, 23);
+            this.comboDateOrder.TabIndex = 4;
+            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountsTabCombo_SelectedIndexChanged);
             // 
             // comboAccounts
             // 
@@ -227,13 +239,13 @@ namespace MoneyBookTools
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelAvailableBalance.BackColor = System.Drawing.Color.Gainsboro;
             this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.Location = new System.Drawing.Point(259, 4);
+            this.labelAvailableBalance.Location = new System.Drawing.Point(386, 4);
             this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(402, 23);
+            this.labelAvailableBalance.Size = new System.Drawing.Size(275, 23);
             this.labelAvailableBalance.TabIndex = 0;
             this.labelAvailableBalance.Text = "Available: 0.00";
-            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // splitContainer1
             // 
@@ -410,5 +422,6 @@ namespace MoneyBookTools
         private SplitContainer splitContainer1;
         private DataGridView dgvRecurringTransactions;
         private Button buttonUpdateStartBalances;
+        private ComboBox comboDateOrder;
     }
 }

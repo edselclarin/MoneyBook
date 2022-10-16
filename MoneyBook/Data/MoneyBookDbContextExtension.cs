@@ -66,7 +66,13 @@ namespace MoneyBook.Data
             ThisYear
         }
 
-        public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookDbContext db, int acctId, DateFilter dateFilter)
+        public enum SortOrder : int
+        {
+            Descending,
+            Ascending
+        }
+
+        public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookDbContext db, int acctId, DateFilter dateFilter, SortOrder sortOrder)
         {
             List<Transaction> results;
 
@@ -84,13 +90,26 @@ namespace MoneyBook.Data
                         .ToListAsync();
                     break;
                 case DateFilter.ThisYear:
-                    results = await  db.Transactions
+                    results = await db.Transactions
                         .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == DateTime.Now.Year)
                         .ToListAsync();
                     break;
             }
 
-            return results
+            IOrderedEnumerable<Transaction> sortedTransactions;
+
+            switch (sortOrder)
+            {
+                case SortOrder.Ascending:
+                    sortedTransactions = results.OrderBy(x => x.Date);
+                    break;
+                case SortOrder.Descending:
+                default:
+                    sortedTransactions = results.OrderByDescending(x => x.Date);
+                    break;
+            }
+
+            return sortedTransactions
                 .Select(trn => new TransactionInfo
                 {
                     TrnsId = trn.TrnsId,
@@ -108,9 +127,44 @@ namespace MoneyBook.Data
                 });
         }
 
-        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, int acctId)
+        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, int acctId, DateFilter dateFilter, SortOrder sortOrder)
         {
-            var results = db.RecurringTransactions
+            List<RecurringTransaction> results;
+
+            switch (dateFilter)
+            {
+                case DateFilter.TwoWeeks:
+                default:
+                    results = await db.RecurringTransactions
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date >= DateTime.Now.AddDays(-14))
+                        .ToListAsync();
+                    break;
+                case DateFilter.ThisMonth:
+                    results = await db.RecurringTransactions
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Month == DateTime.Now.Month)
+                        .ToListAsync();
+                    break;
+                case DateFilter.ThisYear:
+                    results = await db.RecurringTransactions
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == DateTime.Now.Year)
+                        .ToListAsync();
+                    break;
+            }
+
+            IOrderedEnumerable<RecurringTransaction> sortedTransactions;
+
+            switch (sortOrder)
+            {
+                case SortOrder.Ascending:
+                    sortedTransactions = results.OrderBy(x => x.Date);
+                    break;
+                case SortOrder.Descending:
+                default:
+                    sortedTransactions = results.OrderByDescending(x => x.Date);
+                    break;
+            }
+
+            return sortedTransactions
                 .Select(trn => new RecurringTransactionInfo
                 {
                     RecTrnsId = trn.RecTrnsId,
@@ -124,8 +178,6 @@ namespace MoneyBook.Data
                     AcctId = trn.AcctId,
                     CatId = trn.CatId
                 });
-
-            return results;
         }
     }
 }
