@@ -20,12 +20,19 @@ namespace MoneyBookTools
 
             comboAccounts.MouseWheel += Combo_MouseWheel;
             comboFilter.MouseWheel += Combo_MouseWheel;
+            comboDateOrder.MouseWheel += Combo_MouseWheel;
 
             comboFilter.DataSource = new string[]
             {
                 "Two Weeks",
                 "This Month",
                 "This Year"
+            };
+
+            comboDateOrder.DataSource = new string[]
+            {
+                "Newest to Oldest",
+                "Oldest to Newest"
             };
 
             tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
@@ -249,7 +256,7 @@ namespace MoneyBookTools
 
         private async void LoadTransactions()
         {
-            if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
+            if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1 && comboDateOrder.SelectedIndex > -1)
             {
                 using var hg = this.CreateHourglass();
 
@@ -258,12 +265,13 @@ namespace MoneyBookTools
                 labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
 
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
-                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
+                var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
+                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
 
                 dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
                 dgvAccountTransactions.ResizeAllCells();
 
-                var recTransactions = await m_db.GetRecurringTransactionsAsync(acct.AcctId);
+                var recTransactions = await m_db.GetRecurringTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
 
                 dgvRecurringTransactions.DataSource = recTransactions.AsViewRecurringTransactions().ToList();
                 dgvRecurringTransactions.ResizeAllCells();
