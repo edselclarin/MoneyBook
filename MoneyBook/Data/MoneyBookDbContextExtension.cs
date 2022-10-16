@@ -23,9 +23,7 @@ namespace MoneyBook.Data
                     Balance = acct.Balance,
                     AvailableBalance = acct.AvailableBalance,
                     DateAdded = acct.DateAdded,
-                    DateModified = acct.DateModified,
-                    InstId = inst.InstId,
-                    InstitutionName = inst.Name
+                    DateModified = acct.DateModified
                 })
                 .ToListAsync();
 
@@ -103,10 +101,31 @@ namespace MoneyBook.Data
                     Memo = trn.Memo,
                     State = trn.State,
                     Amount = trn.Amount,
-                    InstId = trn.InstId,
+                    DateAdded = trn.DateAdded,
+                    DateModified = trn.DateModified,
                     AcctId = trn.AcctId,
                     CatId = trn.CatId
                 });
+        }
+
+        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, int acctId)
+        {
+            var results = db.RecurringTransactions
+                .Select(trn => new RecurringTransactionInfo
+                {
+                    RecTrnsId = trn.RecTrnsId,
+                    Date = trn.Date,
+                    TrnsType = trn.TrnsType,
+                    Payee = trn.Payee,
+                    State = trn.State,
+                    Amount = trn.Amount,
+                    DateAdded = trn.DateAdded,
+                    DateModified = trn.DateModified,
+                    AcctId = trn.AcctId,
+                    CatId = trn.CatId
+                });
+
+            return results;
         }
     }
 }

@@ -16,9 +16,6 @@ namespace MoneyBookTools.Data
 
             context.FromFile(filename);
 
-            // Work with the first institution for now.
-            var inst = db.Institutions.First();
-
             // Get account to import into.
             var acct = db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
             if (acct == null)
@@ -49,7 +46,6 @@ namespace MoneyBookTools.Data
                         State = State.GetAlias(StateTypes.Uncleared),
                         Amount = tr.TransactionAmount,
                         ExtTrnsId = tr.TransactionId,
-                        InstId = inst.InstId,
                         AcctId = acct.AcctId,
                         CatId = cat.CatId
                     };

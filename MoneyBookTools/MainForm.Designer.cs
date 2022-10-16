@@ -48,7 +48,7 @@ namespace MoneyBookTools
             this.comboFilter = new System.Windows.Forms.ComboBox();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.dgvStagedTransactions = new System.Windows.Forms.DataGridView();
+            this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.tabFiles = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -66,7 +66,7 @@ namespace MoneyBookTools
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvStagedTransactions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.tabFiles.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -243,7 +243,7 @@ namespace MoneyBookTools
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.dgvStagedTransactions);
+            this.splitContainer1.Panel1.Controls.Add(this.dgvRecurringTransactions);
             // 
             // splitContainer1.Panel2
             // 
@@ -261,8 +261,8 @@ namespace MoneyBookTools
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStagedTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvStagedTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvRecurringTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -270,10 +270,10 @@ namespace MoneyBookTools
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStagedTransactions.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvStagedTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvStagedTransactions.Location = new System.Drawing.Point(0, 0);
-            this.dgvStagedTransactions.Name = "dgvStagedTransactions";
+            this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvRecurringTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvRecurringTransactions.Location = new System.Drawing.Point(0, 0);
+            this.dgvRecurringTransactions.Name = "dgvStagedTransactions";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -281,10 +281,10 @@ namespace MoneyBookTools
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvStagedTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvStagedTransactions.RowTemplate.Height = 25;
-            this.dgvStagedTransactions.Size = new System.Drawing.Size(666, 95);
-            this.dgvStagedTransactions.TabIndex = 0;
+            this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvRecurringTransactions.RowTemplate.Height = 25;
+            this.dgvRecurringTransactions.Size = new System.Drawing.Size(666, 95);
+            this.dgvRecurringTransactions.TabIndex = 0;
             // 
             // dgvAccountTransactions
             // 
@@ -364,7 +364,7 @@ namespace MoneyBookTools
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvStagedTransactions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.tabFiles.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -396,6 +396,6 @@ namespace MoneyBookTools
         private ComboBox comboFilter;
         private ComboBox comboAccounts;
         private SplitContainer splitContainer1;
-        private DataGridView dgvStagedTransactions;
+        private DataGridView dgvRecurringTransactions;
     }
 }

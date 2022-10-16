@@ -22,11 +22,5 @@ namespace MoneyBookTools.ViewModels
         public decimal Balance { get; set; }
 
         public decimal AvailableBalance { get; set; }
-
-        [Browsable(false)]
-        public DateTime DateModified { get; set; }
-
-        [Browsable(false)]
-        public int InstId { get; set; }
     }
 }

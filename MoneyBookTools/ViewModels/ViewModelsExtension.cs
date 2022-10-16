@@ -15,9 +15,7 @@ namespace MoneyBookTools.ViewModels
                 Credits = acct.Credits,
                 Debits = acct.Debits,
                 Balance = acct.Balance,
-                AvailableBalance = acct.AvailableBalance,
-                DateModified = acct.DateModified,
-                InstId = acct.InstId
+                AvailableBalance = acct.AvailableBalance
             });
         }
 
@@ -33,9 +31,21 @@ namespace MoneyBookTools.ViewModels
                 Memo = tran.Memo,
                 State = tran.State,
                 TrnsAmount = tran.Amount,
-                InstId = tran.InstId,
                 AcctId = tran.AcctId,
-                CatId = tran.CatId,
+            });
+        }
+
+        public static IEnumerable<ViewRecurringTransaction> AsViewRecurringTransactions(this IEnumerable<RecurringTransactionInfo> transactions)
+        {
+            return transactions.Select(tran => new ViewRecurringTransaction
+            {
+                RecTrnsId = tran.RecTrnsId,
+                Date = tran.Date,
+                TrnsType = tran.TrnsType,
+                Payee = tran.Payee,
+                State = tran.State,
+                Amount = tran.Amount,
+                AcctId = tran.AcctId,
             });
         }
     }
