@@ -125,5 +125,62 @@ namespace MoneyBookTools.Data
 
             db.SaveChanges();
         }
+
+        public static void ImportRecurringTransactions(this MoneyBookDbContext db, string accountName, IList<RepeatingTransaction> repeatingTransactions)
+        {
+            if (repeatingTransactions == null)
+            {
+                return;
+            }
+
+            // Get account to import into.
+            var acct = db.Accounts.FirstOrDefault(x => x.Name == accountName);
+            if (acct == null)
+            {
+                throw new Exception($"Could not find account named '{accountName}'.");
+            }
+
+            // Set all imported transactions to first category.
+            var cat = db.Categories.First();
+            
+            foreach (var tr in repeatingTransactions)
+            {
+                bool exists = db.RecurringTransactions
+                    .Where(x => x.DueDate == tr.DueDate &&
+                                x.TrnsType == tr.TrnsType &&
+                                x.Payee == tr.Payee &&
+                                x.Memo == tr.Memo &&
+                                x.Amount == tr.Amount &&
+                                x.Frequency == tr.Frequency)
+                    .Count() > 0;
+
+                // Add only new transactions.
+                if (!exists)
+                {
+                    var trNew = new RecurringTransaction()
+                    {
+                        DueDate = tr.DueDate,
+                        TrnsType = tr.TrnsType,
+                        Payee = tr.Payee,
+                        Memo = tr.Memo,
+                        Amount = tr.Amount,
+                        Frequency = tr.Frequency,
+                        AcctId = acct.AcctId,
+                        CatId = cat.CatId
+                    };
+
+                    db.RecurringTransactions.Add(trNew);
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        public static void DeleteAllRecurringTransactions(this MoneyBookDbContext db)
+        {
+            db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
+
+            db.SaveChanges();
+        }
     }
 }

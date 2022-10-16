@@ -29,9 +29,9 @@ namespace MoneyBookTools
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,13 +51,16 @@ namespace MoneyBookTools
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
-            this.tabFiles = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonUpdateStartBalances = new System.Windows.Forms.Button();
-            this.buttonOpen = new System.Windows.Forms.Button();
-            this.buttonImport = new System.Windows.Forms.Button();
-            this.buttonReset = new System.Windows.Forms.Button();
-            this.buttonDelete = new System.Windows.Forms.Button();
+            this.tabOperations = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.linkImportTransactions = new System.Windows.Forms.LinkLabel();
+            this.linkDeleteRepeatingTransactions = new System.Windows.Forms.LinkLabel();
+            this.linkOpenFile = new System.Windows.Forms.LinkLabel();
+            this.linkResetStartingBalances = new System.Windows.Forms.LinkLabel();
+            this.linkUpdateStartingBalances = new System.Windows.Forms.LinkLabel();
+            this.linkDeleteAllTransactions = new System.Windows.Forms.LinkLabel();
+            this.linkImportRepeatingTransactions = new System.Windows.Forms.LinkLabel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFileTransactions)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -72,8 +75,9 @@ namespace MoneyBookTools
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
-            this.tabFiles.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.tabOperations.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -126,17 +130,17 @@ namespace MoneyBookTools
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvFileTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFileTransactions.Location = new System.Drawing.Point(6, 65);
+            this.dgvFileTransactions.Location = new System.Drawing.Point(6, 74);
             this.dgvFileTransactions.Name = "dgvFileTransactions";
             this.dgvFileTransactions.ReadOnly = true;
-            this.dgvFileTransactions.Size = new System.Drawing.Size(658, 399);
+            this.dgvFileTransactions.Size = new System.Drawing.Size(660, 392);
             this.dgvFileTransactions.TabIndex = 1;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabAccounts);
             this.tabControl1.Controls.Add(this.tabLedger);
-            this.tabControl1.Controls.Add(this.tabFiles);
+            this.tabControl1.Controls.Add(this.tabOperations);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
@@ -269,34 +273,34 @@ namespace MoneyBookTools
             // 
             // dgvRecurringTransactions
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvRecurringTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvRecurringTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecurringTransactions.Location = new System.Drawing.Point(0, 0);
             this.dgvRecurringTransactions.Name = "dgvRecurringTransactions";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvRecurringTransactions.RowTemplate.Height = 25;
             this.dgvRecurringTransactions.Size = new System.Drawing.Size(666, 95);
             this.dgvRecurringTransactions.TabIndex = 0;
@@ -311,82 +315,135 @@ namespace MoneyBookTools
             this.dgvAccountTransactions.Size = new System.Drawing.Size(666, 330);
             this.dgvAccountTransactions.TabIndex = 2;
             // 
-            // tabFiles
+            // tabOperations
             // 
-            this.tabFiles.Controls.Add(this.groupBox1);
-            this.tabFiles.Controls.Add(this.dgvFileTransactions);
-            this.tabFiles.Location = new System.Drawing.Point(4, 24);
-            this.tabFiles.Name = "tabFiles";
-            this.tabFiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabFiles.Size = new System.Drawing.Size(672, 472);
-            this.tabFiles.TabIndex = 0;
-            this.tabFiles.Text = "Files";
-            this.tabFiles.UseVisualStyleBackColor = true;
+            this.tabOperations.Controls.Add(this.panel2);
+            this.tabOperations.Controls.Add(this.dgvFileTransactions);
+            this.tabOperations.Location = new System.Drawing.Point(4, 24);
+            this.tabOperations.Name = "tabOperations";
+            this.tabOperations.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOperations.Size = new System.Drawing.Size(672, 472);
+            this.tabOperations.TabIndex = 0;
+            this.tabOperations.Text = "Operations";
+            this.tabOperations.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // panel2
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.buttonDelete);
-            this.groupBox1.Controls.Add(this.buttonReset);
-            this.groupBox1.Controls.Add(this.buttonUpdateStartBalances);
-            this.groupBox1.Controls.Add(this.buttonOpen);
-            this.groupBox1.Controls.Add(this.buttonImport);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(658, 53);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.tableLayoutPanel2);
+            this.panel2.Location = new System.Drawing.Point(6, 6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(660, 62);
+            this.panel2.TabIndex = 2;
             // 
-            // buttonUpdateStartBalances
+            // tableLayoutPanel2
             // 
-            this.buttonUpdateStartBalances.Location = new System.Drawing.Point(172, 20);
-            this.buttonUpdateStartBalances.Name = "buttonUpdateStartBalances";
-            this.buttonUpdateStartBalances.Size = new System.Drawing.Size(75, 23);
-            this.buttonUpdateStartBalances.TabIndex = 4;
-            this.buttonUpdateStartBalances.Text = "Update";
-            this.buttonUpdateStartBalances.UseVisualStyleBackColor = true;
-            this.buttonUpdateStartBalances.Click += new System.EventHandler(this.buttonUpdateStartBalances_Click);
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 139F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 183F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 157F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.linkImportTransactions, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.linkDeleteRepeatingTransactions, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.linkOpenFile, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.linkResetStartingBalances, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.linkUpdateStartingBalances, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.linkDeleteAllTransactions, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.linkImportRepeatingTransactions, 1, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(658, 60);
+            this.tableLayoutPanel2.TabIndex = 1;
             // 
-            // buttonOpen
+            // linkImportTransactions
             // 
-            this.buttonOpen.Location = new System.Drawing.Point(10, 20);
-            this.buttonOpen.Name = "buttonOpen";
-            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
-            this.buttonOpen.TabIndex = 3;
-            this.buttonOpen.Text = "Open";
-            this.buttonOpen.UseVisualStyleBackColor = true;
-            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
+            this.linkImportTransactions.Location = new System.Drawing.Point(3, 3);
+            this.linkImportTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkImportTransactions.Name = "linkImportTransactions";
+            this.linkImportTransactions.Size = new System.Drawing.Size(128, 23);
+            this.linkImportTransactions.TabIndex = 1;
+            this.linkImportTransactions.TabStop = true;
+            this.linkImportTransactions.Text = "Import Transactions";
+            this.linkImportTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkImportTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportTransactions_LinkClicked);
             // 
-            // buttonImport
+            // linkDeleteRepeatingTransactions
             // 
-            this.buttonImport.Location = new System.Drawing.Point(91, 20);
-            this.buttonImport.Name = "buttonImport";
-            this.buttonImport.Size = new System.Drawing.Size(75, 23);
-            this.buttonImport.TabIndex = 2;
-            this.buttonImport.Text = "Import";
-            this.buttonImport.UseVisualStyleBackColor = true;
-            this.buttonImport.Click += new System.EventHandler(this.buttonImport_Click);
+            this.linkDeleteRepeatingTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.linkDeleteRepeatingTransactions.Location = new System.Drawing.Point(142, 32);
+            this.linkDeleteRepeatingTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkDeleteRepeatingTransactions.Name = "linkDeleteRepeatingTransactions";
+            this.linkDeleteRepeatingTransactions.Size = new System.Drawing.Size(177, 25);
+            this.linkDeleteRepeatingTransactions.TabIndex = 5;
+            this.linkDeleteRepeatingTransactions.TabStop = true;
+            this.linkDeleteRepeatingTransactions.Text = "Delete Repeating Transactions";
+            this.linkDeleteRepeatingTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkDeleteRepeatingTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDeleteRepeatingTransactions_LinkClicked);
             // 
-            // buttonReset
+            // linkOpenFile
             // 
-            this.buttonReset.Location = new System.Drawing.Point(253, 20);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(75, 23);
-            this.buttonReset.TabIndex = 5;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            this.linkOpenFile.Location = new System.Drawing.Point(482, 3);
+            this.linkOpenFile.Margin = new System.Windows.Forms.Padding(3);
+            this.linkOpenFile.Name = "linkOpenFile";
+            this.linkOpenFile.Size = new System.Drawing.Size(70, 23);
+            this.linkOpenFile.TabIndex = 0;
+            this.linkOpenFile.TabStop = true;
+            this.linkOpenFile.Text = "Open FIle";
+            this.linkOpenFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkOpenFile.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkOpenFile_LinkClicked);
             // 
-            // buttonDelete
+            // linkResetStartingBalances
             // 
-            this.buttonDelete.Location = new System.Drawing.Point(334, 20);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(75, 23);
-            this.buttonDelete.TabIndex = 6;
-            this.buttonDelete.Text = "Delete";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            this.linkResetStartingBalances.Location = new System.Drawing.Point(325, 32);
+            this.linkResetStartingBalances.Margin = new System.Windows.Forms.Padding(3);
+            this.linkResetStartingBalances.Name = "linkResetStartingBalances";
+            this.linkResetStartingBalances.Size = new System.Drawing.Size(137, 25);
+            this.linkResetStartingBalances.TabIndex = 6;
+            this.linkResetStartingBalances.TabStop = true;
+            this.linkResetStartingBalances.Text = "Reset Starting Balances";
+            this.linkResetStartingBalances.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkResetStartingBalances.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkResetStartingBalances_LinkClicked);
+            // 
+            // linkUpdateStartingBalances
+            // 
+            this.linkUpdateStartingBalances.Location = new System.Drawing.Point(325, 3);
+            this.linkUpdateStartingBalances.Margin = new System.Windows.Forms.Padding(3);
+            this.linkUpdateStartingBalances.Name = "linkUpdateStartingBalances";
+            this.linkUpdateStartingBalances.Size = new System.Drawing.Size(146, 23);
+            this.linkUpdateStartingBalances.TabIndex = 7;
+            this.linkUpdateStartingBalances.TabStop = true;
+            this.linkUpdateStartingBalances.Text = "Update Starting Balances";
+            this.linkUpdateStartingBalances.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkUpdateStartingBalances.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkUpdateStartingBalances_LinkClicked);
+            // 
+            // linkDeleteAllTransactions
+            // 
+            this.linkDeleteAllTransactions.Location = new System.Drawing.Point(3, 32);
+            this.linkDeleteAllTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkDeleteAllTransactions.Name = "linkDeleteAllTransactions";
+            this.linkDeleteAllTransactions.Size = new System.Drawing.Size(133, 23);
+            this.linkDeleteAllTransactions.TabIndex = 2;
+            this.linkDeleteAllTransactions.TabStop = true;
+            this.linkDeleteAllTransactions.Text = "Delete All Transactions";
+            this.linkDeleteAllTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkDeleteAllTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDeleteAllTransactions_LinkClicked);
+            // 
+            // linkImportRepeatingTransactions
+            // 
+            this.linkImportRepeatingTransactions.Location = new System.Drawing.Point(142, 3);
+            this.linkImportRepeatingTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkImportRepeatingTransactions.Name = "linkImportRepeatingTransactions";
+            this.linkImportRepeatingTransactions.Size = new System.Drawing.Size(175, 23);
+            this.linkImportRepeatingTransactions.TabIndex = 4;
+            this.linkImportRepeatingTransactions.TabStop = true;
+            this.linkImportRepeatingTransactions.Text = "Import Repeating Transactions";
+            this.linkImportRepeatingTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkImportRepeatingTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportRepeatingTransactions_LinkClicked);
             // 
             // MainForm
             // 
@@ -414,8 +471,9 @@ namespace MoneyBookTools
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
-            this.tabFiles.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.tabOperations.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -428,10 +486,7 @@ namespace MoneyBookTools
         private ToolStripMenuItem exitToolStripMenuItem;
         private DataGridView dgvFileTransactions;
         private TabControl tabControl1;
-        private TabPage tabFiles;
-        private Button buttonImport;
-        private GroupBox groupBox1;
-        private Button buttonOpen;
+        private TabPage tabOperations;
         private TabPage tabAccounts;
         private DataGridView dgvAccounts;
         private ToolStripMenuItem viewToolStripMenuItem;
@@ -445,9 +500,15 @@ namespace MoneyBookTools
         private ComboBox comboAccounts;
         private SplitContainer splitContainer1;
         private DataGridView dgvRecurringTransactions;
-        private Button buttonUpdateStartBalances;
         private ComboBox comboDateOrder;
-        private Button buttonReset;
-        private Button buttonDelete;
+        private TableLayoutPanel tableLayoutPanel2;
+        private LinkLabel linkUpdateStartingBalances;
+        private LinkLabel linkResetStartingBalances;
+        private LinkLabel linkDeleteAllTransactions;
+        private LinkLabel linkImportTransactions;
+        private LinkLabel linkOpenFile;
+        private LinkLabel linkImportRepeatingTransactions;
+        private LinkLabel linkDeleteRepeatingTransactions;
+        private Panel panel2;
     }
 }

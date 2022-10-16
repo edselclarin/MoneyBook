@@ -22,6 +22,9 @@ namespace MoneyBook.Models
         public decimal Amount { get; set; }
 
         [Required]
+        public string Frequency { get; set; }   
+
+        [Required]
         public DateTime DateAdded { get; set; }
 
         [Required]

@@ -8,6 +8,7 @@
         public string Payee { get; set; }
         public string Memo { get; set; }
         public decimal Amount { get; set; }
+        public string Frequency { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime DateModified { get; set; }
         public int AcctId { get; set; }

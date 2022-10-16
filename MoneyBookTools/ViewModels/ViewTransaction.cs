@@ -16,7 +16,7 @@ namespace MoneyBookTools.ViewModels
         
         public string Payee { get; set; }
         
-        public string? Memo { get; set; }
+        public string Memo { get; set; }
         
         public string State { get; set; }
 

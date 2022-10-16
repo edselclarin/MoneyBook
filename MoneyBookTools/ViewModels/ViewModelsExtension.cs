@@ -42,9 +42,10 @@ namespace MoneyBookTools.ViewModels
                 RecTrnsId = tran.RecTrnsId,
                 DueDate = tran.DueDate,
                 TrnsType = tran.TrnsType,
-                Payee = tran.Memo,
-                Memo = tran.Payee,
+                Payee = tran.Payee,
+                Memo = tran.Memo,
                 Amount = tran.Amount,
+                Frequency = tran.Frequency,
                 AcctId = tran.AcctId,
                 CatId = tran.CatId
             });

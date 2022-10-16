@@ -8,7 +8,7 @@ namespace MoneyBookTools.ViewModels
         public int RecTrnsId { get; set; }
 
         public DateTime DueDate { get; set; }
-        
+
         [Browsable(false)]
         public string TrnsType { get; set; }
 
@@ -17,6 +17,11 @@ namespace MoneyBookTools.ViewModels
         public string Memo { get; set; }
 
         public decimal Amount { get; set; }
+
+        public string Frequency { get; set; }
+
+        [Browsable(false)]
+        public bool Overdue => DueDate.Date < DateTime.Now.Date;
 
         [Browsable(false)]
         public int AcctId { get; set; }
