@@ -136,17 +136,17 @@ namespace MoneyBook.Data
                 case DateFilter.TwoWeeks:
                 default:
                     results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date >= DateTime.Now.AddDays(-14))
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.DueDate >= DateTime.Now.AddDays(-14))
                         .ToListAsync();
                     break;
                 case DateFilter.ThisMonth:
                     results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Month == DateTime.Now.Month)
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.DueDate.Month == DateTime.Now.Month)
                         .ToListAsync();
                     break;
                 case DateFilter.ThisYear:
                     results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == DateTime.Now.Year)
+                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.DueDate.Year == DateTime.Now.Year)
                         .ToListAsync();
                     break;
             }
@@ -156,11 +156,11 @@ namespace MoneyBook.Data
             switch (sortOrder)
             {
                 case SortOrder.Ascending:
-                    sortedTransactions = results.OrderBy(x => x.Date);
+                    sortedTransactions = results.OrderBy(x => x.DueDate);
                     break;
                 case SortOrder.Descending:
                 default:
-                    sortedTransactions = results.OrderByDescending(x => x.Date);
+                    sortedTransactions = results.OrderByDescending(x => x.DueDate);
                     break;
             }
 
@@ -168,10 +168,10 @@ namespace MoneyBook.Data
                 .Select(trn => new RecurringTransactionInfo
                 {
                     RecTrnsId = trn.RecTrnsId,
-                    Date = trn.Date,
+                    DueDate = trn.DueDate,
                     TrnsType = trn.TrnsType,
                     Payee = trn.Payee,
-                    State = trn.State,
+                    Memo = trn.Memo,
                     Amount = trn.Amount,
                     DateAdded = trn.DateAdded,
                     DateModified = trn.DateModified,

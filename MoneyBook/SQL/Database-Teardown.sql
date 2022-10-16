@@ -49,4 +49,8 @@ END;
 /*
 USE [MoneyBook];
 DELETE FROM [Transactions];
+
+USE [MoneyBook];
+UPDATE [Accounts] SET [StartingBalance] = 0.00;
+
 */

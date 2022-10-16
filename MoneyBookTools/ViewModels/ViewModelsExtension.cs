@@ -40,11 +40,13 @@ namespace MoneyBookTools.ViewModels
             return transactions.Select(tran => new ViewRecurringTransaction
             {
                 RecTrnsId = tran.RecTrnsId,
-                DueDate = tran.Date,
+                DueDate = tran.DueDate,
                 TrnsType = tran.TrnsType,
-                Payee = tran.Payee,
+                Payee = tran.Memo,
+                Memo = tran.Payee,
                 Amount = tran.Amount,
                 AcctId = tran.AcctId,
+                CatId = tran.CatId
             });
         }
     }

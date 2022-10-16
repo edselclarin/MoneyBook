@@ -14,9 +14,14 @@ namespace MoneyBookTools.ViewModels
 
         public string Payee { get; set; }
 
+        public string Memo { get; set; }
+
         public decimal Amount { get; set; }
 
         [Browsable(false)]
         public int AcctId { get; set; }
+
+        [Browsable(false)]
+        public int CatId { get; set; }
     }
 }
