@@ -2,7 +2,7 @@
 
 namespace MoneyBookTools
 {
-    internal class AppSettings
+    public class AppSettings
     {
         private static string m_filename = "appSettings.json";
         private static AppSettings m_instance;
@@ -34,11 +34,21 @@ namespace MoneyBookTools
         public IEnumerable<AccountData> Accounts { get; set; }
     }
 
-    internal class AccountData
+    public class AccountData
     {
         public string Name { get; set; }
         public decimal StartingBalance { get; set; }
         public string ImportFilePath { get; set; }
+        public IList<RepeatingTransaction> RepeatingTransactions { get; set; }
     }
 
+    public class RepeatingTransaction
+    {
+        public DateTime DueDate { get; set; }
+        public string TrnsType { get; set; }
+        public string Payee { get; set; }
+        public string Memo { get; set; }
+        public decimal Amount { get; set; }
+        public string Frequency { get; set; }
+    }
 }

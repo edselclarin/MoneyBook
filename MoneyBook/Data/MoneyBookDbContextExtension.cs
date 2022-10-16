@@ -6,6 +6,29 @@ namespace MoneyBook.Data
 {
     public static class MoneyBookDbContextExtension
     {
+        public enum DateFilter : int
+        {
+            TwoWeeks,
+            ThisMonth,
+            ThisYear
+        }
+
+        public enum SortOrder : int
+        {
+            Descending,
+            Ascending
+        }
+
+        public enum TransactionFrequency : int
+        {
+            Once,
+            Weekly,
+            BiWeekly,
+            Monthly,
+            Quarterly,
+            Yearly
+        }
+
         public static async Task<IEnumerable<AccountInfo>> GetAccountsAsync(this MoneyBookDbContext db)
         {
             var results = await db.Accounts
@@ -57,19 +80,6 @@ namespace MoneyBook.Data
                 .ToListAsync();
 
             return results;
-        }
-
-        public enum DateFilter : int
-        {
-            TwoWeeks,
-            ThisMonth,
-            ThisYear
-        }
-
-        public enum SortOrder : int
-        {
-            Descending,
-            Ascending
         }
 
         public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookDbContext db, int acctId, DateFilter dateFilter, SortOrder sortOrder)
@@ -173,6 +183,7 @@ namespace MoneyBook.Data
                     Payee = trn.Payee,
                     Memo = trn.Memo,
                     Amount = trn.Amount,
+                    Frequency = trn.Frequency,
                     DateAdded = trn.DateAdded,
                     DateModified = trn.DateModified,
                     AcctId = trn.AcctId,

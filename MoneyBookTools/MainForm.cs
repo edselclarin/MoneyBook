@@ -75,181 +75,22 @@ namespace MoneyBookTools
 
         private void buttonOpen_Click(object sender, EventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
-            try
-            {
-                var ofd = new OpenFileDialog()
-                {
-                    InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                    Filter = "OFX/QFX Files|*.ofx;*.qfx|All Files|*.*",
-                };
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    var context = new OfxContext();
-                    context.FromFile(ofd.FileName);
-
-                    dgvFileTransactions.DataSource = context.Transactions;
-                    dgvFileTransactions.ResizeAllCells();
-
-                    buttonImport.Enabled = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
         }
 
         private async void buttonImport_Click(object sender, EventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
-            try
-            {
-                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
-
-                if (accountDataArr.Length > 0)
-                {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want to import the transactions from these files into these accounts?" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.ImportFilePath} --> {x.Name}")),
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
-                    {
-                        await Task.Run(() =>
-                        {
-                            using var tr = m_db.Database.BeginTransaction();
-
-                            foreach (var ad in accountDataArr)
-                            {
-                                m_db.ImportTransactions(ad.ImportFilePath, ad.Name);
-                            }
-
-                            tr.Commit();
-                        });
-
-                        MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
         }
 
         private async void buttonUpdateStartBalances_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
-
-                if (accountDataArr.Length > 0)
-                {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want update the starting balances of these accounts?" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.Name} --> {x.StartingBalance}")),
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
-                    {
-                        await Task.Run(() =>
-                        {
-                            using var tr = m_db.Database.BeginTransaction();
-
-                            foreach (var ad in accountDataArr)
-                            {
-                                m_db.UpdateStartingBalance(ad.Name, ad.StartingBalance);
-                            }
-
-                            tr.Commit();
-                        });
-
-                        MessageBox.Show(this, "Update complete.", this.Text, MessageBoxButtons.OK);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
         }
 
         private async void buttonReset_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you reset the starting balances of all accounts?",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    await Task.Run(() =>
-                    {
-                        using var tr = m_db.Database.BeginTransaction();
-
-                        m_db.ResetStartingBalances();
-
-                        tr.Commit();
-                    });
-
-                    MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
         }
 
         private async void buttonDelete_Click(object sender, EventArgs e)
         {
-            try
-            {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you delete stransactions across all accounts?  NOTE: This cannot be undone.",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    await Task.Run(() =>
-                    {
-                        using var tr = m_db.Database.BeginTransaction();
-
-                        m_db.DeleteAllTransactions();
-
-                        tr.Commit();
-                    });
-
-                    MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
         }
 
         private async void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -329,10 +170,271 @@ namespace MoneyBookTools
                 dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
                 dgvAccountTransactions.ResizeAllCells();
 
-                var recTransactions = await m_db.GetRecurringTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
+                var results = await m_db.GetRecurringTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
+                var recTransactions = results.AsViewRecurringTransactions().ToList();
 
-                dgvRecurringTransactions.DataSource = recTransactions.AsViewRecurringTransactions().ToList();
+                dgvRecurringTransactions.DataSource = recTransactions;
                 dgvRecurringTransactions.ResizeAllCells();
+
+                foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
+                {
+                    var rt = recTransactions[row.Index];
+
+                    if (rt.Overdue)
+                    {
+                        row.DefaultCellStyle.ForeColor = Color.Red;
+                    }
+                }
+            }
+        }
+
+        private void linkOpenFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using var hg = this.CreateHourglass();
+
+            try
+            {
+                var ofd = new OpenFileDialog()
+                {
+                    InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
+                    Filter = "OFX/QFX Files|*.ofx;*.qfx|All Files|*.*",
+                };
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    var context = new OfxContext();
+                    context.FromFile(ofd.FileName);
+
+                    dgvFileTransactions.DataSource = context.Transactions;
+                    dgvFileTransactions.ResizeAllCells();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void linkImportTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using var hg = this.CreateHourglass();
+
+            try
+            {
+                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
+
+                if (accountDataArr.Length > 0)
+                {
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want to import the transactions from these files into these accounts?" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.ImportFilePath} --> {x.Name}")),
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        await Task.Run(() =>
+                        {
+                            using var tr = m_db.Database.BeginTransaction();
+
+                            foreach (var ad in accountDataArr)
+                            {
+                                m_db.ImportTransactions(ad.ImportFilePath, ad.Name);
+                            }
+
+                            tr.Commit();
+                        });
+
+                        MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
+                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void linkDeleteAllTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you delete transactions across all accounts?  NOTE: This cannot be undone.",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    await Task.Run(() =>
+                    {
+                        using var tr = m_db.Database.BeginTransaction();
+
+                        m_db.DeleteAllTransactions();
+
+                        tr.Commit();
+                    });
+
+                    MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void linkImportRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using var hg = this.CreateHourglass();
+
+            try
+            {
+                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
+
+                if (accountDataArr.Length > 0)
+                {
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want to import repeating transactions for all accounts?",
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        await Task.Run(() =>
+                        {
+                            using var tr = m_db.Database.BeginTransaction();
+
+                            foreach (var ad in accountDataArr)
+                            {
+                                m_db.ImportRecurringTransactions(ad.Name, ad.RepeatingTransactions);
+                            }
+
+                            tr.Commit();
+                        });
+
+                        MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
+                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void linkDeleteRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you delete recurring transactions across all accounts?  NOTE: This cannot be undone.",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    await Task.Run(() =>
+                    {
+                        using var tr = m_db.Database.BeginTransaction();
+
+                        m_db.DeleteAllRecurringTransactions();
+
+                        tr.Commit();
+                    });
+
+                    MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void linkUpdateStartingBalances_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
+
+                if (accountDataArr.Length > 0)
+                {
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want update the starting balances of these accounts?" +
+                        Environment.NewLine +
+                        Environment.NewLine +
+                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.Name} --> {x.StartingBalance}")),
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        await Task.Run(() =>
+                        {
+                            using var tr = m_db.Database.BeginTransaction();
+
+                            foreach (var ad in accountDataArr)
+                            {
+                                m_db.UpdateStartingBalance(ad.Name, ad.StartingBalance);
+                            }
+
+                            tr.Commit();
+                        });
+
+                        MessageBox.Show(this, "Update complete.", this.Text, MessageBoxButtons.OK);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
+                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void linkResetStartingBalances_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you reset the starting balances of all accounts?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    await Task.Run(() =>
+                    {
+                        using var tr = m_db.Database.BeginTransaction();
+
+                        m_db.ResetStartingBalances();
+
+                        tr.Commit();
+                    });
+
+                    MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
             }
         }
     }
