@@ -89,5 +89,41 @@ namespace MoneyBookTools.Data
                 db.SaveChanges();
             }
         }
+
+        public static void ResetStartingBalances(this MoneyBookDbContext db)
+        {
+            var accounts = db.Accounts.ToList();
+
+            foreach (var acct in accounts)
+            {
+                acct.StartingBalance = 0m;
+
+                var transactions = db.Transactions
+                    .Where(x => x.IsDeleted == false && x.AcctId == acct.AcctId)
+                    .ToList();
+                acct.RecalculateAccountData(transactions);
+            }
+
+            db.SaveChanges();
+        }
+
+        public static void DeleteAllTransactions(this MoneyBookDbContext db)
+        {
+            db.Transactions.RemoveRange(db.Transactions);
+
+            db.SaveChanges();
+
+            var accounts = db.Accounts.ToList();
+            
+            foreach (var acct in accounts)
+            {
+                var transactions = db.Transactions
+                    .Where(x => x.IsDeleted == false && x.AcctId == acct.AcctId)
+                    .ToList();
+                acct.RecalculateAccountData(transactions);
+            }
+
+            db.SaveChanges();
+        }
     }
 }

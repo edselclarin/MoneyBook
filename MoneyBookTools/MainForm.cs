@@ -194,6 +194,64 @@ namespace MoneyBookTools
             }
         }
 
+        private async void buttonReset_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you reset the starting balances of all accounts?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    await Task.Run(() =>
+                    {
+                        using var tr = m_db.Database.BeginTransaction();
+
+                        m_db.ResetStartingBalances();
+
+                        tr.Commit();
+                    });
+
+                    MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private async void buttonDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you delete stransactions across all accounts?  NOTE: This cannot be undone.",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    await Task.Run(() =>
+                    {
+                        using var tr = m_db.Database.BeginTransaction();
+
+                        m_db.DeleteAllTransactions();
+
+                        tr.Commit();
+                    });
+
+                    MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private async void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
