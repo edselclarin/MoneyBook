@@ -195,11 +195,18 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
-                    var accounts = await m_db.GetAccountsAsync();
+                    if (comboAccounts.DataSource == null)
+                    {
+                        var accounts = await m_db.GetAccountsAsync();
 
-                    // NOTE: This will trigger comboAccounts_SelectedIndexChanged().
-                    comboAccounts.DisplayMember = "Account";
-                    comboAccounts.DataSource = accounts.AsViewAccounts().ToList();
+                        // NOTE: This will trigger comboAccounts_SelectedIndexChanged().
+                        comboAccounts.DisplayMember = "Account";
+                        comboAccounts.DataSource = accounts.AsViewAccounts().ToList();
+                    }
+                    else
+                    {
+                        LoadTransactions();
+                    }
                 }
                 else if (tabControl1.SelectedTab == tabAccounts)
                 {
@@ -221,25 +228,7 @@ namespace MoneyBookTools
         {
             try
             {
-                if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    var acct = comboAccounts.SelectedItem as ViewAccount;
-
-                    labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
-
-                    var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
-                    var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
-
-                    dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
-                    dgvAccountTransactions.ResizeAllCells();
-
-                    var recTransactions = await m_db.GetRecurringTransactionsAsync(acct.AcctId);
-
-                    dgvRecurringTransactions.DataSource = recTransactions.AsViewRecurringTransactions().ToList();
-                    dgvRecurringTransactions.ResizeAllCells();
-                }
+                LoadTransactions();
             }
             catch (Exception ex)
             {
@@ -255,6 +244,29 @@ namespace MoneyBookTools
                 {
                     refreshToolStripMenuItem.PerformClick();
                 }
+            }
+        }
+
+        private async void LoadTransactions()
+        {
+            if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1)
+            {
+                using var hg = this.CreateHourglass();
+
+                var acct = comboAccounts.SelectedItem as ViewAccount;
+
+                labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
+
+                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
+                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
+
+                dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
+                dgvAccountTransactions.ResizeAllCells();
+
+                var recTransactions = await m_db.GetRecurringTransactionsAsync(acct.AcctId);
+
+                dgvRecurringTransactions.DataSource = recTransactions.AsViewRecurringTransactions().ToList();
+                dgvRecurringTransactions.ResizeAllCells();
             }
         }
     }
