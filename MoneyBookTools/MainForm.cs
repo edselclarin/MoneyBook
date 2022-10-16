@@ -15,7 +15,7 @@ namespace MoneyBookTools
 
             dgvAccounts.SetDataGridViewStyle();
             dgvAccountTransactions.SetDataGridViewStyle();
-            dgvStagedTransactions.SetDataGridViewStyle();
+            dgvRecurringTransactions.SetDataGridViewStyle();
             dgvFileTransactions.SetDataGridViewStyle();
 
             comboAccounts.MouseWheel += Combo_MouseWheel;
@@ -83,7 +83,8 @@ namespace MoneyBookTools
                     var context = new OfxContext();
                     context.FromFile(ofd.FileName);
 
-                    dgvFileTransactions.ResizeAllCells(context.Transactions);
+                    dgvFileTransactions.DataSource = context.Transactions;
+                    dgvFileTransactions.ResizeAllCells();
 
                     buttonImport.Enabled = true;
                 }
@@ -164,7 +165,8 @@ namespace MoneyBookTools
 
                     var accounts = await m_db.GetAccountsAsync();
 
-                    dgvAccounts.ResizeAllCells(accounts.AsViewAccounts().ToList());
+                    dgvAccounts.DataSource = accounts.AsViewAccounts().ToList();
+                    dgvAccounts.ResizeAllCells();
                 }
             }
             catch (Exception ex)
@@ -188,7 +190,13 @@ namespace MoneyBookTools
                     var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
                     var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter);
 
-                    dgvAccountTransactions.ResizeAllCells(transactions.AsViewTransactions().ToList());
+                    dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
+                    dgvAccountTransactions.ResizeAllCells();
+
+                    var recTransactions = await m_db.GetRecurringTransactionsAsync(acct.AcctId);
+
+                    dgvRecurringTransactions.DataSource = recTransactions.AsViewRecurringTransactions().ToList();
+                    dgvRecurringTransactions.ResizeAllCells();
                 }
             }
             catch (Exception ex)

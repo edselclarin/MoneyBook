@@ -106,9 +106,27 @@ BEGIN
 		[ExtTrnsId] VARCHAR(128) DEFAULT(''),
 		[DateAdded] DATE NOT NULL DEFAULT(GETDATE()),
 		[DateModified] DATE NOT NULL DEFAULT(GETDATE()),
-		[InstId] INT NOT NULL DEFAULT(0),
 		[AcctId] INT NOT NULL DEFAULT(0),
 		[CatId] INT NOT NULL DEFAULT(0),
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	)
 	END
+
+-- Create Transactions table.
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RecurringTransactions' and xtype='U')
+BEGIN
+	CREATE TABLE [RecurringTransactions] (
+		[RecTrnsId] INT PRIMARY KEY IDENTITY (1, 1),
+		[Date] DATE NOT NULL DEFAULT(GETDATE()),
+		[TrnsType] VARCHAR(16) NOT NULL DEFAULT('DEBIT'),
+		[Payee] VARCHAR(128) NOT NULL DEFAULT(''),
+		[State] VARCHAR(2) NOT NULL DEFAULT('U'),
+		[Amount] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),
+		[DateAdded] DATE NOT NULL DEFAULT(GETDATE()),
+		[DateModified] DATE NOT NULL DEFAULT(GETDATE()),
+		[AcctId] INT NOT NULL DEFAULT(0),
+		[CatId] INT NOT NULL DEFAULT(0),
+		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
+	)
+	END
+

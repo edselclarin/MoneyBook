@@ -2,10 +2,10 @@
 
 namespace MoneyBook.Models
 {
-    public class Transaction
+    public class RecurringTransaction
     {
         [Key]
-        public int TrnsId { get; set; }
+        public int RecTrnsId { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
@@ -13,20 +13,14 @@ namespace MoneyBook.Models
         [Required]
         public string TrnsType { get; set; }
 
-        public string? RefNum { get; set; }
-
         [Required]
         public string Payee { get; set; }
-
-        public string? Memo { get; set; }
 
         [Required]
         public string State { get; set; }
 
         [Required]
         public decimal Amount { get; set; }
-
-        public string ExtTrnsId { get; set; }
 
         [Required]
         public DateTime DateAdded { get; set; }
@@ -39,7 +33,7 @@ namespace MoneyBook.Models
 
         [Required]
         public int CatId { get; set; }
-        
+
         public bool IsDeleted { get; set; }
     }
 }

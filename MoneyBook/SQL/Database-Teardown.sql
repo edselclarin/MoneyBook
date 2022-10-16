@@ -3,9 +3,9 @@ BEGIN
 	USE [MoneyBook]
 
 	-- Drop Transactions table.
-	IF EXISTS (SELECT * FROM sysobjects WHERE name='AccountDetails' and xtype='U')
+	IF EXISTS (SELECT * FROM sysobjects WHERE name='RecurringTransactions' and xtype='U')
 	BEGIN
-		DROP TABLE [AccountDetails]
+		DROP TABLE [RecurringTransactions]
 	END
 
 	-- Drop Transactions table.
@@ -46,9 +46,3 @@ BEGIN
     EXEC (@SQL);
 END;
 
--- OTHER COMMANDS --
-
--- Delete all transactions. --
-USE [MoneyBook]
-GO
-DELETE FROM [Transactions]
