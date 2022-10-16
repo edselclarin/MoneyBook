@@ -46,3 +46,7 @@ BEGIN
     EXEC (@SQL);
 END;
 
+/*
+USE [MoneyBook];
+DELETE FROM [Transactions];
+*/

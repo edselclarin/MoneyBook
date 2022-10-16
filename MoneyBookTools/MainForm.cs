@@ -124,8 +124,6 @@ namespace MoneyBookTools
                                 m_db.ImportTransactions(ad.ImportFilePath, ad.Name);
                             }
 
-                            m_db.UpdateAccountDetails();
-
                             tr.Commit();
                         });
 
