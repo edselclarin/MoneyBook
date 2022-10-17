@@ -427,14 +427,33 @@ namespace MoneyBookTools
                 var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
 
                 dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
-                dgvAccountTransactions.ResizeAllCells();
+
+                // Resize the columns.
+                var widths = new int[] { 70, 70, 50, 80, 275 };
+                int i = 0;
+                dgvAccountTransactions.Columns["Date"].Width = widths[i++];
+                dgvAccountTransactions.Columns["RefNum"].Width = widths[i++];
+                dgvAccountTransactions.Columns["State"].Width = widths[i++];
+                dgvAccountTransactions.Columns["Amount"].Width = widths[i++];
+                dgvAccountTransactions.Columns["Memo"].Width = widths[i++];
+                dgvAccountTransactions.Columns["Payee"].Width = 
+                    dgvAccountTransactions.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgvAccountTransactions.Margin.Right;
             }
         }
 
         private async void LoadRecurringTransactionsGrid(IList<ViewRecurringTransaction> recTrans)
         {
             dgvRecurringTransactions.DataSource = recTrans;
-            dgvRecurringTransactions.ResizeAllCells();
+
+            // Resize the columns.
+            var widths = new int[] { 70, 275, 80, 80 };
+            int i = 0;
+            dgvRecurringTransactions.Columns["DueDate"].Width = widths[i++];
+            dgvRecurringTransactions.Columns["Memo"].Width = widths[i++];
+            dgvRecurringTransactions.Columns["Amount"].Width = widths[i++];
+            dgvRecurringTransactions.Columns["Frequency"].Width = widths[i++];
+            dgvRecurringTransactions.Columns["Payee"].Width =
+                dgvRecurringTransactions.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgvRecurringTransactions.Margin.Right;
 
             foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
             {
