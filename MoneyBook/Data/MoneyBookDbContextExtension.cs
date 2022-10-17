@@ -137,7 +137,7 @@ namespace MoneyBook.Data
                 });
         }
 
-        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, int acctId, DateFilter dateFilter, SortOrder sortOrder)
+        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, DateFilter dateFilter, SortOrder sortOrder)
         {
             List<RecurringTransaction> results;
 
@@ -146,17 +146,17 @@ namespace MoneyBook.Data
                 case DateFilter.TwoWeeks:
                 default:
                     results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.DueDate >= DateTime.Now.AddDays(-14))
+                        .Where(x => x.IsDeleted == false && x.DueDate >= DateTime.Now.AddDays(-14))
                         .ToListAsync();
                     break;
                 case DateFilter.ThisMonth:
                     results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.DueDate.Month == DateTime.Now.Month)
+                        .Where(x => x.IsDeleted == false && x.DueDate.Month == DateTime.Now.Month)
                         .ToListAsync();
                     break;
                 case DateFilter.ThisYear:
                     results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.DueDate.Year == DateTime.Now.Year)
+                        .Where(x => x.IsDeleted == false && x.DueDate.Year == DateTime.Now.Year)
                         .ToListAsync();
                     break;
             }
