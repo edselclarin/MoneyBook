@@ -389,9 +389,7 @@ namespace MoneyBookTools
 
         private async Task<List<ViewRecurringTransaction>> GetRecurringTransactions()
         {
-            var dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
-            var sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
-            var task = await m_db.GetRecurringTransactionsAsync(dateFilter, sortOrder);
+            var task = await m_db.GetRecurringTransactionsAsync(MoneyBookDbContextExtension.SortOrder.Ascending);
             return task.AsViewRecurringTransactions().ToList();
         }
 
@@ -413,22 +411,6 @@ namespace MoneyBookTools
             treeView1.ExpandAll();
         }
 
-        private async void LoadRecurringTransactionsGrid(IList<ViewRecurringTransaction> recTrans)
-        {
-            dgvRecurringTransactions.DataSource = recTrans;
-            dgvRecurringTransactions.ResizeAllCells();
-
-            foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
-            {
-                var rt = recTrans[row.Index];
-
-                if (rt.Overdue)
-                {
-                    row.DefaultCellStyle.ForeColor = Color.Red;
-                }
-            }
-        }
-
         private async void LoadTransactionsGrid()
         {
             if (treeView1.SelectedNode != null &&
@@ -446,6 +428,22 @@ namespace MoneyBookTools
 
                 dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
                 dgvAccountTransactions.ResizeAllCells();
+            }
+        }
+
+        private async void LoadRecurringTransactionsGrid(IList<ViewRecurringTransaction> recTrans)
+        {
+            dgvRecurringTransactions.DataSource = recTrans;
+            dgvRecurringTransactions.ResizeAllCells();
+
+            foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
+            {
+                var rt = recTrans[row.Index];
+
+                if (rt.Overdue)
+                {
+                    row.DefaultCellStyle.ForeColor = Color.Red;
+                }
             }
         }
     }
