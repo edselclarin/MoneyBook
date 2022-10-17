@@ -137,29 +137,13 @@ namespace MoneyBook.Data
                 });
         }
 
-        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, DateFilter dateFilter, SortOrder sortOrder)
+        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, SortOrder sortOrder)
         {
             List<RecurringTransaction> results;
 
-            switch (dateFilter)
-            {
-                case DateFilter.TwoWeeks:
-                default:
-                    results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.DueDate >= DateTime.Now.AddDays(-14))
-                        .ToListAsync();
-                    break;
-                case DateFilter.ThisMonth:
-                    results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.DueDate.Month == DateTime.Now.Month)
-                        .ToListAsync();
-                    break;
-                case DateFilter.ThisYear:
-                    results = await db.RecurringTransactions
-                        .Where(x => x.IsDeleted == false && x.DueDate.Year == DateTime.Now.Year)
-                        .ToListAsync();
-                    break;
-            }
+            results = await db.RecurringTransactions
+                .Where(x => x.IsDeleted == false)
+                .ToListAsync();
 
             IOrderedEnumerable<RecurringTransaction> sortedTransactions;
 
