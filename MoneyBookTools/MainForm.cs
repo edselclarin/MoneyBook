@@ -13,12 +13,13 @@ namespace MoneyBookTools
         {
             InitializeComponent();
 
-            dgvAccounts.SetDataGridViewStyle();
             dgvAccountTransactions.SetDataGridViewStyle();
             dgvRecurringTransactions.SetDataGridViewStyle();
             dgvFileTransactions.SetDataGridViewStyle();
 
-            comboAccounts.MouseWheel += Combo_MouseWheel;
+            comboFilter.Enabled =
+            comboDateOrder.Enabled = false;
+
             comboFilter.MouseWheel += Combo_MouseWheel;
             comboDateOrder.MouseWheel += Combo_MouseWheel;
 
@@ -35,7 +36,8 @@ namespace MoneyBookTools
                 "Oldest to Newest"
             };
 
-            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
+            treeView1.ShowRootLines = true;
+            treeView1.HideSelection = false;
         }
 
         private void Combo_MouseWheel(object? sender, MouseEventArgs e)
@@ -48,12 +50,26 @@ namespace MoneyBookTools
         {
             try
             {
+                treeView1.Nodes.Add("Loading");
+
+                using var hg = this.CreateHourglass();
+
                 await Task.Run(() =>
                 {
                     m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
                 });
 
-                refreshToolStripMenuItem.PerformClick();
+                var accounts = await GetAccounts();
+                LoadAccountTree(accounts);
+
+                var recTrans = await GetRecurringTransactions();
+                LoadRecurringTransactionsGrid(recTrans);
+
+                treeView1.SelectedNode = treeView1.TopNode.FirstNode;
+
+                comboFilter.Enabled =
+                comboDateOrder.Enabled = true;
+
             }
             catch (Exception ex)
             {
@@ -73,55 +89,15 @@ namespace MoneyBookTools
             }
         }
 
-        private void buttonOpen_Click(object sender, EventArgs e)
-        {
-        }
-
-        private async void buttonImport_Click(object sender, EventArgs e)
-        {
-        }
-
-        private async void buttonUpdateStartBalances_Click(object sender, EventArgs e)
-        {
-        }
-
-        private async void buttonReset_Click(object sender, EventArgs e)
-        {
-        }
-
-        private async void buttonDelete_Click(object sender, EventArgs e)
-        {
-        }
-
         private async void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                if (tabControl1.SelectedTab == tabLedger)
+                if (tabControl1.SelectedTab == tabOutlook)
                 {
                     using var hg = this.CreateHourglass();
 
-                    if (comboAccounts.DataSource == null)
-                    {
-                        var accounts = await m_db.GetAccountsAsync();
-
-                        // NOTE: This will trigger comboAccounts_SelectedIndexChanged().
-                        comboAccounts.DisplayMember = "Account";
-                        comboAccounts.DataSource = accounts.AsViewAccounts().ToList();
-                    }
-                    else
-                    {
-                        LoadTransactions();
-                    }
-                }
-                else if (tabControl1.SelectedTab == tabAccounts)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    var accounts = await m_db.GetAccountsAsync();
-
-                    dgvAccounts.DataSource = accounts.AsViewAccounts().ToList();
-                    dgvAccounts.ResizeAllCells();
+                    LoadTransactionsGrid();
                 }
             }
             catch (Exception ex)
@@ -130,11 +106,13 @@ namespace MoneyBookTools
             }
         }
 
-        private async void AccountsTabCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private async void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                LoadTransactions();
+                using var hg = this.CreateHourglass();
+
+                LoadTransactionsGrid();
             }
             catch (Exception ex)
             {
@@ -142,56 +120,22 @@ namespace MoneyBookTools
             }
         }
 
-        private async void TabControl1_SelectedIndexChanged(object? sender, EventArgs e)
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (tabControl1.SelectedTab == tabLedger)
-            {
-                if (comboAccounts.DataSource == null)
-                {
-                    refreshToolStripMenuItem.PerformClick();
-                }
-            }
-        }
-
-        private async void LoadTransactions()
-        {
-            if (comboAccounts.SelectedItem != null && comboFilter.SelectedIndex > -1 && comboDateOrder.SelectedIndex > -1)
+            try
             {
                 using var hg = this.CreateHourglass();
 
-                var acct = comboAccounts.SelectedItem as ViewAccount;
-
-                labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
-
-                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
-                var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
-                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
-
-                dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
-                dgvAccountTransactions.ResizeAllCells();
-
-                var results = await m_db.GetRecurringTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
-                var recTransactions = results.AsViewRecurringTransactions().ToList();
-
-                dgvRecurringTransactions.DataSource = recTransactions;
-                dgvRecurringTransactions.ResizeAllCells();
-
-                foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
-                {
-                    var rt = recTransactions[row.Index];
-
-                    if (rt.Overdue)
-                    {
-                        row.DefaultCellStyle.ForeColor = Color.Red;
-                    }
-                }
+                LoadTransactionsGrid();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
             }
         }
-
+        
         private void linkOpenFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
             try
             {
                 var ofd = new OpenFileDialog()
@@ -202,6 +146,8 @@ namespace MoneyBookTools
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
+                    using var hg = this.CreateHourglass();
+
                     var context = new OfxContext();
                     context.FromFile(ofd.FileName);
 
@@ -217,8 +163,6 @@ namespace MoneyBookTools
 
         private async void linkImportTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
             try
             {
                 var accountDataArr = AppSettings.Instance.Accounts.ToArray();
@@ -235,6 +179,8 @@ namespace MoneyBookTools
 
                     if (answer == DialogResult.Yes)
                     {
+                        using var hg = this.CreateHourglass();
+
                         await Task.Run(() =>
                         {
                             using var tr = m_db.Database.BeginTransaction();
@@ -293,8 +239,6 @@ namespace MoneyBookTools
 
         private async void linkImportRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            using var hg = this.CreateHourglass();
-
             try
             {
                 var repeatingTransactions = AppSettings.Instance.RepeatingTransactions;
@@ -308,6 +252,8 @@ namespace MoneyBookTools
 
                     if (answer == DialogResult.Yes)
                     {
+                        using var hg = this.CreateHourglass();
+
                         await Task.Run(() =>
                         {
                             using var tr = m_db.Database.BeginTransaction();
@@ -432,6 +378,74 @@ namespace MoneyBookTools
             catch (Exception ex)
             {
                 this.ShowException(ex);
+            }
+        }
+
+        private async Task<List<ViewAccount>> GetAccounts()
+        {
+            var task = await m_db.GetAccountsAsync();
+            return task.AsViewAccounts().ToList();
+        }
+
+        private async Task<List<ViewRecurringTransaction>> GetRecurringTransactions()
+        {
+            var dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
+            var sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
+            var task = await m_db.GetRecurringTransactionsAsync(dateFilter, sortOrder);
+            return task.AsViewRecurringTransactions().ToList();
+        }
+
+        private void LoadAccountTree(IList<ViewAccount> accounts)
+        {
+            treeView1.Nodes.Clear();
+
+            treeView1.Nodes.Add("Accounts");
+
+            foreach (var acct in accounts)
+            {
+                var node = new TreeNode(acct.Account)
+                {
+                    Tag = acct
+                };
+                treeView1.TopNode.Nodes.Add(node);
+            }
+
+            treeView1.ExpandAll();
+        }
+
+        private async void LoadRecurringTransactionsGrid(IList<ViewRecurringTransaction> recTrans)
+        {
+            dgvRecurringTransactions.DataSource = recTrans;
+            dgvRecurringTransactions.ResizeAllCells();
+
+            foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
+            {
+                var rt = recTrans[row.Index];
+
+                if (rt.Overdue)
+                {
+                    row.DefaultCellStyle.ForeColor = Color.Red;
+                }
+            }
+        }
+
+        private async void LoadTransactionsGrid()
+        {
+            if (treeView1.SelectedNode != null &&
+                treeView1.SelectedNode.Level > 0 &&
+                comboFilter.SelectedIndex > -1 && 
+                comboDateOrder.SelectedIndex > -1)
+            {
+                var acct = treeView1.SelectedNode.Tag as ViewAccount;
+
+                labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
+
+                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
+                var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
+                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
+
+                dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
+                dgvAccountTransactions.ResizeAllCells();
             }
         }
     }
