@@ -25,11 +25,5 @@ namespace MoneyBookTools.Data
 
         public string ConnectionStr => 
             ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-
-        //public string GetConnectionString()
-        //{
-        //    string connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-        //    return connStr;
-        //}
     }
 }
