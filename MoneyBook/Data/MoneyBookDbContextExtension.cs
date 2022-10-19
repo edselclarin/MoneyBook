@@ -174,5 +174,14 @@ namespace MoneyBook.Data
                     CatId = trn.CatId
                 });
         }
+
+        public static void RecalculateAccountData(this Account acct, IList<Transaction> transactions)
+        {
+            acct.Credits = transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
+            acct.Debits = transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
+            acct.Balance = acct.StartingBalance + acct.Credits - acct.Debits;
+            acct.AvailableBalance = acct.Balance - acct.ReserveAmount;
+            acct.DateModified = DateTime.Now;
+        }
     }
 }
