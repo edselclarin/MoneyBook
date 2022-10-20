@@ -459,9 +459,13 @@ namespace MoneyBookTools
             {
                 var rt = recTrans[row.Index];
 
-                if (rt.Overdue)
+                if (rt.IsOverdue)
                 {
-                    row.DefaultCellStyle.ForeColor = Color.Red;
+                    row.DefaultCellStyle.BackColor = Color.DarkSalmon;
+                }
+                else if (rt.IsDueToday)
+                {
+                    row.DefaultCellStyle.BackColor = Color.DarkKhaki;
                 }
             }
         }

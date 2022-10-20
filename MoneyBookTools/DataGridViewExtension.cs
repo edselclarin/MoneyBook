@@ -8,7 +8,9 @@
             dgv.RowHeadersVisible = false;
             dgv.AllowUserToResizeRows = false;
             dgv.EnableHeadersVisualStyles = false; // To allow custom header style.
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.SandyBrown;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkGray;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.CadetBlue;
         }
 
         public static void ResizeAllCells(this DataGridView dgv)

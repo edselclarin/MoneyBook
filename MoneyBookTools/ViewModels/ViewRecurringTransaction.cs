@@ -21,7 +21,10 @@ namespace MoneyBookTools.ViewModels
         public string Frequency { get; set; }
 
         [Browsable(false)]
-        public bool Overdue => DueDate.Date < DateTime.Now.Date;
+        public bool IsOverdue => DueDate.Date < DateTime.Now.Date;
+
+        [Browsable(false)]
+        public bool IsDueToday => DueDate.Date == DateTime.Now.Date;
 
         [Browsable(false)]
         public int AcctId { get; set; }
