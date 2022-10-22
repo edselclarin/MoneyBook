@@ -16,7 +16,10 @@ namespace MoneyBookTools.ViewModels
 
         public string Memo { get; set; }
 
-        public decimal Amount { get; set; }
+        [Browsable(false)]
+        public decimal TrnsAmount { get; set; }
+
+        public decimal Amount => TrnsType == "DEBIT" ? 0 - TrnsAmount : TrnsAmount;
 
         public string Frequency { get; set; }
 

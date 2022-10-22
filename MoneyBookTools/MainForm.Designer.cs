@@ -29,9 +29,9 @@ namespace MoneyBookTools
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,7 +43,7 @@ namespace MoneyBookTools
             this.linkImportTransactions = new System.Windows.Forms.LinkLabel();
             this.linkDeleteRepeatingTransactions = new System.Windows.Forms.LinkLabel();
             this.linkOpenFile = new System.Windows.Forms.LinkLabel();
-            this.linkResetStartingBalances = new System.Windows.Forms.LinkLabel();
+            this.linkResetAccountData = new System.Windows.Forms.LinkLabel();
             this.linkAccountData = new System.Windows.Forms.LinkLabel();
             this.linkDeleteAllTransactions = new System.Windows.Forms.LinkLabel();
             this.linkImportRepeatingTransactions = new System.Windows.Forms.LinkLabel();
@@ -53,16 +53,16 @@ namespace MoneyBookTools
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.comboDateOrder = new System.Windows.Forms.ComboBox();
             this.comboFilter = new System.Windows.Forms.ComboBox();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             this.tabOperations.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -78,13 +78,13 @@ namespace MoneyBookTools
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.panel3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -162,7 +162,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel2.Controls.Add(this.linkImportTransactions, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.linkDeleteRepeatingTransactions, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.linkOpenFile, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.linkResetStartingBalances, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.linkResetAccountData, 2, 1);
             this.tableLayoutPanel2.Controls.Add(this.linkAccountData, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.linkDeleteAllTransactions, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.linkImportRepeatingTransactions, 1, 0);
@@ -211,17 +211,17 @@ namespace MoneyBookTools
             this.linkOpenFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkOpenFile.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkOpenFile_LinkClicked);
             // 
-            // linkResetStartingBalances
+            // linkResetAccountData
             // 
-            this.linkResetStartingBalances.Location = new System.Drawing.Point(325, 33);
-            this.linkResetStartingBalances.Margin = new System.Windows.Forms.Padding(3);
-            this.linkResetStartingBalances.Name = "linkResetStartingBalances";
-            this.linkResetStartingBalances.Size = new System.Drawing.Size(137, 24);
-            this.linkResetStartingBalances.TabIndex = 6;
-            this.linkResetStartingBalances.TabStop = true;
-            this.linkResetStartingBalances.Text = "Reset Starting Balances";
-            this.linkResetStartingBalances.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkResetStartingBalances.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkResetStartingBalances_LinkClicked);
+            this.linkResetAccountData.Location = new System.Drawing.Point(325, 33);
+            this.linkResetAccountData.Margin = new System.Windows.Forms.Padding(3);
+            this.linkResetAccountData.Name = "linkResetAccountData";
+            this.linkResetAccountData.Size = new System.Drawing.Size(137, 24);
+            this.linkResetAccountData.TabIndex = 6;
+            this.linkResetAccountData.TabStop = true;
+            this.linkResetAccountData.Text = "Reset Account Data";
+            this.linkResetAccountData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkResetAccountData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkResetAccountData_LinkClicked);
             // 
             // linkAccountData
             // 
@@ -343,16 +343,6 @@ namespace MoneyBookTools
             this.tableLayoutPanel3.Size = new System.Drawing.Size(514, 300);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
-            // dgvAccountTransactions
-            // 
-            this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAccountTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 19);
-            this.dgvAccountTransactions.Name = "dgvAccountTransactions";
-            this.dgvAccountTransactions.RowTemplate.Height = 25;
-            this.dgvAccountTransactions.Size = new System.Drawing.Size(502, 236);
-            this.dgvAccountTransactions.TabIndex = 3;
-            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.comboDateOrder);
@@ -398,6 +388,27 @@ namespace MoneyBookTools
             this.labelAvailableBalance.Text = "Available: 0.00";
             this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.dgvAccountTransactions);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(3, 39);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(508, 258);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Transactions";
+            // 
+            // dgvAccountTransactions
+            // 
+            this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAccountTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 19);
+            this.dgvAccountTransactions.Name = "dgvAccountTransactions";
+            this.dgvAccountTransactions.RowTemplate.Height = 25;
+            this.dgvAccountTransactions.Size = new System.Drawing.Size(502, 236);
+            this.dgvAccountTransactions.TabIndex = 3;
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
@@ -411,36 +422,47 @@ namespace MoneyBookTools
             this.tableLayoutPanel1.Size = new System.Drawing.Size(514, 168);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.dgvRecurringTransactions);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(508, 162);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Recurring Transactions";
+            // 
             // dgvRecurringTransactions
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvRecurringTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvRecurringTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecurringTransactions.Location = new System.Drawing.Point(3, 19);
             this.dgvRecurringTransactions.Name = "dgvRecurringTransactions";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvRecurringTransactions.RowTemplate.Height = 25;
             this.dgvRecurringTransactions.Size = new System.Drawing.Size(502, 140);
             this.dgvRecurringTransactions.TabIndex = 3;
@@ -455,28 +477,6 @@ namespace MoneyBookTools
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(680, 500);
             this.tabControl1.TabIndex = 2;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.dgvAccountTransactions);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 39);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(508, 258);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Transactions";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.dgvRecurringTransactions);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(3, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(508, 162);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Recurring Transactions";
             // 
             // MainForm
             // 
@@ -505,13 +505,13 @@ namespace MoneyBookTools
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.panel3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -530,7 +530,7 @@ namespace MoneyBookTools
         private LinkLabel linkImportTransactions;
         private LinkLabel linkDeleteRepeatingTransactions;
         private LinkLabel linkOpenFile;
-        private LinkLabel linkResetStartingBalances;
+        private LinkLabel linkResetAccountData;
         private LinkLabel linkAccountData;
         private LinkLabel linkDeleteAllTransactions;
         private LinkLabel linkImportRepeatingTransactions;

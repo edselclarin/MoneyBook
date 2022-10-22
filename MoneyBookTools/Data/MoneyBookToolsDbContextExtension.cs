@@ -1,22 +1,11 @@
 ﻿using MoneyBook.Data;
 using MoneyBook.Models;
-using MoneyBookTools.ViewModels;
 using Ofx;
 
 namespace MoneyBookTools.Data
 {
     public static class MoneyBookToolsDbContextExtension
     {
-        public static IEnumerable<ViewAccount> GetViewAccounts(this MoneyBookDbContext db)
-        {
-            return db.GetAccounts().AsViewAccounts();
-        }
-
-        public static IEnumerable<ViewRecurringTransaction> GetViewRecurringTransactions(this MoneyBookDbContext db, MoneyBookDbContextExtension.SortOrder sortOrder)
-        {
-            return db.GetRecurringTransactions(sortOrder).AsViewRecurringTransactions();
-        }
-
         public static void ImportTransactions(this MoneyBookDbContext db, string filename, string accountName)
         {
             var context = new OfxContext()
@@ -37,7 +26,12 @@ namespace MoneyBookTools.Data
             // Set all imported transactions to first category.
             var cat = db.Categories.First();
 
-            foreach (var tr in context.Transactions)
+            // Process transactions from only this year.
+            var transactions = context.Transactions
+                .Where(x => x.DatePosted.Year == MoneyBookDbContextExtension.AccountYear)
+                .ToList();
+
+            foreach (var tr in transactions)
             {
                 bool exists = db.Transactions
                     .Where(x => x.Date == tr.DatePosted &&
@@ -68,25 +62,29 @@ namespace MoneyBookTools.Data
             db.SaveChanges();
         }
 
-        public static void UpdateAccountData(this MoneyBookDbContext db, string acctName, decimal startingBalance, decimal reserveAmount)
+        public static void UpdateAccountData(this MoneyBookDbContext db, AccountData[] accountDataArr)
         {
-            var acct = db.Accounts.FirstOrDefault(x => x.Name == acctName);
-            if (acct != null)
+            foreach (var ad in accountDataArr)
             {
-                acct.StartingBalance = startingBalance;
-                acct.ReserveAmount = reserveAmount;
-
-                db.SaveChanges();
+                var acct = db.Accounts.FirstOrDefault(x => x.Name == ad.Name);
+                if (acct != null)
+                {
+                    acct.StartingBalance = ad.StartingBalance;
+                    acct.ReserveAmount = ad.ReserveAmount;
+                }
             }
+
+            db.SaveChanges();
         }
 
-        public static void ResetStartingBalances(this MoneyBookDbContext db)
+        public static void ResetAccountData(this MoneyBookDbContext db)
         {
             var accounts = db.Accounts.ToList();
 
             foreach (var acct in accounts)
             {
                 acct.StartingBalance = 0m;
+                acct.ReserveAmount = 0m;
             }
 
             db.SaveChanges();

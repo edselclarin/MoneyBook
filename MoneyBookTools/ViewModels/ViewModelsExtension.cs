@@ -10,8 +10,6 @@ namespace MoneyBookTools.ViewModels
             {
                 AcctId = acct.AcctId,
                 Account = acct.AccountName,
-                StartingBalance = acct.StartingBalance,
-                ReserveAmount = acct.ReserveAmount,
             });
         }
 
@@ -40,7 +38,7 @@ namespace MoneyBookTools.ViewModels
                 TrnsType = tran.TrnsType,
                 Payee = tran.Payee,
                 Memo = tran.Memo,
-                Amount = tran.Amount,
+                TrnsAmount = tran.Amount,
                 Frequency = tran.Frequency,
                 AcctId = tran.AcctId,
                 CatId = tran.CatId
