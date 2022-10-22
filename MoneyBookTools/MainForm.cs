@@ -450,11 +450,11 @@ namespace MoneyBookTools
             {
                 var rt = arr[row.Index];
 
-                if (rt.IsOverdue)
+                if (rt.IsOverdue || rt.IsDueToday)
                 {
                     row.DefaultCellStyle.ForeColor = Color.Red;
                 }
-                else if (rt.IsDueToday)
+                else if (rt.IsDueSoon)
                 {
                     row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
                 }

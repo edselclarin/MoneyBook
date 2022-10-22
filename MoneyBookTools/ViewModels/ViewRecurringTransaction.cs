@@ -26,6 +26,12 @@ namespace MoneyBookTools.ViewModels
         [Browsable(false)]
         public bool IsDueToday => DueDate.Date == DateTime.Now.Date;
 
+        /// <summary>
+        /// In 5 days.
+        /// </summary>
+        [Browsable(false)]
+        public bool IsDueSoon => DueDate.AddDays(-5).Date <= DateTime.Now.Date;
+
         [Browsable(false)]
         public int AcctId { get; set; }
 
