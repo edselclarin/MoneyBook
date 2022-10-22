@@ -60,12 +60,19 @@ namespace MoneyBookTools
             this.labelAvailableBalance = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
+            this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.setToUnclearedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setToClearedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setToPendingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setToReconciledMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.recTransContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.skipSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelPendingBalance = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabOperations.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -84,11 +91,13 @@ namespace MoneyBookTools
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
+            this.transContextMenu.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
+            this.recTransContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -98,7 +107,7 @@ namespace MoneyBookTools
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(680, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(858, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -283,7 +292,7 @@ namespace MoneyBookTools
             this.tabOutlook.Controls.Add(this.splitContainer2);
             this.tabOutlook.Location = new System.Drawing.Point(4, 24);
             this.tabOutlook.Name = "tabOutlook";
-            this.tabOutlook.Size = new System.Drawing.Size(672, 472);
+            this.tabOutlook.Size = new System.Drawing.Size(850, 472);
             this.tabOutlook.TabIndex = 3;
             this.tabOutlook.Text = "Outlook";
             this.tabOutlook.UseVisualStyleBackColor = true;
@@ -302,7 +311,7 @@ namespace MoneyBookTools
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(672, 472);
+            this.splitContainer2.Size = new System.Drawing.Size(850, 472);
             this.splitContainer2.SplitterDistance = 154;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -329,7 +338,7 @@ namespace MoneyBookTools
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer3.Size = new System.Drawing.Size(514, 472);
+            this.splitContainer3.Size = new System.Drawing.Size(692, 472);
             this.splitContainer3.SplitterDistance = 300;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -345,53 +354,52 @@ namespace MoneyBookTools
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(514, 300);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(692, 300);
             this.tableLayoutPanel3.TabIndex = 4;
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.comboDateOrder);
-            this.panel3.Controls.Add(this.comboFilter);
-            this.panel3.Controls.Add(this.labelAvailableBalance);
+            this.panel3.Controls.Add(this.tableLayoutPanel4);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(508, 30);
+            this.panel3.Size = new System.Drawing.Size(686, 30);
             this.panel3.TabIndex = 4;
             // 
             // comboDateOrder
             // 
+            this.comboDateOrder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboDateOrder.FormattingEnabled = true;
-            this.comboDateOrder.Location = new System.Drawing.Point(127, 4);
+            this.comboDateOrder.Location = new System.Drawing.Point(128, 3);
             this.comboDateOrder.Name = "comboDateOrder";
-            this.comboDateOrder.Size = new System.Drawing.Size(121, 23);
+            this.comboDateOrder.Size = new System.Drawing.Size(119, 23);
             this.comboDateOrder.TabIndex = 6;
             this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
             // comboFilter
             // 
+            this.comboFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.comboFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboFilter.FormattingEnabled = true;
-            this.comboFilter.Location = new System.Drawing.Point(0, 4);
+            this.comboFilter.Location = new System.Drawing.Point(3, 3);
             this.comboFilter.Name = "comboFilter";
-            this.comboFilter.Size = new System.Drawing.Size(121, 23);
+            this.comboFilter.Size = new System.Drawing.Size(119, 23);
             this.comboFilter.TabIndex = 5;
             this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
             // labelAvailableBalance
             // 
-            this.labelAvailableBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelAvailableBalance.BackColor = System.Drawing.Color.Gainsboro;
+            this.labelAvailableBalance.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.Location = new System.Drawing.Point(254, 4);
+            this.labelAvailableBalance.Location = new System.Drawing.Point(253, 3);
             this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(254, 23);
+            this.labelAvailableBalance.Size = new System.Drawing.Size(144, 24);
             this.labelAvailableBalance.TabIndex = 1;
             this.labelAvailableBalance.Text = "Available: 0.00";
-            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupBox1
             // 
@@ -399,7 +407,7 @@ namespace MoneyBookTools
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 39);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(508, 258);
+            this.groupBox1.Size = new System.Drawing.Size(686, 258);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Transactions";
@@ -407,13 +415,56 @@ namespace MoneyBookTools
             // dgvAccountTransactions
             // 
             this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAccountTransactions.ContextMenuStrip = this.transContextMenu;
             this.dgvAccountTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 19);
             this.dgvAccountTransactions.Name = "dgvAccountTransactions";
             this.dgvAccountTransactions.RowTemplate.Height = 25;
-            this.dgvAccountTransactions.Size = new System.Drawing.Size(502, 236);
+            this.dgvAccountTransactions.Size = new System.Drawing.Size(680, 236);
             this.dgvAccountTransactions.TabIndex = 3;
             this.dgvAccountTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
+            // 
+            // transContextMenu
+            // 
+            this.transContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setToUnclearedMenuItem,
+            this.setToClearedMenuItem,
+            this.setToPendingMenuItem,
+            this.setToReconciledMenuItem});
+            this.transContextMenu.Name = "transContextMenu";
+            this.transContextMenu.Size = new System.Drawing.Size(166, 92);
+            this.transContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.transContextMenu_Opening);
+            // 
+            // setToUnclearedMenuItem
+            // 
+            this.setToUnclearedMenuItem.Name = "setToUnclearedMenuItem";
+            this.setToUnclearedMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.setToUnclearedMenuItem.Text = "Set to Uncleared";
+            this.setToUnclearedMenuItem.ToolTipText = "Set status of selected items to Uncleared";
+            this.setToUnclearedMenuItem.Click += new System.EventHandler(this.setToUnclearedMenuItem_Click);
+            // 
+            // setToClearedMenuItem
+            // 
+            this.setToClearedMenuItem.Name = "setToClearedMenuItem";
+            this.setToClearedMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.setToClearedMenuItem.Text = "Set to Cleared";
+            this.setToClearedMenuItem.ToolTipText = "Set status of selected items to Cleared";
+            this.setToClearedMenuItem.Click += new System.EventHandler(this.setToClearedMenuItem_Click);
+            // 
+            // setToPendingMenuItem
+            // 
+            this.setToPendingMenuItem.Name = "setToPendingMenuItem";
+            this.setToPendingMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.setToPendingMenuItem.Text = "Set to Pending";
+            this.setToPendingMenuItem.Click += new System.EventHandler(this.setToPendingMenuItem_Click);
+            // 
+            // setToReconciledMenuItem
+            // 
+            this.setToReconciledMenuItem.Name = "setToReconciledMenuItem";
+            this.setToReconciledMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.setToReconciledMenuItem.Text = "Set to Reconciled";
+            this.setToReconciledMenuItem.ToolTipText = "Set status of selected items to Reconciled";
+            this.setToReconciledMenuItem.Click += new System.EventHandler(this.setToReconciledMenuItem_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -425,7 +476,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(514, 168);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(692, 168);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // groupBox2
@@ -434,7 +485,7 @@ namespace MoneyBookTools
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(508, 162);
+            this.groupBox2.Size = new System.Drawing.Size(686, 162);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Recurring Transactions";
@@ -450,6 +501,7 @@ namespace MoneyBookTools
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvRecurringTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRecurringTransactions.ContextMenuStrip = this.recTransContextMenu;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -470,9 +522,25 @@ namespace MoneyBookTools
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvRecurringTransactions.RowTemplate.Height = 25;
-            this.dgvRecurringTransactions.Size = new System.Drawing.Size(502, 140);
+            this.dgvRecurringTransactions.Size = new System.Drawing.Size(680, 140);
             this.dgvRecurringTransactions.TabIndex = 3;
             this.dgvRecurringTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
+            // 
+            // recTransContextMenu
+            // 
+            this.recTransContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.skipSelectedToolStripMenuItem});
+            this.recTransContextMenu.Name = "recTransContextMenu";
+            this.recTransContextMenu.Size = new System.Drawing.Size(144, 26);
+            this.recTransContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.recTransContextMenu_Opening);
+            // 
+            // skipSelectedToolStripMenuItem
+            // 
+            this.skipSelectedToolStripMenuItem.Name = "skipSelectedToolStripMenuItem";
+            this.skipSelectedToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.skipSelectedToolStripMenuItem.Text = "Skip Selected";
+            this.skipSelectedToolStripMenuItem.ToolTipText = "Skip selected items";
+            this.skipSelectedToolStripMenuItem.Click += new System.EventHandler(this.skipSelectedRecTransToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -482,29 +550,48 @@ namespace MoneyBookTools
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(680, 500);
+            this.tabControl1.Size = new System.Drawing.Size(858, 500);
             this.tabControl1.TabIndex = 2;
             // 
-            // contextMenuStrip1
+            // tableLayoutPanel4
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.skipSelectedToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            this.tableLayoutPanel4.ColumnCount = 6;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.labelPendingBalance, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.comboFilter, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.labelAvailableBalance, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.comboDateOrder, 1, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(686, 30);
+            this.tableLayoutPanel4.TabIndex = 7;
             // 
-            // skipSelectedToolStripMenuItem
+            // labelPendingBalance
             // 
-            this.skipSelectedToolStripMenuItem.Name = "skipSelectedToolStripMenuItem";
-            this.skipSelectedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.skipSelectedToolStripMenuItem.Text = "Skip Selected";
-            this.skipSelectedToolStripMenuItem.Click += new System.EventHandler(this.skipSelectedToolStripMenuItem_Click);
+            this.labelPendingBalance.BackColor = System.Drawing.Color.Gainsboro;
+            this.labelPendingBalance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelPendingBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelPendingBalance.Location = new System.Drawing.Point(403, 3);
+            this.labelPendingBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelPendingBalance.Name = "labelPendingBalance";
+            this.labelPendingBalance.Size = new System.Drawing.Size(144, 24);
+            this.labelPendingBalance.TabIndex = 7;
+            this.labelPendingBalance.Text = "Pending: 0.00";
+            this.labelPendingBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(680, 524);
+            this.ClientSize = new System.Drawing.Size(858, 524);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -530,11 +617,13 @@ namespace MoneyBookTools
             this.panel3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
+            this.transContextMenu.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
+            this.recTransContextMenu.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -573,7 +662,14 @@ namespace MoneyBookTools
         private TableLayoutPanel tableLayoutPanel1;
         private GroupBox groupBox1;
         private GroupBox groupBox2;
-        private ContextMenuStrip contextMenuStrip1;
+        private ContextMenuStrip recTransContextMenu;
         private ToolStripMenuItem skipSelectedToolStripMenuItem;
+        private ContextMenuStrip transContextMenu;
+        private ToolStripMenuItem setToUnclearedMenuItem;
+        private ToolStripMenuItem setToClearedMenuItem;
+        private ToolStripMenuItem setToReconciledMenuItem;
+        private ToolStripMenuItem setToPendingMenuItem;
+        private TableLayoutPanel tableLayoutPanel4;
+        private Label labelPendingBalance;
     }
 }

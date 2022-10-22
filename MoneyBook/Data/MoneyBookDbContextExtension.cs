@@ -12,9 +12,9 @@ namespace MoneyBook.Data
         public enum StateTypes
         {
             Uncleared,
+            Pending,
             Cleared,
             Reconciled,
-            Staged,
         }
         
         public enum DateFilter : int
@@ -218,6 +218,11 @@ namespace MoneyBook.Data
             }
 
             recTran.DateModified = DateTime.Now.Date;
+        }
+
+        public static void SetState(this Transaction tran, StateTypes state)
+        {
+            tran.State = state.ToString();
         }
     }
 }

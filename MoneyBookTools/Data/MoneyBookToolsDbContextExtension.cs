@@ -35,10 +35,7 @@ namespace MoneyBookTools.Data
             foreach (var tr in transactions)
             {
                 bool exists = db.Transactions
-                    .Where(x => x.Date == tr.DatePosted &&
-                                x.Payee == tr.Memo &&
-                                x.TrnsType == tr.TransactionType &&
-                                x.Amount == tr.TransactionAmount)
+                    .Where(x => x.ExtTrnsId == tr.TransactionId)
                     .Count() > 0;
 
                 // Add only new transactions.
@@ -162,6 +159,18 @@ namespace MoneyBookTools.Data
                 trn?.Skip();
             }
 
+            db.SaveChanges();
+        }
+
+        public static void SetTransactionStates(this MoneyBookDbContext db, IEnumerable<ViewTransaction> transactions, MoneyBookDbContextExtension.StateTypes state)
+        {
+            foreach (var tr in transactions)
+            {
+                var trn = db.Transactions
+                    .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
+
+                trn?.SetState(state);
+            }
             db.SaveChanges();
         }
     }
