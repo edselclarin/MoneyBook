@@ -4,6 +4,9 @@ namespace MoneyBookTools.ViewModels
 {
     public class ViewRecurringTransaction
     {
+        [DisplayName(" ")]
+        public bool Selected { get; set; }
+
         [Browsable(false)]
         public int RecTrnsId { get; set; }
 

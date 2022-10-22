@@ -193,5 +193,31 @@ namespace MoneyBook.Data
 
             return results.AsEnumerable();
         }
+
+        public static void Skip(this RecurringTransaction recTran)
+        {
+            if (recTran.Frequency == TransactionFrequency.Weekly.ToString())
+            {
+                recTran.DueDate = recTran.DueDate.AddDays(7);
+            }
+            else if (recTran.Frequency == TransactionFrequency.BiWeekly.ToString())
+            {
+                recTran.DueDate = recTran.DueDate.AddDays(14);
+            }
+            else if (recTran.Frequency == TransactionFrequency.Monthly.ToString())
+            {
+                recTran.DueDate = recTran.DueDate.AddMonths(1);
+            }
+            else if (recTran.Frequency == TransactionFrequency.Quarterly.ToString())
+            {
+                recTran.DueDate = recTran.DueDate.AddMonths(3);
+            }
+            else if (recTran.Frequency == TransactionFrequency.Yearly.ToString())
+            {
+                recTran.DueDate = recTran.DueDate.AddYears(1);
+            }
+
+            recTran.DateModified = DateTime.Now.Date;
+        }
     }
 }

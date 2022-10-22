@@ -1,5 +1,6 @@
 ﻿using MoneyBook.Data;
 using MoneyBook.Models;
+using MoneyBookTools.ViewModels;
 using Ofx;
 
 namespace MoneyBookTools.Data
@@ -147,6 +148,19 @@ namespace MoneyBookTools.Data
         public static void DeleteAllRecurringTransactions(this MoneyBookDbContext db)
         {
             db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
+
+            db.SaveChanges();
+        }
+
+        public static void SkipRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> transactions)
+        {
+            foreach (var tr in transactions)
+            {
+                var trn = db.RecurringTransactions
+                    .FirstOrDefault(x => x.RecTrnsId == tr.RecTrnsId);
+
+                trn?.Skip();
+            }
 
             db.SaveChanges();
         }

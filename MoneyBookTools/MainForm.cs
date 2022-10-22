@@ -2,6 +2,7 @@
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
 using Ofx;
+using System.Diagnostics;
 
 namespace MoneyBookTools
 {
@@ -38,6 +39,8 @@ namespace MoneyBookTools
 
             treeView1.ShowRootLines = true;
             treeView1.HideSelection = false;
+
+            dgvRecurringTransactions.ContextMenuStrip = contextMenuStrip1;
         }
 
         private void Combo_MouseWheel(object? sender, MouseEventArgs e)
@@ -339,6 +342,55 @@ namespace MoneyBookTools
             }
         }
 
+        private void dataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            // Allow edits to Select column.
+            e.Cancel = e.ColumnIndex > 0;
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+
+            skipSelectedToolStripMenuItem.Enabled = recTrans
+                .Where(x => x.Selected == true)
+                .Count() > 0;
+        }
+
+        private void skipSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+                var selectedRecTrans = recTrans
+                    .Where(x => x.Selected == true)
+                    .ToList();
+
+                if (selectedRecTrans.Count() > 0)
+                {
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want to skip these {selectedRecTrans.Count()} recurring transactions?",
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        using var tr = m_db.Database.BeginTransaction();
+
+                        m_db.SkipRecurringTransactions(selectedRecTrans);
+
+                        tr.Commit();
+
+                        LoadRecurringTransactionsGrid();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void LoadAccountsTree()
         {
             treeView1.Nodes.Clear();
@@ -375,15 +427,18 @@ namespace MoneyBookTools
 
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance}";
 
-                dgvAccountTransactions.DataSource = summary.Transactions
+                var viewTransactions = summary.Transactions
                     .Filter(dateFilter)
                     .Order(sortOrder)
                     .AsViewTransactions()
                     .ToList();
 
+                dgvAccountTransactions.DataSource = viewTransactions;
+
                 // Resize the columns.
-                var widths = new int[] { 70, 70, 80, 80, 275 };
+                var widths = new int[] { 30, 70, 70, 80, 80, 275 };
                 int i = 0;
+                dgvAccountTransactions.Columns["Selected"].Width = widths[i++];
                 dgvAccountTransactions.Columns["Date"].Width = widths[i++];
                 dgvAccountTransactions.Columns["RefNum"].Width = widths[i++];
                 dgvAccountTransactions.Columns["State"].Width = widths[i++];
@@ -403,8 +458,9 @@ namespace MoneyBookTools
             dgvRecurringTransactions.DataSource = recTrans;
 
             // Resize the columns.
-            var widths = new int[] { 70, 275, 80, 80 };
+            var widths = new int[] { 30, 70, 275, 80, 80 };
             int i = 0;
+            dgvRecurringTransactions.Columns["Selected"].Width = widths[i++];
             dgvRecurringTransactions.Columns["DueDate"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Memo"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Amount"].Width = widths[i++];
