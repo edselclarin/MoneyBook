@@ -8,6 +8,7 @@ namespace MoneyBookTools
     public partial class MainForm : Form
     {
         private MoneyBookDbContext m_db;
+        private TransactionForm m_transactionForm;
 
         public MainForm()
         {
@@ -571,6 +572,50 @@ namespace MoneyBookTools
                     LoadTransactionsGrid();
                 }
             }
+        }
+
+        private void dgvAccountTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransaction = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => new
+                {
+                    RowIndex = x.RowIndex,
+                    Transaction = transactions[x.RowIndex]
+                })
+                .FirstOrDefault();
+
+            if (selectedTransaction != null)
+            {
+                if (m_transactionForm != null)
+                {
+                    m_transactionForm.Dispose();
+                }
+                m_transactionForm = new TransactionForm()
+                {
+                    StartPosition = FormStartPosition.CenterScreen,
+                    Transactions = transactions
+                };
+                m_transactionForm.Init(selectedTransaction.RowIndex);
+                m_transactionForm.ShowDialog(this);
+            }
+        }
+
+        private void dgvAccountTransactions_SelectionChanged(object sender, EventArgs e)
+        {
+            //if (m_transactionForm != null && m_transactionForm.Visible)
+            //{
+            //    var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            //    var selectedTransactions = dgvAccountTransactions.SelectedCells
+            //        .Cast<DataGridViewCell>()
+            //        .Select(x => transactions[x.RowIndex]);
+
+            //    if (selectedTransactions != null)
+            //    {
+            //        m_transactionForm.SetCurrentTransaction(selectedTransaction);
+            //    }
+            //}
         }
     }
 }
