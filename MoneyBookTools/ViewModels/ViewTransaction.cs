@@ -4,9 +4,6 @@ namespace MoneyBookTools.ViewModels
 {
     public class ViewTransaction
     {
-        [DisplayName(" ")]
-        public bool Selected { get; set; }
-
         [Browsable(false)]
         public int TrnsId { get; set; }
 

@@ -2,7 +2,6 @@
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
 using Ofx;
-using System.Diagnostics;
 
 namespace MoneyBookTools
 {
@@ -39,8 +38,6 @@ namespace MoneyBookTools
 
             treeView1.ShowRootLines = true;
             treeView1.HideSelection = false;
-
-            dgvRecurringTransactions.ContextMenuStrip = contextMenuStrip1;
         }
 
         private void Combo_MouseWheel(object? sender, MouseEventArgs e)
@@ -344,46 +341,84 @@ namespace MoneyBookTools
 
         private void dataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            // Allow edits to Select column.
-            e.Cancel = e.ColumnIndex > 0;
+            e.Cancel = true;
         }
-
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        
+        private void transContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var count = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Count();
 
-            skipSelectedToolStripMenuItem.Enabled = recTrans
-                .Where(x => x.Selected == true)
-                .Count() > 0;
+            setToUnclearedMenuItem.Enabled =
+            setToClearedMenuItem.Enabled =
+            setToReconciledMenuItem.Enabled = count > 0;
         }
 
-        private void skipSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        private void recTransContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var count = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Count();
+
+            skipSelectedToolStripMenuItem.Enabled = count > 0;
+        }
+
+        private void skipSelectedRecTransToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-                var selectedRecTrans = recTrans
-                    .Where(x => x.Selected == true)
-                    .ToList();
+                SkipRecurringTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
 
-                if (selectedRecTrans.Count() > 0)
-                {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want to skip these {selectedRecTrans.Count()} recurring transactions?",
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+        private void setToUnclearedMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes.Uncleared);
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
 
-                    if (answer == DialogResult.Yes)
-                    {
-                        using var tr = m_db.Database.BeginTransaction();
+        private void setToClearedMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes.Cleared);
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
 
-                        m_db.SkipRecurringTransactions(selectedRecTrans);
+        private void setToPendingMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes.Pending);
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
 
-                        tr.Commit();
-
-                        LoadRecurringTransactionsGrid();
-                    }
-                }
+        private void setToReconciledMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes.Reconciled);
             }
             catch (Exception ex)
             {
@@ -425,7 +460,8 @@ namespace MoneyBookTools
                 var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
                 var summary = m_db.GetAccountSummary(acct.AcctId);
 
-                labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance}";
+                labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
+                labelPendingBalance.Text = $"Pending: {summary?.PendingBalance:0.00}";
 
                 var viewTransactions = summary.Transactions
                     .Filter(dateFilter)
@@ -436,9 +472,8 @@ namespace MoneyBookTools
                 dgvAccountTransactions.DataSource = viewTransactions;
 
                 // Resize the columns.
-                var widths = new int[] { 30, 70, 70, 80, 80, 275 };
+                var widths = new int[] { 70, 70, 80, 80, 275 };
                 int i = 0;
-                dgvAccountTransactions.Columns["Selected"].Width = widths[i++];
                 dgvAccountTransactions.Columns["Date"].Width = widths[i++];
                 dgvAccountTransactions.Columns["RefNum"].Width = widths[i++];
                 dgvAccountTransactions.Columns["State"].Width = widths[i++];
@@ -458,9 +493,8 @@ namespace MoneyBookTools
             dgvRecurringTransactions.DataSource = recTrans;
 
             // Resize the columns.
-            var widths = new int[] { 30, 70, 275, 80, 80 };
+            var widths = new int[] { 70, 275, 80, 80 };
             int i = 0;
-            dgvRecurringTransactions.Columns["Selected"].Width = widths[i++];
             dgvRecurringTransactions.Columns["DueDate"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Memo"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Amount"].Width = widths[i++];
@@ -479,6 +513,62 @@ namespace MoneyBookTools
                 else if (rt.IsDueSoon)
                 {
                     row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
+                }
+            }
+        }
+
+        private void SkipRecurringTransactions()
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => recTrans[x.RowIndex])
+                .ToList();
+
+            if (selectedRecTrans.Count() > 0)
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you want to skip these {selectedRecTrans.Count()} recurring transactions?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var tr = m_db.Database.BeginTransaction();
+
+                    m_db.SkipRecurringTransactions(selectedRecTrans);
+
+                    tr.Commit();
+
+                    LoadRecurringTransactionsGrid();
+                }
+            }
+        }
+
+        private void UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes state)
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => transactions[x.RowIndex])
+                .ToList();
+
+            if (selectedTransactions.Count() > 0)
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you want to set these {selectedTransactions.Count()} transactions to {state.ToString()}?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var tr = m_db.Database.BeginTransaction();
+
+                    m_db.SetTransactionStates(selectedTransactions, state);
+
+                    tr.Commit();
+
+                    LoadTransactionsGrid();
                 }
             }
         }
