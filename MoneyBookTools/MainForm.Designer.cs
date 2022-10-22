@@ -55,9 +55,11 @@ namespace MoneyBookTools
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.comboDateOrder = new System.Windows.Forms.ComboBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelPendingBalance = new System.Windows.Forms.Label();
             this.comboFilter = new System.Windows.Forms.ComboBox();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
+            this.comboDateOrder = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -71,8 +73,6 @@ namespace MoneyBookTools
             this.recTransContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.skipSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelPendingBalance = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabOperations.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -89,6 +89,7 @@ namespace MoneyBookTools
             this.splitContainer3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.transContextMenu.SuspendLayout();
@@ -97,7 +98,6 @@ namespace MoneyBookTools
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
             this.recTransContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -149,7 +149,7 @@ namespace MoneyBookTools
             this.tabOperations.Location = new System.Drawing.Point(4, 24);
             this.tabOperations.Name = "tabOperations";
             this.tabOperations.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOperations.Size = new System.Drawing.Size(672, 472);
+            this.tabOperations.Size = new System.Drawing.Size(850, 472);
             this.tabOperations.TabIndex = 0;
             this.tabOperations.Text = "Operations";
             this.tabOperations.UseVisualStyleBackColor = true;
@@ -366,16 +366,39 @@ namespace MoneyBookTools
             this.panel3.Size = new System.Drawing.Size(686, 30);
             this.panel3.TabIndex = 4;
             // 
-            // comboDateOrder
+            // tableLayoutPanel4
             // 
-            this.comboDateOrder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboDateOrder.FormattingEnabled = true;
-            this.comboDateOrder.Location = new System.Drawing.Point(128, 3);
-            this.comboDateOrder.Name = "comboDateOrder";
-            this.comboDateOrder.Size = new System.Drawing.Size(119, 23);
-            this.comboDateOrder.TabIndex = 6;
-            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            this.tableLayoutPanel4.ColumnCount = 6;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.labelPendingBalance, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.comboFilter, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.labelAvailableBalance, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.comboDateOrder, 1, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(686, 30);
+            this.tableLayoutPanel4.TabIndex = 7;
+            // 
+            // labelPendingBalance
+            // 
+            this.labelPendingBalance.BackColor = System.Drawing.Color.Gainsboro;
+            this.labelPendingBalance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelPendingBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelPendingBalance.Location = new System.Drawing.Point(403, 3);
+            this.labelPendingBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelPendingBalance.Name = "labelPendingBalance";
+            this.labelPendingBalance.Size = new System.Drawing.Size(144, 24);
+            this.labelPendingBalance.TabIndex = 7;
+            this.labelPendingBalance.Text = "Pending: 0.00";
+            this.labelPendingBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // comboFilter
             // 
@@ -401,6 +424,17 @@ namespace MoneyBookTools
             this.labelAvailableBalance.Text = "Available: 0.00";
             this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // comboDateOrder
+            // 
+            this.comboDateOrder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboDateOrder.FormattingEnabled = true;
+            this.comboDateOrder.Location = new System.Drawing.Point(128, 3);
+            this.comboDateOrder.Name = "comboDateOrder";
+            this.comboDateOrder.Size = new System.Drawing.Size(119, 23);
+            this.comboDateOrder.TabIndex = 6;
+            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.dgvAccountTransactions);
@@ -423,6 +457,8 @@ namespace MoneyBookTools
             this.dgvAccountTransactions.Size = new System.Drawing.Size(680, 236);
             this.dgvAccountTransactions.TabIndex = 3;
             this.dgvAccountTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
+            this.dgvAccountTransactions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAccountTransactions_CellMouseDoubleClick);
+            this.dgvAccountTransactions.SelectionChanged += new System.EventHandler(this.dgvAccountTransactions_SelectionChanged);
             // 
             // transContextMenu
             // 
@@ -553,40 +589,6 @@ namespace MoneyBookTools
             this.tabControl1.Size = new System.Drawing.Size(858, 500);
             this.tabControl1.TabIndex = 2;
             // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 6;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.labelPendingBalance, 3, 0);
-            this.tableLayoutPanel4.Controls.Add(this.comboFilter, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.labelAvailableBalance, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.comboDateOrder, 1, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(686, 30);
-            this.tableLayoutPanel4.TabIndex = 7;
-            // 
-            // labelPendingBalance
-            // 
-            this.labelPendingBalance.BackColor = System.Drawing.Color.Gainsboro;
-            this.labelPendingBalance.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelPendingBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelPendingBalance.Location = new System.Drawing.Point(403, 3);
-            this.labelPendingBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelPendingBalance.Name = "labelPendingBalance";
-            this.labelPendingBalance.Size = new System.Drawing.Size(144, 24);
-            this.labelPendingBalance.TabIndex = 7;
-            this.labelPendingBalance.Text = "Pending: 0.00";
-            this.labelPendingBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -615,6 +617,7 @@ namespace MoneyBookTools
             this.splitContainer3.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.transContextMenu.ResumeLayout(false);
@@ -623,7 +626,6 @@ namespace MoneyBookTools
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
             this.recTransContextMenu.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -27,5 +27,8 @@ namespace MoneyBookTools.ViewModels
         public int AcctId { get; set; }
 
         public decimal Amount => TrnsType == "DEBIT" ? 0 - TrnsAmount : TrnsAmount;
+
+        [Browsable(false)]
+        public bool Modified { get; set; }
     }
 }
