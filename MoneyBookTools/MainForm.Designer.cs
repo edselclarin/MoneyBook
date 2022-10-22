@@ -29,9 +29,9 @@ namespace MoneyBookTools
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +44,7 @@ namespace MoneyBookTools
             this.linkDeleteRepeatingTransactions = new System.Windows.Forms.LinkLabel();
             this.linkOpenFile = new System.Windows.Forms.LinkLabel();
             this.linkResetStartingBalances = new System.Windows.Forms.LinkLabel();
-            this.linkUpdateStartingBalances = new System.Windows.Forms.LinkLabel();
+            this.linkAccountData = new System.Windows.Forms.LinkLabel();
             this.linkDeleteAllTransactions = new System.Windows.Forms.LinkLabel();
             this.linkImportRepeatingTransactions = new System.Windows.Forms.LinkLabel();
             this.dgvFileTransactions = new System.Windows.Forms.DataGridView();
@@ -159,7 +159,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel2.Controls.Add(this.linkDeleteRepeatingTransactions, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.linkOpenFile, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.linkResetStartingBalances, 2, 1);
-            this.tableLayoutPanel2.Controls.Add(this.linkUpdateStartingBalances, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.linkAccountData, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.linkDeleteAllTransactions, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.linkImportRepeatingTransactions, 1, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -219,17 +219,17 @@ namespace MoneyBookTools
             this.linkResetStartingBalances.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkResetStartingBalances.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkResetStartingBalances_LinkClicked);
             // 
-            // linkUpdateStartingBalances
+            // linkAccountData
             // 
-            this.linkUpdateStartingBalances.Location = new System.Drawing.Point(325, 3);
-            this.linkUpdateStartingBalances.Margin = new System.Windows.Forms.Padding(3);
-            this.linkUpdateStartingBalances.Name = "linkUpdateStartingBalances";
-            this.linkUpdateStartingBalances.Size = new System.Drawing.Size(146, 23);
-            this.linkUpdateStartingBalances.TabIndex = 7;
-            this.linkUpdateStartingBalances.TabStop = true;
-            this.linkUpdateStartingBalances.Text = "Update Starting Balances";
-            this.linkUpdateStartingBalances.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkUpdateStartingBalances.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkUpdateStartingBalances_LinkClicked);
+            this.linkAccountData.Location = new System.Drawing.Point(325, 3);
+            this.linkAccountData.Margin = new System.Windows.Forms.Padding(3);
+            this.linkAccountData.Name = "linkAccountData";
+            this.linkAccountData.Size = new System.Drawing.Size(146, 23);
+            this.linkAccountData.TabIndex = 7;
+            this.linkAccountData.TabStop = true;
+            this.linkAccountData.Text = "Update Account Data";
+            this.linkAccountData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkAccountData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkUpdateAccountData_LinkClicked);
             // 
             // linkDeleteAllTransactions
             // 
@@ -409,34 +409,34 @@ namespace MoneyBookTools
             // 
             // dgvRecurringTransactions
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecurringTransactions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvRecurringTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecurringTransactions.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvRecurringTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecurringTransactions.Location = new System.Drawing.Point(3, 3);
             this.dgvRecurringTransactions.Name = "dgvRecurringTransactions";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRecurringTransactions.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvRecurringTransactions.RowTemplate.Height = 25;
             this.dgvRecurringTransactions.Size = new System.Drawing.Size(508, 162);
             this.dgvRecurringTransactions.TabIndex = 3;
@@ -503,7 +503,7 @@ namespace MoneyBookTools
         private LinkLabel linkDeleteRepeatingTransactions;
         private LinkLabel linkOpenFile;
         private LinkLabel linkResetStartingBalances;
-        private LinkLabel linkUpdateStartingBalances;
+        private LinkLabel linkAccountData;
         private LinkLabel linkDeleteAllTransactions;
         private LinkLabel linkImportRepeatingTransactions;
         private DataGridView dgvFileTransactions;

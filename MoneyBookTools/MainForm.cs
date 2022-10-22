@@ -59,17 +59,16 @@ namespace MoneyBookTools
                     m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
                 });
 
-                var accounts = await GetAccounts();
-                LoadAccountTree(accounts);
+                var accounts = m_db.GetViewAccounts();
+                LoadAccountsTree(accounts);
 
-                var recTrans = await GetRecurringTransactions();
+                var recTrans = m_db.GetViewRecurringTransactions(MoneyBookDbContextExtension.SortOrder.Ascending);
                 LoadRecurringTransactionsGrid(recTrans);
 
                 treeView1.SelectedNode = treeView1.TopNode.FirstNode;
 
                 comboFilter.Enabled =
                 comboDateOrder.Enabled = true;
-
             }
             catch (Exception ex)
             {
@@ -307,7 +306,7 @@ namespace MoneyBookTools
             }
         }
 
-        private async void linkUpdateStartingBalances_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void linkUpdateAccountData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -316,7 +315,7 @@ namespace MoneyBookTools
                 if (accountDataArr.Length > 0)
                 {
                     var answer = MessageBox.Show(this,
-                        $"Are you sure you want update the starting balances of these accounts?" +
+                        $"Are you sure you want the data of all accounts?" +
                         Environment.NewLine +
                         Environment.NewLine +
                         String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.Name} --> {x.StartingBalance}")),
@@ -331,7 +330,7 @@ namespace MoneyBookTools
 
                             foreach (var ad in accountDataArr)
                             {
-                                m_db.UpdateStartingBalance(ad.Name, ad.StartingBalance);
+                                m_db.UpdateAccountData(ad.Name, ad.StartingBalance, ad.ReserveAmount);
                             }
 
                             tr.Commit();
@@ -381,25 +380,13 @@ namespace MoneyBookTools
             }
         }
 
-        private async Task<List<ViewAccount>> GetAccounts()
-        {
-            var task = await m_db.GetAccountsAsync();
-            return task.AsViewAccounts().ToList();
-        }
-
-        private async Task<List<ViewRecurringTransaction>> GetRecurringTransactions()
-        {
-            var task = await m_db.GetRecurringTransactionsAsync(MoneyBookDbContextExtension.SortOrder.Ascending);
-            return task.AsViewRecurringTransactions().ToList();
-        }
-
-        private void LoadAccountTree(IList<ViewAccount> accounts)
+        private void LoadAccountsTree(IEnumerable<ViewAccount> accounts)
         {
             treeView1.Nodes.Clear();
 
             treeView1.Nodes.Add("Accounts");
 
-            foreach (var acct in accounts)
+            foreach (var acct in accounts.ToList())
             {
                 var node = new TreeNode(acct.Account)
                 {
@@ -419,14 +406,17 @@ namespace MoneyBookTools
                 comboDateOrder.SelectedIndex > -1)
             {
                 var acct = treeView1.SelectedNode.Tag as ViewAccount;
-
-                labelAvailableBalance.Text = $"Available: {acct?.AvailableBalance}";
-
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
                 var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
-                var transactions = await m_db.GetTransactionsAsync(acct.AcctId, dateFilter, sortOrder);
+                var summary = m_db.GetAccountSummary(acct.AcctId);
 
-                dgvAccountTransactions.DataSource = transactions.AsViewTransactions().ToList();
+                labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance}";
+
+                dgvAccountTransactions.DataSource = summary.Transactions
+                    .Filter(dateFilter)
+                    .Order(sortOrder)
+                    .AsViewTransactions()
+                    .ToList();
 
                 // Resize the columns.
                 var widths = new int[] { 70, 70, 50, 80, 275 };
@@ -441,9 +431,10 @@ namespace MoneyBookTools
             }
         }
 
-        private async void LoadRecurringTransactionsGrid(IList<ViewRecurringTransaction> recTrans)
+        private async void LoadRecurringTransactionsGrid(IEnumerable<ViewRecurringTransaction> recTrans)
         {
-            dgvRecurringTransactions.DataSource = recTrans;
+            var arr = recTrans.ToArray();
+            dgvRecurringTransactions.DataSource = arr;
 
             // Resize the columns.
             var widths = new int[] { 70, 275, 80, 80 };
@@ -457,15 +448,15 @@ namespace MoneyBookTools
 
             foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
             {
-                var rt = recTrans[row.Index];
+                var rt = arr[row.Index];
 
                 if (rt.IsOverdue)
                 {
-                    row.DefaultCellStyle.BackColor = Color.DarkSalmon;
+                    row.DefaultCellStyle.ForeColor = Color.Red;
                 }
                 else if (rt.IsDueToday)
                 {
-                    row.DefaultCellStyle.BackColor = Color.DarkKhaki;
+                    row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
                 }
             }
         }
