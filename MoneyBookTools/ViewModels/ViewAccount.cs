@@ -8,11 +8,5 @@ namespace MoneyBookTools.ViewModels
         public int AcctId { get; set; }
 
         public string Account { get; set; }
-
-        [Browsable(false)]
-        public decimal StartingBalance { get; set; }
-
-        [Browsable(false)]
-        public decimal ReserveAmount { get; set; }
     }
 }

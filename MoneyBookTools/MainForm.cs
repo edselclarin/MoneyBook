@@ -59,11 +59,9 @@ namespace MoneyBookTools
                     m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
                 });
 
-                var accounts = m_db.GetViewAccounts();
-                LoadAccountsTree(accounts);
+                LoadRecurringTransactionsGrid();
 
-                var recTrans = m_db.GetViewRecurringTransactions(MoneyBookDbContextExtension.SortOrder.Ascending);
-                LoadRecurringTransactionsGrid(recTrans);
+                LoadAccountsTree();
 
                 treeView1.SelectedNode = treeView1.TopNode.FirstNode;
 
@@ -88,7 +86,7 @@ namespace MoneyBookTools
             }
         }
 
-        private async void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -105,34 +103,16 @@ namespace MoneyBookTools
             }
         }
 
-        private async void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                using var hg = this.CreateHourglass();
-
-                LoadTransactionsGrid();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
+            refreshToolStripMenuItem.PerformClick();
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            try
-            {
-                using var hg = this.CreateHourglass();
-
-                LoadTransactionsGrid();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
+            refreshToolStripMenuItem.PerformClick();
         }
-        
+
         private void linkOpenFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
@@ -160,7 +140,7 @@ namespace MoneyBookTools
             }
         }
 
-        private async void linkImportTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkImportTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -180,17 +160,14 @@ namespace MoneyBookTools
                     {
                         using var hg = this.CreateHourglass();
 
-                        await Task.Run(() =>
+                        using var tr = m_db.Database.BeginTransaction();
+
+                        foreach (var ad in accountDataArr)
                         {
-                            using var tr = m_db.Database.BeginTransaction();
+                            m_db.ImportTransactions(ad.ImportFilePath, ad.Name);
+                        }
 
-                            foreach (var ad in accountDataArr)
-                            {
-                                m_db.ImportTransactions(ad.ImportFilePath, ad.Name);
-                            }
-
-                            tr.Commit();
-                        });
+                        tr.Commit();
 
                         MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
                     }
@@ -207,7 +184,7 @@ namespace MoneyBookTools
             }
         }
 
-        private async void linkDeleteAllTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkDeleteAllTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -218,14 +195,11 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    await Task.Run(() =>
-                    {
-                        using var tr = m_db.Database.BeginTransaction();
+                    using var tr = m_db.Database.BeginTransaction();
 
-                        m_db.DeleteAllTransactions();
+                    m_db.DeleteAllTransactions();
 
-                        tr.Commit();
-                    });
+                    tr.Commit();
 
                     MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -236,7 +210,7 @@ namespace MoneyBookTools
             }
         }
 
-        private async void linkImportRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkImportRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -253,14 +227,11 @@ namespace MoneyBookTools
                     {
                         using var hg = this.CreateHourglass();
 
-                        await Task.Run(() =>
-                        {
-                            using var tr = m_db.Database.BeginTransaction();
+                        using var tr = m_db.Database.BeginTransaction();
 
-                            m_db.ImportRecurringTransactions(repeatingTransactions);
+                        m_db.ImportRecurringTransactions(repeatingTransactions);
 
-                            tr.Commit();
-                        });
+                        tr.Commit();
 
                         MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
                     }
@@ -277,7 +248,7 @@ namespace MoneyBookTools
             }
         }
 
-        private async void linkDeleteRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkDeleteRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -288,14 +259,11 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    await Task.Run(() =>
-                    {
-                        using var tr = m_db.Database.BeginTransaction();
+                    using var tr = m_db.Database.BeginTransaction();
 
-                        m_db.DeleteAllRecurringTransactions();
+                    m_db.DeleteAllRecurringTransactions();
 
-                        tr.Commit();
-                    });
+                    tr.Commit();
 
                     MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -306,7 +274,7 @@ namespace MoneyBookTools
             }
         }
 
-        private async void linkUpdateAccountData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkUpdateAccountData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -324,17 +292,11 @@ namespace MoneyBookTools
 
                     if (answer == DialogResult.Yes)
                     {
-                        await Task.Run(() =>
-                        {
-                            using var tr = m_db.Database.BeginTransaction();
+                        using var tr = m_db.Database.BeginTransaction();
 
-                            foreach (var ad in accountDataArr)
-                            {
-                                m_db.UpdateAccountData(ad.Name, ad.StartingBalance, ad.ReserveAmount);
-                            }
+                        m_db.UpdateAccountData(accountDataArr);
 
-                            tr.Commit();
-                        });
+                        tr.Commit();
 
                         MessageBox.Show(this, "Update complete.", this.Text, MessageBoxButtons.OK);
                     }
@@ -351,25 +313,22 @@ namespace MoneyBookTools
             }
         }
 
-        private async void linkResetStartingBalances_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkResetAccountData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you reset the starting balances of all accounts?",
+                    $"Are you sure you reset the account data of all accounts?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if (answer == DialogResult.Yes)
                 {
-                    await Task.Run(() =>
-                    {
-                        using var tr = m_db.Database.BeginTransaction();
+                    using var tr = m_db.Database.BeginTransaction();
 
-                        m_db.ResetStartingBalances();
+                    m_db.ResetAccountData();
 
-                        tr.Commit();
-                    });
+                    tr.Commit();
 
                     MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -380,13 +339,17 @@ namespace MoneyBookTools
             }
         }
 
-        private void LoadAccountsTree(IEnumerable<ViewAccount> accounts)
+        private void LoadAccountsTree()
         {
             treeView1.Nodes.Clear();
 
             treeView1.Nodes.Add("Accounts");
 
-            foreach (var acct in accounts.ToList())
+            var accounts = m_db.GetAccounts()
+                .AsViewAccounts()
+                .ToList();
+
+            foreach (var acct in accounts)
             {
                 var node = new TreeNode(acct.Account)
                 {
@@ -398,7 +361,7 @@ namespace MoneyBookTools
             treeView1.ExpandAll();
         }
 
-        private async void LoadTransactionsGrid()
+        private void LoadTransactionsGrid()
         {
             if (treeView1.SelectedNode != null &&
                 treeView1.SelectedNode.Level > 0 &&
@@ -431,10 +394,13 @@ namespace MoneyBookTools
             }
         }
 
-        private async void LoadRecurringTransactionsGrid(IEnumerable<ViewRecurringTransaction> recTrans)
+        private void LoadRecurringTransactionsGrid()
         {
-            var arr = recTrans.ToArray();
-            dgvRecurringTransactions.DataSource = arr;
+            var recTrans = m_db.GetRecurringTransactions(MoneyBookDbContextExtension.SortOrder.Ascending)
+                .AsViewRecurringTransactions()
+                .ToList();
+
+            dgvRecurringTransactions.DataSource = recTrans;
 
             // Resize the columns.
             var widths = new int[] { 70, 275, 80, 80 };
@@ -448,7 +414,7 @@ namespace MoneyBookTools
 
             foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
             {
-                var rt = arr[row.Index];
+                var rt = recTrans[row.Index];
 
                 if (rt.IsOverdue || rt.IsDueToday)
                 {

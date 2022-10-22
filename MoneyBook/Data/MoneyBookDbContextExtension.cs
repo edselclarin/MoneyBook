@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MoneyBook.BusinessModels;
+﻿using MoneyBook.BusinessModels;
 using MoneyBook.Models;
 
 namespace MoneyBook.Data
@@ -7,6 +6,8 @@ namespace MoneyBook.Data
     public static class MoneyBookDbContextExtension
     {
         private static int m_year = 2022;
+
+        public static int AccountYear => m_year;
 
         public enum DateFilter : int
         {
