@@ -1,11 +1,22 @@
 ﻿using MoneyBook.Data;
 using MoneyBook.Models;
+using MoneyBookTools.ViewModels;
 using Ofx;
 
 namespace MoneyBookTools.Data
 {
     public static class MoneyBookToolsDbContextExtension
     {
+        public static IEnumerable<ViewAccount> GetViewAccounts(this MoneyBookDbContext db)
+        {
+            return db.GetAccounts().AsViewAccounts();
+        }
+
+        public static IEnumerable<ViewRecurringTransaction> GetViewRecurringTransactions(this MoneyBookDbContext db, MoneyBookDbContextExtension.SortOrder sortOrder)
+        {
+            return db.GetRecurringTransactions(sortOrder).AsViewRecurringTransactions();
+        }
+
         public static void ImportTransactions(this MoneyBookDbContext db, string filename, string accountName)
         {
             var context = new OfxContext()
@@ -55,27 +66,15 @@ namespace MoneyBookTools.Data
             }
 
             db.SaveChanges();
-
-            // Update account data.
-            var transactions = db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acct.AcctId)
-                .ToList();
-            acct.RecalculateAccountData(transactions);
-
-            db.SaveChanges();
         }
 
-        public static void UpdateStartingBalance(this MoneyBookDbContext db, string acctName, decimal startingBalance)
+        public static void UpdateAccountData(this MoneyBookDbContext db, string acctName, decimal startingBalance, decimal reserveAmount)
         {
             var acct = db.Accounts.FirstOrDefault(x => x.Name == acctName);
             if (acct != null)
             {
                 acct.StartingBalance = startingBalance;
-
-                var transactions = db.Transactions
-                    .Where(x => x.IsDeleted == false && x.AcctId == acct.AcctId)
-                    .ToList();
-                acct.RecalculateAccountData(transactions);
+                acct.ReserveAmount = reserveAmount;
 
                 db.SaveChanges();
             }
@@ -88,11 +87,6 @@ namespace MoneyBookTools.Data
             foreach (var acct in accounts)
             {
                 acct.StartingBalance = 0m;
-
-                var transactions = db.Transactions
-                    .Where(x => x.IsDeleted == false && x.AcctId == acct.AcctId)
-                    .ToList();
-                acct.RecalculateAccountData(transactions);
             }
 
             db.SaveChanges();
@@ -101,18 +95,6 @@ namespace MoneyBookTools.Data
         public static void DeleteAllTransactions(this MoneyBookDbContext db)
         {
             db.Transactions.RemoveRange(db.Transactions);
-
-            db.SaveChanges();
-
-            var accounts = db.Accounts.ToList();
-            
-            foreach (var acct in accounts)
-            {
-                var transactions = db.Transactions
-                    .Where(x => x.IsDeleted == false && x.AcctId == acct.AcctId)
-                    .ToList();
-                acct.RecalculateAccountData(transactions);
-            }
 
             db.SaveChanges();
         }

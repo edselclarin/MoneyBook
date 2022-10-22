@@ -39,6 +39,7 @@ namespace MoneyBookTools
     {
         public string Name { get; set; }
         public decimal StartingBalance { get; set; }
+        public decimal ReserveAmount { get; set; }
         public string ImportFilePath { get; set; }
     }
 

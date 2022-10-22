@@ -12,10 +12,6 @@ namespace MoneyBookTools.ViewModels
                 Account = acct.AccountName,
                 StartingBalance = acct.StartingBalance,
                 ReserveAmount = acct.ReserveAmount,
-                Credits = acct.Credits,
-                Debits = acct.Debits,
-                Balance = acct.Balance,
-                AvailableBalance = acct.AvailableBalance
             });
         }
 

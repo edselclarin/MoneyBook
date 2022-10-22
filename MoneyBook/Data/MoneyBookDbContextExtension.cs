@@ -6,11 +6,13 @@ namespace MoneyBook.Data
 {
     public static class MoneyBookDbContextExtension
     {
+        private static int m_year = 2022;
+
         public enum DateFilter : int
         {
             TwoWeeks,
             ThisMonth,
-            ThisYear
+            ThisYear,
         }
 
         public enum SortOrder : int
@@ -29,136 +31,107 @@ namespace MoneyBook.Data
             Yearly
         }
 
-        public static async Task<IEnumerable<AccountInfo>> GetAccountsAsync(this MoneyBookDbContext db)
+        public static AccountInfo ToAccountInfo(this Account acct)
         {
-            var results = await db.Accounts
-                .Where(x => x.IsDeleted == false)
-                .Join(db.Institutions, acct => acct.InstId, inst => inst.InstId, (acct, inst) => new AccountInfo
-                {
-                    AcctId = acct.AcctId,
-                    AccountName = acct.Name,
-                    Description = acct.Description,
-                    AcctType = acct.AcctType,
-                    StartingBalance = acct.StartingBalance,
-                    ReserveAmount = acct.ReserveAmount,
-                    Credits = acct.Credits,
-                    Debits = acct.Debits,
-                    Balance = acct.Balance,
-                    AvailableBalance = acct.AvailableBalance,
-                    DateAdded = acct.DateAdded,
-                    DateModified = acct.DateModified
-                })
-                .ToListAsync();
-
-            return results;
+            return new AccountInfo
+            {
+                AcctId = acct.AcctId,
+                AccountName = acct.Name,
+                Description = acct.Description,
+                AcctType = acct.AcctType,
+                StartingBalance = acct.StartingBalance,
+                ReserveAmount = acct.ReserveAmount,
+                DateAdded = acct.DateAdded,
+                DateModified = acct.DateModified
+            };
         }
 
-        public static async Task<IEnumerable<InstitutionInfo>> GetInstitutionsAsync(this MoneyBookDbContext db)
+        public static TransactionInfo ToTransactionInfo(this TransactionInfo trn)
         {
-            var results = await db.Institutions
-                .Where(x => x.IsDeleted == false)
-                .Select(inst => new InstitutionInfo
-                {
-                    InstId = inst.InstId,
-                    Name = inst.Name,
-                    InstType = inst.InstType
-                })
-                .ToListAsync();
-
-            return results;
+            return new TransactionInfo
+            {
+                TrnsId = trn.TrnsId,
+                Date = trn.Date,
+                TrnsType = trn.TrnsType,
+                Payee = trn.Payee,
+                Memo = trn.Memo,
+                Amount = trn.Amount,
+                DateAdded = trn.DateAdded,
+                DateModified = trn.DateModified,
+                AcctId = trn.AcctId,
+                CatId = trn.CatId
+            };
         }
 
-        public static async Task<IEnumerable<CategoryInfo>> GetCategoriesAsync(this MoneyBookDbContext db)
+        public static IEnumerable<TransactionInfo> Filter(this IEnumerable<TransactionInfo> transactions, DateFilter dateFilter)
         {
-            var results = await db.Categories
-                .Where(x => x.IsDeleted == false)
-                .Select(cat => new CategoryInfo
-                {
-                    CatId = cat.CatId,
-                    Name = cat.Name
-                })
-                .ToListAsync();
-
-            return results;
-        }
-
-        public static async Task<IEnumerable<TransactionInfo>> GetTransactionsAsync(this MoneyBookDbContext db, int acctId, DateFilter dateFilter, SortOrder sortOrder)
-        {
-            List<Transaction> results;
-
             switch (dateFilter)
             {
                 case DateFilter.TwoWeeks:
-                default:
-                    results = await db.Transactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date >= DateTime.Now.AddDays(-14))
-                        .ToListAsync();
-                    break;
+                    return transactions
+                        .Where(x => x.Date >= DateTime.Now.AddDays(-14));
                 case DateFilter.ThisMonth:
-                    results = await db.Transactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Month == DateTime.Now.Month)
-                        .ToListAsync();
-                    break;
+                    return transactions
+                        .Where(x => x.Date.Month == DateTime.Now.Month);
                 case DateFilter.ThisYear:
-                    results = await db.Transactions
-                        .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == DateTime.Now.Year)
-                        .ToListAsync();
-                    break;
-            }
-
-            IOrderedEnumerable<Transaction> sortedTransactions;
-
-            switch (sortOrder)
-            {
-                case SortOrder.Ascending:
-                    sortedTransactions = results.OrderBy(x => x.Date);
-                    break;
-                case SortOrder.Descending:
+                    return transactions
+                        .Where(x => x.Date.Year == DateTime.Now.Year);
                 default:
-                    sortedTransactions = results.OrderByDescending(x => x.Date);
-                    break;
+                    return transactions;
             }
-
-            return sortedTransactions
-                .Select(trn => new TransactionInfo
-                {
-                    TrnsId = trn.TrnsId,
-                    Date = trn.Date,
-                    TrnsType = trn.TrnsType,
-                    RefNum = trn.RefNum,
-                    Payee = trn.Payee,
-                    Memo = trn.Memo,
-                    State = trn.State,
-                    Amount = trn.Amount,
-                    DateAdded = trn.DateAdded,
-                    DateModified = trn.DateModified,
-                    AcctId = trn.AcctId,
-                    CatId = trn.CatId
-                });
         }
 
-        public static async Task<IEnumerable<RecurringTransactionInfo>> GetRecurringTransactionsAsync(this MoneyBookDbContext db, SortOrder sortOrder)
+        public static IEnumerable<TransactionInfo> Order(this IEnumerable<TransactionInfo> transactions, SortOrder sortOrder)
         {
-            List<RecurringTransaction> results;
-
-            results = await db.RecurringTransactions
-                .Where(x => x.IsDeleted == false)
-                .ToListAsync();
-
-            IOrderedEnumerable<RecurringTransaction> sortedTransactions;
-
             switch (sortOrder)
             {
                 case SortOrder.Ascending:
-                    sortedTransactions = results.OrderBy(x => x.DueDate);
-                    break;
+                    return transactions.OrderBy(x => x.Date);
                 case SortOrder.Descending:
+                    return transactions.OrderByDescending(x => x.Date);
                 default:
-                    sortedTransactions = results.OrderByDescending(x => x.DueDate);
+                    return transactions;
                     break;
             }
+        }
 
-            return sortedTransactions
+        public static IEnumerable<AccountInfo> GetAccounts(this MoneyBookDbContext db)
+        {
+            var results = db.Accounts
+                .Where(x => x.IsDeleted == false)
+                .Select(x => x.ToAccountInfo());
+
+            return results.AsEnumerable();
+        }
+
+        public static AccountSummary? GetAccountSummary(this MoneyBookDbContext db, int acctId)
+        {
+            var accts = db.Accounts
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId)
+                .Select(x => x.ToAccountInfo());
+
+            if (accts != null && accts.Count() > 0)
+            {
+                var transactions = db.GetTransactions(accts.First().AcctId);
+
+                var summary = new AccountSummary()
+                {
+                    Account = accts.First(),
+                    Transactions = transactions.ToList()
+                };
+
+                return summary;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static IEnumerable<RecurringTransactionInfo> GetRecurringTransactions(this MoneyBookDbContext db, SortOrder sortOrder)
+        {
+            var results = db.RecurringTransactions
+                .Where(x => x.IsDeleted == false)
                 .Select(trn => new RecurringTransactionInfo
                 {
                     RecTrnsId = trn.RecTrnsId,
@@ -173,15 +146,41 @@ namespace MoneyBook.Data
                     AcctId = trn.AcctId,
                     CatId = trn.CatId
                 });
+
+            IOrderedQueryable<RecurringTransactionInfo> sortedTransactions;
+            switch (sortOrder)
+            {
+                case SortOrder.Ascending:
+                    sortedTransactions = results.OrderBy(x => x.DueDate);
+                    break;
+                case SortOrder.Descending:
+                default:
+                    sortedTransactions = results.OrderByDescending(x => x.DueDate);
+                    break;
+            }
+
+            return sortedTransactions.AsEnumerable();
         }
 
-        public static void RecalculateAccountData(this Account acct, IList<Transaction> transactions)
+        public static IEnumerable<TransactionInfo> GetTransactions(this MoneyBookDbContext db, int acctId)
         {
-            acct.Credits = transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
-            acct.Debits = transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
-            acct.Balance = acct.StartingBalance + acct.Credits - acct.Debits;
-            acct.AvailableBalance = acct.Balance - acct.ReserveAmount;
-            acct.DateModified = DateTime.Now;
+            var results = db.Transactions
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == m_year)
+                .Select(x => new TransactionInfo
+                {
+                    TrnsId = x.TrnsId,
+                    Date = x.Date,
+                    TrnsType = x.TrnsType,
+                    Payee = x.Payee,
+                    Memo = x.Memo,
+                    Amount = x.Amount,
+                    DateAdded = x.DateAdded,
+                    DateModified = x.DateModified,
+                    AcctId = x.AcctId,
+                    CatId = x.CatId
+                });
+
+            return results.AsEnumerable();
         }
     }
 }
