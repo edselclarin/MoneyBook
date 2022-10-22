@@ -382,7 +382,7 @@ namespace MoneyBookTools
                     .ToList();
 
                 // Resize the columns.
-                var widths = new int[] { 70, 70, 50, 80, 275 };
+                var widths = new int[] { 70, 70, 80, 80, 275 };
                 int i = 0;
                 dgvAccountTransactions.Columns["Date"].Width = widths[i++];
                 dgvAccountTransactions.Columns["RefNum"].Width = widths[i++];

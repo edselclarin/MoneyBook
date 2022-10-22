@@ -48,7 +48,7 @@ namespace MoneyBookTools.Data
                         Date = tr.DatePosted,
                         TrnsType = tr.TransactionType,
                         Payee = tr.Memo,
-                        State = State.GetAlias(StateTypes.Uncleared),
+                        State = MoneyBookDbContextExtension.StateTypes.Uncleared.ToString(),
                         Amount = tr.TransactionAmount,
                         ExtTrnsId = tr.TransactionId,
                         AcctId = acct.AcctId,

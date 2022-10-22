@@ -9,6 +9,14 @@ namespace MoneyBook.Data
 
         public static int AccountYear => m_year;
 
+        public enum StateTypes
+        {
+            Uncleared,
+            Cleared,
+            Reconciled,
+            Staged,
+        }
+        
         public enum DateFilter : int
         {
             TwoWeeks,
@@ -172,8 +180,10 @@ namespace MoneyBook.Data
                     TrnsId = x.TrnsId,
                     Date = x.Date,
                     TrnsType = x.TrnsType,
+                    RefNum = x.RefNum,
                     Payee = x.Payee,
                     Memo = x.Memo,
+                    State = x.State,
                     Amount = x.Amount,
                     DateAdded = x.DateAdded,
                     DateModified = x.DateModified,
