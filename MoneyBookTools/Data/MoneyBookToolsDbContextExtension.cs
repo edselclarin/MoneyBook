@@ -173,5 +173,34 @@ namespace MoneyBookTools.Data
             }
             db.SaveChanges();
         }
+
+        public static void UpdateTransaction(this MoneyBookDbContext db, ViewTransaction transaction)
+        {
+            var trn = db.Transactions
+                .FirstOrDefault(x => x.TrnsId == transaction.TrnsId);
+
+            if (trn != null)
+            {
+                trn.Date = transaction.Date;
+                trn.Payee = transaction.Payee;
+                trn.RefNum = transaction.RefNum;
+                trn.Payee = transaction.Payee;
+                trn.Memo = transaction.Memo;
+                trn.State = transaction.State;
+                if (transaction.NewAmount < 0)
+                {
+                    trn.TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString();
+                    trn.Amount = Math.Abs(transaction.NewAmount);
+                }
+                else
+                {
+                    trn.TrnsType = MoneyBookDbContextExtension.TransactionTypes.CREDIT.ToString();
+                    trn.Amount = transaction.NewAmount;
+                }
+                trn.DateModified = DateTime.Now.Date;
+
+                db.SaveChanges();
+            }
+        }
     }
 }

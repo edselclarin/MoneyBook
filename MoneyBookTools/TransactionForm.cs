@@ -1,13 +1,14 @@
-﻿using MoneyBookTools.ViewModels;
-using System.Diagnostics;
+﻿using MoneyBook.Data;
+using MoneyBookTools.Data;
+using MoneyBookTools.ViewModels;
 
 namespace MoneyBookTools
 {
     public partial class TransactionForm : Form
     {
-        private int m_iSelected;
+        private string m_originalHash;
 
-        public List<ViewTransaction> Transactions { get; set; }
+        public ViewTransaction Transaction { get; set; }
 
         public TransactionForm()
         {
@@ -16,120 +17,73 @@ namespace MoneyBookTools
 
         private void TransactionForm_Load(object sender, EventArgs e)
         {
-            comboState.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.StateTypes));
+            try
+            {
+                comboState.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.StateTypes));
+
+                Transaction.NewAmount = Transaction.Amount;
+
+                m_originalHash = Transaction.GetHash();
+
+                FillForm();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
         }
 
         private void TransactionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var modifiedTransactions = Transactions.Where(x => x.Modified == true);
-            foreach (var trn in modifiedTransactions)
+            bool isModified = Transaction.GetHash().CompareTo(m_originalHash) != 0;
+
+            if (isModified)
             {
-                Debug.WriteLine($"{trn.Payee}");
+                var answer = MessageBox.Show(this,
+                    $"Save changes?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var hg = new Hourglass(this);
+
+                    var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+
+                    using var tr = db.Database.BeginTransaction();
+
+                    db.UpdateTransaction(Transaction);
+
+                    tr.Commit();
+
+                    DialogResult = DialogResult.OK;
+                }
             }
         }
 
-        public void Init(int iSelected)
+        private void buttonSave_Click(object sender, EventArgs e)
         {
-            if (InvokeRequired)
-            {
-                Invoke(Init, iSelected);
-            }
-            else
-            {
-                SetCurrentTransaction(iSelected);
-            }
+            Close();
         }
 
-        public void SetCurrentTransaction(int index)
+        private void buttonCancel_Click(object sender, EventArgs e)
         {
-            m_iSelected = index;
-
-            if (m_iSelected > -1)
-            {
-                labelIndex.Text = $"{m_iSelected + 1} of {Transactions.Count()}";
-
-                var transaction = Transactions[m_iSelected];
-
-                dateTime.DataBindings.Clear();
-                dateTime.DataBindings.Add("Value", transaction, "Date", false, DataSourceUpdateMode.OnPropertyChanged);
-
-                textRefNum.DataBindings.Clear();
-                textRefNum.DataBindings.Add("Text", transaction, "RefNum", false, DataSourceUpdateMode.OnPropertyChanged);
-
-                textPayee.DataBindings.Clear();
-                textPayee.DataBindings.Add("Text", transaction, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
-
-                textMemo.DataBindings.Clear();
-                textMemo.DataBindings.Add("Text", transaction, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
-
-                comboState.DataBindings.Clear();
-                comboState.DataBindings.Add("SelectedText", transaction, "State", false, DataSourceUpdateMode.OnPropertyChanged);
-
-                textAmount.DataBindings.Clear();
-                textAmount.DataBindings.Add("Text", transaction, "Amount", false, DataSourceUpdateMode.OnPropertyChanged);
-            }
-            else
-            {
-                labelIndex.Text = "0 of 0";
-            }
+            Close();
         }
 
-        private void buttonFirst_Click(object sender, EventArgs e)
+        private void FillForm()
         {
-            try
-            {
-                m_iSelected = 0;
+            dateTime.DataBindings.Add("Value", Transaction, "Date", false, DataSourceUpdateMode.OnPropertyChanged);
 
-                SetCurrentTransaction(m_iSelected);
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
+            textRefNum.DataBindings.Add("Text", Transaction, "RefNum", false, DataSourceUpdateMode.OnPropertyChanged);
 
-        private void buttonPrev_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Wrap around.
-                m_iSelected = m_iSelected == 0 ? Transactions.Count() - 1 : m_iSelected - 1;
+            textPayee.DataBindings.Add("Text", Transaction, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
 
-                SetCurrentTransaction(m_iSelected);
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
+            textMemo.DataBindings.Add("Text", Transaction, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
 
-        private void buttonNext_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Wrap around.
-                m_iSelected = m_iSelected == Transactions.Count() - 1 ? 0 : m_iSelected + 1;
+            comboState.DataBindings.Add("SelectedText", Transaction, "State", false, DataSourceUpdateMode.OnPropertyChanged);
 
-                SetCurrentTransaction(m_iSelected);
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void buttonLast_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                m_iSelected = Transactions.Count() - 1;
-
-                SetCurrentTransaction(m_iSelected);
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
+            textAmount.DataBindings.Add("Text", Transaction, "NewAmount", false, DataSourceUpdateMode.OnPropertyChanged);
         }
     }
 }

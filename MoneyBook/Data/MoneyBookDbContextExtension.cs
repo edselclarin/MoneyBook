@@ -9,6 +9,12 @@ namespace MoneyBook.Data
 
         public static int AccountYear => m_year;
 
+        public enum TransactionTypes
+        {
+            DEBIT,
+            CREDIT
+        }
+
         public enum StateTypes
         {
             Uncleared,
