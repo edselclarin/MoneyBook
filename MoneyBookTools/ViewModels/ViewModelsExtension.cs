@@ -1,9 +1,22 @@
 ﻿using MoneyBook.BusinessModels;
+using System.Reflection;
+using System.Text;
 
 namespace MoneyBookTools.ViewModels
 {
     public static class ViewModelsExtension
     {
+        public static string GetHash<T>(this T obj)
+        {
+            var sb = new StringBuilder();
+            foreach (PropertyInfo prop in obj.GetType().GetProperties())
+            {
+                var val = prop.GetValue(obj);
+                sb.Append(val != null ? val.ToString() : "(null)");
+            }
+            return sb.ToString();
+        }
+
         public static IEnumerable<ViewAccount> AsViewAccounts(this IEnumerable<AccountInfo> accounts)
         {
             return accounts.Select(acct => new ViewAccount

@@ -427,6 +427,43 @@ namespace MoneyBookTools
             }
         }
 
+        private void dgvAccountTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransaction = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => new
+                {
+                    RowIndex = x.RowIndex,
+                    Transaction = transactions[x.RowIndex]
+                })
+                .FirstOrDefault();
+
+            if (selectedTransaction != null)
+            {
+                if (m_transactionForm != null)
+                {
+                    m_transactionForm.Dispose();
+                }
+                m_transactionForm = new TransactionForm()
+                {
+                    StartPosition = FormStartPosition.CenterScreen,
+                    Transaction = selectedTransaction.Transaction
+                };
+                m_transactionForm.FormClosed += transactionForm_FormClosed;
+                m_transactionForm.ShowDialog(this);
+            }
+        }
+
+        private void transactionForm_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            var form = sender as TransactionForm;
+            if (form.DialogResult == DialogResult.OK)
+            {
+                LoadTransactionsGrid();
+            }
+        }
+
         private void LoadAccountsTree()
         {
             treeView1.Nodes.Clear();
@@ -572,50 +609,6 @@ namespace MoneyBookTools
                     LoadTransactionsGrid();
                 }
             }
-        }
-
-        private void dgvAccountTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransaction = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .Select(x => new
-                {
-                    RowIndex = x.RowIndex,
-                    Transaction = transactions[x.RowIndex]
-                })
-                .FirstOrDefault();
-
-            if (selectedTransaction != null)
-            {
-                if (m_transactionForm != null)
-                {
-                    m_transactionForm.Dispose();
-                }
-                m_transactionForm = new TransactionForm()
-                {
-                    StartPosition = FormStartPosition.CenterScreen,
-                    Transactions = transactions
-                };
-                m_transactionForm.Init(selectedTransaction.RowIndex);
-                m_transactionForm.ShowDialog(this);
-            }
-        }
-
-        private void dgvAccountTransactions_SelectionChanged(object sender, EventArgs e)
-        {
-            //if (m_transactionForm != null && m_transactionForm.Visible)
-            //{
-            //    var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            //    var selectedTransactions = dgvAccountTransactions.SelectedCells
-            //        .Cast<DataGridViewCell>()
-            //        .Select(x => transactions[x.RowIndex]);
-
-            //    if (selectedTransactions != null)
-            //    {
-            //        m_transactionForm.SetCurrentTransaction(selectedTransaction);
-            //    }
-            //}
         }
     }
 }

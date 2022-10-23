@@ -41,12 +41,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.labelIndex = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.buttonLast = new System.Windows.Forms.Button();
-            this.buttonNext = new System.Windows.Forms.Button();
-            this.buttonPrev = new System.Windows.Forms.Button();
-            this.buttonFirst = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -115,7 +112,6 @@
             this.tableLayoutPanel1.Controls.Add(this.textRefNum, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.textMemo, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.labelIndex, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 6);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -128,7 +124,8 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 268);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 258);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // label6
@@ -203,78 +200,44 @@
             this.label1.Text = "Date";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // labelIndex
-            // 
-            this.labelIndex.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelIndex.Location = new System.Drawing.Point(3, 213);
-            this.labelIndex.Margin = new System.Windows.Forms.Padding(3);
-            this.labelIndex.Name = "labelIndex";
-            this.labelIndex.Size = new System.Drawing.Size(82, 52);
-            this.labelIndex.TabIndex = 10;
-            this.labelIndex.Text = "0 of 0";
-            this.labelIndex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.buttonLast);
-            this.panel1.Controls.Add(this.buttonNext);
-            this.panel1.Controls.Add(this.buttonPrev);
-            this.panel1.Controls.Add(this.buttonFirst);
+            this.panel1.Controls.Add(this.buttonCancel);
+            this.panel1.Controls.Add(this.buttonSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(91, 213);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(257, 52);
+            this.panel1.Size = new System.Drawing.Size(257, 42);
             this.panel1.TabIndex = 11;
             // 
-            // buttonLast
+            // buttonCancel
             // 
-            this.buttonLast.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonLast.Location = new System.Drawing.Point(111, 12);
-            this.buttonLast.Name = "buttonLast";
-            this.buttonLast.Size = new System.Drawing.Size(31, 29);
-            this.buttonLast.TabIndex = 2;
-            this.buttonLast.Text = ">|";
-            this.buttonLast.UseVisualStyleBackColor = true;
-            this.buttonLast.Click += new System.EventHandler(this.buttonLast_Click);
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(106, 10);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 1;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // buttonNext
+            // buttonSave
             // 
-            this.buttonNext.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonNext.Location = new System.Drawing.Point(74, 12);
-            this.buttonNext.Name = "buttonNext";
-            this.buttonNext.Size = new System.Drawing.Size(31, 29);
-            this.buttonNext.TabIndex = 2;
-            this.buttonNext.Text = ">";
-            this.buttonNext.UseVisualStyleBackColor = true;
-            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
-            // 
-            // buttonPrev
-            // 
-            this.buttonPrev.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonPrev.Location = new System.Drawing.Point(37, 12);
-            this.buttonPrev.Name = "buttonPrev";
-            this.buttonPrev.Size = new System.Drawing.Size(31, 29);
-            this.buttonPrev.TabIndex = 1;
-            this.buttonPrev.Text = "<";
-            this.buttonPrev.UseVisualStyleBackColor = true;
-            this.buttonPrev.Click += new System.EventHandler(this.buttonPrev_Click);
-            // 
-            // buttonFirst
-            // 
-            this.buttonFirst.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.buttonFirst.Location = new System.Drawing.Point(0, 12);
-            this.buttonFirst.Name = "buttonFirst";
-            this.buttonFirst.Size = new System.Drawing.Size(31, 29);
-            this.buttonFirst.TabIndex = 0;
-            this.buttonFirst.Text = "|<";
-            this.buttonFirst.UseVisualStyleBackColor = true;
-            this.buttonFirst.Click += new System.EventHandler(this.buttonFirst_Click);
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonSave.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonSave.Location = new System.Drawing.Point(25, 10);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 0;
+            this.buttonSave.Text = "Save";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // TransactionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 268);
+            this.ClientSize = new System.Drawing.Size(371, 258);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -305,11 +268,8 @@
         private Label label3;
         private Label label2;
         private Label label1;
-        private Label labelIndex;
         private Panel panel1;
-        private Button buttonLast;
-        private Button buttonNext;
-        private Button buttonPrev;
-        private Button buttonFirst;
+        private Button buttonSave;
+        private Button buttonCancel;
     }
 }

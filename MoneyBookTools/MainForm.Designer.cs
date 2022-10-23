@@ -458,7 +458,6 @@ namespace MoneyBookTools
             this.dgvAccountTransactions.TabIndex = 3;
             this.dgvAccountTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
             this.dgvAccountTransactions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAccountTransactions_CellMouseDoubleClick);
-            this.dgvAccountTransactions.SelectionChanged += new System.EventHandler(this.dgvAccountTransactions_SelectionChanged);
             // 
             // transContextMenu
             // 
