@@ -230,5 +230,11 @@ namespace MoneyBook.Data
         {
             tran.State = state.ToString();
         }
+
+        public static void Delete(this Transaction tran)
+        {
+            // Soft delete.
+            tran.IsDeleted = true;
+        }
     }
 }

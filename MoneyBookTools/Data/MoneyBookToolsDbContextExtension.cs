@@ -202,5 +202,17 @@ namespace MoneyBookTools.Data
                 db.SaveChanges();
             }
         }
+
+        public static void DeleteTransactions(this MoneyBookDbContext db, IEnumerable<ViewTransaction> transactions)
+        {
+            foreach (var tr in transactions)
+            {
+                var trn = db.Transactions
+                    .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
+
+                trn?.Delete();
+            }
+            db.SaveChanges();
+        }
     }
 }
