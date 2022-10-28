@@ -586,7 +586,8 @@ namespace MoneyBookTools
             var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
             var selectedRecTrans = dgvRecurringTransactions.SelectedCells
                 .Cast<DataGridViewCell>()
-                .Select(x => recTrans[x.RowIndex])
+                .GroupBy(x => x.RowIndex)
+                .Select(g => recTrans[g.Key])
                 .ToList();
 
             if (selectedRecTrans.Count() > 0)
@@ -614,7 +615,8 @@ namespace MoneyBookTools
             var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
             var selectedTransactions = dgvAccountTransactions.SelectedCells
                 .Cast<DataGridViewCell>()
-                .Select(x => transactions[x.RowIndex])
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
                 .ToList();
 
             if (selectedTransactions.Count() > 0)
