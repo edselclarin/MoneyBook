@@ -545,6 +545,16 @@ namespace MoneyBookTools
                 dgvAccountTransactions.Columns["Memo"].Width = widths[i++];
                 dgvAccountTransactions.Columns["Payee"].Width = 
                     dgvAccountTransactions.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgvAccountTransactions.Margin.Right;
+
+                foreach (DataGridViewRow row in dgvAccountTransactions.Rows)
+                {
+                    var vt = viewTransactions[row.Index];
+
+                    if (vt.State == MoneyBookDbContextExtension.StateTypes.Uncleared.ToString())
+                    {
+                        row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+                    }
+                }
             }
         }
 
