@@ -429,38 +429,64 @@ namespace MoneyBookTools
 
         private void dgvAccountTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransaction = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .Select(x => new
-                {
-                    RowIndex = x.RowIndex,
-                    Transaction = transactions[x.RowIndex]
-                })
-                .FirstOrDefault();
-
-            if (selectedTransaction != null)
+            try
             {
-                if (m_transactionForm != null)
+                var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+                var selectedTransaction = dgvAccountTransactions.SelectedCells
+                    .Cast<DataGridViewCell>()
+                    .Select(x => new
+                    {
+                        RowIndex = x.RowIndex,
+                        Transaction = transactions[x.RowIndex]
+                    })
+                    .FirstOrDefault();
+
+                if (selectedTransaction != null)
                 {
-                    m_transactionForm.Dispose();
+                    if (m_transactionForm != null)
+                    {
+                        m_transactionForm.Dispose();
+                    }
+                    m_transactionForm = new TransactionForm()
+                    {
+                        StartPosition = FormStartPosition.CenterScreen,
+                        Transaction = selectedTransaction.Transaction
+                    };
+                    m_transactionForm.FormClosed += transactionForm_FormClosed;
+                    m_transactionForm.ShowDialog(this);
                 }
-                m_transactionForm = new TransactionForm()
-                {
-                    StartPosition = FormStartPosition.CenterScreen,
-                    Transaction = selectedTransaction.Transaction
-                };
-                m_transactionForm.FormClosed += transactionForm_FormClosed;
-                m_transactionForm.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
             }
         }
 
         private void transactionForm_FormClosed(object? sender, FormClosedEventArgs e)
         {
-            var form = sender as TransactionForm;
-            if (form.DialogResult == DialogResult.OK)
+            try
             {
-                LoadTransactionsGrid();
+                var form = sender as TransactionForm;
+                if (form.DialogResult == DialogResult.OK)
+                {
+                    LoadTransactionsGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DeleteTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
             }
         }
 
@@ -603,6 +629,46 @@ namespace MoneyBookTools
                     using var tr = m_db.Database.BeginTransaction();
 
                     m_db.SetTransactionStates(selectedTransactions, state);
+
+                    tr.Commit();
+
+                    LoadTransactionsGrid();
+                }
+            }
+        }
+
+        private void DeleteTransactions()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
+                .ToList();
+
+            if (selectedTransactions.Count() > 0)
+            {
+                string msg;
+
+                if (selectedTransactions.Count() > 0)
+                {
+                    msg = $"Are you sure you want to delete these {selectedTransactions.Count()} transactions?";
+                }
+                else
+                {
+                    msg = "Are you sure you want to delete this transaction?";
+                }
+
+                var answer = MessageBox.Show(this,
+                    msg,
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var tr = m_db.Database.BeginTransaction();
+                    
+                    m_db.DeleteTransactions(selectedTransactions);
 
                     tr.Commit();
 
