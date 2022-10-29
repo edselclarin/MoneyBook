@@ -160,6 +160,9 @@ namespace MoneyBook.Data
 
         public static IEnumerable<RecurringTransactionInfo> GetRecurringTransactions(this MoneyBookDbContext db, SortOrder sortOrder)
         {
+            var accts = db.Accounts
+                .ToList();
+
             var results = db.RecurringTransactions
                 .Where(x => x.IsDeleted == false)
                 .Select(trn => new RecurringTransactionInfo

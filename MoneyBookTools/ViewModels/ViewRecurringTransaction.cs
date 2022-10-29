@@ -12,6 +12,11 @@ namespace MoneyBookTools.ViewModels
         [Browsable(false)]
         public string TrnsType { get; set; }
 
+        [Browsable(false)]
+        public int AcctId { get; set; }
+
+        public string Account { get; set; }
+
         public string Payee { get; set; }
 
         public string Memo { get; set; }
@@ -37,9 +42,6 @@ namespace MoneyBookTools.ViewModels
         /// </summary>
         [Browsable(false)]
         public bool IsDueSoon => DueDate.AddDays(-5).Date <= DateTime.Now.Date;
-
-        [Browsable(false)]
-        public int AcctId { get; set; }
 
         [Browsable(false)]
         public int CatId { get; set; }
