@@ -601,12 +601,26 @@ namespace MoneyBookTools
                 .AsViewRecurringTransactions()
                 .ToList();
 
+            var accts = m_db.GetAccounts()
+                .ToList();
+
+            foreach (var rt in recTrans)
+            {
+                var acct = m_db.GetAccounts().SingleOrDefault(x => x.AcctId == rt.AcctId);
+
+                if (acct != null)
+                {
+                    rt.Account = acct.AccountName;
+                }
+            }
+
             dgvRecurringTransactions.DataSource = recTrans;
 
             // Resize the columns.
-            var widths = new int[] { 70, 275, 80, 80 };
+            var widths = new int[] { 70, 70, 275, 80, 80 };
             int i = 0;
             dgvRecurringTransactions.Columns["DueDate"].Width = widths[i++];
+            dgvRecurringTransactions.Columns["Account"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Memo"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Amount"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Frequency"].Width = widths[i++];
