@@ -254,5 +254,15 @@ namespace MoneyBook.Data
             // Soft delete.
             tran.IsDeleted = true;
         }
+
+        public static void BackupDatabase(this MoneyBookDbContext db, string filename)
+        {
+            // TODO
+        }
+
+        public static void RestoreDatabase(this MoneyBookDbContext db, string filename)
+        {
+            // TODO
+        }
     }
 }
