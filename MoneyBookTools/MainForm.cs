@@ -8,7 +8,6 @@ namespace MoneyBookTools
     public partial class MainForm : Form
     {
         private MoneyBookDbContext m_db;
-        private TransactionForm m_transactionForm;
 
         public MainForm()
         {
@@ -347,30 +346,17 @@ namespace MoneyBookTools
         
         private void transContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var count = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Count();
-
-            setStateToolStripMenuItem.Enabled = count > 0;
-        }
-
-        private void recTransContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            var count = dgvRecurringTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Count();
-
-            stageRecTransToolStripMenuItem.Enabled = 
-            skipRecTransToolStripMenuItem.Enabled = count > 0;
-        }
-
-        private void stageSelectedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
             try
             {
-                StageRecurringTransactions();
+                var count = dgvAccountTransactions.SelectedCells
+                    .Cast<DataGridViewCell>()
+                    .GroupBy(x => x.RowIndex)
+                    .Count();
+
+                setTransStateToolStripMenuItem.Enabled =
+                deleteTransToolStripMenuItem.Enabled = count > 0;
+
+                editTransToolStripMenuItem.Enabled = count == 1;
             }
             catch (Exception ex)
             {
@@ -378,11 +364,11 @@ namespace MoneyBookTools
             }
         }
 
-        private void skipSelectedRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void editTransToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                SkipRecurringTransactions();
+                ShowTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -390,7 +376,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void setStateToolStripMenuItem_Click(object sender, EventArgs e)
+        private void setTransStateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -412,34 +398,72 @@ namespace MoneyBookTools
             }
         }
 
+        private void recTransContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var count = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Count();
+
+            stageRecTransToolStripMenuItem.Enabled = 
+            skipRecTransToolStripMenuItem.Enabled = count > 0;
+
+            editRecTransToolStripMenuItem.Enabled = count == 1;
+        }
+
+        private void stageRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                StageRecurringTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void skipRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SkipRecurringTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void dgvRecurringTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                ShowRecTransactionDialog();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void editRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowRecTransactionDialog();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void dgvAccountTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             try
             {
-                var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-                var selectedTransaction = dgvAccountTransactions.SelectedCells
-                    .Cast<DataGridViewCell>()
-                    .Select(x => new
-                    {
-                        RowIndex = x.RowIndex,
-                        Transaction = transactions[x.RowIndex]
-                    })
-                    .FirstOrDefault();
-
-                if (selectedTransaction != null)
-                {
-                    if (m_transactionForm != null)
-                    {
-                        m_transactionForm.Dispose();
-                    }
-                    m_transactionForm = new TransactionForm()
-                    {
-                        StartPosition = FormStartPosition.CenterScreen,
-                        Transaction = selectedTransaction.Transaction
-                    };
-                    m_transactionForm.FormClosed += transactionForm_FormClosed;
-                    m_transactionForm.ShowDialog(this);
-                }
+                ShowTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -463,7 +487,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteTransToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -720,6 +744,60 @@ namespace MoneyBookTools
                     tr.Commit();
 
                     LoadTransactionsGrid();
+                }
+            }
+        }
+
+        private void ShowTransactionDialog()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransaction = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => new
+                {
+                    RowIndex = x.RowIndex,
+                    Transaction = transactions[x.RowIndex]
+                })
+                .FirstOrDefault();
+
+            if (selectedTransaction != null)
+            {
+                var dlg = new TransactionForm()
+                {
+                    StartPosition = FormStartPosition.CenterScreen,
+                    Transaction = selectedTransaction.Transaction
+                };
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    dlg.ShowDialog(this);
+                }
+            }
+        }
+
+        private void ShowRecTransactionDialog()
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => new
+                {
+                    RowIndex = x.RowIndex,
+                    Transaction = recTrans[x.RowIndex]
+                })
+                .FirstOrDefault();
+
+            if (selectedRecTrans != null)
+            {
+                var dlg = new RecurringTransactionForm()
+                {
+                    StartPosition = FormStartPosition.CenterScreen,
+                    RecurringTransaction = selectedRecTrans.Transaction
+                };
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadRecurringTransactionsGrid();
                 }
             }
         }
