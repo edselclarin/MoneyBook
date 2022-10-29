@@ -539,6 +539,20 @@ namespace MoneyBookTools
                     if (vt.State == MoneyBookDbContextExtension.StateTypes.Uncleared.ToString())
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+
+                        row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
+                    }
+                    else if (vt.State == MoneyBookDbContextExtension.StateTypes.Pending.ToString())
+                    {
+                        row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+
+                        row.DefaultCellStyle.ForeColor = Color.DarkOrchid;
+                    }
+                    else if (vt.State == MoneyBookDbContextExtension.StateTypes.Staged.ToString())
+                    {
+                        row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+
+                        row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
                     }
                 }
             }
@@ -568,10 +582,14 @@ namespace MoneyBookTools
 
                 if (rt.IsOverdue || rt.IsDueToday)
                 {
+                    row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+
                     row.DefaultCellStyle.ForeColor = Color.Red;
                 }
                 else if (rt.IsDueSoon)
                 {
+                    row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+
                     row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
                 }
             }
