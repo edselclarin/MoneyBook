@@ -190,6 +190,29 @@ namespace MoneyBookTools.Data
             db.SaveChanges();
         }
 
+        public static void CopyRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> recTrans)
+        {
+            foreach (var rtr in recTrans)
+            {
+                var trNew = new Transaction()
+                {
+                    Date = rtr.DueDate,
+                    TrnsType = rtr.TrnsType,
+                    Payee = rtr.Payee,
+                    Memo = rtr.Memo,
+                    State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
+                    Amount = rtr.TrnsAmount,
+                    ExtTrnsId = String.Empty,
+                    AcctId = rtr.AcctId,
+                    CatId = rtr.CatId
+                };
+
+                db.Transactions.Add(trNew);
+            }
+
+            db.SaveChanges();
+        }
+
         public static void SetTransactionStates(this MoneyBookDbContext db, IEnumerable<ViewTransaction> transactions, MoneyBookDbContextExtension.StateTypes state)
         {
             foreach (var tr in transactions)

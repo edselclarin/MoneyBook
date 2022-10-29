@@ -75,6 +75,7 @@ namespace MoneyBookTools
             this.editRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stageRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             this.tabOperations.SuspendLayout();
@@ -584,9 +585,10 @@ namespace MoneyBookTools
             this.recTransContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editRecTransToolStripMenuItem,
             this.skipRecTransToolStripMenuItem,
-            this.stageRecTransToolStripMenuItem});
+            this.stageRecTransToolStripMenuItem,
+            this.copyRecTransToolStripMenuItem});
             this.recTransContextMenu.Name = "recTransContextMenu";
-            this.recTransContextMenu.Size = new System.Drawing.Size(104, 70);
+            this.recTransContextMenu.Size = new System.Drawing.Size(104, 92);
             this.recTransContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.recTransContextMenu_Opening);
             // 
             // editRecTransToolStripMenuItem
@@ -610,8 +612,16 @@ namespace MoneyBookTools
             this.stageRecTransToolStripMenuItem.Name = "stageRecTransToolStripMenuItem";
             this.stageRecTransToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.stageRecTransToolStripMenuItem.Text = "Stage";
-            this.stageRecTransToolStripMenuItem.ToolTipText = "Move upcoming transactions into ledger";
+            this.stageRecTransToolStripMenuItem.ToolTipText = "Post to ledger and set next due date";
             this.stageRecTransToolStripMenuItem.Click += new System.EventHandler(this.stageRecTransToolStripMenuItem_Click);
+            // 
+            // copyRecTransToolStripMenuItem
+            // 
+            this.copyRecTransToolStripMenuItem.Name = "copyRecTransToolStripMenuItem";
+            this.copyRecTransToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.copyRecTransToolStripMenuItem.Text = "Copy";
+            this.copyRecTransToolStripMenuItem.ToolTipText = "Copy to ledger";
+            this.copyRecTransToolStripMenuItem.Click += new System.EventHandler(this.copyRecTransToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -711,5 +721,6 @@ namespace MoneyBookTools
         private ToolStripMenuItem editTransToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem editRecTransToolStripMenuItem;
+        private ToolStripMenuItem copyRecTransToolStripMenuItem;
     }
 }
