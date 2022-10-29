@@ -149,6 +149,34 @@ namespace MoneyBookTools.Data
             db.SaveChanges();
         }
 
+        public static void StageRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> recTrans)
+        {
+            foreach (var rtr in recTrans)
+            {
+                var trNew = new Transaction()
+                {
+                    Date = rtr.DueDate,
+                    TrnsType = rtr.TrnsType,
+                    Payee = rtr.Payee,
+                    Memo= rtr.Memo,
+                    State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
+                    Amount = rtr.TrnsAmount,
+                    ExtTrnsId = String.Empty,
+                    AcctId = rtr.AcctId,
+                    CatId = rtr.CatId
+                };
+
+                db.Transactions.Add(trNew);
+
+                var trn = db.RecurringTransactions
+                    .FirstOrDefault(x => x.RecTrnsId == rtr.RecTrnsId);
+
+                trn?.Skip();
+            }
+
+            db.SaveChanges();
+        }
+
         public static void SkipRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> transactions)
         {
             foreach (var tr in transactions)

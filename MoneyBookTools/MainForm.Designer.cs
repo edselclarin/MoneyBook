@@ -56,6 +56,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.labelActualBalance = new System.Windows.Forms.Label();
             this.labelPendingBalance = new System.Windows.Forms.Label();
             this.comboFilter = new System.Windows.Forms.ComboBox();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
@@ -63,17 +64,15 @@ namespace MoneyBookTools
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.setToUnclearedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setToClearedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setToPendingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setToReconciledMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
             this.recTransContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.skipSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skipRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stageRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             this.tabOperations.SuspendLayout();
@@ -126,6 +125,7 @@ namespace MoneyBookTools
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.ToolTipText = "Close application";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
@@ -142,6 +142,7 @@ namespace MoneyBookTools
             this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.refreshToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.refreshToolStripMenuItem.Text = "&Refresh";
+            this.refreshToolStripMenuItem.ToolTipText = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // tabOperations
@@ -373,10 +374,11 @@ namespace MoneyBookTools
             this.tableLayoutPanel4.ColumnCount = 6;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.labelActualBalance, 4, 0);
             this.tableLayoutPanel4.Controls.Add(this.labelPendingBalance, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.comboFilter, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.labelAvailableBalance, 2, 0);
@@ -389,15 +391,28 @@ namespace MoneyBookTools
             this.tableLayoutPanel4.Size = new System.Drawing.Size(686, 30);
             this.tableLayoutPanel4.TabIndex = 7;
             // 
+            // labelActualBalance
+            // 
+            this.labelActualBalance.BackColor = System.Drawing.Color.Gainsboro;
+            this.labelActualBalance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelActualBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelActualBalance.Location = new System.Drawing.Point(533, 3);
+            this.labelActualBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelActualBalance.Name = "labelActualBalance";
+            this.labelActualBalance.Size = new System.Drawing.Size(134, 24);
+            this.labelActualBalance.TabIndex = 8;
+            this.labelActualBalance.Text = "Actual: 0.00";
+            this.labelActualBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // labelPendingBalance
             // 
             this.labelPendingBalance.BackColor = System.Drawing.Color.Gainsboro;
             this.labelPendingBalance.Dock = System.Windows.Forms.DockStyle.Fill;
             this.labelPendingBalance.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelPendingBalance.Location = new System.Drawing.Point(403, 3);
+            this.labelPendingBalance.Location = new System.Drawing.Point(393, 3);
             this.labelPendingBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelPendingBalance.Name = "labelPendingBalance";
-            this.labelPendingBalance.Size = new System.Drawing.Size(144, 24);
+            this.labelPendingBalance.Size = new System.Drawing.Size(134, 24);
             this.labelPendingBalance.TabIndex = 7;
             this.labelPendingBalance.Text = "Pending: 0.00";
             this.labelPendingBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -421,7 +436,7 @@ namespace MoneyBookTools
             this.labelAvailableBalance.Location = new System.Drawing.Point(253, 3);
             this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(144, 24);
+            this.labelAvailableBalance.Size = new System.Drawing.Size(134, 24);
             this.labelAvailableBalance.TabIndex = 1;
             this.labelAvailableBalance.Text = "Available: 0.00";
             this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -464,57 +479,32 @@ namespace MoneyBookTools
             // transContextMenu
             // 
             this.transContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setToUnclearedMenuItem,
-            this.setToClearedMenuItem,
-            this.setToPendingMenuItem,
-            this.setToReconciledMenuItem,
+            this.setStateToolStripMenuItem,
             this.toolStripSeparator1,
             this.deleteToolStripMenuItem});
             this.transContextMenu.Name = "transContextMenu";
-            this.transContextMenu.Size = new System.Drawing.Size(166, 120);
+            this.transContextMenu.Size = new System.Drawing.Size(129, 54);
             this.transContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.transContextMenu_Opening);
             // 
-            // setToUnclearedMenuItem
+            // setStateToolStripMenuItem
             // 
-            this.setToUnclearedMenuItem.Name = "setToUnclearedMenuItem";
-            this.setToUnclearedMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.setToUnclearedMenuItem.Text = "Set to Uncleared";
-            this.setToUnclearedMenuItem.ToolTipText = "Set status of selected items to Uncleared";
-            this.setToUnclearedMenuItem.Click += new System.EventHandler(this.setToUnclearedMenuItem_Click);
-            // 
-            // setToClearedMenuItem
-            // 
-            this.setToClearedMenuItem.Name = "setToClearedMenuItem";
-            this.setToClearedMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.setToClearedMenuItem.Text = "Set to Cleared";
-            this.setToClearedMenuItem.ToolTipText = "Set status of selected items to Cleared";
-            this.setToClearedMenuItem.Click += new System.EventHandler(this.setToClearedMenuItem_Click);
-            // 
-            // setToPendingMenuItem
-            // 
-            this.setToPendingMenuItem.Name = "setToPendingMenuItem";
-            this.setToPendingMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.setToPendingMenuItem.Text = "Set to Pending";
-            this.setToPendingMenuItem.Click += new System.EventHandler(this.setToPendingMenuItem_Click);
-            // 
-            // setToReconciledMenuItem
-            // 
-            this.setToReconciledMenuItem.Name = "setToReconciledMenuItem";
-            this.setToReconciledMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.setToReconciledMenuItem.Text = "Set to Reconciled";
-            this.setToReconciledMenuItem.ToolTipText = "Set status of selected items to Reconciled";
-            this.setToReconciledMenuItem.Click += new System.EventHandler(this.setToReconciledMenuItem_Click);
+            this.setStateToolStripMenuItem.Name = "setStateToolStripMenuItem";
+            this.setStateToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.setStateToolStripMenuItem.Text = "Set State...";
+            this.setStateToolStripMenuItem.ToolTipText = "Set state of selected transactions";
+            this.setStateToolStripMenuItem.Click += new System.EventHandler(this.setStateToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(162, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(125, 6);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.ToolTipText = "Delete selected transactions";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // tableLayoutPanel1
@@ -580,18 +570,26 @@ namespace MoneyBookTools
             // recTransContextMenu
             // 
             this.recTransContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.skipSelectedToolStripMenuItem});
+            this.skipRecTransToolStripMenuItem,
+            this.stageRecTransToolStripMenuItem});
             this.recTransContextMenu.Name = "recTransContextMenu";
-            this.recTransContextMenu.Size = new System.Drawing.Size(144, 26);
+            this.recTransContextMenu.Size = new System.Drawing.Size(181, 70);
             this.recTransContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.recTransContextMenu_Opening);
             // 
-            // skipSelectedToolStripMenuItem
+            // skipRecTransToolStripMenuItem
             // 
-            this.skipSelectedToolStripMenuItem.Name = "skipSelectedToolStripMenuItem";
-            this.skipSelectedToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.skipSelectedToolStripMenuItem.Text = "Skip Selected";
-            this.skipSelectedToolStripMenuItem.ToolTipText = "Skip selected items";
-            this.skipSelectedToolStripMenuItem.Click += new System.EventHandler(this.skipSelectedRecTransToolStripMenuItem_Click);
+            this.skipRecTransToolStripMenuItem.Name = "skipRecTransToolStripMenuItem";
+            this.skipRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.skipRecTransToolStripMenuItem.Text = "Skip";
+            this.skipRecTransToolStripMenuItem.ToolTipText = "Skip selected items";
+            this.skipRecTransToolStripMenuItem.Click += new System.EventHandler(this.skipSelectedRecTransToolStripMenuItem_Click);
+            // 
+            // stageRecTransToolStripMenuItem
+            // 
+            this.stageRecTransToolStripMenuItem.Name = "stageRecTransToolStripMenuItem";
+            this.stageRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stageRecTransToolStripMenuItem.Text = "Stage";
+            this.stageRecTransToolStripMenuItem.ToolTipText = "Move upcoming transactions into ledger";
             // 
             // tabControl1
             // 
@@ -680,15 +678,14 @@ namespace MoneyBookTools
         private GroupBox groupBox1;
         private GroupBox groupBox2;
         private ContextMenuStrip recTransContextMenu;
-        private ToolStripMenuItem skipSelectedToolStripMenuItem;
+        private ToolStripMenuItem skipRecTransToolStripMenuItem;
         private ContextMenuStrip transContextMenu;
-        private ToolStripMenuItem setToUnclearedMenuItem;
-        private ToolStripMenuItem setToClearedMenuItem;
-        private ToolStripMenuItem setToReconciledMenuItem;
-        private ToolStripMenuItem setToPendingMenuItem;
         private TableLayoutPanel tableLayoutPanel4;
         private Label labelPendingBalance;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem deleteToolStripMenuItem;
+        private Label labelActualBalance;
+        private ToolStripMenuItem setStateToolStripMenuItem;
+        private ToolStripMenuItem stageRecTransToolStripMenuItem;
     }
 }

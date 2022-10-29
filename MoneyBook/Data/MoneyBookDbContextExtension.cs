@@ -17,9 +17,24 @@ namespace MoneyBook.Data
 
         public enum StateTypes
         {
+            /// <summary>
+            /// Newly added or imported.
+            /// </summary>
             Uncleared,
+
+            /// <summary>
+            /// Registered but uncleared transaction at institution.
+            /// </summary>
             Pending,
-            Cleared,
+
+            /// <summary>
+            /// Projected transaction, not yet registered at institution.
+            /// </summary>
+            Staged,
+
+            /// <summary>
+            /// Matches with transaction at institution.
+            /// </summary>
             Reconciled,
         }
         
