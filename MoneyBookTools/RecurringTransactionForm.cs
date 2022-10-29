@@ -52,7 +52,7 @@ namespace MoneyBookTools
 
                     using var tr = db.Database.BeginTransaction();
 
-                    //db.UpdateRecurringTransaction(RecurringTransaction);
+                    db.UpdateRecurringTransaction(RecurringTransaction);
 
                     tr.Commit();
 

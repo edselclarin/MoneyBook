@@ -231,6 +231,34 @@ namespace MoneyBookTools.Data
             }
         }
 
+        public static void UpdateRecurringTransaction(this MoneyBookDbContext db, ViewRecurringTransaction recTrans)
+        {
+            var rt = db.RecurringTransactions
+                .FirstOrDefault(x => x.RecTrnsId == recTrans.RecTrnsId);
+
+            if (rt != null)
+            {
+                rt.DueDate = recTrans.DueDate;
+                rt.Payee = recTrans.Payee;
+                rt.Payee = recTrans.Payee;
+                rt.Memo = recTrans.Memo;
+                if (recTrans.NewAmount < 0)
+                {
+                    rt.TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString();
+                    rt.Amount = Math.Abs(recTrans.NewAmount);
+                }
+                else
+                {
+                    rt.TrnsType = MoneyBookDbContextExtension.TransactionTypes.CREDIT.ToString();
+                    rt.Amount = recTrans.NewAmount;
+                }
+                rt.Frequency = recTrans.Frequency;
+                rt.DateModified = DateTime.Now.Date;
+
+                db.SaveChanges();
+            }
+        }
+
         public static void DeleteTransactions(this MoneyBookDbContext db, IEnumerable<ViewTransaction> transactions)
         {
             foreach (var tr in transactions)
