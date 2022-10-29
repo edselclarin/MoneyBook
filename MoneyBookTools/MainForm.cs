@@ -195,6 +195,8 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
+                    using var hg = this.CreateHourglass();
+
                     using var tr = m_db.Database.BeginTransaction();
 
                     m_db.DeleteAllTransactions();
@@ -259,6 +261,8 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
+                    using var hg = this.CreateHourglass();
+
                     using var tr = m_db.Database.BeginTransaction();
 
                     m_db.DeleteAllRecurringTransactions();
@@ -292,6 +296,8 @@ namespace MoneyBookTools
 
                     if (answer == DialogResult.Yes)
                     {
+                        using var hg = this.CreateHourglass();
+
                         using var tr = m_db.Database.BeginTransaction();
 
                         m_db.UpdateAccountData(accountDataArr);
@@ -324,6 +330,8 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
+                    using var hg = this.CreateHourglass();
+
                     using var tr = m_db.Database.BeginTransaction();
 
                     m_db.ResetAccountData();
@@ -368,6 +376,8 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 ShowTransactionDialog();
             }
             catch (Exception ex)
@@ -389,6 +399,8 @@ namespace MoneyBookTools
 
                 if (result == DialogResult.OK)
                 {
+                    using var hg = this.CreateHourglass();
+
                     UpdateTransactionStates(dlg.TransactionState);
                 }
             }
@@ -416,6 +428,8 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 StageRecurringTransactions();
             }
             catch (Exception ex)
@@ -428,6 +442,8 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 SkipRecurringTransactions();
             }
             catch (Exception ex)
@@ -440,6 +456,8 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 CopyRecurringTransactions();
             }
             catch (Exception ex)
@@ -452,6 +470,8 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 ShowRecTransactionDialog();
             }
             catch (Exception ex)
@@ -464,6 +484,8 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 ShowRecTransactionDialog();
             }
             catch (Exception ex)
@@ -476,6 +498,8 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 ShowTransactionDialog();
             }
             catch (Exception ex)
@@ -491,6 +515,8 @@ namespace MoneyBookTools
                 var form = sender as TransactionForm;
                 if (form.DialogResult == DialogResult.OK)
                 {
+                    using var hg = this.CreateHourglass();
+
                     LoadTransactionsGrid();
                 }
             }
@@ -504,7 +530,37 @@ namespace MoneyBookTools
         {
             try
             {
+                using var hg = this.CreateHourglass();
+
                 DeleteTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void linkBackupDatabase_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                BackupDatabase();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void linkRestoreDatabase_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                RestoreDatabase();
             }
             catch (Exception ex)
             {
@@ -856,6 +912,50 @@ namespace MoneyBookTools
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     LoadRecurringTransactionsGrid();
+                }
+            }
+        }
+
+        private void BackupDatabase()
+        {
+            var sfd = new SaveFileDialog()
+            {
+                InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
+                FileName = $"MoneyTools-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json",
+                Filter = "Data Files|*.json;*.json|All Files|*.*",
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                m_db.BackupDatabase(sfd.FileName);
+
+                MessageBox.Show(this, "Backup complete.", this.Text, MessageBoxButtons.OK);
+            }
+        }
+
+        private void RestoreDatabase()
+        {
+            var answer = MessageBox.Show(this,
+                "Restore Database will delete all records in all tables and import data from file into the tables. Note: This cannot be undone." +
+                Environment.NewLine +
+                "Continue?",
+                this.Text,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+            if (answer == DialogResult.Yes)
+            {
+                var ofd = new OpenFileDialog()
+                {
+                    InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
+                    Filter = "Data Files|*.json;*.json|All Files|*.*",
+                    Multiselect = false
+                };
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    m_db.RestoreDatabase(ofd.FileName);
+
+                    MessageBox.Show(this, "Restore complete.", this.Text, MessageBoxButtons.OK);
                 }
             }
         }
