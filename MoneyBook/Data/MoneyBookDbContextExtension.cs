@@ -1,5 +1,6 @@
 ﻿using MoneyBook.BusinessModels;
 using MoneyBook.Models;
+using Newtonsoft.Json;
 
 namespace MoneyBook.Data
 {
@@ -257,12 +258,177 @@ namespace MoneyBook.Data
 
         public static void BackupDatabase(this MoneyBookDbContext db, string filename)
         {
-            // TODO
+            var backup = new DatabaseBackup()
+            {
+                DateCreated = DateTime.Now,
+                Transactions = db.Transactions.ToList(),
+                RecurringTransactions = db.RecurringTransactions.ToList(),
+                Accounts = db.Accounts.ToList(),
+                Institutions = db.Institutions.ToList(),
+                Categories = db.Categories.ToList(),
+            };
+
+            string json = JsonConvert.SerializeObject(backup, Formatting.Indented);
+
+            File.WriteAllText(filename, json);
         }
 
         public static void RestoreDatabase(this MoneyBookDbContext db, string filename)
         {
-            // TODO
+            if (File.Exists(filename))
+            {
+                string json = File.ReadAllText(filename);
+
+                var backup = JsonConvert.DeserializeObject<DatabaseBackup>(json);
+
+                var tr = db.Database.BeginTransaction();
+
+                // Delete records in all tables.
+                db.Transactions.RemoveRange(db.Transactions);
+                db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
+                db.Accounts.RemoveRange(db.Accounts);
+                db.Institutions.RemoveRange(db.Institutions);
+                db.Categories.RemoveRange(db.Categories);
+
+                db.SaveChanges();
+
+                // Save old identifiers.
+                var oldCategories = backup.Categories
+                    .Select(x => new Category
+                    {
+                        CatId = x.CatId,
+                        Name = x.Name
+                    })
+                    .ToList();
+                var oldInstitutions = backup.Institutions
+                    .Select(x => new Institution
+                    {
+                        InstId = x.InstId,
+                        Name = x.Name
+                    })
+                    .ToList();
+                var oldAccounts = backup.Accounts
+                    .Select(x => new Account
+                    {
+                        AcctId = x.AcctId,
+                        Name = x.Name
+                    })
+                    .ToList();
+
+                // Add categories.
+                foreach (var cat in backup.Categories)
+                {
+                    cat.CatId = 0;
+                    db.Categories.Add(cat);
+                }
+
+                // Add institutions.
+                foreach (var inst in backup.Institutions)
+                {
+                    inst.InstId = 0;
+                    db.Institutions.Add(inst);
+                }
+
+                db.SaveChanges();
+
+                // Add accounts - skip those with bad references.
+                foreach (var acct in backup.Accounts)
+                {
+                    var oldInst = oldInstitutions.FirstOrDefault(x => x.InstId == acct.InstId);
+                    if (oldInst == null)
+                    {
+                        continue;
+                    }
+                    var newInst = db.Institutions.FirstOrDefault(x => x.Name == oldInst.Name);
+                    if (newInst == null)
+                    {
+                        continue;
+                    }
+
+                    acct.AcctId = 0;
+                    acct.InstId = newInst.InstId;
+                    acct.DateAdded =
+                    acct.DateModified = DateTime.Now;
+
+                    db.Accounts.Add(acct);
+                }
+
+                db.SaveChanges();
+
+                // Add recurring transactions - skip those with bad references.
+                foreach (var recTrans in backup.RecurringTransactions)
+                {
+                    var oldCat = oldCategories.FirstOrDefault(x => x.CatId == recTrans.CatId);
+                    if (oldCat == null)
+                    {
+                        continue;
+                    }
+                    var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
+                    if (newCat == null)
+                    {
+                        continue;
+                    }
+
+                    var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == recTrans.AcctId);
+                    if (oldAcct == null)
+                    {
+                        continue;
+                    }
+                    var newAcct = db.Accounts.FirstOrDefault(x => x.Name == oldAcct.Name);
+                    if (newAcct == null)
+                    {
+                        continue;
+                    }
+
+                    recTrans.RecTrnsId = 0;
+                    recTrans.CatId = newCat.CatId;
+                    recTrans.AcctId = newAcct.AcctId;
+                    recTrans.DateAdded =
+                    recTrans.DateModified = DateTime.Now;
+
+                    db.RecurringTransactions.Add(recTrans);
+                }
+
+                db.SaveChanges();
+
+                // Add transactions - skip those with bad references.
+                foreach (var trans in backup.Transactions)
+                {
+                    var oldCat = oldCategories.FirstOrDefault(x => x.CatId == trans.CatId);
+                    if (oldCat == null)
+                    {
+                        continue;
+                    }
+                    var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
+                    if (newCat == null)
+                    {
+                        continue;
+                    }
+
+                    var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == trans.AcctId);
+                    if (oldAcct == null)
+                    {
+                        continue;
+                    }
+                    var newAcct = db.Accounts.FirstOrDefault(x => x.Name == oldAcct.Name);
+                    if (newAcct == null)
+                    {
+                        continue;
+                    }
+
+                    trans.TrnsId = 0;
+                    trans.CatId = newCat.CatId;
+                    trans.AcctId = newAcct.AcctId;
+                    trans.DateAdded =
+                    trans.DateModified = DateTime.Now;
+
+                    db.Transactions.Add(trans);
+                }
+
+                db.SaveChanges();
+
+                tr.Commit();
+            }
         }
     }
 }

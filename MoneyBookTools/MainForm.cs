@@ -936,11 +936,10 @@ namespace MoneyBookTools
         private void RestoreDatabase()
         {
             var answer = MessageBox.Show(this,
-                "Restore Database will delete all records in all tables and import data from file into the tables. Note: This cannot be undone." +
-                Environment.NewLine +
-                "Continue?",
+                "Restore Database will delete all records in all tables and import data from " +
+                "file into the tables. Note: This cannot be undone. Continue?",
                 this.Text,
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
             if (answer == DialogResult.Yes)
             {
