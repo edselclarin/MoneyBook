@@ -408,7 +408,8 @@ namespace MoneyBookTools
             stageRecTransToolStripMenuItem.Enabled = 
             skipRecTransToolStripMenuItem.Enabled = count > 0;
 
-            editRecTransToolStripMenuItem.Enabled = count == 1;
+            editRecTransToolStripMenuItem.Enabled = 
+            copyRecTransToolStripMenuItem.Enabled = count == 1;
         }
 
         private void stageRecTransToolStripMenuItem_Click(object sender, EventArgs e)
@@ -428,6 +429,18 @@ namespace MoneyBookTools
             try
             {
                 SkipRecurringTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void copyRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CopyRecurringTransactions();
             }
             catch (Exception ex)
             {
@@ -675,6 +688,37 @@ namespace MoneyBookTools
                     tr.Commit();
 
                     LoadRecurringTransactionsGrid();
+                }
+            }
+        }
+
+        private void CopyRecurringTransactions()
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => recTrans[g.Key])
+                .ToList();
+
+            if (selectedRecTrans.Count() > 0)
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you want to copy these {selectedRecTrans.Count()} recurring transactions?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var tr = m_db.Database.BeginTransaction();
+
+                    m_db.CopyRecurringTransactions(selectedRecTrans);
+
+                    tr.Commit();
+
+                    LoadRecurringTransactionsGrid();
+
+                    LoadTransactionsGrid();
                 }
             }
         }
