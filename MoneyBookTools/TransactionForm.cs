@@ -81,9 +81,10 @@ namespace MoneyBookTools
 
             textMemo.DataBindings.Add("Text", Transaction, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            comboState.DataBindings.Add("SelectedText", Transaction, "State", false, DataSourceUpdateMode.OnPropertyChanged);
+            comboState.DataBindings.Add("Text", Transaction, "State", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textAmount.DataBindings.Add("Text", Transaction, "NewAmount", false, DataSourceUpdateMode.OnPropertyChanged);
+            textAmount.DataBindings.Add("Text", Transaction, "NewAmount", true, DataSourceUpdateMode.OnPropertyChanged);
+            textAmount.DataBindings[0].FormatString = "0.00";
         }
     }
 }
