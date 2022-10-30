@@ -9,6 +9,7 @@ namespace MoneyBookTools
     public partial class MainForm : Form
     {
         private MoneyBookDbContext m_db;
+        private List<AccountSummary> m_summaries;
 
         public MainForm()
         {
@@ -44,6 +45,8 @@ namespace MoneyBookTools
             listViewAccounts.MultiSelect = false;
             listViewAccounts.Scrollable = false;
             listViewAccounts.Resize += ListView1_Resize;
+            listViewAccounts.OwnerDraw = true;
+            listViewAccounts.SelectionBackColor = Color.CadetBlue;
 
             var colWidths = new int[] { 100, 80 };
             foreach (int width in colWidths)
@@ -62,20 +65,6 @@ namespace MoneyBookTools
             dgvRecurringTransactions.Dock =
             panelLedger.Dock = 
             tableLayoutLedger.Dock = DockStyle.Fill;
-        }
-
-        private void ListView1_Resize(object? sender, EventArgs e)
-        {
-            if (listViewAccounts.Columns.Count == 2)
-            {
-                listViewAccounts.Columns[0].Width = listViewAccounts.Width - listViewAccounts.Margin.Right - listViewAccounts.Columns[1].Width;
-            }
-        }
-
-        private void Combo_MouseWheel(object? sender, MouseEventArgs e)
-        {
-            // Disable scrolling the combobox with the mouse wheel.
-            ((HandledMouseEventArgs)e).Handled = true;
         }
 
         private async void MainForm_Load(object sender, EventArgs e)
@@ -108,6 +97,31 @@ namespace MoneyBookTools
                 this.ShowException(ex);
             }
         }
+
+       
+        private void ListViewAccounts_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
+        {
+            var summary = m_summaries[e.ItemIndex];
+
+            e.Item = new ListViewItem(summary.Account.AccountName);
+            e.Item.Tag = summary.Account;
+            e.Item.SubItems.Add(summary.AvailableBalance.ToString());
+        }
+
+        private void ListView1_Resize(object? sender, EventArgs e)
+        {
+            if (listViewAccounts.Columns.Count == 2)
+            {
+                listViewAccounts.Columns[0].Width = listViewAccounts.Width - listViewAccounts.Margin.Right - listViewAccounts.Columns[1].Width;
+            }
+        }
+
+        private void Combo_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            // Disable scrolling the combobox with the mouse wheel.
+            ((HandledMouseEventArgs)e).Handled = true;
+        }
+
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -621,23 +635,25 @@ namespace MoneyBookTools
         {
             listViewAccounts.Items.Clear();
 
-            var summaries = m_db.GetAccountSummaries();
-
-            foreach (var summary in summaries)
+            if (listViewAccounts.VirtualMode == false)
             {
-                var item = listViewAccounts.Items.Add(summary.Account.AccountName);
-                item.Tag = summary;
-                item.SubItems.Add(summary.AvailableBalance.ToString());
+                listViewAccounts.VirtualMode = true;
+                listViewAccounts.RetrieveVirtualItem += ListViewAccounts_RetrieveVirtualItem;
             }
+
+            m_summaries = m_db.GetAccountSummaries();
+
+            listViewAccounts.VirtualListSize = m_summaries.Count;
         }
 
         private void LoadTransactionsGrid()
         {
-            if (listViewAccounts.SelectedItems.Count > 0 &&
+            if (listViewAccounts.SelectedIndices.Count > 0 &&
                 comboFilter.SelectedIndex > -1 && 
                 comboDateOrder.SelectedIndex > -1)
             {
-                var summary = listViewAccounts.SelectedItems[0].Tag as AccountSummary;
+                int index = listViewAccounts.SelectedIndices[0];
+                var summary = m_summaries[index] as AccountSummary;
                 summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
