@@ -41,6 +41,7 @@ namespace MoneyBookTools
             listView1.HeaderStyle = ColumnHeaderStyle.None;
             listView1.View = View.Details;
             listView1.FullRowSelect = true;
+            listView1.MultiSelect = false;
             listView1.Scrollable = false;
             listView1.Resize += ListView1_Resize;
 
