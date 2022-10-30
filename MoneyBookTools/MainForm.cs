@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using MoneyBook.BusinessModels;
+using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
 using Ofx;
@@ -36,8 +37,27 @@ namespace MoneyBookTools
                 "Oldest to Newest"
             };
 
-            treeView1.ShowRootLines = true;
-            treeView1.HideSelection = false;
+            listView1.Dock = DockStyle.Fill;
+            listView1.HeaderStyle = ColumnHeaderStyle.None;
+            listView1.View = View.Details;
+            listView1.FullRowSelect = true;
+            listView1.Scrollable = false;
+            listView1.Resize += ListView1_Resize;
+
+            var colWidths = new int[] { 100, 80 };
+            foreach (int width in colWidths)
+            {
+                listView1.Columns.Add(String.Empty, width);
+            }
+            listView1.Columns[1].TextAlign = HorizontalAlignment.Right;
+        }
+
+        private void ListView1_Resize(object? sender, EventArgs e)
+        {
+            if (listView1.Columns.Count == 2)
+            {
+                listView1.Columns[0].Width = listView1.Width - listView1.Margin.Right - listView1.Columns[1].Width;
+            }
         }
 
         private void Combo_MouseWheel(object? sender, MouseEventArgs e)
@@ -50,7 +70,7 @@ namespace MoneyBookTools
         {
             try
             {
-                treeView1.Nodes.Add("Loading");
+                listView1.Items.Add("Loading...");
 
                 using var hg = this.CreateHourglass();
 
@@ -61,9 +81,12 @@ namespace MoneyBookTools
 
                 LoadRecurringTransactionsGrid();
 
-                LoadAccountsTree();
+                LoadAccountsList();
 
-                treeView1.SelectedNode = treeView1.TopNode.FirstNode;
+                if (listView1.Items.Count > 0)
+                {
+                    listView1.Items[0].Selected = true;
+                }
 
                 comboFilter.Enabled =
                 comboDateOrder.Enabled = true;
@@ -108,7 +131,7 @@ namespace MoneyBookTools
             refreshToolStripMenuItem.PerformClick();
         }
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             refreshToolStripMenuItem.PerformClick();
         }
@@ -568,44 +591,35 @@ namespace MoneyBookTools
             }
         }
 
-        private void LoadAccountsTree()
+        private void LoadAccountsList()
         {
-            treeView1.Nodes.Clear();
+            listView1.Items.Clear();
 
-            treeView1.Nodes.Add("Accounts");
+            var summaries = m_db.GetAccountSummaries();
 
-            var accounts = m_db.GetAccounts()
-                .AsViewAccounts()
-                .ToList();
-
-            foreach (var acct in accounts)
+            foreach (var summary in summaries)
             {
-                var node = new TreeNode(acct.Account)
-                {
-                    Tag = acct
-                };
-                treeView1.TopNode.Nodes.Add(node);
+                var item = listView1.Items.Add(summary.Account.AccountName);
+                item.Tag = summary;
+                item.SubItems.Add(summary.AvailableBalance.ToString());
             }
-
-            treeView1.ExpandAll();
         }
 
         private void LoadTransactionsGrid()
         {
-            if (treeView1.SelectedNode != null &&
-                treeView1.SelectedNode.Level > 0 &&
+            if (listView1.SelectedItems.Count > 0 &&
                 comboFilter.SelectedIndex > -1 && 
                 comboDateOrder.SelectedIndex > -1)
             {
-                var acct = treeView1.SelectedNode.Tag as ViewAccount;
-                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
-                var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
-                var summary = m_db.GetAccountSummary(acct.AcctId);
+                var summary = listView1.SelectedItems[0].Tag as AccountSummary;
+                summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
                 labelPendingBalance.Text = $"Pending: {summary?.PendingBalance:0.00}";
                 labelActualBalance.Text = $"Actual: {summary?.Balance:0.00}";
 
+                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
+                var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
                 var viewTransactions = summary.Transactions
                     .Filter(dateFilter)
                     .Order(sortOrder)

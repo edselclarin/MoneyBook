@@ -135,6 +135,31 @@ namespace MoneyBook.Data
             return results.AsEnumerable();
         }
 
+        public static List<AccountSummary> GetAccountSummaries(this MoneyBookDbContext db)
+        {
+            var summaries = new List<AccountSummary>();
+
+            var accts = db.Accounts
+                .Where(x => x.IsDeleted == false)
+                .Select(x => x.ToAccountInfo())
+                .ToList();
+
+            foreach (var acct in accts)
+            {
+                var transactions = db.GetTransactions(acct.AcctId);
+
+                var summary = new AccountSummary()
+                {
+                    Account = acct,
+                    Transactions = transactions.ToList()
+                };
+
+                summaries.Add(summary);
+            }
+
+            return summaries;
+        }
+
         public static AccountSummary? GetAccountSummary(this MoneyBookDbContext db, int acctId)
         {
             var accts = db.Accounts
