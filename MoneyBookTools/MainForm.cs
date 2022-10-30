@@ -73,7 +73,7 @@ namespace MoneyBookTools
         {
             try
             {
-                groupLedger.Text = 
+                groupLedger.Text = "Ledger";
                 labelAvailableBalance.Text = 
                 labelPendingBalance.Text =
                 labelActualBalance.Text = String.Empty;
@@ -666,7 +666,7 @@ namespace MoneyBookTools
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
                 labelPendingBalance.Text = $"Pending: {summary?.PendingBalance:0.00}";
                 labelActualBalance.Text = $"Actual: {summary?.Balance:0.00}";
-                groupLedger.Text = summary.Account.AccountName;
+                groupLedger.Text = $"Ledger : {summary.Account.AccountName}";
 
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
                 var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
