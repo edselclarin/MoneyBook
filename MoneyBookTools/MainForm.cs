@@ -37,27 +37,38 @@ namespace MoneyBookTools
                 "Oldest to Newest"
             };
 
-            listView1.Dock = DockStyle.Fill;
-            listView1.HeaderStyle = ColumnHeaderStyle.None;
-            listView1.View = View.Details;
-            listView1.FullRowSelect = true;
-            listView1.MultiSelect = false;
-            listView1.Scrollable = false;
-            listView1.Resize += ListView1_Resize;
+            listViewAccounts.Dock = DockStyle.Fill;
+            listViewAccounts.HeaderStyle = ColumnHeaderStyle.None;
+            listViewAccounts.View = View.Details;
+            listViewAccounts.FullRowSelect = true;
+            listViewAccounts.MultiSelect = false;
+            listViewAccounts.Scrollable = false;
+            listViewAccounts.Resize += ListView1_Resize;
 
             var colWidths = new int[] { 100, 80 };
             foreach (int width in colWidths)
             {
-                listView1.Columns.Add(String.Empty, width);
+                listViewAccounts.Columns.Add(String.Empty, width);
             }
-            listView1.Columns[1].TextAlign = HorizontalAlignment.Right;
+            listViewAccounts.Columns[1].TextAlign = HorizontalAlignment.Right;
+
+            vSplit1.Dock =
+            hSplit1.Dock = 
+            groupAccounts.Dock =
+            listViewAccounts.Dock =
+            groupLedger.Dock =
+            dgvAccountTransactions.Dock =
+            groupUpcoming.Dock =
+            dgvRecurringTransactions.Dock =
+            panelLedger.Dock = 
+            tableLayoutLedger.Dock = DockStyle.Fill;
         }
 
         private void ListView1_Resize(object? sender, EventArgs e)
         {
-            if (listView1.Columns.Count == 2)
+            if (listViewAccounts.Columns.Count == 2)
             {
-                listView1.Columns[0].Width = listView1.Width - listView1.Margin.Right - listView1.Columns[1].Width;
+                listViewAccounts.Columns[0].Width = listViewAccounts.Width - listViewAccounts.Margin.Right - listViewAccounts.Columns[1].Width;
             }
         }
 
@@ -71,7 +82,7 @@ namespace MoneyBookTools
         {
             try
             {
-                listView1.Items.Add("Loading...");
+                listViewAccounts.Items.Add("Loading...");
 
                 using var hg = this.CreateHourglass();
 
@@ -84,9 +95,9 @@ namespace MoneyBookTools
 
                 LoadAccountsList();
 
-                if (listView1.Items.Count > 0)
+                if (listViewAccounts.Items.Count > 0)
                 {
-                    listView1.Items[0].Selected = true;
+                    listViewAccounts.Items[0].Selected = true;
                 }
 
                 comboFilter.Enabled =
@@ -608,13 +619,13 @@ namespace MoneyBookTools
 
         private void LoadAccountsList()
         {
-            listView1.Items.Clear();
+            listViewAccounts.Items.Clear();
 
             var summaries = m_db.GetAccountSummaries();
 
             foreach (var summary in summaries)
             {
-                var item = listView1.Items.Add(summary.Account.AccountName);
+                var item = listViewAccounts.Items.Add(summary.Account.AccountName);
                 item.Tag = summary;
                 item.SubItems.Add(summary.AvailableBalance.ToString());
             }
@@ -622,11 +633,11 @@ namespace MoneyBookTools
 
         private void LoadTransactionsGrid()
         {
-            if (listView1.SelectedItems.Count > 0 &&
+            if (listViewAccounts.SelectedItems.Count > 0 &&
                 comboFilter.SelectedIndex > -1 && 
                 comboDateOrder.SelectedIndex > -1)
             {
-                var summary = listView1.SelectedItems[0].Tag as AccountSummary;
+                var summary = listViewAccounts.SelectedItems[0].Tag as AccountSummary;
                 summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
@@ -893,7 +904,7 @@ namespace MoneyBookTools
 
         private void ShowAddTransactionDialog()
         {
-            var summary = listView1.SelectedItems[0].Tag as AccountSummary;
+            var summary = listViewAccounts.SelectedItems[0].Tag as AccountSummary;
 
             var dlg = new TransactionForm(summary.Account.AcctId)
             {
