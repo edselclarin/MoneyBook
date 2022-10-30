@@ -396,13 +396,27 @@ namespace MoneyBookTools
             }
         }
 
+        private void addTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                ShowAddTransactionDialog();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void editTransToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                ShowTransactionDialog();
+                ShowEditTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -524,7 +538,7 @@ namespace MoneyBookTools
             {
                 using var hg = this.CreateHourglass();
 
-                ShowTransactionDialog();
+                ShowEditTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -877,7 +891,22 @@ namespace MoneyBookTools
             }
         }
 
-        private void ShowTransactionDialog()
+        private void ShowAddTransactionDialog()
+        {
+            var summary = listView1.SelectedItems[0].Tag as AccountSummary;
+
+            var dlg = new TransactionForm(summary.Account.AcctId)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                LoadTransactionsGrid();
+            }
+        }
+
+        private void ShowEditTransactionDialog()
         {
             var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
             var selectedTransaction = dgvAccountTransactions.SelectedCells
@@ -891,15 +920,14 @@ namespace MoneyBookTools
 
             if (selectedTransaction != null)
             {
-                var dlg = new TransactionForm()
+                var dlg = new TransactionForm(selectedTransaction.Transaction)
                 {
-                    StartPosition = FormStartPosition.CenterScreen,
-                    Transaction = selectedTransaction.Transaction
+                    StartPosition = FormStartPosition.CenterScreen
                 };
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    dlg.ShowDialog(this);
+                    LoadTransactionsGrid();
                 }
             }
         }
