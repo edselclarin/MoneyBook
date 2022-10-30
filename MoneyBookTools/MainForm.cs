@@ -63,6 +63,8 @@ namespace MoneyBookTools
             dgvAccountTransactions.Dock =
             groupUpcoming.Dock =
             dgvRecurringTransactions.Dock =
+            groupOperations.Dock =
+            dgvFileTransactions.Dock =
             panelLedger.Dock = 
             tableLayoutLedger.Dock = DockStyle.Fill;
         }
@@ -71,7 +73,10 @@ namespace MoneyBookTools
         {
             try
             {
-                groupLedger.Text = String.Empty;
+                groupLedger.Text = 
+                labelAvailableBalance.Text = 
+                labelPendingBalance.Text =
+                labelActualBalance.Text = String.Empty;
 
                 listViewAccounts.Items.Add("Loading...");
 

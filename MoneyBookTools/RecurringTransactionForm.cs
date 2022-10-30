@@ -13,6 +13,8 @@ namespace MoneyBookTools
         public RecurringTransactionForm()
         {
             InitializeComponent();
+
+            Text = "Edit Recurring Transaction";
         }
 
         private void RecurringTransactionForm_Load(object sender, EventArgs e)
