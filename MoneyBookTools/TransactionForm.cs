@@ -64,53 +64,40 @@ namespace MoneyBookTools
             }
         }
 
-        private void TransactionForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (m_bNew)
-            {
-                using var hg = new Hourglass(this);
-
-                var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
-
-                using var tr = db.Database.BeginTransaction();
-
-                db.AddTransaction(m_transaction);
-
-                tr.Commit();
-
-                DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                bool isModified = m_transaction.GetHash().CompareTo(m_originalHash) != 0;
-
-                if (isModified)
-                {
-                    var answer = MessageBox.Show(this,
-                        $"Save changes?",
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
-                    {
-                        using var hg = new Hourglass(this);
-
-                        var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
-
-                        using var tr = db.Database.BeginTransaction();
-
-                        db.UpdateTransaction(m_transaction);
-
-                        tr.Commit();
-
-                        DialogResult = DialogResult.OK;
-                    }
-                }
-            }
-        }
-
         private void buttonSave_Click(object sender, EventArgs e)
         {
+            bool isModified = m_transaction.GetHash().CompareTo(m_originalHash) != 0;
+
+            if (isModified)
+            {
+                var answer = MessageBox.Show(this,
+                    m_bNew ? "Add transaction?" : "Save changes?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var hg = new Hourglass(this);
+
+                    var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+
+                    using var tr = db.Database.BeginTransaction();
+
+                    if (m_bNew)
+                    {
+                        db.AddTransaction(m_transaction);
+                    }
+                    else
+                    {
+                        db.UpdateTransaction(m_transaction);
+                    }
+
+                    tr.Commit();
+
+                    DialogResult = DialogResult.OK;
+                }
+            }
+
             Close();
         }
 

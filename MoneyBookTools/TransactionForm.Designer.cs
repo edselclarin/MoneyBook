@@ -248,7 +248,6 @@
             this.MinimizeBox = false;
             this.Name = "TransactionForm";
             this.Text = "Transaction";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TransactionForm_FormClosing);
             this.Load += new System.EventHandler(this.TransactionForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
