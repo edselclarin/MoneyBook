@@ -24,12 +24,12 @@ namespace MoneyBookTools.ViewModels
         [Browsable(false)]
         public decimal TrnsAmount { get; set; }
 
+        public string Frequency { get; set; }
+
         public decimal Amount => TrnsType == "DEBIT" ? 0 - TrnsAmount : TrnsAmount;
 
         [Browsable(false)]
         public decimal NewAmount { get; set; }
-
-        public string Frequency { get; set; }
 
         [Browsable(false)]
         public bool IsOverdue => DueDate.Date < DateTime.Now.Date;
