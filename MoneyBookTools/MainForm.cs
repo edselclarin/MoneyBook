@@ -711,6 +711,8 @@ namespace MoneyBookTools
 
                         row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
                     }
+
+                    row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
             }
         }
@@ -763,6 +765,8 @@ namespace MoneyBookTools
 
                     row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
                 }
+
+                row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
         }
 
