@@ -49,39 +49,39 @@
             // dateTime
             // 
             this.dateTime.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTime.Location = new System.Drawing.Point(91, 13);
+            this.dateTime.Location = new System.Drawing.Point(91, 14);
             this.dateTime.Name = "dateTime";
-            this.dateTime.Size = new System.Drawing.Size(100, 23);
+            this.dateTime.Size = new System.Drawing.Size(100, 25);
             this.dateTime.TabIndex = 0;
             // 
             // textPayee
             // 
-            this.textPayee.Location = new System.Drawing.Point(91, 48);
+            this.textPayee.Location = new System.Drawing.Point(91, 54);
             this.textPayee.Name = "textPayee";
-            this.textPayee.Size = new System.Drawing.Size(257, 23);
+            this.textPayee.Size = new System.Drawing.Size(320, 25);
             this.textPayee.TabIndex = 1;
             // 
             // textMemo
             // 
-            this.textMemo.Location = new System.Drawing.Point(91, 83);
+            this.textMemo.Location = new System.Drawing.Point(91, 94);
             this.textMemo.Name = "textMemo";
-            this.textMemo.Size = new System.Drawing.Size(257, 23);
+            this.textMemo.Size = new System.Drawing.Size(320, 25);
             this.textMemo.TabIndex = 1;
             // 
             // comboFrequency
             // 
             this.comboFrequency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboFrequency.FormattingEnabled = true;
-            this.comboFrequency.Location = new System.Drawing.Point(91, 153);
+            this.comboFrequency.Location = new System.Drawing.Point(91, 174);
             this.comboFrequency.Name = "comboFrequency";
-            this.comboFrequency.Size = new System.Drawing.Size(100, 23);
+            this.comboFrequency.Size = new System.Drawing.Size(100, 25);
             this.comboFrequency.TabIndex = 2;
             // 
             // textAmount
             // 
-            this.textAmount.Location = new System.Drawing.Point(91, 118);
+            this.textAmount.Location = new System.Drawing.Point(91, 134);
             this.textAmount.Name = "textAmount";
-            this.textAmount.Size = new System.Drawing.Size(100, 23);
+            this.textAmount.Size = new System.Drawing.Size(100, 25);
             this.textAmount.TabIndex = 3;
             this.textAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -106,24 +106,24 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 7;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 234);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(434, 265);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Location = new System.Drawing.Point(3, 153);
+            this.label5.Location = new System.Drawing.Point(3, 174);
             this.label5.Margin = new System.Windows.Forms.Padding(3);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(82, 23);
+            this.label5.Size = new System.Drawing.Size(82, 26);
             this.label5.TabIndex = 8;
             this.label5.Text = "Frequency";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -132,10 +132,10 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(3, 48);
+            this.label2.Location = new System.Drawing.Point(3, 54);
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 23);
+            this.label2.Size = new System.Drawing.Size(82, 26);
             this.label2.TabIndex = 5;
             this.label2.Text = "Payee";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -144,10 +144,10 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(3, 13);
+            this.label1.Location = new System.Drawing.Point(3, 14);
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 23);
+            this.label1.Size = new System.Drawing.Size(82, 26);
             this.label1.TabIndex = 4;
             this.label1.Text = "Due Date";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -157,9 +157,9 @@
             this.panel1.Controls.Add(this.buttonCancel);
             this.panel1.Controls.Add(this.buttonSave);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(91, 188);
+            this.panel1.Location = new System.Drawing.Point(91, 214);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(257, 43);
+            this.panel1.Size = new System.Drawing.Size(320, 48);
             this.panel1.TabIndex = 11;
             // 
             // buttonCancel
@@ -168,7 +168,7 @@
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Location = new System.Drawing.Point(81, 11);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(75, 26);
             this.buttonCancel.TabIndex = 1;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -180,7 +180,7 @@
             this.buttonSave.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonSave.Location = new System.Drawing.Point(0, 11);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.Size = new System.Drawing.Size(75, 26);
             this.buttonSave.TabIndex = 0;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -190,10 +190,10 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.Location = new System.Drawing.Point(3, 83);
+            this.label4.Location = new System.Drawing.Point(3, 94);
             this.label4.Margin = new System.Windows.Forms.Padding(3);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 23);
+            this.label4.Size = new System.Drawing.Size(82, 26);
             this.label4.TabIndex = 7;
             this.label4.Text = "Memo";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -202,20 +202,21 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.Location = new System.Drawing.Point(3, 118);
+            this.label6.Location = new System.Drawing.Point(3, 134);
             this.label6.Margin = new System.Windows.Forms.Padding(3);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(82, 23);
+            this.label6.Size = new System.Drawing.Size(82, 26);
             this.label6.TabIndex = 9;
             this.label6.Text = "Amount";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // RecurringTransactionForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 234);
+            this.ClientSize = new System.Drawing.Size(434, 265);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

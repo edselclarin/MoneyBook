@@ -45,22 +45,22 @@
             this.tableLayoutPanel1.Controls.Add(this.radioButton3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.radioButton2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.radioButton1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(32, 21);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(32, 24);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(107, 137);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(107, 155);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(3, 105);
+            this.radioButton4.Location = new System.Drawing.Point(3, 117);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(94, 19);
+            this.radioButton4.Size = new System.Drawing.Size(101, 23);
             this.radioButton4.TabIndex = 3;
             this.radioButton4.TabStop = true;
             this.radioButton4.Text = "radioButton4";
@@ -69,9 +69,9 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(3, 71);
+            this.radioButton3.Location = new System.Drawing.Point(3, 79);
             this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(94, 19);
+            this.radioButton3.Size = new System.Drawing.Size(101, 23);
             this.radioButton3.TabIndex = 2;
             this.radioButton3.TabStop = true;
             this.radioButton3.Text = "radioButton3";
@@ -80,9 +80,9 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(3, 37);
+            this.radioButton2.Location = new System.Drawing.Point(3, 41);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(94, 19);
+            this.radioButton2.Size = new System.Drawing.Size(101, 23);
             this.radioButton2.TabIndex = 1;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "radioButton2";
@@ -93,7 +93,7 @@
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(3, 3);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(94, 19);
+            this.radioButton1.Size = new System.Drawing.Size(101, 23);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "radioButton1";
@@ -101,10 +101,11 @@
             // 
             // StateForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(170, 178);
+            this.ClientSize = new System.Drawing.Size(170, 202);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
