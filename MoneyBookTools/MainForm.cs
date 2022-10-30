@@ -71,6 +71,8 @@ namespace MoneyBookTools
         {
             try
             {
+                groupLedger.Text = String.Empty;
+
                 listViewAccounts.Items.Add("Loading...");
 
                 using var hg = this.CreateHourglass();
@@ -659,6 +661,7 @@ namespace MoneyBookTools
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
                 labelPendingBalance.Text = $"Pending: {summary?.PendingBalance:0.00}";
                 labelActualBalance.Text = $"Actual: {summary?.Balance:0.00}";
+                groupLedger.Text = summary.Account.AccountName;
 
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
                 var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
@@ -671,7 +674,7 @@ namespace MoneyBookTools
                 dgvAccountTransactions.DataSource = viewTransactions;
 
                 // Resize the columns.
-                var widths = new int[] { 70, 70, 80, 80, 275 };
+                var widths = new int[] { 90, 70, 80, 80, 275 };
                 int i = 0;
                 dgvAccountTransactions.Columns["Date"].Width = widths[i++];
                 dgvAccountTransactions.Columns["RefNum"].Width = widths[i++];
@@ -729,7 +732,7 @@ namespace MoneyBookTools
             dgvRecurringTransactions.DataSource = recTrans;
 
             // Resize the columns.
-            var widths = new int[] { 70, 70, 275, 80, 80 };
+            var widths = new int[] { 90, 90, 275, 80, 80 };
             int i = 0;
             dgvRecurringTransactions.Columns["DueDate"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Account"].Width = widths[i++];
