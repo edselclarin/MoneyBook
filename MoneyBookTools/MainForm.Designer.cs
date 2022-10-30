@@ -55,9 +55,9 @@ namespace MoneyBookTools
             this.hSplit1 = new System.Windows.Forms.SplitContainer();
             this.vSplit1 = new System.Windows.Forms.SplitContainer();
             this.groupAccounts = new System.Windows.Forms.GroupBox();
-            this.listViewAccounts = new System.Windows.Forms.ListView();
-            this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
+            this.listViewAccounts = new MoneyBookTools.CustomListView();
             this.groupLedger = new System.Windows.Forms.GroupBox();
+            this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,8 +94,8 @@ namespace MoneyBookTools
             this.vSplit1.Panel2.SuspendLayout();
             this.vSplit1.SuspendLayout();
             this.groupAccounts.SuspendLayout();
-            this.tableLayoutLedger.SuspendLayout();
             this.groupLedger.SuspendLayout();
+            this.tableLayoutLedger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.transContextMenu.SuspendLayout();
             this.panelLedger.SuspendLayout();
@@ -155,7 +155,7 @@ namespace MoneyBookTools
             this.tabOperations.Location = new System.Drawing.Point(4, 24);
             this.tabOperations.Name = "tabOperations";
             this.tabOperations.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOperations.Size = new System.Drawing.Size(951, 475);
+            this.tabOperations.Size = new System.Drawing.Size(1014, 475);
             this.tabOperations.TabIndex = 0;
             this.tabOperations.Text = "Operations";
             this.tabOperations.UseVisualStyleBackColor = true;
@@ -173,7 +173,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(945, 469);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1008, 469);
             this.tableLayoutPanel2.TabIndex = 10;
             // 
             // dgvFileTransactions
@@ -185,7 +185,7 @@ namespace MoneyBookTools
             this.dgvFileTransactions.Location = new System.Drawing.Point(3, 67);
             this.dgvFileTransactions.Name = "dgvFileTransactions";
             this.dgvFileTransactions.ReadOnly = true;
-            this.dgvFileTransactions.Size = new System.Drawing.Size(939, 399);
+            this.dgvFileTransactions.Size = new System.Drawing.Size(1002, 399);
             this.dgvFileTransactions.TabIndex = 1;
             this.dgvFileTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
             // 
@@ -370,10 +370,21 @@ namespace MoneyBookTools
             // 
             this.listViewAccounts.Location = new System.Drawing.Point(6, 22);
             this.listViewAccounts.Name = "listViewAccounts";
+            this.listViewAccounts.SelectionBackColor = System.Drawing.Color.Blue;
             this.listViewAccounts.Size = new System.Drawing.Size(90, 126);
             this.listViewAccounts.TabIndex = 1;
             this.listViewAccounts.UseCompatibleStateImageBehavior = false;
             this.listViewAccounts.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // groupLedger
+            // 
+            this.groupLedger.Controls.Add(this.tableLayoutLedger);
+            this.groupLedger.Location = new System.Drawing.Point(3, 3);
+            this.groupLedger.Name = "groupLedger";
+            this.groupLedger.Size = new System.Drawing.Size(746, 202);
+            this.groupLedger.TabIndex = 5;
+            this.groupLedger.TabStop = false;
+            this.groupLedger.Text = "Ledger";
             // 
             // tableLayoutLedger
             // 
@@ -389,16 +400,6 @@ namespace MoneyBookTools
             this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutLedger.Size = new System.Drawing.Size(711, 162);
             this.tableLayoutLedger.TabIndex = 9;
-            // 
-            // groupLedger
-            // 
-            this.groupLedger.Controls.Add(this.tableLayoutLedger);
-            this.groupLedger.Location = new System.Drawing.Point(3, 3);
-            this.groupLedger.Name = "groupLedger";
-            this.groupLedger.Size = new System.Drawing.Size(746, 202);
-            this.groupLedger.TabIndex = 5;
-            this.groupLedger.TabStop = false;
-            this.groupLedger.Text = "Ledger";
             // 
             // dgvAccountTransactions
             // 
@@ -657,8 +658,8 @@ namespace MoneyBookTools
             ((System.ComponentModel.ISupportInitialize)(this.vSplit1)).EndInit();
             this.vSplit1.ResumeLayout(false);
             this.groupAccounts.ResumeLayout(false);
-            this.tableLayoutLedger.ResumeLayout(false);
             this.groupLedger.ResumeLayout(false);
+            this.tableLayoutLedger.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.transContextMenu.ResumeLayout(false);
             this.panelLedger.ResumeLayout(false);
@@ -710,7 +711,7 @@ namespace MoneyBookTools
         private ToolStripMenuItem copyRecTransToolStripMenuItem;
         private LinkLabel linkRestoreDatabase;
         private LinkLabel linkBackupDatabase;
-        private ListView listViewAccounts;
+        private CustomListView listViewAccounts;
         private TableLayoutPanel tableLayoutPanel2;
         private Panel panel1;
         private ToolStripMenuItem addTransToolStripMenuItem;
