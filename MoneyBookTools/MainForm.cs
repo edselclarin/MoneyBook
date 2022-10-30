@@ -932,16 +932,20 @@ namespace MoneyBookTools
 
         private void ShowAddTransactionDialog()
         {
-            var summary = listViewAccounts.SelectedItems[0].Tag as AccountSummary;
-
-            var dlg = new TransactionForm(summary.Account.AcctId)
+            if (listViewAccounts.SelectedIndices.Count > 0)
             {
-                StartPosition = FormStartPosition.CenterScreen
-            };
+                int index = listViewAccounts.SelectedIndices[0];
+                var summary = m_summaries[index] as AccountSummary;
 
-            if (dlg.ShowDialog(this) == DialogResult.OK)
-            {
-                LoadTransactionsGrid();
+                var dlg = new TransactionForm(summary.Account.AcctId)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadTransactionsGrid();
+                }
             }
         }
 
