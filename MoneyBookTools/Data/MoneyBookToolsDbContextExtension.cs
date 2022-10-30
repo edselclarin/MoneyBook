@@ -225,6 +225,43 @@ namespace MoneyBookTools.Data
             db.SaveChanges();
         }
 
+        public static void AddTransaction(this MoneyBookDbContext db, ViewTransaction transaction)
+        {
+            var cat = db.Categories.FirstOrDefault();
+
+            if (cat == null)
+            {
+                throw new Exception("There must be at least one category.");
+            }
+
+            var trn = new Transaction();
+            trn.AcctId = transaction.AcctId;
+            trn.TrnsType = transaction.TrnsType;
+            trn.CatId = cat.CatId;
+            trn.Date = transaction.Date;
+            trn.Payee = transaction.Payee;
+            trn.RefNum = transaction.RefNum;
+            trn.Payee = transaction.Payee;
+            trn.Memo = transaction.Memo;
+            trn.State = transaction.State;
+            trn.ExtTrnsId = String.Empty;
+            if (transaction.NewAmount < 0)
+            {
+                trn.TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString();
+                trn.Amount = Math.Abs(transaction.NewAmount);
+            }
+            else
+            {
+                trn.TrnsType = MoneyBookDbContextExtension.TransactionTypes.CREDIT.ToString();
+                trn.Amount = transaction.NewAmount;
+            }
+            trn.DateModified = DateTime.Now.Date;
+
+            db.Transactions.Add(trn);
+
+            db.SaveChanges();
+        }
+
         public static void UpdateTransaction(this MoneyBookDbContext db, ViewTransaction transaction)
         {
             var trn = db.Transactions

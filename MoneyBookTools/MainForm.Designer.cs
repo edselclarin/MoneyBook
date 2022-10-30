@@ -39,16 +39,18 @@ namespace MoneyBookTools
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabOperations = new System.Windows.Forms.TabPage();
-            this.linkRestoreDatabase = new System.Windows.Forms.LinkLabel();
-            this.linkBackupDatabase = new System.Windows.Forms.LinkLabel();
-            this.linkDeleteAllTransactions = new System.Windows.Forms.LinkLabel();
-            this.linkImportTransactions = new System.Windows.Forms.LinkLabel();
-            this.linkDeleteRepeatingTransactions = new System.Windows.Forms.LinkLabel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvFileTransactions = new System.Windows.Forms.DataGridView();
-            this.linkResetAccountData = new System.Windows.Forms.LinkLabel();
-            this.linkImportRepeatingTransactions = new System.Windows.Forms.LinkLabel();
-            this.linkOpenFile = new System.Windows.Forms.LinkLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.linkImportTransactions = new System.Windows.Forms.LinkLabel();
+            this.linkRestoreDatabase = new System.Windows.Forms.LinkLabel();
             this.linkAccountData = new System.Windows.Forms.LinkLabel();
+            this.linkBackupDatabase = new System.Windows.Forms.LinkLabel();
+            this.linkOpenFile = new System.Windows.Forms.LinkLabel();
+            this.linkDeleteAllTransactions = new System.Windows.Forms.LinkLabel();
+            this.linkImportRepeatingTransactions = new System.Windows.Forms.LinkLabel();
+            this.linkResetAccountData = new System.Windows.Forms.LinkLabel();
+            this.linkDeleteRepeatingTransactions = new System.Windows.Forms.LinkLabel();
             this.tabOutlook = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -64,6 +66,7 @@ namespace MoneyBookTools
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setTransStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -77,11 +80,11 @@ namespace MoneyBookTools
             this.stageRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.tabOperations.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFileTransactions)).BeginInit();
+            this.panel1.SuspendLayout();
             this.tabOutlook.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -102,8 +105,6 @@ namespace MoneyBookTools
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
             this.recTransContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -161,63 +162,21 @@ namespace MoneyBookTools
             this.tabOperations.Text = "Operations";
             this.tabOperations.UseVisualStyleBackColor = true;
             // 
-            // linkRestoreDatabase
+            // tableLayoutPanel2
             // 
-            this.linkRestoreDatabase.AutoSize = true;
-            this.linkRestoreDatabase.Location = new System.Drawing.Point(452, 36);
-            this.linkRestoreDatabase.Name = "linkRestoreDatabase";
-            this.linkRestoreDatabase.Size = new System.Drawing.Size(97, 15);
-            this.linkRestoreDatabase.TabIndex = 9;
-            this.linkRestoreDatabase.TabStop = true;
-            this.linkRestoreDatabase.Text = "Restore Database";
-            this.linkRestoreDatabase.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkRestoreDatabase_LinkClicked);
-            // 
-            // linkBackupDatabase
-            // 
-            this.linkBackupDatabase.AutoSize = true;
-            this.linkBackupDatabase.Location = new System.Drawing.Point(452, 7);
-            this.linkBackupDatabase.Name = "linkBackupDatabase";
-            this.linkBackupDatabase.Size = new System.Drawing.Size(97, 15);
-            this.linkBackupDatabase.TabIndex = 8;
-            this.linkBackupDatabase.TabStop = true;
-            this.linkBackupDatabase.Text = "Backup Database";
-            this.linkBackupDatabase.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkBackupDatabase_LinkClicked);
-            // 
-            // linkDeleteAllTransactions
-            // 
-            this.linkDeleteAllTransactions.Location = new System.Drawing.Point(3, 32);
-            this.linkDeleteAllTransactions.Margin = new System.Windows.Forms.Padding(3);
-            this.linkDeleteAllTransactions.Name = "linkDeleteAllTransactions";
-            this.linkDeleteAllTransactions.Size = new System.Drawing.Size(128, 23);
-            this.linkDeleteAllTransactions.TabIndex = 2;
-            this.linkDeleteAllTransactions.TabStop = true;
-            this.linkDeleteAllTransactions.Text = "Delete All Transactions";
-            this.linkDeleteAllTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkDeleteAllTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDeleteAllTransactions_LinkClicked);
-            // 
-            // linkImportTransactions
-            // 
-            this.linkImportTransactions.Location = new System.Drawing.Point(3, 3);
-            this.linkImportTransactions.Margin = new System.Windows.Forms.Padding(3);
-            this.linkImportTransactions.Name = "linkImportTransactions";
-            this.linkImportTransactions.Size = new System.Drawing.Size(128, 23);
-            this.linkImportTransactions.TabIndex = 1;
-            this.linkImportTransactions.TabStop = true;
-            this.linkImportTransactions.Text = "Import Transactions";
-            this.linkImportTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkImportTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportTransactions_LinkClicked);
-            // 
-            // linkDeleteRepeatingTransactions
-            // 
-            this.linkDeleteRepeatingTransactions.Location = new System.Drawing.Point(137, 31);
-            this.linkDeleteRepeatingTransactions.Margin = new System.Windows.Forms.Padding(3);
-            this.linkDeleteRepeatingTransactions.Name = "linkDeleteRepeatingTransactions";
-            this.linkDeleteRepeatingTransactions.Size = new System.Drawing.Size(175, 24);
-            this.linkDeleteRepeatingTransactions.TabIndex = 5;
-            this.linkDeleteRepeatingTransactions.TabStop = true;
-            this.linkDeleteRepeatingTransactions.Text = "Delete Repeating Transactions";
-            this.linkDeleteRepeatingTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkDeleteRepeatingTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDeleteRepeatingTransactions_LinkClicked);
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.dgvFileTransactions, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(937, 466);
+            this.tableLayoutPanel2.TabIndex = 10;
             // 
             // dgvFileTransactions
             // 
@@ -232,29 +191,67 @@ namespace MoneyBookTools
             this.dgvFileTransactions.TabIndex = 1;
             this.dgvFileTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
             // 
-            // linkResetAccountData
+            // panel1
             // 
-            this.linkResetAccountData.Location = new System.Drawing.Point(318, 31);
-            this.linkResetAccountData.Margin = new System.Windows.Forms.Padding(3);
-            this.linkResetAccountData.Name = "linkResetAccountData";
-            this.linkResetAccountData.Size = new System.Drawing.Size(128, 24);
-            this.linkResetAccountData.TabIndex = 6;
-            this.linkResetAccountData.TabStop = true;
-            this.linkResetAccountData.Text = "Reset Account Data";
-            this.linkResetAccountData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkResetAccountData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkResetAccountData_LinkClicked);
+            this.panel1.Controls.Add(this.linkImportTransactions);
+            this.panel1.Controls.Add(this.linkRestoreDatabase);
+            this.panel1.Controls.Add(this.linkAccountData);
+            this.panel1.Controls.Add(this.linkBackupDatabase);
+            this.panel1.Controls.Add(this.linkOpenFile);
+            this.panel1.Controls.Add(this.linkDeleteAllTransactions);
+            this.panel1.Controls.Add(this.linkImportRepeatingTransactions);
+            this.panel1.Controls.Add(this.linkResetAccountData);
+            this.panel1.Controls.Add(this.linkDeleteRepeatingTransactions);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(652, 58);
+            this.panel1.TabIndex = 2;
             // 
-            // linkImportRepeatingTransactions
+            // linkImportTransactions
             // 
-            this.linkImportRepeatingTransactions.Location = new System.Drawing.Point(137, 3);
-            this.linkImportRepeatingTransactions.Margin = new System.Windows.Forms.Padding(3);
-            this.linkImportRepeatingTransactions.Name = "linkImportRepeatingTransactions";
-            this.linkImportRepeatingTransactions.Size = new System.Drawing.Size(175, 23);
-            this.linkImportRepeatingTransactions.TabIndex = 4;
-            this.linkImportRepeatingTransactions.TabStop = true;
-            this.linkImportRepeatingTransactions.Text = "Import Repeating Transactions";
-            this.linkImportRepeatingTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkImportRepeatingTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportRepeatingTransactions_LinkClicked);
+            this.linkImportTransactions.Location = new System.Drawing.Point(3, 3);
+            this.linkImportTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkImportTransactions.Name = "linkImportTransactions";
+            this.linkImportTransactions.Size = new System.Drawing.Size(128, 23);
+            this.linkImportTransactions.TabIndex = 1;
+            this.linkImportTransactions.TabStop = true;
+            this.linkImportTransactions.Text = "Import Transactions";
+            this.linkImportTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkImportTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportTransactions_LinkClicked);
+            // 
+            // linkRestoreDatabase
+            // 
+            this.linkRestoreDatabase.AutoSize = true;
+            this.linkRestoreDatabase.Location = new System.Drawing.Point(452, 36);
+            this.linkRestoreDatabase.Name = "linkRestoreDatabase";
+            this.linkRestoreDatabase.Size = new System.Drawing.Size(97, 15);
+            this.linkRestoreDatabase.TabIndex = 9;
+            this.linkRestoreDatabase.TabStop = true;
+            this.linkRestoreDatabase.Text = "Restore Database";
+            this.linkRestoreDatabase.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkRestoreDatabase_LinkClicked);
+            // 
+            // linkAccountData
+            // 
+            this.linkAccountData.Location = new System.Drawing.Point(318, 3);
+            this.linkAccountData.Margin = new System.Windows.Forms.Padding(3);
+            this.linkAccountData.Name = "linkAccountData";
+            this.linkAccountData.Size = new System.Drawing.Size(128, 23);
+            this.linkAccountData.TabIndex = 7;
+            this.linkAccountData.TabStop = true;
+            this.linkAccountData.Text = "Update Account Data";
+            this.linkAccountData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkAccountData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkUpdateAccountData_LinkClicked);
+            // 
+            // linkBackupDatabase
+            // 
+            this.linkBackupDatabase.AutoSize = true;
+            this.linkBackupDatabase.Location = new System.Drawing.Point(452, 7);
+            this.linkBackupDatabase.Name = "linkBackupDatabase";
+            this.linkBackupDatabase.Size = new System.Drawing.Size(97, 15);
+            this.linkBackupDatabase.TabIndex = 8;
+            this.linkBackupDatabase.TabStop = true;
+            this.linkBackupDatabase.Text = "Backup Database";
+            this.linkBackupDatabase.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkBackupDatabase_LinkClicked);
             // 
             // linkOpenFile
             // 
@@ -268,17 +265,53 @@ namespace MoneyBookTools
             this.linkOpenFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.linkOpenFile.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkOpenFile_LinkClicked);
             // 
-            // linkAccountData
+            // linkDeleteAllTransactions
             // 
-            this.linkAccountData.Location = new System.Drawing.Point(318, 3);
-            this.linkAccountData.Margin = new System.Windows.Forms.Padding(3);
-            this.linkAccountData.Name = "linkAccountData";
-            this.linkAccountData.Size = new System.Drawing.Size(128, 23);
-            this.linkAccountData.TabIndex = 7;
-            this.linkAccountData.TabStop = true;
-            this.linkAccountData.Text = "Update Account Data";
-            this.linkAccountData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.linkAccountData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkUpdateAccountData_LinkClicked);
+            this.linkDeleteAllTransactions.Location = new System.Drawing.Point(3, 32);
+            this.linkDeleteAllTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkDeleteAllTransactions.Name = "linkDeleteAllTransactions";
+            this.linkDeleteAllTransactions.Size = new System.Drawing.Size(128, 23);
+            this.linkDeleteAllTransactions.TabIndex = 2;
+            this.linkDeleteAllTransactions.TabStop = true;
+            this.linkDeleteAllTransactions.Text = "Delete All Transactions";
+            this.linkDeleteAllTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkDeleteAllTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDeleteAllTransactions_LinkClicked);
+            // 
+            // linkImportRepeatingTransactions
+            // 
+            this.linkImportRepeatingTransactions.Location = new System.Drawing.Point(137, 3);
+            this.linkImportRepeatingTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkImportRepeatingTransactions.Name = "linkImportRepeatingTransactions";
+            this.linkImportRepeatingTransactions.Size = new System.Drawing.Size(175, 23);
+            this.linkImportRepeatingTransactions.TabIndex = 4;
+            this.linkImportRepeatingTransactions.TabStop = true;
+            this.linkImportRepeatingTransactions.Text = "Import Repeating Transactions";
+            this.linkImportRepeatingTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkImportRepeatingTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkImportRepeatingTransactions_LinkClicked);
+            // 
+            // linkResetAccountData
+            // 
+            this.linkResetAccountData.Location = new System.Drawing.Point(318, 31);
+            this.linkResetAccountData.Margin = new System.Windows.Forms.Padding(3);
+            this.linkResetAccountData.Name = "linkResetAccountData";
+            this.linkResetAccountData.Size = new System.Drawing.Size(128, 24);
+            this.linkResetAccountData.TabIndex = 6;
+            this.linkResetAccountData.TabStop = true;
+            this.linkResetAccountData.Text = "Reset Account Data";
+            this.linkResetAccountData.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkResetAccountData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkResetAccountData_LinkClicked);
+            // 
+            // linkDeleteRepeatingTransactions
+            // 
+            this.linkDeleteRepeatingTransactions.Location = new System.Drawing.Point(137, 31);
+            this.linkDeleteRepeatingTransactions.Margin = new System.Windows.Forms.Padding(3);
+            this.linkDeleteRepeatingTransactions.Name = "linkDeleteRepeatingTransactions";
+            this.linkDeleteRepeatingTransactions.Size = new System.Drawing.Size(175, 24);
+            this.linkDeleteRepeatingTransactions.TabIndex = 5;
+            this.linkDeleteRepeatingTransactions.TabStop = true;
+            this.linkDeleteRepeatingTransactions.Text = "Delete Repeating Transactions";
+            this.linkDeleteRepeatingTransactions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linkDeleteRepeatingTransactions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDeleteRepeatingTransactions_LinkClicked);
             // 
             // tabOutlook
             // 
@@ -469,13 +502,22 @@ namespace MoneyBookTools
             // transContextMenu
             // 
             this.transContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addTransToolStripMenuItem,
             this.editTransToolStripMenuItem,
             this.setTransStateToolStripMenuItem,
             this.toolStripSeparator2,
             this.deleteTransToolStripMenuItem});
             this.transContextMenu.Name = "transContextMenu";
-            this.transContextMenu.Size = new System.Drawing.Size(129, 76);
+            this.transContextMenu.Size = new System.Drawing.Size(129, 98);
             this.transContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.transContextMenu_Opening);
+            // 
+            // addTransToolStripMenuItem
+            // 
+            this.addTransToolStripMenuItem.Name = "addTransToolStripMenuItem";
+            this.addTransToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.addTransToolStripMenuItem.Text = "Add";
+            this.addTransToolStripMenuItem.ToolTipText = "Add transaction";
+            this.addTransToolStripMenuItem.Click += new System.EventHandler(this.addTransToolStripMenuItem_Click);
             // 
             // editTransToolStripMenuItem
             // 
@@ -621,38 +663,6 @@ namespace MoneyBookTools
             this.tabControl1.Size = new System.Drawing.Size(951, 500);
             this.tabControl1.TabIndex = 2;
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.dgvFileTransactions, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(937, 466);
-            this.tableLayoutPanel2.TabIndex = 10;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.linkImportTransactions);
-            this.panel1.Controls.Add(this.linkRestoreDatabase);
-            this.panel1.Controls.Add(this.linkAccountData);
-            this.panel1.Controls.Add(this.linkBackupDatabase);
-            this.panel1.Controls.Add(this.linkOpenFile);
-            this.panel1.Controls.Add(this.linkDeleteAllTransactions);
-            this.panel1.Controls.Add(this.linkImportRepeatingTransactions);
-            this.panel1.Controls.Add(this.linkResetAccountData);
-            this.panel1.Controls.Add(this.linkDeleteRepeatingTransactions);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(652, 58);
-            this.panel1.TabIndex = 2;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -667,7 +677,10 @@ namespace MoneyBookTools
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabOperations.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvFileTransactions)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabOutlook.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
@@ -688,9 +701,6 @@ namespace MoneyBookTools
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
             this.recTransContextMenu.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -744,5 +754,6 @@ namespace MoneyBookTools
         private ListView listView1;
         private TableLayoutPanel tableLayoutPanel2;
         private Panel panel1;
+        private ToolStripMenuItem addTransToolStripMenuItem;
     }
 }
