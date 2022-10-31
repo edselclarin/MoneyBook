@@ -62,6 +62,25 @@ namespace MoneyBook.Data
             Yearly
         }
 
+        public static CategoryInfo ToCategoryInfo(this Category cat)
+        {
+            return new CategoryInfo
+            {
+                CatId = cat.CatId,
+                Name = cat.Name
+            };
+        }
+
+        public static InstitutionInfo ToInstitutionInfo(this Institution inst)
+        {
+            return new InstitutionInfo
+            {
+                InstId = inst.InstId,
+                Name = inst.Name,
+                InstType = inst.InstType
+            };
+        }
+
         public static AccountInfo ToAccountInfo(this Account acct)
         {
             return new AccountInfo
@@ -124,6 +143,24 @@ namespace MoneyBook.Data
                     return transactions;
                     break;
             }
+        }
+
+        public static IEnumerable<CategoryInfo> GetCategories(this MoneyBookDbContext db)
+        {
+            var results = db.Categories
+                .Where(x => x.IsDeleted == false)
+                .Select(x => x.ToCategoryInfo());
+
+            return results.AsEnumerable();
+        }
+
+        public static IEnumerable<InstitutionInfo> GetInstitutions(this MoneyBookDbContext db)
+        {
+            var results = db.Institutions
+                .Where(x => x.IsDeleted == false)
+                .Select(x => x.ToInstitutionInfo());
+
+            return results.AsEnumerable();
         }
 
         public static IEnumerable<AccountInfo> GetAccounts(this MoneyBookDbContext db)

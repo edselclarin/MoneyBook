@@ -20,11 +20,11 @@ namespace MoneyBookApi.Controllers
         }
 
         [HttpGet(Name = "GetTransactions")]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilter filter, int acctId)
+        public IActionResult Get([FromQuery] PaginationFilter filter, int acctId)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            var results = await m_db.GetTransactionsAsync(acctId);
+            var results = m_db.GetTransactions(acctId);
 
             var pagedData = results
                            .Skip((filter.PageNumber - 1) * filter.PageSize)

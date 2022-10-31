@@ -7,30 +7,30 @@ namespace MoneyBookApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class InstitutionsController : ControllerBase
+    public class RecurringTransactionsController : ControllerBase
     {
-        private readonly ILogger<InstitutionsController> _logger;
+        private readonly ILogger<RecurringTransactionsController> _logger;
         private MoneyBookDbContext m_db;
 
-        public InstitutionsController(ILogger<InstitutionsController> logger)
+        public RecurringTransactionsController(ILogger<RecurringTransactionsController> logger)
         {
             _logger = logger;
 
             m_db = MoneyBookDbContext.Create(MoneyBookApiDbContextConfig.Instance);
         }
 
-        [HttpGet(Name = "GetInstitutions")]
+        [HttpGet(Name = "GetRecurringTransactions")]
         public IActionResult Get([FromQuery] PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            var results = m_db.GetInstitutions();
+            var results = m_db.GetRecurringTransactions(MoneyBookDbContextExtension.SortOrder.Ascending);
 
             var pagedData = results
-                .Skip((filter.PageNumber - 1) * filter.PageSize)
-                .Take(filter.PageSize);
+                           .Skip((filter.PageNumber - 1) * filter.PageSize)
+                           .Take(filter.PageSize);
 
-            var response = new PagedResponse<IEnumerable<InstitutionInfo>>(pagedData, validFilter.PageNumber, validFilter.PageSize)
+            var response = new PagedResponse<IEnumerable<RecurringTransactionInfo>>(pagedData, validFilter.PageNumber, validFilter.PageSize)
             {
                 TotalRecords = results.Count(),
                 TotalPages = results.Count() / validFilter.PageSize
