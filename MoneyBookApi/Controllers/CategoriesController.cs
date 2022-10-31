@@ -20,11 +20,11 @@ namespace MoneyBookApi.Controllers
         }
 
         [HttpGet(Name = "GetCategories")]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilter filter)
+        public IActionResult Get([FromQuery] PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            var results = await m_db.GetCategoriesAsync();
+            var results = m_db.GetCategories();
 
             var pagedData = results
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
