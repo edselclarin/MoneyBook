@@ -7,24 +7,24 @@ namespace MoneyBookApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountsController : ControllerBase
+    public class AccountSummariesController : ControllerBase
     {
-        private readonly ILogger<AccountsController> _logger;
+        private readonly ILogger<AccountSummariesController> _logger;
         private MoneyBookDbContext m_db;
 
-        public AccountsController(ILogger<AccountsController> logger)
+        public AccountSummariesController(ILogger<AccountSummariesController> logger)
         {
             _logger = logger;
 
             m_db = MoneyBookDbContext.Create(MoneyBookApiDbContextConfig.Instance);
         }
 
-        [HttpGet(Name = "GetAccountBrief")]
+        [HttpGet(Name = "GetAccountSummary")]
         public IActionResult Get(int acctId)
         {
-            var brief = m_db.GetAccountBrief(acctId);
-
-            return Ok(brief);
+            var summary = m_db.GetAccountSummary(acctId);
+    
+            return Ok(summary);
         }
     }
 }
