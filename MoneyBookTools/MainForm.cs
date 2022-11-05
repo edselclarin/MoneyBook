@@ -3,6 +3,7 @@ using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
 using Ofx;
+using System.Diagnostics;
 
 namespace MoneyBookTools
 {
@@ -78,7 +79,8 @@ namespace MoneyBookTools
                 labelAvailableBalance.Text = 
                 labelStagedBalance.Text =
                 labelProjectedBalance.Text =
-                labelActualBalance.Text = String.Empty;
+                labelActualBalance.Text = 
+                labelSum.Text = String.Empty;
 
                 listViewAccounts.Items.Add("Loading...");
 
@@ -640,6 +642,18 @@ namespace MoneyBookTools
             }
         }
 
+        private void dgvAccountTransactions_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalculateSum();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void LoadAccountsList()
         {
             listViewAccounts.Items.Clear();
@@ -1039,6 +1053,25 @@ namespace MoneyBookTools
 
                     MessageBox.Show(this, "Restore complete.", this.Text, MessageBoxButtons.OK);
                 }
+            }
+        }
+
+        private void CalculateSum()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
+                .ToList();
+
+            if (selectedTransactions.Count() > 1)
+            {
+                labelSum.Text = $"Sum: {selectedTransactions.Sum(x => x.Amount):0.00}";
+            }
+            else
+            {
+                labelSum.Text = String.Empty;
             }
         }
     }
