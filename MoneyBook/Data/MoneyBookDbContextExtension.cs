@@ -221,6 +221,42 @@ namespace MoneyBook.Data
             }
         }
 
+        public static AccountBrief? GetAccountBrief(this MoneyBookDbContext db, int acctId)
+        {
+            var accts = db.Accounts
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId)
+                .Select(x => x.ToAccountInfo());
+
+            if (accts != null && accts.Count() > 0)
+            {
+                var acct = accts.First();
+
+                var transactions = db.GetTransactions(acct.AcctId);
+
+                var summary = new AccountSummary()
+                {
+                    Account = acct,
+                    Transactions = transactions.ToList()
+                };
+
+                var brief = new AccountBrief()
+                {
+                    Account = acct,
+                    Credits = summary.Credits,
+                    Debits = summary.Debits,
+                    PendingBalance = summary.PendingBalance,
+                    Balance = summary.Balance,
+                    AvailableBalance = summary.AvailableBalance
+                };
+
+                return brief;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public static IEnumerable<RecurringTransactionInfo> GetRecurringTransactions(this MoneyBookDbContext db, SortOrder sortOrder)
         {
             var accts = db.Accounts
