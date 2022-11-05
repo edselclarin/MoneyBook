@@ -59,13 +59,15 @@ namespace MoneyBookTools
             this.groupLedger = new System.Windows.Forms.GroupBox();
             this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
             this.panelLedger = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.labelAccount = new System.Windows.Forms.Label();
-            this.labelProjectedBalance = new System.Windows.Forms.Label();
             this.comboFilter = new System.Windows.Forms.ComboBox();
-            this.labelActualBalance = new System.Windows.Forms.Label();
+            this.labelProjectedBalance = new System.Windows.Forms.Label();
             this.comboDateOrder = new System.Windows.Forms.ComboBox();
-            this.labelStagedBalance = new System.Windows.Forms.Label();
+            this.labelActualBalance = new System.Windows.Forms.Label();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
+            this.labelStagedBalance = new System.Windows.Forms.Label();
+            this.labelSum = new System.Windows.Forms.Label();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,6 +103,7 @@ namespace MoneyBookTools
             this.groupLedger.SuspendLayout();
             this.tableLayoutLedger.SuspendLayout();
             this.panelLedger.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.transContextMenu.SuspendLayout();
             this.groupUpcoming.SuspendLayout();
@@ -406,7 +409,7 @@ namespace MoneyBookTools
             this.groupLedger.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupLedger.Location = new System.Drawing.Point(3, 3);
             this.groupLedger.Name = "groupLedger";
-            this.groupLedger.Size = new System.Drawing.Size(892, 202);
+            this.groupLedger.Size = new System.Drawing.Size(892, 218);
             this.groupLedger.TabIndex = 5;
             this.groupLedger.TabStop = false;
             this.groupLedger.Text = "Ledger";
@@ -421,122 +424,171 @@ namespace MoneyBookTools
             this.tableLayoutLedger.Location = new System.Drawing.Point(6, 22);
             this.tableLayoutLedger.Name = "tableLayoutLedger";
             this.tableLayoutLedger.RowCount = 2;
-            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 69F));
             this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutLedger.Size = new System.Drawing.Size(873, 162);
+            this.tableLayoutLedger.Size = new System.Drawing.Size(873, 180);
             this.tableLayoutLedger.TabIndex = 9;
             // 
             // panelLedger
             // 
-            this.panelLedger.Controls.Add(this.labelAccount);
-            this.panelLedger.Controls.Add(this.labelProjectedBalance);
-            this.panelLedger.Controls.Add(this.comboFilter);
-            this.panelLedger.Controls.Add(this.labelActualBalance);
-            this.panelLedger.Controls.Add(this.comboDateOrder);
-            this.panelLedger.Controls.Add(this.labelStagedBalance);
-            this.panelLedger.Controls.Add(this.labelAvailableBalance);
+            this.panelLedger.Controls.Add(this.tableLayoutPanel1);
             this.panelLedger.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelLedger.Location = new System.Drawing.Point(3, 3);
             this.panelLedger.Name = "panelLedger";
-            this.panelLedger.Size = new System.Drawing.Size(867, 28);
+            this.panelLedger.Size = new System.Drawing.Size(867, 63);
             this.panelLedger.TabIndex = 6;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 6;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tableLayoutPanel1.Controls.Add(this.labelAccount, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.comboFilter, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.labelProjectedBalance, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.comboDateOrder, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.labelActualBalance, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelAvailableBalance, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelStagedBalance, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelSum, 5, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(832, 62);
+            this.tableLayoutPanel1.TabIndex = 11;
             // 
             // labelAccount
             // 
+            this.labelAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelAccount.BackColor = System.Drawing.Color.DimGray;
             this.labelAccount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.labelAccount.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.labelAccount.Location = new System.Drawing.Point(0, 1);
+            this.labelAccount.Location = new System.Drawing.Point(3, 3);
             this.labelAccount.Margin = new System.Windows.Forms.Padding(3);
             this.labelAccount.Name = "labelAccount";
-            this.labelAccount.Size = new System.Drawing.Size(111, 25);
+            this.labelAccount.Size = new System.Drawing.Size(132, 25);
             this.labelAccount.TabIndex = 10;
             this.labelAccount.Text = "Account";
             this.labelAccount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // comboFilter
+            // 
+            this.comboFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboFilter.FormattingEnabled = true;
+            this.comboFilter.Location = new System.Drawing.Point(141, 34);
+            this.comboFilter.Name = "comboFilter";
+            this.comboFilter.Size = new System.Drawing.Size(132, 25);
+            this.comboFilter.TabIndex = 5;
+            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            // 
             // labelProjectedBalance
             // 
+            this.labelProjectedBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelProjectedBalance.BackColor = System.Drawing.Color.DarkGray;
             this.labelProjectedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.labelProjectedBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labelProjectedBalance.Location = new System.Drawing.Point(525, 1);
+            this.labelProjectedBalance.Location = new System.Drawing.Point(555, 3);
             this.labelProjectedBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelProjectedBalance.Name = "labelProjectedBalance";
-            this.labelProjectedBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelProjectedBalance.Size = new System.Drawing.Size(132, 25);
             this.labelProjectedBalance.TabIndex = 9;
             this.labelProjectedBalance.Text = "Projected: 0.00";
             this.labelProjectedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // comboFilter
+            // comboDateOrder
             // 
-            this.comboFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboFilter.FormattingEnabled = true;
-            this.comboFilter.Location = new System.Drawing.Point(810, 1);
-            this.comboFilter.Name = "comboFilter";
-            this.comboFilter.Size = new System.Drawing.Size(143, 25);
-            this.comboFilter.TabIndex = 5;
-            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            this.comboDateOrder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboDateOrder.FormattingEnabled = true;
+            this.comboDateOrder.Location = new System.Drawing.Point(3, 34);
+            this.comboDateOrder.Name = "comboDateOrder";
+            this.comboDateOrder.Size = new System.Drawing.Size(132, 25);
+            this.comboDateOrder.TabIndex = 6;
+            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
             // labelActualBalance
             // 
+            this.labelActualBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelActualBalance.BackColor = System.Drawing.Color.DarkGray;
             this.labelActualBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.labelActualBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labelActualBalance.Location = new System.Drawing.Point(117, 1);
+            this.labelActualBalance.Location = new System.Drawing.Point(141, 3);
             this.labelActualBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelActualBalance.Name = "labelActualBalance";
-            this.labelActualBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelActualBalance.Size = new System.Drawing.Size(132, 25);
             this.labelActualBalance.TabIndex = 8;
             this.labelActualBalance.Text = "Actual: 0.00";
             this.labelActualBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // comboDateOrder
+            // labelAvailableBalance
             // 
-            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboDateOrder.FormattingEnabled = true;
-            this.comboDateOrder.Location = new System.Drawing.Point(661, 1);
-            this.comboDateOrder.Name = "comboDateOrder";
-            this.comboDateOrder.Size = new System.Drawing.Size(143, 25);
-            this.comboDateOrder.TabIndex = 6;
-            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            this.labelAvailableBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelAvailableBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelAvailableBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelAvailableBalance.Location = new System.Drawing.Point(279, 3);
+            this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelAvailableBalance.Name = "labelAvailableBalance";
+            this.labelAvailableBalance.Size = new System.Drawing.Size(132, 25);
+            this.labelAvailableBalance.TabIndex = 1;
+            this.labelAvailableBalance.Text = "Available: 0.00";
+            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelStagedBalance
             // 
+            this.labelStagedBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelStagedBalance.BackColor = System.Drawing.Color.DarkGray;
             this.labelStagedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.labelStagedBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labelStagedBalance.Location = new System.Drawing.Point(389, 1);
+            this.labelStagedBalance.Location = new System.Drawing.Point(417, 3);
             this.labelStagedBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelStagedBalance.Name = "labelStagedBalance";
-            this.labelStagedBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelStagedBalance.Size = new System.Drawing.Size(132, 25);
             this.labelStagedBalance.TabIndex = 7;
             this.labelStagedBalance.Text = "Staged: 0.00";
             this.labelStagedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // labelAvailableBalance
+            // labelSum
             // 
-            this.labelAvailableBalance.BackColor = System.Drawing.Color.DarkGray;
-            this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labelAvailableBalance.Location = new System.Drawing.Point(253, 1);
-            this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(130, 25);
-            this.labelAvailableBalance.TabIndex = 1;
-            this.labelAvailableBalance.Text = "Available: 0.00";
-            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelSum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelSum.BackColor = System.Drawing.Color.Transparent;
+            this.labelSum.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.labelSum.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.labelSum.Location = new System.Drawing.Point(693, 3);
+            this.labelSum.Margin = new System.Windows.Forms.Padding(3);
+            this.labelSum.Name = "labelSum";
+            this.labelSum.Size = new System.Drawing.Size(136, 25);
+            this.labelSum.TabIndex = 11;
+            this.labelSum.Text = "Sum: 0.00";
+            this.labelSum.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // dgvAccountTransactions
             // 
             this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAccountTransactions.ContextMenuStrip = this.transContextMenu;
-            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 37);
+            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 72);
             this.dgvAccountTransactions.Name = "dgvAccountTransactions";
             this.dgvAccountTransactions.RowTemplate.Height = 25;
             this.dgvAccountTransactions.Size = new System.Drawing.Size(101, 29);
             this.dgvAccountTransactions.TabIndex = 3;
             this.dgvAccountTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
             this.dgvAccountTransactions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAccountTransactions_CellMouseDoubleClick);
+            this.dgvAccountTransactions.SelectionChanged += new System.EventHandler(this.dgvAccountTransactions_SelectionChanged);
             // 
             // transContextMenu
             // 
@@ -697,6 +749,7 @@ namespace MoneyBookTools
             this.groupLedger.ResumeLayout(false);
             this.tableLayoutLedger.ResumeLayout(false);
             this.panelLedger.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.transContextMenu.ResumeLayout(false);
             this.groupUpcoming.ResumeLayout(false);
@@ -760,5 +813,7 @@ namespace MoneyBookTools
         private GroupBox groupOperations;
         private Label labelProjectedBalance;
         private Label labelAccount;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label labelSum;
     }
 }
