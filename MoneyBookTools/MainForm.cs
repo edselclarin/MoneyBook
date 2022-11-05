@@ -74,6 +74,7 @@ namespace MoneyBookTools
             try
             {
                 groupLedger.Text = "Ledger";
+                labelAccount.Text = 
                 labelAvailableBalance.Text = 
                 labelStagedBalance.Text =
                 labelProjectedBalance.Text =
@@ -664,11 +665,11 @@ namespace MoneyBookTools
                 var summary = m_summaries[index] as AccountSummary;
                 summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
+                labelAccount.Text = summary?.Account.AccountName;
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
                 labelStagedBalance.Text = $"Staged: {summary?.StagedBalance:0.00}";
                 labelProjectedBalance.Text = $"Projected: {summary?.ProjectedBalance:0.00}";
                 labelActualBalance.Text = $"Actual: {summary?.Balance:0.00}";
-                groupLedger.Text = $"Ledger : {summary?.Account.AccountName}";
 
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
                 var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
