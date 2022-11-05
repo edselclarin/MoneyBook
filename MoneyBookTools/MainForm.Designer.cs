@@ -58,6 +58,14 @@ namespace MoneyBookTools
             this.listViewAccounts = new MoneyBookTools.CustomListView();
             this.groupLedger = new System.Windows.Forms.GroupBox();
             this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
+            this.panelLedger = new System.Windows.Forms.Panel();
+            this.labelAccount = new System.Windows.Forms.Label();
+            this.labelProjectedBalance = new System.Windows.Forms.Label();
+            this.comboFilter = new System.Windows.Forms.ComboBox();
+            this.labelActualBalance = new System.Windows.Forms.Label();
+            this.comboDateOrder = new System.Windows.Forms.ComboBox();
+            this.labelStagedBalance = new System.Windows.Forms.Label();
+            this.labelAvailableBalance = new System.Windows.Forms.Label();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,13 +73,6 @@ namespace MoneyBookTools
             this.setTransStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panelLedger = new System.Windows.Forms.Panel();
-            this.labelProjectedBalance = new System.Windows.Forms.Label();
-            this.comboFilter = new System.Windows.Forms.ComboBox();
-            this.labelActualBalance = new System.Windows.Forms.Label();
-            this.comboDateOrder = new System.Windows.Forms.ComboBox();
-            this.labelStagedBalance = new System.Windows.Forms.Label();
-            this.labelAvailableBalance = new System.Windows.Forms.Label();
             this.groupUpcoming = new System.Windows.Forms.GroupBox();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
             this.recTransContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -99,9 +100,9 @@ namespace MoneyBookTools
             this.groupAccounts.SuspendLayout();
             this.groupLedger.SuspendLayout();
             this.tableLayoutLedger.SuspendLayout();
+            this.panelLedger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.transContextMenu.SuspendLayout();
-            this.panelLedger.SuspendLayout();
             this.groupUpcoming.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
             this.recTransContextMenu.SuspendLayout();
@@ -415,24 +416,124 @@ namespace MoneyBookTools
             this.tableLayoutLedger.ColumnCount = 1;
             this.tableLayoutLedger.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutLedger.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutLedger.Controls.Add(this.dgvAccountTransactions, 0, 1);
             this.tableLayoutLedger.Controls.Add(this.panelLedger, 0, 0);
+            this.tableLayoutLedger.Controls.Add(this.dgvAccountTransactions, 0, 1);
             this.tableLayoutLedger.Location = new System.Drawing.Point(6, 22);
             this.tableLayoutLedger.Name = "tableLayoutLedger";
             this.tableLayoutLedger.RowCount = 2;
-            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
+            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutLedger.Size = new System.Drawing.Size(873, 162);
             this.tableLayoutLedger.TabIndex = 9;
+            // 
+            // panelLedger
+            // 
+            this.panelLedger.Controls.Add(this.labelAccount);
+            this.panelLedger.Controls.Add(this.labelProjectedBalance);
+            this.panelLedger.Controls.Add(this.comboFilter);
+            this.panelLedger.Controls.Add(this.labelActualBalance);
+            this.panelLedger.Controls.Add(this.comboDateOrder);
+            this.panelLedger.Controls.Add(this.labelStagedBalance);
+            this.panelLedger.Controls.Add(this.labelAvailableBalance);
+            this.panelLedger.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelLedger.Location = new System.Drawing.Point(3, 3);
+            this.panelLedger.Name = "panelLedger";
+            this.panelLedger.Size = new System.Drawing.Size(867, 28);
+            this.panelLedger.TabIndex = 6;
+            // 
+            // labelAccount
+            // 
+            this.labelAccount.BackColor = System.Drawing.Color.DimGray;
+            this.labelAccount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelAccount.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.labelAccount.Location = new System.Drawing.Point(0, 1);
+            this.labelAccount.Margin = new System.Windows.Forms.Padding(3);
+            this.labelAccount.Name = "labelAccount";
+            this.labelAccount.Size = new System.Drawing.Size(111, 25);
+            this.labelAccount.TabIndex = 10;
+            this.labelAccount.Text = "Account";
+            this.labelAccount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelProjectedBalance
+            // 
+            this.labelProjectedBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelProjectedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelProjectedBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelProjectedBalance.Location = new System.Drawing.Point(525, 1);
+            this.labelProjectedBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelProjectedBalance.Name = "labelProjectedBalance";
+            this.labelProjectedBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelProjectedBalance.TabIndex = 9;
+            this.labelProjectedBalance.Text = "Projected: 0.00";
+            this.labelProjectedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // comboFilter
+            // 
+            this.comboFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboFilter.FormattingEnabled = true;
+            this.comboFilter.Location = new System.Drawing.Point(810, 1);
+            this.comboFilter.Name = "comboFilter";
+            this.comboFilter.Size = new System.Drawing.Size(143, 25);
+            this.comboFilter.TabIndex = 5;
+            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            // 
+            // labelActualBalance
+            // 
+            this.labelActualBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelActualBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelActualBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelActualBalance.Location = new System.Drawing.Point(117, 1);
+            this.labelActualBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelActualBalance.Name = "labelActualBalance";
+            this.labelActualBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelActualBalance.TabIndex = 8;
+            this.labelActualBalance.Text = "Actual: 0.00";
+            this.labelActualBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // comboDateOrder
+            // 
+            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboDateOrder.FormattingEnabled = true;
+            this.comboDateOrder.Location = new System.Drawing.Point(661, 1);
+            this.comboDateOrder.Name = "comboDateOrder";
+            this.comboDateOrder.Size = new System.Drawing.Size(143, 25);
+            this.comboDateOrder.TabIndex = 6;
+            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            // 
+            // labelStagedBalance
+            // 
+            this.labelStagedBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelStagedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelStagedBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelStagedBalance.Location = new System.Drawing.Point(389, 1);
+            this.labelStagedBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelStagedBalance.Name = "labelStagedBalance";
+            this.labelStagedBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelStagedBalance.TabIndex = 7;
+            this.labelStagedBalance.Text = "Staged: 0.00";
+            this.labelStagedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // labelAvailableBalance
+            // 
+            this.labelAvailableBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelAvailableBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelAvailableBalance.Location = new System.Drawing.Point(253, 1);
+            this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelAvailableBalance.Name = "labelAvailableBalance";
+            this.labelAvailableBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelAvailableBalance.TabIndex = 1;
+            this.labelAvailableBalance.Text = "Available: 0.00";
+            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // dgvAccountTransactions
             // 
             this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAccountTransactions.ContextMenuStrip = this.transContextMenu;
-            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 42);
+            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 37);
             this.dgvAccountTransactions.Name = "dgvAccountTransactions";
             this.dgvAccountTransactions.RowTemplate.Height = 25;
-            this.dgvAccountTransactions.Size = new System.Drawing.Size(101, 34);
+            this.dgvAccountTransactions.Size = new System.Drawing.Size(101, 29);
             this.dgvAccountTransactions.TabIndex = 3;
             this.dgvAccountTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
             this.dgvAccountTransactions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAccountTransactions_CellMouseDoubleClick);
@@ -485,88 +586,6 @@ namespace MoneyBookTools
             this.deleteTransToolStripMenuItem.Text = "Delete";
             this.deleteTransToolStripMenuItem.ToolTipText = "Delete selected transactions";
             this.deleteTransToolStripMenuItem.Click += new System.EventHandler(this.deleteTransToolStripMenuItem_Click);
-            // 
-            // panelLedger
-            // 
-            this.panelLedger.Controls.Add(this.labelProjectedBalance);
-            this.panelLedger.Controls.Add(this.comboFilter);
-            this.panelLedger.Controls.Add(this.labelActualBalance);
-            this.panelLedger.Controls.Add(this.comboDateOrder);
-            this.panelLedger.Controls.Add(this.labelStagedBalance);
-            this.panelLedger.Controls.Add(this.labelAvailableBalance);
-            this.panelLedger.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelLedger.Location = new System.Drawing.Point(3, 3);
-            this.panelLedger.Name = "panelLedger";
-            this.panelLedger.Size = new System.Drawing.Size(867, 33);
-            this.panelLedger.TabIndex = 6;
-            // 
-            // labelProjectedBalance
-            // 
-            this.labelProjectedBalance.BackColor = System.Drawing.Color.Gainsboro;
-            this.labelProjectedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelProjectedBalance.Location = new System.Drawing.Point(704, 1);
-            this.labelProjectedBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelProjectedBalance.Name = "labelProjectedBalance";
-            this.labelProjectedBalance.Size = new System.Drawing.Size(130, 25);
-            this.labelProjectedBalance.TabIndex = 9;
-            this.labelProjectedBalance.Text = "Projected: 0.00";
-            this.labelProjectedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // comboFilter
-            // 
-            this.comboFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboFilter.FormattingEnabled = true;
-            this.comboFilter.Location = new System.Drawing.Point(0, 1);
-            this.comboFilter.Name = "comboFilter";
-            this.comboFilter.Size = new System.Drawing.Size(143, 25);
-            this.comboFilter.TabIndex = 5;
-            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
-            // 
-            // labelActualBalance
-            // 
-            this.labelActualBalance.BackColor = System.Drawing.Color.Gainsboro;
-            this.labelActualBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelActualBalance.Location = new System.Drawing.Point(296, 1);
-            this.labelActualBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelActualBalance.Name = "labelActualBalance";
-            this.labelActualBalance.Size = new System.Drawing.Size(130, 25);
-            this.labelActualBalance.TabIndex = 8;
-            this.labelActualBalance.Text = "Actual: 0.00";
-            this.labelActualBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // comboDateOrder
-            // 
-            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboDateOrder.FormattingEnabled = true;
-            this.comboDateOrder.Location = new System.Drawing.Point(147, 1);
-            this.comboDateOrder.Name = "comboDateOrder";
-            this.comboDateOrder.Size = new System.Drawing.Size(143, 25);
-            this.comboDateOrder.TabIndex = 6;
-            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
-            // 
-            // labelStagedBalance
-            // 
-            this.labelStagedBalance.BackColor = System.Drawing.Color.Gainsboro;
-            this.labelStagedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelStagedBalance.Location = new System.Drawing.Point(568, 1);
-            this.labelStagedBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelStagedBalance.Name = "labelStagedBalance";
-            this.labelStagedBalance.Size = new System.Drawing.Size(130, 25);
-            this.labelStagedBalance.TabIndex = 7;
-            this.labelStagedBalance.Text = "Staged: 0.00";
-            this.labelStagedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // labelAvailableBalance
-            // 
-            this.labelAvailableBalance.BackColor = System.Drawing.Color.Gainsboro;
-            this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.Location = new System.Drawing.Point(432, 1);
-            this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(130, 25);
-            this.labelAvailableBalance.TabIndex = 1;
-            this.labelAvailableBalance.Text = "Available: 0.00";
-            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // groupUpcoming
             // 
@@ -677,9 +696,9 @@ namespace MoneyBookTools
             this.groupAccounts.ResumeLayout(false);
             this.groupLedger.ResumeLayout(false);
             this.tableLayoutLedger.ResumeLayout(false);
+            this.panelLedger.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.transContextMenu.ResumeLayout(false);
-            this.panelLedger.ResumeLayout(false);
             this.groupUpcoming.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
             this.recTransContextMenu.ResumeLayout(false);
@@ -740,5 +759,6 @@ namespace MoneyBookTools
         private Panel panel2;
         private GroupBox groupOperations;
         private Label labelProjectedBalance;
+        private Label labelAccount;
     }
 }
