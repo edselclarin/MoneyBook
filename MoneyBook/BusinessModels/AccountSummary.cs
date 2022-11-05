@@ -12,12 +12,14 @@
         public decimal Debits => 
             Transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
 
-        public decimal PendingBalance => 
-            Transactions.Where(x => x.State == Data.MoneyBookDbContextExtension.StateTypes.Pending.ToString())
+        public decimal StagedBalance => 
+            Transactions.Where(x => x.State == Data.MoneyBookDbContextExtension.StateTypes.Staged.ToString())
             .Sum(x => x.Amount);
 
-        public decimal Balance => Account.StartingBalance + Credits - Debits + PendingBalance;
+        public decimal Balance => Account.StartingBalance + Credits - Debits + StagedBalance;
 
         public decimal AvailableBalance => Balance - Account.ReserveAmount;
+
+        public decimal ProjectedBalance => AvailableBalance - StagedBalance;
     }
 }

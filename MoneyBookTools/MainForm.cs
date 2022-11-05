@@ -75,7 +75,8 @@ namespace MoneyBookTools
             {
                 groupLedger.Text = "Ledger";
                 labelAvailableBalance.Text = 
-                labelPendingBalance.Text =
+                labelStagedBalance.Text =
+                labelProjectedBalance.Text =
                 labelActualBalance.Text = String.Empty;
 
                 listViewAccounts.Items.Add("Loading...");
@@ -664,9 +665,10 @@ namespace MoneyBookTools
                 summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
-                labelPendingBalance.Text = $"Pending: {summary?.PendingBalance:0.00}";
+                labelStagedBalance.Text = $"Staged: {summary?.StagedBalance:0.00}";
+                labelProjectedBalance.Text = $"Projected: {summary?.ProjectedBalance:0.00}";
                 labelActualBalance.Text = $"Actual: {summary?.Balance:0.00}";
-                groupLedger.Text = $"Ledger : {summary.Account.AccountName}";
+                groupLedger.Text = $"Ledger : {summary?.Account.AccountName}";
 
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
                 var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
@@ -693,17 +695,11 @@ namespace MoneyBookTools
                 {
                     var vt = viewTransactions[row.Index];
 
-                    if (vt.State == MoneyBookDbContextExtension.StateTypes.Uncleared.ToString())
+                    if (vt.State == MoneyBookDbContextExtension.StateTypes.New.ToString())
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
                         row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
-                    }
-                    else if (vt.State == MoneyBookDbContextExtension.StateTypes.Pending.ToString())
-                    {
-                        row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
-
-                        row.DefaultCellStyle.ForeColor = Color.DarkOrchid;
                     }
                     else if (vt.State == MoneyBookDbContextExtension.StateTypes.Staged.ToString())
                     {

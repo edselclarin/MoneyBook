@@ -21,12 +21,7 @@ namespace MoneyBook.Data
             /// <summary>
             /// Newly added or imported.
             /// </summary>
-            Uncleared,
-
-            /// <summary>
-            /// Registered but uncleared transaction at institution.
-            /// </summary>
-            Pending,
+            New,
 
             /// <summary>
             /// Projected transaction, not yet registered at institution.
@@ -244,9 +239,10 @@ namespace MoneyBook.Data
                     Account = acct,
                     Credits = summary.Credits,
                     Debits = summary.Debits,
-                    PendingBalance = summary.PendingBalance,
+                    StagedBalance = summary.StagedBalance,
                     Balance = summary.Balance,
-                    AvailableBalance = summary.AvailableBalance
+                    AvailableBalance = summary.AvailableBalance,
+                    ProjectedBalance = summary.ProjectedBalance
                 };
 
                 return brief;
