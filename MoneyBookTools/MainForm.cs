@@ -2,8 +2,6 @@
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
-using Ofx;
-using System.Diagnostics;
 
 namespace MoneyBookTools
 {
@@ -105,8 +103,7 @@ namespace MoneyBookTools
                 this.ShowException(ex);
             }
         }
-
-       
+               
         private void ListViewAccounts_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
         {
             var summary = m_summaries[e.ItemIndex];
@@ -147,11 +144,13 @@ namespace MoneyBookTools
         {
             try
             {
-                if (tabControl1.SelectedTab == tabOutlook)
+                if (tabControl1.SelectedTab == tabOutlook && m_db != null)
                 {
                     using var hg = this.CreateHourglass();
 
                     LoadTransactionsGrid();
+
+                    LoadAccountsList();
                 }
             }
             catch (Exception ex)
@@ -606,6 +605,8 @@ namespace MoneyBookTools
                     using var hg = this.CreateHourglass();
 
                     LoadTransactionsGrid();
+
+                    LoadAccountsList();
                 }
             }
             catch (Exception ex)
@@ -653,6 +654,7 @@ namespace MoneyBookTools
             m_summaries = m_db.GetAccountSummaries();
 
             listViewAccounts.VirtualListSize = m_summaries.Count;
+            listViewAccounts.Invalidate();
         }
 
         private void LoadTransactionsGrid()
@@ -854,6 +856,8 @@ namespace MoneyBookTools
                     LoadRecurringTransactionsGrid();
 
                     LoadTransactionsGrid();
+
+                    LoadAccountsList();
                 }
             }
         }
@@ -883,6 +887,8 @@ namespace MoneyBookTools
                     tr.Commit();
 
                     LoadTransactionsGrid();
+
+                    LoadAccountsList();
                 }
             }
         }
@@ -923,6 +929,8 @@ namespace MoneyBookTools
                     tr.Commit();
 
                     LoadTransactionsGrid();
+
+                    LoadAccountsList();
                 }
             }
         }
@@ -942,6 +950,8 @@ namespace MoneyBookTools
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     LoadTransactionsGrid();
+
+                    LoadAccountsList();
                 }
             }
         }
@@ -968,6 +978,8 @@ namespace MoneyBookTools
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     LoadTransactionsGrid();
+
+                    LoadAccountsList();
                 }
             }
         }
