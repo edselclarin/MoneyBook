@@ -18,7 +18,6 @@ namespace MoneyBookTools
 
             dgvAccountTransactions.SetDataGridViewStyle();
             dgvRecurringTransactions.SetDataGridViewStyle();
-            dgvFileTransactions.SetDataGridViewStyle();
 
             comboFilter.Enabled =
             comboDateOrder.Enabled = false;
@@ -64,8 +63,6 @@ namespace MoneyBookTools
             dgvAccountTransactions.Dock =
             groupUpcoming.Dock =
             dgvRecurringTransactions.Dock =
-            groupOperations.Dock =
-            dgvFileTransactions.Dock =
             panelLedger.Dock = 
             tableLayoutLedger.Dock = DockStyle.Fill;
         }
@@ -173,26 +170,15 @@ namespace MoneyBookTools
             refreshToolStripMenuItem.PerformClick();
         }
 
-        private void linkOpenFile_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                var ofd = new OpenFileDialog()
+                var dlg = new FileTransactionsForm()
                 {
-                    InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                    Filter = "OFX/QFX Files|*.ofx;*.qfx|All Files|*.*",
+                    StartPosition = FormStartPosition.CenterScreen
                 };
-
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    var context = new OfxContext();
-                    context.FromFile(ofd.FileName);
-
-                    dgvFileTransactions.DataSource = context.Transactions;
-                    dgvFileTransactions.ResizeAllCells();
-                }
+                dlg.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -200,7 +186,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void linkImportTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -244,7 +230,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void linkDeleteAllTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void deleteAllTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -272,7 +258,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void linkImportRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void importRecurringTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -310,7 +296,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void linkDeleteRepeatingTransactions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void deleteRecurringTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -338,7 +324,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void linkUpdateAccountData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void updateAccountDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -379,7 +365,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void linkResetAccountData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void resetAccountDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -400,6 +386,34 @@ namespace MoneyBookTools
 
                     MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
                 }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void backupDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                BackupDatabase();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void restoreDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                RestoreDatabase();
             }
             catch (Exception ex)
             {
@@ -607,34 +621,6 @@ namespace MoneyBookTools
                 using var hg = this.CreateHourglass();
 
                 DeleteTransactions();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void linkBackupDatabase_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            try
-            {
-                using var hg = this.CreateHourglass();
-
-                BackupDatabase();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void linkRestoreDatabase_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            try
-            {
-                using var hg = this.CreateHourglass();
-
-                RestoreDatabase();
             }
             catch (Exception ex)
             {
