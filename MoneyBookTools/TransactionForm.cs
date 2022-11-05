@@ -20,7 +20,7 @@ namespace MoneyBookTools
                 Date = DateTime.Now.Date,
                 Payee = DateTime.Now.ToString(),
                 TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString(),
-                State = MoneyBookDbContextExtension.StateTypes.Uncleared.ToString()
+                State = MoneyBookDbContextExtension.StateTypes.New.ToString()
             });
 
             Text = "Add Transaction";

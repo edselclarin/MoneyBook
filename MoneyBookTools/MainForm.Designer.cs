@@ -66,10 +66,11 @@ namespace MoneyBookTools
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelLedger = new System.Windows.Forms.Panel();
+            this.labelProjectedBalance = new System.Windows.Forms.Label();
             this.comboFilter = new System.Windows.Forms.ComboBox();
             this.labelActualBalance = new System.Windows.Forms.Label();
             this.comboDateOrder = new System.Windows.Forms.ComboBox();
-            this.labelPendingBalance = new System.Windows.Forms.Label();
+            this.labelStagedBalance = new System.Windows.Forms.Label();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
             this.groupUpcoming = new System.Windows.Forms.GroupBox();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
@@ -356,7 +357,7 @@ namespace MoneyBookTools
             // hSplit1.Panel2
             // 
             this.hSplit1.Panel2.Controls.Add(this.groupUpcoming);
-            this.hSplit1.Size = new System.Drawing.Size(1121, 457);
+            this.hSplit1.Size = new System.Drawing.Size(1134, 457);
             this.hSplit1.SplitterDistance = 277;
             this.hSplit1.TabIndex = 3;
             // 
@@ -373,7 +374,7 @@ namespace MoneyBookTools
             // vSplit1.Panel2
             // 
             this.vSplit1.Panel2.Controls.Add(this.groupLedger);
-            this.vSplit1.Size = new System.Drawing.Size(1096, 238);
+            this.vSplit1.Size = new System.Drawing.Size(1115, 238);
             this.vSplit1.SplitterDistance = 204;
             this.vSplit1.TabIndex = 0;
             // 
@@ -404,7 +405,7 @@ namespace MoneyBookTools
             this.groupLedger.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupLedger.Location = new System.Drawing.Point(3, 3);
             this.groupLedger.Name = "groupLedger";
-            this.groupLedger.Size = new System.Drawing.Size(884, 202);
+            this.groupLedger.Size = new System.Drawing.Size(892, 202);
             this.groupLedger.TabIndex = 5;
             this.groupLedger.TabStop = false;
             this.groupLedger.Text = "Ledger";
@@ -421,7 +422,7 @@ namespace MoneyBookTools
             this.tableLayoutLedger.RowCount = 2;
             this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
             this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutLedger.Size = new System.Drawing.Size(852, 162);
+            this.tableLayoutLedger.Size = new System.Drawing.Size(873, 162);
             this.tableLayoutLedger.TabIndex = 9;
             // 
             // dgvAccountTransactions
@@ -487,16 +488,29 @@ namespace MoneyBookTools
             // 
             // panelLedger
             // 
+            this.panelLedger.Controls.Add(this.labelProjectedBalance);
             this.panelLedger.Controls.Add(this.comboFilter);
             this.panelLedger.Controls.Add(this.labelActualBalance);
             this.panelLedger.Controls.Add(this.comboDateOrder);
-            this.panelLedger.Controls.Add(this.labelPendingBalance);
+            this.panelLedger.Controls.Add(this.labelStagedBalance);
             this.panelLedger.Controls.Add(this.labelAvailableBalance);
             this.panelLedger.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelLedger.Location = new System.Drawing.Point(3, 3);
             this.panelLedger.Name = "panelLedger";
-            this.panelLedger.Size = new System.Drawing.Size(846, 33);
+            this.panelLedger.Size = new System.Drawing.Size(867, 33);
             this.panelLedger.TabIndex = 6;
+            // 
+            // labelProjectedBalance
+            // 
+            this.labelProjectedBalance.BackColor = System.Drawing.Color.Gainsboro;
+            this.labelProjectedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelProjectedBalance.Location = new System.Drawing.Point(704, 1);
+            this.labelProjectedBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelProjectedBalance.Name = "labelProjectedBalance";
+            this.labelProjectedBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelProjectedBalance.TabIndex = 9;
+            this.labelProjectedBalance.Text = "Projected: 0.00";
+            this.labelProjectedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // comboFilter
             // 
@@ -512,10 +526,10 @@ namespace MoneyBookTools
             // 
             this.labelActualBalance.BackColor = System.Drawing.Color.Gainsboro;
             this.labelActualBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelActualBalance.Location = new System.Drawing.Point(594, 1);
+            this.labelActualBalance.Location = new System.Drawing.Point(296, 1);
             this.labelActualBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelActualBalance.Name = "labelActualBalance";
-            this.labelActualBalance.Size = new System.Drawing.Size(143, 25);
+            this.labelActualBalance.Size = new System.Drawing.Size(130, 25);
             this.labelActualBalance.TabIndex = 8;
             this.labelActualBalance.Text = "Actual: 0.00";
             this.labelActualBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -530,26 +544,26 @@ namespace MoneyBookTools
             this.comboDateOrder.TabIndex = 6;
             this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
-            // labelPendingBalance
+            // labelStagedBalance
             // 
-            this.labelPendingBalance.BackColor = System.Drawing.Color.Gainsboro;
-            this.labelPendingBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelPendingBalance.Location = new System.Drawing.Point(445, 1);
-            this.labelPendingBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelPendingBalance.Name = "labelPendingBalance";
-            this.labelPendingBalance.Size = new System.Drawing.Size(143, 25);
-            this.labelPendingBalance.TabIndex = 7;
-            this.labelPendingBalance.Text = "Pending: 0.00";
-            this.labelPendingBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelStagedBalance.BackColor = System.Drawing.Color.Gainsboro;
+            this.labelStagedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelStagedBalance.Location = new System.Drawing.Point(568, 1);
+            this.labelStagedBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelStagedBalance.Name = "labelStagedBalance";
+            this.labelStagedBalance.Size = new System.Drawing.Size(130, 25);
+            this.labelStagedBalance.TabIndex = 7;
+            this.labelStagedBalance.Text = "Staged: 0.00";
+            this.labelStagedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelAvailableBalance
             // 
             this.labelAvailableBalance.BackColor = System.Drawing.Color.Gainsboro;
             this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.Location = new System.Drawing.Point(296, 1);
+            this.labelAvailableBalance.Location = new System.Drawing.Point(432, 1);
             this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(143, 25);
+            this.labelAvailableBalance.Size = new System.Drawing.Size(130, 25);
             this.labelAvailableBalance.TabIndex = 1;
             this.labelAvailableBalance.Text = "Available: 0.00";
             this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -703,7 +717,7 @@ namespace MoneyBookTools
         private ContextMenuStrip recTransContextMenu;
         private ToolStripMenuItem skipRecTransToolStripMenuItem;
         private ContextMenuStrip transContextMenu;
-        private Label labelPendingBalance;
+        private Label labelStagedBalance;
         private ToolStripMenuItem deleteTransToolStripMenuItem;
         private Label labelActualBalance;
         private ToolStripMenuItem setTransStateToolStripMenuItem;
@@ -725,5 +739,6 @@ namespace MoneyBookTools
         private GroupBox groupAccounts;
         private Panel panel2;
         private GroupBox groupOperations;
+        private Label labelProjectedBalance;
     }
 }
