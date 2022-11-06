@@ -23,7 +23,17 @@ namespace MoneyBookTools.Data
             }
         }
 
-        public string ConnectionStr => 
-            ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+        private string GetConnectionString()
+        {
+            var vals = ConfigurationManager.AppSettings.GetValues("DbMode");
+            if (vals == null || vals.Length == 0)
+            {
+                throw new Exception("Cannot find connection string. Check App.config.");
+            }
+            string dbMode = vals[0].ToString();
+            return ConfigurationManager.ConnectionStrings[dbMode].ConnectionString;
+        }
+
+        public string ConnectionStr => GetConnectionString();
     }
 }
