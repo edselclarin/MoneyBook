@@ -1,4 +1,5 @@
 ﻿using MoneyBook.Data;
+using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
 
@@ -10,11 +11,20 @@ namespace MoneyBookTools
 
         public ViewRecurringTransaction RecurringTransaction { get; set; }
 
-        public RecurringTransactionForm()
+        protected RecurringTransactionForm()
         {
             InitializeComponent();
 
             Text = "Edit Recurring Transaction";
+        }
+
+        public static RecurringTransactionForm Create(ViewRecurringTransaction recTrans)
+        {
+            return new RecurringTransactionForm()
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+                RecurringTransaction = recTrans
+            };
         }
 
         private void RecurringTransactionForm_Load(object sender, EventArgs e)

@@ -11,11 +11,7 @@ namespace MoneyBookTools
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm()
-            {
-                StartPosition = FormStartPosition.CenterScreen,
-                WindowState = FormWindowState.Maximized
-            });
+            Application.Run(MainForm.Create());
         }
     }
 }

@@ -6,9 +6,17 @@ namespace MoneyBookTools
     {
         public MoneyBookDbContextExtension.StateTypes TransactionState { get; set; }
 
-        public StateForm()
+        protected StateForm()
         {
             InitializeComponent();
+        }
+
+        public static StateForm Create()
+        {
+            return new StateForm()
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
         }
 
         private void StateForm_Load(object sender, EventArgs e)

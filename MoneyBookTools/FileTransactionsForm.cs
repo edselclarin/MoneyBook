@@ -1,24 +1,23 @@
 ﻿using Ofx;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace MoneyBookTools
 {
     public partial class FileTransactionsForm : Form
     {
-        public FileTransactionsForm()
+        protected FileTransactionsForm()
         {
             InitializeComponent();
 
             groupFileTransactions.Dock =
             dgvFileTransactions.Dock = DockStyle.Fill;
+        }
+
+        public static FileTransactionsForm Create()
+        {
+            return new FileTransactionsForm()
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
         }
 
         private void FileTransactionsForm_Load(object sender, EventArgs e)
