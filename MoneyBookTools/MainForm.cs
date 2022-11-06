@@ -10,7 +10,16 @@ namespace MoneyBookTools
         private MoneyBookDbContext m_db;
         private List<AccountSummary> m_summaries;
 
-        public MainForm()
+        public static MainForm Create()
+        {
+            return new MainForm()
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+                WindowState = FormWindowState.Maximized
+            };
+        }
+
+        protected MainForm()
         {
             InitializeComponent();
 
@@ -173,11 +182,7 @@ namespace MoneyBookTools
         {
             try
             {
-                var dlg = new FileTransactionsForm()
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-                dlg.ShowDialog();
+                FileTransactionsForm.Create().ShowDialog();
             }
             catch (Exception ex)
             {
@@ -477,10 +482,7 @@ namespace MoneyBookTools
         {
             try
             {
-                var dlg = new StateForm()
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
+                var dlg = StateForm.Create();
 
                 var result = dlg.ShowDialog();
 
@@ -633,7 +635,7 @@ namespace MoneyBookTools
         {
             try
             {
-                AboutForm.Show();
+                AboutForm.Create().ShowDialog();
             }
             catch (Exception ex)
             {
@@ -954,10 +956,7 @@ namespace MoneyBookTools
                 int index = listViewAccounts.SelectedIndices[0];
                 var summary = m_summaries[index] as AccountSummary;
 
-                var dlg = new TransactionForm(summary.Account.AcctId)
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
+                var dlg = TransactionForm.Create(summary.Account.AcctId);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -982,10 +981,7 @@ namespace MoneyBookTools
 
             if (selectedTransaction != null)
             {
-                var dlg = new TransactionForm(selectedTransaction.Transaction)
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
+                var dlg = TransactionForm.Create(selectedTransaction.Transaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -1010,11 +1006,7 @@ namespace MoneyBookTools
 
             if (selectedRecTrans != null)
             {
-                var dlg = new RecurringTransactionForm()
-                {
-                    StartPosition = FormStartPosition.CenterScreen,
-                    RecurringTransaction = selectedRecTrans.Transaction
-                };
+                var dlg = RecurringTransactionForm.Create(selectedRecTrans.Transaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {

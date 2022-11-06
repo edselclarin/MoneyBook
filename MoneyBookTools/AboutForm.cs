@@ -4,18 +4,17 @@ namespace MoneyBookTools
 {
     public partial class AboutForm : Form
     {
-        public AboutForm()
+        protected AboutForm()
         {
             InitializeComponent();
         }
 
-        public static void Show()
+        public static AboutForm Create()
         {
-            var dlg = new AboutForm()
+            return new AboutForm()
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
-            dlg.ShowDialog();
         }
 
         private void AboutForm_Load(object sender, EventArgs e)

@@ -10,7 +10,23 @@ namespace MoneyBookTools
         private ViewTransaction m_transaction;
         private string m_originalHash;
 
-        public TransactionForm(int acctId)
+        public static TransactionForm Create(int acctId)
+        {
+            return new TransactionForm(acctId)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+        }
+
+        public static TransactionForm Create(ViewTransaction transaction)
+        {
+            return new TransactionForm(transaction)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+        }
+
+        protected TransactionForm(int acctId)
         {
             InitializeComponent();
 
@@ -29,7 +45,7 @@ namespace MoneyBookTools
             m_bNew = true;
         }
 
-        public TransactionForm(ViewTransaction transaction)
+        protected TransactionForm(ViewTransaction transaction)
         {
             InitializeComponent();
 
