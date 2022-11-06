@@ -629,6 +629,18 @@ namespace MoneyBookTools
             }
         }
 
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AboutForm.Show();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void dgvAccountTransactions_SelectionChanged(object sender, EventArgs e)
         {
             try
