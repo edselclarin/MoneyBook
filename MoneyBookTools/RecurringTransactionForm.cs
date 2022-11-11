@@ -28,6 +28,7 @@ namespace MoneyBookTools
             return new RecurringTransactionForm(true)
             {
                 StartPosition = FormStartPosition.CenterScreen,
+                RecurringTransaction = null
             };
         }
 
@@ -37,6 +38,26 @@ namespace MoneyBookTools
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 RecurringTransaction = recTrans
+            };
+        }
+
+        public static RecurringTransactionForm Create(ViewTransaction trans)
+        {
+            return new RecurringTransactionForm(true)
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+                RecurringTransaction = new ViewRecurringTransaction()
+                {
+                    DueDate = trans.Date,
+                    AcctId = trans.AcctId,
+                    CatId = 0,
+                    TrnsType = trans.TrnsType,
+                    TrnsAmount = trans.TrnsAmount,
+                    Frequency = MoneyBookDbContextExtension.TransactionFrequency.Monthly.ToString(),
+                    Payee = trans.Payee,
+                    Memo = !String.IsNullOrEmpty(trans.Memo) ? trans.Memo : String.Empty,
+                    NewAmount = trans.Amount
+                }
             };
         }
 
@@ -61,19 +82,22 @@ namespace MoneyBookTools
                 }
                 else
                 {
-                    RecurringTransaction = new ViewRecurringTransaction()
+                    if (RecurringTransaction == null)
                     {
-                        DueDate = DateTime.Now,
-                        AcctId = accts[comboAccounts.SelectedIndex].AcctId,
-                        Account = accts[comboAccounts.SelectedIndex].AccountName,
-                        CatId = cats.First().CatId,
-                        Payee = DateTime.Now.ToString(),
-                        Memo = String.Empty,
-                        NewAmount = 0m,
-                        TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString(),
-                        Frequency = MoneyBookDbContextExtension.TransactionFrequency.Once.ToString(),
-                        TrnsAmount = 0m
-                    };
+                        RecurringTransaction = new ViewRecurringTransaction()
+                        {
+                            DueDate = DateTime.Now,
+                            AcctId = accts[comboAccounts.SelectedIndex].AcctId,
+                            Account = accts[comboAccounts.SelectedIndex].AccountName,
+                            CatId = cats.First().CatId,
+                            Payee = DateTime.Now.ToString(),
+                            Memo = String.Empty,
+                            NewAmount = 0m,
+                            TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString(),
+                            Frequency = MoneyBookDbContextExtension.TransactionFrequency.Once.ToString(),
+                            TrnsAmount = 0m
+                        };
+                    }
                 }
 
                 m_originalHash = RecurringTransaction.GetHash();
