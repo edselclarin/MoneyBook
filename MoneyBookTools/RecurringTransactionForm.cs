@@ -7,20 +7,33 @@ namespace MoneyBookTools
 {
     public partial class RecurringTransactionForm : Form
     {
+        private bool m_bNew;
+        private MoneyBookDbContext m_db;
         private string m_originalHash;
 
         public ViewRecurringTransaction RecurringTransaction { get; set; }
 
-        protected RecurringTransactionForm()
+        protected RecurringTransactionForm(bool bNew)
         {
             InitializeComponent();
 
-            Text = "Edit Recurring Transaction";
+            m_bNew = bNew;
+
+            Text = bNew ? "Add Recurring Transaction" : "Edit Recurring Transaction";
+            buttonSave.Text = bNew ? "Add" : "Save";
+        }
+
+        public static RecurringTransactionForm Create()
+        {
+            return new RecurringTransactionForm(true)
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+            };
         }
 
         public static RecurringTransactionForm Create(ViewRecurringTransaction recTrans)
         {
-            return new RecurringTransactionForm()
+            return new RecurringTransactionForm(false)
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 RecurringTransaction = recTrans
@@ -31,9 +44,37 @@ namespace MoneyBookTools
         {
             try
             {
+                m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+
+                var cats = m_db.Categories.ToList();
+
+                var accts = m_db.GetAccounts().ToList();
+                comboAccounts.DataSource = accts;
+                comboAccounts.DisplayMember = "AccountName";
+                comboAccounts.SelectedIndex = 0;
+                
                 comboFrequency.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.TransactionFrequency));
 
-                RecurringTransaction.NewAmount = RecurringTransaction.Amount;
+                if (!m_bNew)
+                {
+                    RecurringTransaction.NewAmount = RecurringTransaction.Amount;
+                }
+                else
+                {
+                    RecurringTransaction = new ViewRecurringTransaction()
+                    {
+                        DueDate = DateTime.Now,
+                        AcctId = accts[comboAccounts.SelectedIndex].AcctId,
+                        Account = accts[comboAccounts.SelectedIndex].AccountName,
+                        CatId = cats.First().CatId,
+                        Payee = DateTime.Now.ToString(),
+                        Memo = String.Empty,
+                        NewAmount = 0m,
+                        TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString(),
+                        Frequency = MoneyBookDbContextExtension.TransactionFrequency.Once.ToString(),
+                        TrnsAmount = 0m
+                    };
+                }
 
                 m_originalHash = RecurringTransaction.GetHash();
 
@@ -47,12 +88,10 @@ namespace MoneyBookTools
 
         private void RecurringTransactionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            bool isModified = RecurringTransaction.GetHash().CompareTo(m_originalHash) != 0;
-
-            if (isModified)
+            if (m_bNew)
             {
                 var answer = MessageBox.Show(this,
-                    $"Save changes?",
+                    "Add recurring transaction?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
@@ -64,11 +103,38 @@ namespace MoneyBookTools
 
                     using var tr = db.Database.BeginTransaction();
 
-                    db.UpdateRecurringTransaction(RecurringTransaction);
+                    db.AddRecurringTransaction(RecurringTransaction);
 
                     tr.Commit();
 
                     DialogResult = DialogResult.OK;
+                }
+            }
+            else
+            {
+                bool isModified = RecurringTransaction.GetHash().CompareTo(m_originalHash) != 0;
+
+                if (isModified)
+                {
+                    var answer = MessageBox.Show(this,
+                        "Save changes?",
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        using var hg = new Hourglass(this);
+
+                        var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+
+                        using var tr = db.Database.BeginTransaction();
+
+                        db.UpdateRecurringTransaction(RecurringTransaction);
+
+                        tr.Commit();
+
+                        DialogResult = DialogResult.OK;
+                    }
                 }
             }
         }
@@ -90,6 +156,8 @@ namespace MoneyBookTools
             textPayee.DataBindings.Add("Text", RecurringTransaction, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
 
             textMemo.DataBindings.Add("Text", RecurringTransaction, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            comboAccounts.DataBindings.Add("Text", RecurringTransaction, "Account", false, DataSourceUpdateMode.OnPropertyChanged);
 
             comboFrequency.DataBindings.Add("Text", RecurringTransaction, "Frequency", false, DataSourceUpdateMode.OnPropertyChanged);
 

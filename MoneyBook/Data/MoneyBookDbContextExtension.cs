@@ -339,6 +339,12 @@ namespace MoneyBook.Data
             recTran.DateModified = DateTime.Now.Date;
         }
 
+        public static void Delete(this RecurringTransaction recTran)
+        {
+            // Soft delete.
+            recTran.IsDeleted = true;
+        }
+
         public static void SetState(this Transaction tran, StateTypes state)
         {
             tran.State = state.ToString();
