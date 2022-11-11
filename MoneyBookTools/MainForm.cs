@@ -11,6 +11,8 @@ namespace MoneyBookTools
 
         private MoneyBookDbContext m_db;
         private List<AccountSummary> m_summaries;
+        private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
+        private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
 
         #endregion
 
@@ -32,25 +34,6 @@ namespace MoneyBookTools
             dgvAccountTransactions.SetDataGridViewStyle();
             dgvRecurringTransactions.SetDataGridViewStyle();
 
-            comboFilter.Enabled =
-            comboDateOrder.Enabled = false;
-
-            comboFilter.MouseWheel += Combo_MouseWheel;
-            comboDateOrder.MouseWheel += Combo_MouseWheel;
-
-            comboFilter.DataSource = new string[]
-            {
-                "Two Weeks",
-                "This Month",
-                "This Year"
-            };
-
-            comboDateOrder.DataSource = new string[]
-            {
-                "Newest to Oldest",
-                "Oldest to Newest"
-            };
-
             listViewAccounts.Dock = DockStyle.Fill;
             listViewAccounts.HeaderStyle = ColumnHeaderStyle.None;
             listViewAccounts.View = View.Details;
@@ -59,7 +42,6 @@ namespace MoneyBookTools
             listViewAccounts.Scrollable = false;
             listViewAccounts.Resize += ListView1_Resize;
             listViewAccounts.OwnerDraw = true;
-            //listViewAccounts.SelectionBackColor = Color.CadetBlue;
 
             var colWidths = new int[] { 100, 80 };
             foreach (int width in colWidths)
@@ -75,9 +57,7 @@ namespace MoneyBookTools
             groupLedger.Dock =
             dgvAccountTransactions.Dock =
             groupUpcoming.Dock =
-            dgvRecurringTransactions.Dock =
-            panelLedger.Dock = 
-            tableLayoutLedger.Dock = DockStyle.Fill;
+            dgvRecurringTransactions.Dock = DockStyle.Fill;
         }
 
         #endregion
@@ -88,13 +68,7 @@ namespace MoneyBookTools
         {
             try
             {
-                groupLedger.Text = "Ledger";
-                labelAccount.Text = 
-                labelAvailableBalance.Text = 
-                labelStagedBalance.Text =
-                labelFinalBalance.Text =
-                labelActualBalance.Text = 
-                labelSum.Text = String.Empty;
+                sumToolStripStatusLabel.Text = String.Empty;
 
                 listViewAccounts.Items.Add("Loading...");
 
@@ -113,9 +87,6 @@ namespace MoneyBookTools
                 {
                     listViewAccounts.Items[0].Selected = true;
                 }
-
-                comboFilter.Enabled =
-                comboDateOrder.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -152,12 +123,6 @@ namespace MoneyBookTools
             }
         }
 
-        private void Combo_MouseWheel(object? sender, MouseEventArgs e)
-        {
-            // Disable scrolling the combobox with the mouse wheel.
-            ((HandledMouseEventArgs)e).Handled = true;
-        }
-
         private void dataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             e.Cancel = true;
@@ -189,11 +154,6 @@ namespace MoneyBookTools
             {
                 this.ShowException(ex);
             }
-        }
-
-        private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            refreshToolStripMenuItem.PerformClick();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -695,6 +655,59 @@ namespace MoneyBookTools
             }
         }
 
+        private void twoWeeksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            twoWeeksToolStripMenuItem.Checked = true;
+            thisMonthToolStripMenuItem.Checked = false;
+            thisYearToolStripMenuItem.Checked = false;
+
+            m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void thisMonthToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            twoWeeksToolStripMenuItem.Checked = false;
+            thisMonthToolStripMenuItem.Checked = true;
+            thisYearToolStripMenuItem.Checked = false;
+
+            m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisMonth;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void thisYearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            twoWeeksToolStripMenuItem.Checked = false;
+            thisMonthToolStripMenuItem.Checked = false;
+            thisYearToolStripMenuItem.Checked = true;
+
+            m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisYear;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void dateDescendingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dateDescendingToolStripMenuItem.Checked = true;
+            dateAscendingToolStripMenuItem.Checked = false;
+
+            m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void dateAscendingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dateDescendingToolStripMenuItem.Checked = false;
+            dateAscendingToolStripMenuItem.Checked = true;
+
+            m_sortOrder = MoneyBookDbContextExtension.SortOrder.Ascending;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
         #endregion
 
         #region Child Form Handlers
@@ -745,25 +758,21 @@ namespace MoneyBookTools
 
         private void LoadTransactionsGrid()
         {
-            if (listViewAccounts.SelectedIndices.Count > 0 &&
-                comboFilter.SelectedIndex > -1 &&
-                comboDateOrder.SelectedIndex > -1)
+            if (listViewAccounts.SelectedIndices.Count > 0)
             {
                 int index = listViewAccounts.SelectedIndices[0];
                 var summary = m_summaries[index] as AccountSummary;
                 summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
-                labelAccount.Text = summary?.Account.AccountName;
-                labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
-                labelStagedBalance.Text = $"Staged: {summary?.StagedBalance:0.00}";
-                labelFinalBalance.Text = $"Final: {summary?.FinalBalance:0.00}";
-                labelActualBalance.Text = $"Actual: {summary?.Balance:0.00}";
+                accountToolStripStatusLabel.Text = summary?.Account.AccountName;
+                actualToolStripStatusLabel.Text = $"Actual: {summary?.Balance:0.00}";
+                availableToolStripStatusLabel.Text = $"Available: {summary?.AvailableBalance:0.00}";
+                stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedBalance:0.00}";
+                finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-                var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
-                var sortOrder = (MoneyBookDbContextExtension.SortOrder)comboDateOrder.SelectedIndex;
                 var viewTransactions = summary.Transactions
-                    .Filter(dateFilter)
-                    .Order(sortOrder)
+                    .Filter(m_dateFilter)
+                    .Order(m_sortOrder)
                     .AsViewTransactions()
                     .ToList();
 
@@ -954,11 +963,11 @@ namespace MoneyBookTools
 
             if (selectedTransactions.Count() > 1)
             {
-                labelSum.Text = $"Sum: {selectedTransactions.Sum(x => x.Amount):0.00}";
+                sumToolStripStatusLabel.Text = $"Sum: {selectedTransactions.Sum(x => x.Amount):0.00}";
             }
             else
             {
-                labelSum.Text = String.Empty;
+                sumToolStripStatusLabel.Text = String.Empty;
             }
         }
 
