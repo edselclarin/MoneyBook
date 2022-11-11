@@ -62,7 +62,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.labelAccount = new System.Windows.Forms.Label();
             this.comboFilter = new System.Windows.Forms.ComboBox();
-            this.labelProjectedBalance = new System.Windows.Forms.Label();
+            this.labelFinalBalance = new System.Windows.Forms.Label();
             this.comboDateOrder = new System.Windows.Forms.ComboBox();
             this.labelActualBalance = new System.Windows.Forms.Label();
             this.labelAvailableBalance = new System.Windows.Forms.Label();
@@ -386,7 +386,7 @@ namespace MoneyBookTools
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel1.Controls.Add(this.labelAccount, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboFilter, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.labelProjectedBalance, 4, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelFinalBalance, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboDateOrder, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.labelActualBalance, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.labelAvailableBalance, 2, 0);
@@ -428,21 +428,21 @@ namespace MoneyBookTools
             this.comboFilter.TabIndex = 5;
             this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
-            // labelProjectedBalance
+            // labelFinalBalance
             // 
-            this.labelProjectedBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.labelFinalBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelProjectedBalance.BackColor = System.Drawing.Color.Transparent;
-            this.labelProjectedBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelProjectedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelProjectedBalance.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelProjectedBalance.Location = new System.Drawing.Point(555, 3);
-            this.labelProjectedBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelProjectedBalance.Name = "labelProjectedBalance";
-            this.labelProjectedBalance.Size = new System.Drawing.Size(132, 25);
-            this.labelProjectedBalance.TabIndex = 9;
-            this.labelProjectedBalance.Text = "Projected: 0.00";
-            this.labelProjectedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelFinalBalance.BackColor = System.Drawing.Color.Transparent;
+            this.labelFinalBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelFinalBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelFinalBalance.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelFinalBalance.Location = new System.Drawing.Point(555, 3);
+            this.labelFinalBalance.Margin = new System.Windows.Forms.Padding(3);
+            this.labelFinalBalance.Name = "labelFinalBalance";
+            this.labelFinalBalance.Size = new System.Drawing.Size(132, 25);
+            this.labelFinalBalance.TabIndex = 9;
+            this.labelFinalBalance.Text = "Final: 0.00";
+            this.labelFinalBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // comboDateOrder
             // 
@@ -767,7 +767,7 @@ namespace MoneyBookTools
         private TableLayoutPanel tableLayoutLedger;
         private Panel panelLedger;
         private GroupBox groupAccounts;
-        private Label labelProjectedBalance;
+        private Label labelFinalBalance;
         private Label labelAccount;
         private TableLayoutPanel tableLayoutPanel1;
         private Label labelSum;

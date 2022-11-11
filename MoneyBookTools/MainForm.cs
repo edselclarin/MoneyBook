@@ -92,7 +92,7 @@ namespace MoneyBookTools
                 labelAccount.Text = 
                 labelAvailableBalance.Text = 
                 labelStagedBalance.Text =
-                labelProjectedBalance.Text =
+                labelFinalBalance.Text =
                 labelActualBalance.Text = 
                 labelSum.Text = String.Empty;
 
@@ -756,7 +756,7 @@ namespace MoneyBookTools
                 labelAccount.Text = summary?.Account.AccountName;
                 labelAvailableBalance.Text = $"Available: {summary?.AvailableBalance:0.00}";
                 labelStagedBalance.Text = $"Staged: {summary?.StagedBalance:0.00}";
-                labelProjectedBalance.Text = $"Projected: {summary?.ProjectedBalance:0.00}";
+                labelFinalBalance.Text = $"Final: {summary?.FinalBalance:0.00}";
                 labelActualBalance.Text = $"Actual: {summary?.Balance:0.00}";
 
                 var dateFilter = (MoneyBookDbContextExtension.DateFilter)comboFilter.SelectedIndex;
@@ -784,17 +784,22 @@ namespace MoneyBookTools
                 {
                     var vt = viewTransactions[row.Index];
 
-                    if (vt.State == MoneyBookDbContextExtension.StateTypes.New.ToString())
+                    if (vt.State != MoneyBookDbContextExtension.StateTypes.Reconciled.ToString())
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+                    }
 
+                    if (vt.State == MoneyBookDbContextExtension.StateTypes.New.ToString())
+                    {
                         row.DefaultCellStyle.ForeColor = Color.FromArgb(245, 127, 23);
                     }
                     else if (vt.State == MoneyBookDbContextExtension.StateTypes.Staged.ToString())
                     {
-                        row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
-
                         row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
+                    }
+                    else if (vt.State == MoneyBookDbContextExtension.StateTypes.Ignored.ToString())
+                    {
+                        row.DefaultCellStyle.ForeColor = Color.FromArgb(158, 158, 158);
                     }
 
                     row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
