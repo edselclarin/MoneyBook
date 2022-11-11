@@ -328,7 +328,7 @@ namespace MoneyBookTools.Data
                 AcctId = recTrans.AcctId,
                 CatId = recTrans.CatId,
                 TrnsType = recTrans.TrnsType,
-                Amount = recTrans.Amount,
+                Amount = recTrans.TrnsAmount,
                 Frequency = recTrans.Frequency,
                 Payee = recTrans.Payee,
                 Memo = recTrans.Memo,

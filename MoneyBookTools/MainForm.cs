@@ -442,6 +442,7 @@ namespace MoneyBookTools
                 setTransStateToolStripMenuItem.Enabled =
                 deleteTransToolStripMenuItem.Enabled = count > 0;
 
+                makeRecTransToolStripMenuItem.Enabled =
                 editTransToolStripMenuItem.Enabled = count == 1;
             }
             catch (Exception ex)
@@ -639,6 +640,20 @@ namespace MoneyBookTools
 
                     LoadAccountsList();
                 }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void makeRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                MakeTransactionRecurring();
             }
             catch (Exception ex)
             {
@@ -961,6 +976,26 @@ namespace MoneyBookTools
                     LoadTransactionsGrid();
 
                     LoadAccountsList();
+                }
+            }
+        }
+
+        private void MakeTransactionRecurring()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransaction = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
+                .FirstOrDefault();
+
+            if (selectedTransaction != null)
+            {
+                var dlg = RecurringTransactionForm.Create(selectedTransaction);
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadRecurringTransactionsGrid();
                 }
             }
         }
