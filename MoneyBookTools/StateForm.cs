@@ -25,7 +25,7 @@ namespace MoneyBookTools
             {
                 (MoneyBookDbContextExtension.StateTypes.New, radioButton1),
                 (MoneyBookDbContextExtension.StateTypes.Staged, radioButton2),
-                (MoneyBookDbContextExtension.StateTypes.Reconciled, radioButton4)
+                (MoneyBookDbContextExtension.StateTypes.Reconciled, radioButton3)
             };
 
             foreach (var item in stateToControlMap)
