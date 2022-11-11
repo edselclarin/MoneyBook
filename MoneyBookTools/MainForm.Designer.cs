@@ -38,6 +38,14 @@ namespace MoneyBookTools
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.transactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.twoWeeksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thisMonthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thisYearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dateDescendingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dateAscendingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,18 +64,14 @@ namespace MoneyBookTools
             this.vSplit1 = new System.Windows.Forms.SplitContainer();
             this.groupAccounts = new System.Windows.Forms.GroupBox();
             this.listViewAccounts = new MoneyBookTools.CustomListView();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.accountToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.actualToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.availableToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stagedToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.finalToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sumToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupLedger = new System.Windows.Forms.GroupBox();
-            this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
-            this.panelLedger = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelAccount = new System.Windows.Forms.Label();
-            this.comboFilter = new System.Windows.Forms.ComboBox();
-            this.labelFinalBalance = new System.Windows.Forms.Label();
-            this.comboDateOrder = new System.Windows.Forms.ComboBox();
-            this.labelActualBalance = new System.Windows.Forms.Label();
-            this.labelAvailableBalance = new System.Windows.Forms.Label();
-            this.labelStagedBalance = new System.Windows.Forms.Label();
-            this.labelSum = new System.Windows.Forms.Label();
             this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
             this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,10 +102,8 @@ namespace MoneyBookTools
             this.vSplit1.Panel2.SuspendLayout();
             this.vSplit1.SuspendLayout();
             this.groupAccounts.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.groupLedger.SuspendLayout();
-            this.tableLayoutLedger.SuspendLayout();
-            this.panelLedger.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
             this.transContextMenu.SuspendLayout();
             this.groupUpcoming.SuspendLayout();
@@ -115,6 +117,7 @@ namespace MoneyBookTools
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
+            this.transactionsToolStripMenuItem,
             this.operationsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -170,6 +173,75 @@ namespace MoneyBookTools
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.ToolTipText = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
+            // transactionsToolStripMenuItem
+            // 
+            this.transactionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.filterToolStripMenuItem,
+            this.sortToolStripMenuItem});
+            this.transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
+            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
+            this.transactionsToolStripMenuItem.Text = "Transactions";
+            // 
+            // filterToolStripMenuItem
+            // 
+            this.filterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.twoWeeksToolStripMenuItem,
+            this.thisMonthToolStripMenuItem,
+            this.thisYearToolStripMenuItem});
+            this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
+            this.filterToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.filterToolStripMenuItem.Text = "Filter...";
+            this.filterToolStripMenuItem.ToolTipText = "Show transactions...";
+            // 
+            // twoWeeksToolStripMenuItem
+            // 
+            this.twoWeeksToolStripMenuItem.Name = "twoWeeksToolStripMenuItem";
+            this.twoWeeksToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.twoWeeksToolStripMenuItem.Text = "Two Weeks";
+            this.twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks.";
+            this.twoWeeksToolStripMenuItem.Click += new System.EventHandler(this.twoWeeksToolStripMenuItem_Click);
+            // 
+            // thisMonthToolStripMenuItem
+            // 
+            this.thisMonthToolStripMenuItem.Name = "thisMonthToolStripMenuItem";
+            this.thisMonthToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.thisMonthToolStripMenuItem.Text = "This Month";
+            this.thisMonthToolStripMenuItem.ToolTipText = "Of the current month.";
+            this.thisMonthToolStripMenuItem.Click += new System.EventHandler(this.thisMonthToolStripMenuItem_Click);
+            // 
+            // thisYearToolStripMenuItem
+            // 
+            this.thisYearToolStripMenuItem.Name = "thisYearToolStripMenuItem";
+            this.thisYearToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.thisYearToolStripMenuItem.Text = "This Year";
+            this.thisYearToolStripMenuItem.ToolTipText = "Of the current year.";
+            this.thisYearToolStripMenuItem.Click += new System.EventHandler(this.thisYearToolStripMenuItem_Click);
+            // 
+            // sortToolStripMenuItem
+            // 
+            this.sortToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dateDescendingToolStripMenuItem,
+            this.dateAscendingToolStripMenuItem});
+            this.sortToolStripMenuItem.Name = "sortToolStripMenuItem";
+            this.sortToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.sortToolStripMenuItem.Text = "Sort...";
+            // 
+            // dateDescendingToolStripMenuItem
+            // 
+            this.dateDescendingToolStripMenuItem.Name = "dateDescendingToolStripMenuItem";
+            this.dateDescendingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.dateDescendingToolStripMenuItem.Text = "Date Descending";
+            this.dateDescendingToolStripMenuItem.ToolTipText = "Sort by date in descending order.";
+            this.dateDescendingToolStripMenuItem.Click += new System.EventHandler(this.dateDescendingToolStripMenuItem_Click);
+            // 
+            // dateAscendingToolStripMenuItem
+            // 
+            this.dateAscendingToolStripMenuItem.Name = "dateAscendingToolStripMenuItem";
+            this.dateAscendingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.dateAscendingToolStripMenuItem.Text = "Date Ascending";
+            this.dateAscendingToolStripMenuItem.ToolTipText = "Sort by date in ascending order.";
+            this.dateAscendingToolStripMenuItem.Click += new System.EventHandler(this.dateAscendingToolStripMenuItem_Click);
             // 
             // operationsToolStripMenuItem
             // 
@@ -314,9 +386,10 @@ namespace MoneyBookTools
             // 
             // vSplit1.Panel2
             // 
+            this.vSplit1.Panel2.Controls.Add(this.statusStrip1);
             this.vSplit1.Panel2.Controls.Add(this.groupLedger);
-            this.vSplit1.Size = new System.Drawing.Size(1115, 238);
-            this.vSplit1.SplitterDistance = 204;
+            this.vSplit1.Size = new System.Drawing.Size(1115, 276);
+            this.vSplit1.SplitterDistance = 226;
             this.vSplit1.TabIndex = 0;
             // 
             // groupAccounts
@@ -325,7 +398,7 @@ namespace MoneyBookTools
             this.groupAccounts.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupAccounts.Location = new System.Drawing.Point(3, 3);
             this.groupAccounts.Name = "groupAccounts";
-            this.groupAccounts.Size = new System.Drawing.Size(145, 202);
+            this.groupAccounts.Size = new System.Drawing.Size(129, 167);
             this.groupAccounts.TabIndex = 2;
             this.groupAccounts.TabStop = false;
             this.groupAccounts.Text = "Accounts";
@@ -340,191 +413,112 @@ namespace MoneyBookTools
             this.listViewAccounts.UseCompatibleStateImageBehavior = false;
             this.listViewAccounts.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.accountToolStripStatusLabel,
+            this.actualToolStripStatusLabel,
+            this.availableToolStripStatusLabel,
+            this.stagedToolStripStatusLabel,
+            this.finalToolStripStatusLabel,
+            this.sumToolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 244);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(885, 32);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // accountToolStripStatusLabel
+            // 
+            this.accountToolStripStatusLabel.AutoSize = false;
+            this.accountToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.accountToolStripStatusLabel.Name = "accountToolStripStatusLabel";
+            this.accountToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.accountToolStripStatusLabel.Text = "Account";
+            this.accountToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.accountToolStripStatusLabel.ToolTipText = "Account name";
+            // 
+            // actualToolStripStatusLabel
+            // 
+            this.actualToolStripStatusLabel.AutoSize = false;
+            this.actualToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.actualToolStripStatusLabel.Name = "actualToolStripStatusLabel";
+            this.actualToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.actualToolStripStatusLabel.Text = "Current: 0.00";
+            this.actualToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.actualToolStripStatusLabel.ToolTipText = "Current balance";
+            // 
+            // availableToolStripStatusLabel
+            // 
+            this.availableToolStripStatusLabel.AutoSize = false;
+            this.availableToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.availableToolStripStatusLabel.Name = "availableToolStripStatusLabel";
+            this.availableToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.availableToolStripStatusLabel.Text = "Available: 0.00";
+            this.availableToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.availableToolStripStatusLabel.ToolTipText = "Current balance less reserve amount";
+            // 
+            // stagedToolStripStatusLabel
+            // 
+            this.stagedToolStripStatusLabel.AutoSize = false;
+            this.stagedToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.stagedToolStripStatusLabel.Name = "stagedToolStripStatusLabel";
+            this.stagedToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.stagedToolStripStatusLabel.Text = "Staged: 0.00";
+            this.stagedToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.stagedToolStripStatusLabel.ToolTipText = "Balance of staged transactions";
+            // 
+            // finalToolStripStatusLabel
+            // 
+            this.finalToolStripStatusLabel.AutoSize = false;
+            this.finalToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.finalToolStripStatusLabel.Name = "finalToolStripStatusLabel";
+            this.finalToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.finalToolStripStatusLabel.Text = "Final: 0.00";
+            this.finalToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.finalToolStripStatusLabel.ToolTipText = "Available balance less staged transactions";
+            // 
+            // sumToolStripStatusLabel
+            // 
+            this.sumToolStripStatusLabel.AutoSize = false;
+            this.sumToolStripStatusLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.sumToolStripStatusLabel.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
+            this.sumToolStripStatusLabel.Size = new System.Drawing.Size(164, 27);
+            this.sumToolStripStatusLabel.Spring = true;
+            this.sumToolStripStatusLabel.Text = "Sum: 0.00";
+            this.sumToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.sumToolStripStatusLabel.ToolTipText = "Sum of selected transactions";
+            // 
             // groupLedger
             // 
-            this.groupLedger.Controls.Add(this.tableLayoutLedger);
+            this.groupLedger.Controls.Add(this.dgvAccountTransactions);
             this.groupLedger.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupLedger.Location = new System.Drawing.Point(3, 3);
             this.groupLedger.Name = "groupLedger";
-            this.groupLedger.Size = new System.Drawing.Size(892, 218);
+            this.groupLedger.Size = new System.Drawing.Size(137, 66);
             this.groupLedger.TabIndex = 5;
             this.groupLedger.TabStop = false;
             this.groupLedger.Text = "Ledger";
-            // 
-            // tableLayoutLedger
-            // 
-            this.tableLayoutLedger.ColumnCount = 1;
-            this.tableLayoutLedger.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutLedger.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutLedger.Controls.Add(this.panelLedger, 0, 0);
-            this.tableLayoutLedger.Controls.Add(this.dgvAccountTransactions, 0, 1);
-            this.tableLayoutLedger.Location = new System.Drawing.Point(6, 22);
-            this.tableLayoutLedger.Name = "tableLayoutLedger";
-            this.tableLayoutLedger.RowCount = 2;
-            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 69F));
-            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutLedger.Size = new System.Drawing.Size(873, 180);
-            this.tableLayoutLedger.TabIndex = 9;
-            // 
-            // panelLedger
-            // 
-            this.panelLedger.Controls.Add(this.tableLayoutPanel1);
-            this.panelLedger.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelLedger.Location = new System.Drawing.Point(3, 3);
-            this.panelLedger.Name = "panelLedger";
-            this.panelLedger.Size = new System.Drawing.Size(867, 63);
-            this.panelLedger.TabIndex = 6;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 6;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.Controls.Add(this.labelAccount, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboFilter, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.labelFinalBalance, 4, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboDateOrder, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.labelActualBalance, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.labelAvailableBalance, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.labelStagedBalance, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.labelSum, 5, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(832, 62);
-            this.tableLayoutPanel1.TabIndex = 11;
-            // 
-            // labelAccount
-            // 
-            this.labelAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelAccount.BackColor = System.Drawing.Color.Transparent;
-            this.labelAccount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelAccount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelAccount.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelAccount.Location = new System.Drawing.Point(3, 3);
-            this.labelAccount.Margin = new System.Windows.Forms.Padding(3);
-            this.labelAccount.Name = "labelAccount";
-            this.labelAccount.Size = new System.Drawing.Size(132, 25);
-            this.labelAccount.TabIndex = 10;
-            this.labelAccount.Text = "Account";
-            this.labelAccount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // comboFilter
-            // 
-            this.comboFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboFilter.FormattingEnabled = true;
-            this.comboFilter.Location = new System.Drawing.Point(141, 34);
-            this.comboFilter.Name = "comboFilter";
-            this.comboFilter.Size = new System.Drawing.Size(132, 25);
-            this.comboFilter.TabIndex = 5;
-            this.comboFilter.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
-            // 
-            // labelFinalBalance
-            // 
-            this.labelFinalBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelFinalBalance.BackColor = System.Drawing.Color.Transparent;
-            this.labelFinalBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelFinalBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelFinalBalance.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelFinalBalance.Location = new System.Drawing.Point(555, 3);
-            this.labelFinalBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelFinalBalance.Name = "labelFinalBalance";
-            this.labelFinalBalance.Size = new System.Drawing.Size(132, 25);
-            this.labelFinalBalance.TabIndex = 9;
-            this.labelFinalBalance.Text = "Final: 0.00";
-            this.labelFinalBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // comboDateOrder
-            // 
-            this.comboDateOrder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboDateOrder.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboDateOrder.FormattingEnabled = true;
-            this.comboDateOrder.Location = new System.Drawing.Point(3, 34);
-            this.comboDateOrder.Name = "comboDateOrder";
-            this.comboDateOrder.Size = new System.Drawing.Size(132, 25);
-            this.comboDateOrder.TabIndex = 6;
-            this.comboDateOrder.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
-            // 
-            // labelActualBalance
-            // 
-            this.labelActualBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelActualBalance.BackColor = System.Drawing.Color.Transparent;
-            this.labelActualBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelActualBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelActualBalance.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelActualBalance.Location = new System.Drawing.Point(141, 3);
-            this.labelActualBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelActualBalance.Name = "labelActualBalance";
-            this.labelActualBalance.Size = new System.Drawing.Size(132, 25);
-            this.labelActualBalance.TabIndex = 8;
-            this.labelActualBalance.Text = "Actual: 0.00";
-            this.labelActualBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // labelAvailableBalance
-            // 
-            this.labelAvailableBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelAvailableBalance.BackColor = System.Drawing.Color.Transparent;
-            this.labelAvailableBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelAvailableBalance.Location = new System.Drawing.Point(279, 3);
-            this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelAvailableBalance.Name = "labelAvailableBalance";
-            this.labelAvailableBalance.Size = new System.Drawing.Size(132, 25);
-            this.labelAvailableBalance.TabIndex = 1;
-            this.labelAvailableBalance.Text = "Available: 0.00";
-            this.labelAvailableBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // labelStagedBalance
-            // 
-            this.labelStagedBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelStagedBalance.BackColor = System.Drawing.Color.Transparent;
-            this.labelStagedBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelStagedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelStagedBalance.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelStagedBalance.Location = new System.Drawing.Point(417, 3);
-            this.labelStagedBalance.Margin = new System.Windows.Forms.Padding(3);
-            this.labelStagedBalance.Name = "labelStagedBalance";
-            this.labelStagedBalance.Size = new System.Drawing.Size(132, 25);
-            this.labelStagedBalance.TabIndex = 7;
-            this.labelStagedBalance.Text = "Staged: 0.00";
-            this.labelStagedBalance.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // labelSum
-            // 
-            this.labelSum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelSum.BackColor = System.Drawing.Color.Transparent;
-            this.labelSum.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.labelSum.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.labelSum.Location = new System.Drawing.Point(693, 3);
-            this.labelSum.Margin = new System.Windows.Forms.Padding(3);
-            this.labelSum.Name = "labelSum";
-            this.labelSum.Size = new System.Drawing.Size(136, 25);
-            this.labelSum.TabIndex = 11;
-            this.labelSum.Text = "Sum: 0.00";
-            this.labelSum.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // dgvAccountTransactions
             // 
             this.dgvAccountTransactions.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAccountTransactions.ContextMenuStrip = this.transContextMenu;
-            this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 72);
+            this.dgvAccountTransactions.Location = new System.Drawing.Point(6, 24);
             this.dgvAccountTransactions.Name = "dgvAccountTransactions";
             this.dgvAccountTransactions.RowTemplate.Height = 25;
             this.dgvAccountTransactions.Size = new System.Drawing.Size(101, 29);
@@ -716,13 +710,13 @@ namespace MoneyBookTools
             this.hSplit1.ResumeLayout(false);
             this.vSplit1.Panel1.ResumeLayout(false);
             this.vSplit1.Panel2.ResumeLayout(false);
+            this.vSplit1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vSplit1)).EndInit();
             this.vSplit1.ResumeLayout(false);
             this.groupAccounts.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.groupLedger.ResumeLayout(false);
-            this.tableLayoutLedger.ResumeLayout(false);
-            this.panelLedger.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
             this.transContextMenu.ResumeLayout(false);
             this.groupUpcoming.ResumeLayout(false);
@@ -742,18 +736,13 @@ namespace MoneyBookTools
         private ToolStripMenuItem viewToolStripMenuItem;
         private ToolStripMenuItem refreshToolStripMenuItem;
         private DataGridView dgvAccountTransactions;
-        private ComboBox comboDateOrder;
-        private ComboBox comboFilter;
-        private Label labelAvailableBalance;
         private DataGridView dgvRecurringTransactions;
         private GroupBox groupLedger;
         private GroupBox groupUpcoming;
         private ContextMenuStrip recTransContextMenu;
         private ToolStripMenuItem skipRecTransToolStripMenuItem;
         private ContextMenuStrip transContextMenu;
-        private Label labelStagedBalance;
         private ToolStripMenuItem deleteTransToolStripMenuItem;
-        private Label labelActualBalance;
         private ToolStripMenuItem setTransStateToolStripMenuItem;
         private ToolStripMenuItem stageRecTransToolStripMenuItem;
         private ToolStripMenuItem editTransToolStripMenuItem;
@@ -764,13 +753,7 @@ namespace MoneyBookTools
         private ToolStripMenuItem addTransToolStripMenuItem;
         private SplitContainer hSplit1;
         private SplitContainer vSplit1;
-        private TableLayoutPanel tableLayoutLedger;
-        private Panel panelLedger;
         private GroupBox groupAccounts;
-        private Label labelFinalBalance;
-        private Label labelAccount;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Label labelSum;
         private ToolStripMenuItem operationsToolStripMenuItem;
         private ToolStripMenuItem importTransactionsToolStripMenuItem;
         private ToolStripMenuItem deleteAllTransactionsToolStripMenuItem;
@@ -793,5 +776,20 @@ namespace MoneyBookTools
         private ToolStripSeparator toolStripSeparator7;
         private ToolStripMenuItem makeRecTransToolStripMenuItem;
         private Panel mainPanel;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel accountToolStripStatusLabel;
+        private ToolStripStatusLabel actualToolStripStatusLabel;
+        private ToolStripStatusLabel availableToolStripStatusLabel;
+        private ToolStripStatusLabel stagedToolStripStatusLabel;
+        private ToolStripStatusLabel finalToolStripStatusLabel;
+        private ToolStripStatusLabel sumToolStripStatusLabel;
+        private ToolStripMenuItem transactionsToolStripMenuItem;
+        private ToolStripMenuItem filterToolStripMenuItem;
+        private ToolStripMenuItem twoWeeksToolStripMenuItem;
+        private ToolStripMenuItem thisMonthToolStripMenuItem;
+        private ToolStripMenuItem thisYearToolStripMenuItem;
+        private ToolStripMenuItem sortToolStripMenuItem;
+        private ToolStripMenuItem dateDescendingToolStripMenuItem;
+        private ToolStripMenuItem dateAscendingToolStripMenuItem;
     }
 }
