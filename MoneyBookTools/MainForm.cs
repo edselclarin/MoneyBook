@@ -7,8 +7,14 @@ namespace MoneyBookTools
 {
     public partial class MainForm : Form
     {
+        #region Fields
+
         private MoneyBookDbContext m_db;
         private List<AccountSummary> m_summaries;
+
+        #endregion
+
+        #region Construction
 
         public static MainForm Create()
         {
@@ -74,6 +80,10 @@ namespace MoneyBookTools
             tableLayoutLedger.Dock = DockStyle.Fill;
         }
 
+        #endregion
+
+        #region Control Handlers
+
         private async void MainForm_Load(object sender, EventArgs e)
         {
             try
@@ -112,7 +122,19 @@ namespace MoneyBookTools
                 this.ShowException(ex);
             }
         }
-               
+
+        private void dgvAccountTransactions_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalculateSum();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void ListViewAccounts_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
         {
             var summary = m_summaries[e.ItemIndex];
@@ -136,6 +158,52 @@ namespace MoneyBookTools
             ((HandledMouseEventArgs)e).Handled = true;
         }
 
+        private void dataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
+
+        private void dgvRecurringTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                ShowEditRecTransactionDialog();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void dgvAccountTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                ShowEditTransactionDialog();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        #endregion
+
+        #region Menu Handlers
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -153,7 +221,7 @@ namespace MoneyBookTools
         {
             try
             {
-                if (tabControl1.SelectedTab == tabOutlook && m_db != null)
+                if (m_db != null)
                 {
                     using var hg = this.CreateHourglass();
 
@@ -166,16 +234,6 @@ namespace MoneyBookTools
             {
                 this.ShowException(ex);
             }
-        }
-
-        private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            refreshToolStripMenuItem.PerformClick();
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            refreshToolStripMenuItem.PerformClick();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -424,12 +482,7 @@ namespace MoneyBookTools
                 this.ShowException(ex);
             }
         }
-
-        private void dataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            e.Cancel = true;
-        }
-        
+      
         private void transContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
@@ -571,20 +624,6 @@ namespace MoneyBookTools
             }
         }
 
-        private void dgvRecurringTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            try
-            {
-                using var hg = this.CreateHourglass();
-
-                ShowEditRecTransactionDialog();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
         private void editRecTranToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -606,40 +645,6 @@ namespace MoneyBookTools
                 using var hg = this.CreateHourglass();
 
                 ShowEditRecTransactionDialog();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void dgvAccountTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            try
-            {
-                using var hg = this.CreateHourglass();
-
-                ShowEditTransactionDialog();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void transactionForm_FormClosed(object? sender, FormClosedEventArgs e)
-        {
-            try
-            {
-                var form = sender as TransactionForm;
-                if (form.DialogResult == DialogResult.OK)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    LoadTransactionsGrid();
-
-                    LoadAccountsList();
-                }
             }
             catch (Exception ex)
             {
@@ -687,17 +692,33 @@ namespace MoneyBookTools
             }
         }
 
-        private void dgvAccountTransactions_SelectionChanged(object sender, EventArgs e)
+        #endregion
+
+        #region Child Form Handlers
+
+        private void transactionForm_FormClosed(object? sender, FormClosedEventArgs e)
         {
             try
             {
-                CalculateSum();
+                var form = sender as TransactionForm;
+                if (form.DialogResult == DialogResult.OK)
+                {
+                    using var hg = this.CreateHourglass();
+
+                    LoadTransactionsGrid();
+
+                    LoadAccountsList();
+                }
             }
             catch (Exception ex)
             {
                 this.ShowException(ex);
             }
         }
+
+        #endregion
+
+        #region Accounts
 
         private void LoadAccountsList()
         {
@@ -715,10 +736,14 @@ namespace MoneyBookTools
             listViewAccounts.Invalidate();
         }
 
+        #endregion
+
+        #region Transactions
+
         private void LoadTransactionsGrid()
         {
             if (listViewAccounts.SelectedIndices.Count > 0 &&
-                comboFilter.SelectedIndex > -1 && 
+                comboFilter.SelectedIndex > -1 &&
                 comboDateOrder.SelectedIndex > -1)
             {
                 int index = listViewAccounts.SelectedIndices[0];
@@ -749,7 +774,7 @@ namespace MoneyBookTools
                 dgvAccountTransactions.Columns["State"].Width = widths[i++];
                 dgvAccountTransactions.Columns["Amount"].Width = widths[i++];
                 dgvAccountTransactions.Columns["Memo"].Width = widths[i++];
-                dgvAccountTransactions.Columns["Payee"].Width = 
+                dgvAccountTransactions.Columns["Payee"].Width =
                     dgvAccountTransactions.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgvAccountTransactions.Margin.Right;
 
                 foreach (DataGridViewRow row in dgvAccountTransactions.Rows)
@@ -773,6 +798,165 @@ namespace MoneyBookTools
                 }
             }
         }
+
+        private void UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes state)
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
+                .ToList();
+
+            if (selectedTransactions.Count() > 0)
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you want to set these {selectedTransactions.Count()} transactions to {state.ToString()}?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var tr = m_db.Database.BeginTransaction();
+
+                    m_db.SetTransactionStates(selectedTransactions, state);
+
+                    tr.Commit();
+
+                    LoadTransactionsGrid();
+
+                    LoadAccountsList();
+                }
+            }
+        }
+
+        private void MakeTransactionRecurring()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransaction = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
+                .FirstOrDefault();
+
+            if (selectedTransaction != null)
+            {
+                var dlg = RecurringTransactionForm.Create(selectedTransaction);
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadRecurringTransactionsGrid();
+                }
+            }
+        }
+
+        private void DeleteTransactions()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
+                .ToList();
+
+            if (selectedTransactions.Count() > 0)
+            {
+                string msg;
+
+                if (selectedTransactions.Count() > 0)
+                {
+                    msg = $"Are you sure you want to delete these {selectedTransactions.Count()} transactions?";
+                }
+                else
+                {
+                    msg = "Are you sure you want to delete this transaction?";
+                }
+
+                var answer = MessageBox.Show(this,
+                    msg,
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var tr = m_db.Database.BeginTransaction();
+
+                    m_db.DeleteTransactions(selectedTransactions);
+
+                    tr.Commit();
+
+                    LoadTransactionsGrid();
+
+                    LoadAccountsList();
+                }
+            }
+        }
+
+        private void ShowAddTransactionDialog()
+        {
+            if (listViewAccounts.SelectedIndices.Count > 0)
+            {
+                int index = listViewAccounts.SelectedIndices[0];
+                var summary = m_summaries[index] as AccountSummary;
+
+                var dlg = TransactionForm.Create(summary.Account.AcctId);
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadTransactionsGrid();
+
+                    LoadAccountsList();
+                }
+            }
+        }
+
+        private void ShowEditTransactionDialog()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransaction = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => new
+                {
+                    RowIndex = x.RowIndex,
+                    Transaction = transactions[x.RowIndex]
+                })
+                .FirstOrDefault();
+
+            if (selectedTransaction != null)
+            {
+                var dlg = TransactionForm.Create(selectedTransaction.Transaction);
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadTransactionsGrid();
+
+                    LoadAccountsList();
+                }
+            }
+        }
+
+        private void CalculateSum()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgvAccountTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => transactions[g.Key])
+                .ToList();
+
+            if (selectedTransactions.Count() > 1)
+            {
+                labelSum.Text = $"Sum: {selectedTransactions.Sum(x => x.Amount):0.00}";
+            }
+            else
+            {
+                labelSum.Text = String.Empty;
+            }
+        }
+
+        #endregion
+
+        #region Recurring Transactions
 
         private void LoadRecurringTransactionsGrid()
         {
@@ -949,142 +1133,6 @@ namespace MoneyBookTools
             }
         }
 
-        private void UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes state)
-        {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransactions = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Select(g => transactions[g.Key])
-                .ToList();
-
-            if (selectedTransactions.Count() > 0)
-            {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you want to set these {selectedTransactions.Count()} transactions to {state.ToString()}?",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    using var tr = m_db.Database.BeginTransaction();
-
-                    m_db.SetTransactionStates(selectedTransactions, state);
-
-                    tr.Commit();
-
-                    LoadTransactionsGrid();
-
-                    LoadAccountsList();
-                }
-            }
-        }
-
-        private void MakeTransactionRecurring()
-        {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransaction = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Select(g => transactions[g.Key])
-                .FirstOrDefault();
-
-            if (selectedTransaction != null)
-            {
-                var dlg = RecurringTransactionForm.Create(selectedTransaction);
-
-                if (dlg.ShowDialog(this) == DialogResult.OK)
-                {
-                    LoadRecurringTransactionsGrid();
-                }
-            }
-        }
-
-        private void DeleteTransactions()
-        {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransactions = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Select(g => transactions[g.Key])
-                .ToList();
-
-            if (selectedTransactions.Count() > 0)
-            {
-                string msg;
-
-                if (selectedTransactions.Count() > 0)
-                {
-                    msg = $"Are you sure you want to delete these {selectedTransactions.Count()} transactions?";
-                }
-                else
-                {
-                    msg = "Are you sure you want to delete this transaction?";
-                }
-
-                var answer = MessageBox.Show(this,
-                    msg,
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    using var tr = m_db.Database.BeginTransaction();
-                    
-                    m_db.DeleteTransactions(selectedTransactions);
-
-                    tr.Commit();
-
-                    LoadTransactionsGrid();
-
-                    LoadAccountsList();
-                }
-            }
-        }
-
-        private void ShowAddTransactionDialog()
-        {
-            if (listViewAccounts.SelectedIndices.Count > 0)
-            {
-                int index = listViewAccounts.SelectedIndices[0];
-                var summary = m_summaries[index] as AccountSummary;
-
-                var dlg = TransactionForm.Create(summary.Account.AcctId);
-
-                if (dlg.ShowDialog(this) == DialogResult.OK)
-                {
-                    LoadTransactionsGrid();
-
-                    LoadAccountsList();
-                }
-            }
-        }
-
-        private void ShowEditTransactionDialog()
-        {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransaction = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .Select(x => new
-                {
-                    RowIndex = x.RowIndex,
-                    Transaction = transactions[x.RowIndex]
-                })
-                .FirstOrDefault();
-
-            if (selectedTransaction != null)
-            {
-                var dlg = TransactionForm.Create(selectedTransaction.Transaction);
-
-                if (dlg.ShowDialog(this) == DialogResult.OK)
-                {
-                    LoadTransactionsGrid();
-
-                    LoadAccountsList();
-                }
-            }
-        }
-
         private void ShowAddRecTransactionDialog()
         {
             var dlg = RecurringTransactionForm.Create();
@@ -1117,6 +1165,10 @@ namespace MoneyBookTools
                 }
             }
         }
+
+        #endregion
+
+        #region Database Operations
 
         private void BackupDatabase()
         {
@@ -1161,23 +1213,6 @@ namespace MoneyBookTools
             }
         }
 
-        private void CalculateSum()
-        {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransactions = dgvAccountTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Select(g => transactions[g.Key])
-                .ToList();
-
-            if (selectedTransactions.Count() > 1)
-            {
-                labelSum.Text = $"Sum: {selectedTransactions.Sum(x => x.Amount):0.00}";
-            }
-            else
-            {
-                labelSum.Text = String.Empty;
-            }
-        }
+        #endregion
     }
 }

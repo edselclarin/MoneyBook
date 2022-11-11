@@ -52,7 +52,6 @@ namespace MoneyBookTools
             this.restoreDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabOutlook = new System.Windows.Forms.TabPage();
             this.hSplit1 = new System.Windows.Forms.SplitContainer();
             this.vSplit1 = new System.Windows.Forms.SplitContainer();
             this.groupAccounts = new System.Windows.Forms.GroupBox();
@@ -88,9 +87,8 @@ namespace MoneyBookTools
             this.copyRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.mainPanel = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
-            this.tabOutlook.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit1)).BeginInit();
             this.hSplit1.Panel1.SuspendLayout();
             this.hSplit1.Panel2.SuspendLayout();
@@ -109,7 +107,7 @@ namespace MoneyBookTools
             this.groupUpcoming.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
             this.recTransContextMenu.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -285,20 +283,11 @@ namespace MoneyBookTools
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // tabOutlook
-            // 
-            this.tabOutlook.Controls.Add(this.hSplit1);
-            this.tabOutlook.Location = new System.Drawing.Point(4, 24);
-            this.tabOutlook.Name = "tabOutlook";
-            this.tabOutlook.Size = new System.Drawing.Size(1148, 475);
-            this.tabOutlook.TabIndex = 3;
-            this.tabOutlook.Text = "Outlook";
-            this.tabOutlook.UseVisualStyleBackColor = true;
-            // 
             // hSplit1
             // 
+            this.hSplit1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hSplit1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.hSplit1.Location = new System.Drawing.Point(3, 3);
+            this.hSplit1.Location = new System.Drawing.Point(0, 0);
             this.hSplit1.Name = "hSplit1";
             this.hSplit1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -309,8 +298,8 @@ namespace MoneyBookTools
             // hSplit1.Panel2
             // 
             this.hSplit1.Panel2.Controls.Add(this.groupUpcoming);
-            this.hSplit1.Size = new System.Drawing.Size(1134, 457);
-            this.hSplit1.SplitterDistance = 277;
+            this.hSplit1.Size = new System.Drawing.Size(1156, 503);
+            this.hSplit1.SplitterDistance = 295;
             this.hSplit1.TabIndex = 3;
             // 
             // vSplit1
@@ -698,22 +687,21 @@ namespace MoneyBookTools
             this.deleteRecTransToolStripMenuItem.Text = "Delete";
             this.deleteRecTransToolStripMenuItem.Click += new System.EventHandler(this.deleteRecTransToolStripMenuItem_Click);
             // 
-            // tabControl1
+            // mainPanel
             // 
-            this.tabControl1.Controls.Add(this.tabOutlook);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 24);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1156, 503);
-            this.tabControl1.TabIndex = 2;
+            this.mainPanel.Controls.Add(this.hSplit1);
+            this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainPanel.Location = new System.Drawing.Point(0, 24);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Size = new System.Drawing.Size(1156, 503);
+            this.mainPanel.TabIndex = 3;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1156, 527);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -722,7 +710,6 @@ namespace MoneyBookTools
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabOutlook.ResumeLayout(false);
             this.hSplit1.Panel1.ResumeLayout(false);
             this.hSplit1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.hSplit1)).EndInit();
@@ -741,7 +728,7 @@ namespace MoneyBookTools
             this.groupUpcoming.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
             this.recTransContextMenu.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.mainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -754,13 +741,11 @@ namespace MoneyBookTools
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripMenuItem viewToolStripMenuItem;
         private ToolStripMenuItem refreshToolStripMenuItem;
-        private TabPage tabOutlook;
         private DataGridView dgvAccountTransactions;
         private ComboBox comboDateOrder;
         private ComboBox comboFilter;
         private Label labelAvailableBalance;
         private DataGridView dgvRecurringTransactions;
-        private TabControl tabControl1;
         private GroupBox groupLedger;
         private GroupBox groupUpcoming;
         private ContextMenuStrip recTransContextMenu;
@@ -807,5 +792,6 @@ namespace MoneyBookTools
         private ToolStripMenuItem deleteRecTransToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator7;
         private ToolStripMenuItem makeRecTransToolStripMenuItem;
+        private Panel mainPanel;
     }
 }
