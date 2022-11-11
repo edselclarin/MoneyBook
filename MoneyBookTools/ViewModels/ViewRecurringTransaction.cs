@@ -38,10 +38,10 @@ namespace MoneyBookTools.ViewModels
         public bool IsDueToday => DueDate.Date == DateTime.Now.Date;
 
         /// <summary>
-        /// In 5 days.
+        /// In 7 days.
         /// </summary>
         [Browsable(false)]
-        public bool IsDueSoon => DueDate.AddDays(-5).Date <= DateTime.Now.Date;
+        public bool IsDueSoon => DueDate.AddDays(-7).Date <= DateTime.Now.Date;
 
         [Browsable(false)]
         public int CatId { get; set; }
