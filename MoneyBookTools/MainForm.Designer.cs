@@ -64,9 +64,10 @@ namespace MoneyBookTools
             this.vSplit1 = new System.Windows.Forms.SplitContainer();
             this.groupAccounts = new System.Windows.Forms.GroupBox();
             this.listViewAccounts = new MoneyBookTools.CustomListView();
+            this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.accountToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.actualToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.currentToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.availableToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.stagedToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.finalToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -102,6 +103,7 @@ namespace MoneyBookTools
             this.vSplit1.Panel2.SuspendLayout();
             this.vSplit1.SuspendLayout();
             this.groupAccounts.SuspendLayout();
+            this.tableLayoutLedger.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupLedger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
@@ -199,7 +201,7 @@ namespace MoneyBookTools
             this.twoWeeksToolStripMenuItem.Name = "twoWeeksToolStripMenuItem";
             this.twoWeeksToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.twoWeeksToolStripMenuItem.Text = "Two Weeks";
-            this.twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks.";
+            this.twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks";
             this.twoWeeksToolStripMenuItem.Click += new System.EventHandler(this.twoWeeksToolStripMenuItem_Click);
             // 
             // thisMonthToolStripMenuItem
@@ -207,7 +209,7 @@ namespace MoneyBookTools
             this.thisMonthToolStripMenuItem.Name = "thisMonthToolStripMenuItem";
             this.thisMonthToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.thisMonthToolStripMenuItem.Text = "This Month";
-            this.thisMonthToolStripMenuItem.ToolTipText = "Of the current month.";
+            this.thisMonthToolStripMenuItem.ToolTipText = "Of the current month";
             this.thisMonthToolStripMenuItem.Click += new System.EventHandler(this.thisMonthToolStripMenuItem_Click);
             // 
             // thisYearToolStripMenuItem
@@ -215,7 +217,7 @@ namespace MoneyBookTools
             this.thisYearToolStripMenuItem.Name = "thisYearToolStripMenuItem";
             this.thisYearToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.thisYearToolStripMenuItem.Text = "This Year";
-            this.thisYearToolStripMenuItem.ToolTipText = "Of the current year.";
+            this.thisYearToolStripMenuItem.ToolTipText = "Of the current year";
             this.thisYearToolStripMenuItem.Click += new System.EventHandler(this.thisYearToolStripMenuItem_Click);
             // 
             // sortToolStripMenuItem
@@ -386,9 +388,8 @@ namespace MoneyBookTools
             // 
             // vSplit1.Panel2
             // 
-            this.vSplit1.Panel2.Controls.Add(this.statusStrip1);
-            this.vSplit1.Panel2.Controls.Add(this.groupLedger);
-            this.vSplit1.Size = new System.Drawing.Size(1115, 276);
+            this.vSplit1.Panel2.Controls.Add(this.tableLayoutLedger);
+            this.vSplit1.Size = new System.Drawing.Size(1139, 276);
             this.vSplit1.SplitterDistance = 226;
             this.vSplit1.TabIndex = 0;
             // 
@@ -413,19 +414,35 @@ namespace MoneyBookTools
             this.listViewAccounts.UseCompatibleStateImageBehavior = false;
             this.listViewAccounts.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
+            // tableLayoutLedger
+            // 
+            this.tableLayoutLedger.ColumnCount = 1;
+            this.tableLayoutLedger.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutLedger.Controls.Add(this.statusStrip1, 0, 1);
+            this.tableLayoutLedger.Controls.Add(this.groupLedger, 0, 0);
+            this.tableLayoutLedger.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutLedger.Name = "tableLayoutLedger";
+            this.tableLayoutLedger.RowCount = 2;
+            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutLedger.Size = new System.Drawing.Size(882, 190);
+            this.tableLayoutLedger.TabIndex = 7;
+            // 
             // statusStrip1
             // 
+            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.accountToolStripStatusLabel,
-            this.actualToolStripStatusLabel,
+            this.currentToolStripStatusLabel,
             this.availableToolStripStatusLabel,
             this.stagedToolStripStatusLabel,
             this.finalToolStripStatusLabel,
             this.sumToolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 244);
+            this.statusStrip1.Location = new System.Drawing.Point(5, 163);
+            this.statusStrip1.Margin = new System.Windows.Forms.Padding(5, 0, 3, 0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(885, 32);
+            this.statusStrip1.Size = new System.Drawing.Size(874, 27);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
@@ -437,22 +454,22 @@ namespace MoneyBookTools
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.accountToolStripStatusLabel.Name = "accountToolStripStatusLabel";
-            this.accountToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.accountToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
             this.accountToolStripStatusLabel.Text = "Account";
             this.accountToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.accountToolStripStatusLabel.ToolTipText = "Account name";
             // 
-            // actualToolStripStatusLabel
+            // currentToolStripStatusLabel
             // 
-            this.actualToolStripStatusLabel.AutoSize = false;
-            this.actualToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            this.currentToolStripStatusLabel.AutoSize = false;
+            this.currentToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.actualToolStripStatusLabel.Name = "actualToolStripStatusLabel";
-            this.actualToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
-            this.actualToolStripStatusLabel.Text = "Current: 0.00";
-            this.actualToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.actualToolStripStatusLabel.ToolTipText = "Current balance";
+            this.currentToolStripStatusLabel.Name = "currentToolStripStatusLabel";
+            this.currentToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
+            this.currentToolStripStatusLabel.Text = "Current: 0.00";
+            this.currentToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.currentToolStripStatusLabel.ToolTipText = "Current balance";
             // 
             // availableToolStripStatusLabel
             // 
@@ -461,7 +478,7 @@ namespace MoneyBookTools
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.availableToolStripStatusLabel.Name = "availableToolStripStatusLabel";
-            this.availableToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.availableToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
             this.availableToolStripStatusLabel.Text = "Available: 0.00";
             this.availableToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.availableToolStripStatusLabel.ToolTipText = "Current balance less reserve amount";
@@ -473,7 +490,7 @@ namespace MoneyBookTools
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.stagedToolStripStatusLabel.Name = "stagedToolStripStatusLabel";
-            this.stagedToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.stagedToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
             this.stagedToolStripStatusLabel.Text = "Staged: 0.00";
             this.stagedToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.stagedToolStripStatusLabel.ToolTipText = "Balance of staged transactions";
@@ -485,7 +502,7 @@ namespace MoneyBookTools
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.finalToolStripStatusLabel.Name = "finalToolStripStatusLabel";
-            this.finalToolStripStatusLabel.Size = new System.Drawing.Size(135, 27);
+            this.finalToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
             this.finalToolStripStatusLabel.Text = "Final: 0.00";
             this.finalToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.finalToolStripStatusLabel.ToolTipText = "Available balance less staged transactions";
@@ -496,7 +513,7 @@ namespace MoneyBookTools
             this.sumToolStripStatusLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.sumToolStripStatusLabel.ForeColor = System.Drawing.SystemColors.GrayText;
             this.sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
-            this.sumToolStripStatusLabel.Size = new System.Drawing.Size(164, 27);
+            this.sumToolStripStatusLabel.Size = new System.Drawing.Size(78, 22);
             this.sumToolStripStatusLabel.Spring = true;
             this.sumToolStripStatusLabel.Text = "Sum: 0.00";
             this.sumToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -710,10 +727,11 @@ namespace MoneyBookTools
             this.hSplit1.ResumeLayout(false);
             this.vSplit1.Panel1.ResumeLayout(false);
             this.vSplit1.Panel2.ResumeLayout(false);
-            this.vSplit1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vSplit1)).EndInit();
             this.vSplit1.ResumeLayout(false);
             this.groupAccounts.ResumeLayout(false);
+            this.tableLayoutLedger.ResumeLayout(false);
+            this.tableLayoutLedger.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.groupLedger.ResumeLayout(false);
@@ -778,7 +796,7 @@ namespace MoneyBookTools
         private Panel mainPanel;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel accountToolStripStatusLabel;
-        private ToolStripStatusLabel actualToolStripStatusLabel;
+        private ToolStripStatusLabel currentToolStripStatusLabel;
         private ToolStripStatusLabel availableToolStripStatusLabel;
         private ToolStripStatusLabel stagedToolStripStatusLabel;
         private ToolStripStatusLabel finalToolStripStatusLabel;
@@ -791,5 +809,6 @@ namespace MoneyBookTools
         private ToolStripMenuItem sortToolStripMenuItem;
         private ToolStripMenuItem dateDescendingToolStripMenuItem;
         private ToolStripMenuItem dateAscendingToolStripMenuItem;
+        private TableLayoutPanel tableLayoutLedger;
     }
 }
