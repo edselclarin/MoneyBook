@@ -53,7 +53,7 @@ namespace MoneyBookTools
             listViewAccounts.Scrollable = false;
             listViewAccounts.Resize += ListView1_Resize;
             listViewAccounts.OwnerDraw = true;
-            listViewAccounts.SelectionBackColor = Color.CadetBlue;
+            //listViewAccounts.SelectionBackColor = Color.CadetBlue;
 
             var colWidths = new int[] { 100, 80 };
             foreach (int width in colWidths)
@@ -760,13 +760,13 @@ namespace MoneyBookTools
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                        row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
+                        //row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
                     }
                     else if (vt.State == MoneyBookDbContextExtension.StateTypes.Staged.ToString())
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                        row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
+                        //row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
                     }
 
                     row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -814,13 +814,13 @@ namespace MoneyBookTools
                 {
                     row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                    row.DefaultCellStyle.ForeColor = Color.Red;
+                    //row.DefaultCellStyle.ForeColor = Color.Red;
                 }
                 else if (rt.IsDueSoon)
                 {
                     row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                    row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
+                    //row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
                 }
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
