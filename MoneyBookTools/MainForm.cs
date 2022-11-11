@@ -252,10 +252,11 @@ namespace MoneyBookTools
         {
             try
             {
-                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
+                var accountDataArr = AppSettings.Instance.Accounts
+                    .Where(x => File.Exists(x.ImportFilePath));
 
-                if (accountDataArr.Length > 0)
-                {
+                if (accountDataArr.Count() > 0)                {
+
                     var answer = MessageBox.Show(this,
                         $"Are you sure you want to import the transactions from these files into these accounts?" +
                         Environment.NewLine +
@@ -278,12 +279,14 @@ namespace MoneyBookTools
                         tr.Commit();
 
                         MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
+
+                        refreshToolStripMenuItem.PerformClick();
                     }
                 }
                 else
                 {
-                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(this, "No files found.  Make sure files exists and paths are correct in appSettings.json.",
+                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
