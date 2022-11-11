@@ -213,6 +213,19 @@ namespace MoneyBookTools.Data
             db.SaveChanges();
         }
 
+        public static void DeleteRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> transactions)
+        {
+            foreach (var tr in transactions)
+            {
+                var trn = db.RecurringTransactions
+                    .FirstOrDefault(x => x.RecTrnsId == tr.RecTrnsId);
+
+                trn?.Delete();
+            }
+
+            db.SaveChanges();
+        }
+
         public static void SetTransactionStates(this MoneyBookDbContext db, IEnumerable<ViewTransaction> transactions, MoneyBookDbContextExtension.StateTypes state)
         {
             foreach (var tr in transactions)
@@ -291,6 +304,43 @@ namespace MoneyBookTools.Data
             }
         }
 
+        public static void AddRecurringTransaction(this MoneyBookDbContext db, ViewRecurringTransaction recTrans)
+        {
+            var rt = db.RecurringTransactions
+                .FirstOrDefault(x => 
+                x.DueDate == recTrans.DueDate &&
+                x.AcctId == recTrans.AcctId &&
+                x.CatId == recTrans.CatId &&
+                x.TrnsType == recTrans.TrnsType &&
+                x.Amount == recTrans.Amount &&
+                x.Frequency == recTrans.Frequency &&
+                x.Payee == recTrans.Payee &&
+                x.Memo == recTrans.Memo);
+
+            if (rt != null)
+            {
+                throw new Exception("Recurring transaction already exists.");
+            }
+
+            var newRt = new RecurringTransaction()
+            {
+                DueDate = recTrans.DueDate,
+                AcctId = recTrans.AcctId,
+                CatId = recTrans.CatId,
+                TrnsType = recTrans.TrnsType,
+                Amount = recTrans.Amount,
+                Frequency = recTrans.Frequency,
+                Payee = recTrans.Payee,
+                Memo = recTrans.Memo,
+                DateAdded = DateTime.Now,
+                DateModified = DateTime.Now
+            };
+
+            db.RecurringTransactions.Add(newRt);
+
+            db.SaveChanges();
+        }
+
         public static void UpdateRecurringTransaction(this MoneyBookDbContext db, ViewRecurringTransaction recTrans)
         {
             var rt = db.RecurringTransactions
@@ -299,7 +349,6 @@ namespace MoneyBookTools.Data
             if (rt != null)
             {
                 rt.DueDate = recTrans.DueDate;
-                rt.Payee = recTrans.Payee;
                 rt.Payee = recTrans.Payee;
                 rt.Memo = recTrans.Memo;
                 if (recTrans.NewAmount < 0)

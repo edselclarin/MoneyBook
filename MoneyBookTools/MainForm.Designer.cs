@@ -79,10 +79,13 @@ namespace MoneyBookTools
             this.groupUpcoming = new System.Windows.Forms.GroupBox();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
             this.recTransContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editRecTranToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stageRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.deleteRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             this.tabOutlook.SuspendLayout();
@@ -133,7 +136,7 @@ namespace MoneyBookTools
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.openToolStripMenuItem.Text = "&Open...";
             this.openToolStripMenuItem.ToolTipText = "Open file";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
@@ -141,12 +144,12 @@ namespace MoneyBookTools
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(109, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.ToolTipText = "Close application";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
@@ -163,7 +166,7 @@ namespace MoneyBookTools
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.ToolTipText = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
@@ -276,7 +279,7 @@ namespace MoneyBookTools
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -608,13 +611,24 @@ namespace MoneyBookTools
             // recTransContextMenu
             // 
             this.recTransContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editRecTranToolStripMenuItem,
             this.editRecTransToolStripMenuItem,
             this.skipRecTransToolStripMenuItem,
             this.stageRecTransToolStripMenuItem,
-            this.copyRecTransToolStripMenuItem});
+            this.copyRecTransToolStripMenuItem,
+            this.toolStripSeparator6,
+            this.deleteRecTransToolStripMenuItem});
             this.recTransContextMenu.Name = "recTransContextMenu";
-            this.recTransContextMenu.Size = new System.Drawing.Size(181, 114);
+            this.recTransContextMenu.Size = new System.Drawing.Size(181, 164);
             this.recTransContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.recTransContextMenu_Opening);
+            // 
+            // editRecTranToolStripMenuItem
+            // 
+            this.editRecTranToolStripMenuItem.Name = "editRecTranToolStripMenuItem";
+            this.editRecTranToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editRecTranToolStripMenuItem.Text = "Add...";
+            this.editRecTranToolStripMenuItem.ToolTipText = "Add recurring transaction";
+            this.editRecTranToolStripMenuItem.Click += new System.EventHandler(this.editRecTranToolStripMenuItem_Click);
             // 
             // editRecTransToolStripMenuItem
             // 
@@ -647,6 +661,18 @@ namespace MoneyBookTools
             this.copyRecTransToolStripMenuItem.Text = "Copy";
             this.copyRecTransToolStripMenuItem.ToolTipText = "Copy to ledger";
             this.copyRecTransToolStripMenuItem.Click += new System.EventHandler(this.copyRecTransToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+            // 
+            // deleteRecTransToolStripMenuItem
+            // 
+            this.deleteRecTransToolStripMenuItem.Name = "deleteRecTransToolStripMenuItem";
+            this.deleteRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteRecTransToolStripMenuItem.Text = "Delete";
+            this.deleteRecTransToolStripMenuItem.Click += new System.EventHandler(this.deleteRecTransToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -752,5 +778,8 @@ namespace MoneyBookTools
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem editRecTranToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator6;
+        private ToolStripMenuItem deleteRecTransToolStripMenuItem;
     }
 }

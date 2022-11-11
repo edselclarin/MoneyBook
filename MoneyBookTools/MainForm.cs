@@ -506,8 +506,9 @@ namespace MoneyBookTools
                 .GroupBy(x => x.RowIndex)
                 .Count();
 
-            stageRecTransToolStripMenuItem.Enabled = 
-            skipRecTransToolStripMenuItem.Enabled = count > 0;
+            stageRecTransToolStripMenuItem.Enabled =
+            skipRecTransToolStripMenuItem.Enabled = 
+            deleteRecTransToolStripMenuItem.Enabled = count > 0;
 
             editRecTransToolStripMenuItem.Enabled = 
             copyRecTransToolStripMenuItem.Enabled = count == 1;
@@ -555,13 +556,41 @@ namespace MoneyBookTools
             }
         }
 
+        private void deleteRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                DeleteRecurringTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void dgvRecurringTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                ShowRecTransactionDialog();
+                ShowEditRecTransactionDialog();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void editRecTranToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var hg = this.CreateHourglass();
+
+                ShowAddRecTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -575,7 +604,7 @@ namespace MoneyBookTools
             {
                 using var hg = this.CreateHourglass();
 
-                ShowRecTransactionDialog();
+                ShowEditRecTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -876,6 +905,35 @@ namespace MoneyBookTools
             }
         }
 
+        private void DeleteRecurringTransactions()
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => recTrans[g.Key])
+                .ToList();
+
+            if (selectedRecTrans.Count() > 0)
+            {
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you want to delete these {selectedRecTrans.Count()} recurring transactions?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var tr = m_db.Database.BeginTransaction();
+
+                    m_db.DeleteRecurringTransactions(selectedRecTrans);
+
+                    tr.Commit();
+
+                    LoadRecurringTransactionsGrid();
+                }
+            }
+        }
+
         private void UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes state)
         {
             var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
@@ -992,7 +1050,17 @@ namespace MoneyBookTools
             }
         }
 
-        private void ShowRecTransactionDialog()
+        private void ShowAddRecTransactionDialog()
+        {
+            var dlg = RecurringTransactionForm.Create();
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                LoadRecurringTransactionsGrid();
+            }
+        }
+
+        private void ShowEditRecTransactionDialog()
         {
             var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
             var selectedRecTrans = dgvRecurringTransactions.SelectedCells
