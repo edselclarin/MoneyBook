@@ -50,6 +50,9 @@ namespace MoneyBookTools
             }
             listViewAccounts.Columns[1].TextAlign = HorizontalAlignment.Right;
 
+            twoWeeksToolStripMenuItem.Checked = true;
+            dateDescendingToolStripMenuItem.Checked = true;
+
             vSplit1.Dock =
             hSplit1.Dock = 
             groupAccounts.Dock =
@@ -57,7 +60,9 @@ namespace MoneyBookTools
             groupLedger.Dock =
             dgvAccountTransactions.Dock =
             groupUpcoming.Dock =
-            dgvRecurringTransactions.Dock = DockStyle.Fill;
+            dgvRecurringTransactions.Dock = 
+            statusStrip1.Dock = 
+            tableLayoutLedger.Dock = DockStyle.Fill;
         }
 
         #endregion
@@ -765,7 +770,7 @@ namespace MoneyBookTools
                 summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
                 accountToolStripStatusLabel.Text = summary?.Account.AccountName;
-                actualToolStripStatusLabel.Text = $"Actual: {summary?.Balance:0.00}";
+                currentToolStripStatusLabel.Text = $"Current: {summary?.Balance:0.00}";
                 availableToolStripStatusLabel.Text = $"Available: {summary?.AvailableBalance:0.00}";
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedBalance:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
