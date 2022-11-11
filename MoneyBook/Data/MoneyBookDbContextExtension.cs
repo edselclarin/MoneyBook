@@ -32,6 +32,11 @@ namespace MoneyBook.Data
             /// Matches with transaction at institution.
             /// </summary>
             Reconciled,
+
+            /// <summary>
+            /// Exclude from balance calculations.
+            /// </summary>
+            Ignored
         }
         
         public enum DateFilter : int
@@ -242,7 +247,7 @@ namespace MoneyBook.Data
                     StagedBalance = summary.StagedBalance,
                     Balance = summary.Balance,
                     AvailableBalance = summary.AvailableBalance,
-                    ProjectedBalance = summary.ProjectedBalance
+                    ProjectedBalance = summary.FinalBalance
                 };
 
                 return brief;

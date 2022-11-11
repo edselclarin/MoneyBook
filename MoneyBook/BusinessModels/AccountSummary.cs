@@ -7,10 +7,12 @@
         public List<TransactionInfo> Transactions { get; set; }
 
         public decimal Credits => 
-            Transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT").Sum(x => x.Amount);
+            Transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT" &&
+                x.State != Data.MoneyBookDbContextExtension.StateTypes.Ignored.ToString()).Sum(x => x.Amount);
 
         public decimal Debits => 
-            Transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT").Sum(x => x.Amount);
+            Transactions.Where(x => x.TrnsType.ToUpper() == "DEBIT" &&
+                x.State != Data.MoneyBookDbContextExtension.StateTypes.Ignored.ToString()).Sum(x => x.Amount);
 
         public decimal StagedBalance =>
             Transactions.Where(x => x.TrnsType.ToUpper() == "CREDIT" &&
@@ -22,6 +24,6 @@
 
         public decimal AvailableBalance => Balance - Account.ReserveAmount;
 
-        public decimal ProjectedBalance => AvailableBalance + StagedBalance;
+        public decimal FinalBalance => AvailableBalance + StagedBalance;
     }
 }
