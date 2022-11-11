@@ -74,6 +74,8 @@ namespace MoneyBookTools
             this.addTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setTransStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.makeRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupUpcoming = new System.Windows.Forms.GroupBox();
@@ -87,8 +89,6 @@ namespace MoneyBookTools
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.makeRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.tabOutlook.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit1)).BeginInit();
@@ -415,9 +415,10 @@ namespace MoneyBookTools
             // 
             this.labelAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelAccount.BackColor = System.Drawing.Color.DimGray;
+            this.labelAccount.BackColor = System.Drawing.Color.Transparent;
+            this.labelAccount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelAccount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelAccount.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.labelAccount.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelAccount.Location = new System.Drawing.Point(3, 3);
             this.labelAccount.Margin = new System.Windows.Forms.Padding(3);
             this.labelAccount.Name = "labelAccount";
@@ -442,9 +443,10 @@ namespace MoneyBookTools
             // 
             this.labelProjectedBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelProjectedBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelProjectedBalance.BackColor = System.Drawing.Color.Transparent;
+            this.labelProjectedBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelProjectedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelProjectedBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelProjectedBalance.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelProjectedBalance.Location = new System.Drawing.Point(555, 3);
             this.labelProjectedBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelProjectedBalance.Name = "labelProjectedBalance";
@@ -469,9 +471,10 @@ namespace MoneyBookTools
             // 
             this.labelActualBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelActualBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelActualBalance.BackColor = System.Drawing.Color.Transparent;
+            this.labelActualBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelActualBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelActualBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelActualBalance.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelActualBalance.Location = new System.Drawing.Point(141, 3);
             this.labelActualBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelActualBalance.Name = "labelActualBalance";
@@ -484,9 +487,10 @@ namespace MoneyBookTools
             // 
             this.labelAvailableBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelAvailableBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelAvailableBalance.BackColor = System.Drawing.Color.Transparent;
+            this.labelAvailableBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelAvailableBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelAvailableBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelAvailableBalance.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelAvailableBalance.Location = new System.Drawing.Point(279, 3);
             this.labelAvailableBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelAvailableBalance.Name = "labelAvailableBalance";
@@ -499,9 +503,10 @@ namespace MoneyBookTools
             // 
             this.labelStagedBalance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelStagedBalance.BackColor = System.Drawing.Color.DarkGray;
+            this.labelStagedBalance.BackColor = System.Drawing.Color.Transparent;
+            this.labelStagedBalance.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.labelStagedBalance.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.labelStagedBalance.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelStagedBalance.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelStagedBalance.Location = new System.Drawing.Point(417, 3);
             this.labelStagedBalance.Margin = new System.Windows.Forms.Padding(3);
             this.labelStagedBalance.Name = "labelStagedBalance";
@@ -527,6 +532,7 @@ namespace MoneyBookTools
             // 
             // dgvAccountTransactions
             // 
+            this.dgvAccountTransactions.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAccountTransactions.ContextMenuStrip = this.transContextMenu;
             this.dgvAccountTransactions.Location = new System.Drawing.Point(3, 72);
@@ -549,13 +555,13 @@ namespace MoneyBookTools
             this.toolStripSeparator2,
             this.deleteTransToolStripMenuItem});
             this.transContextMenu.Name = "transContextMenu";
-            this.transContextMenu.Size = new System.Drawing.Size(181, 148);
+            this.transContextMenu.Size = new System.Drawing.Size(167, 126);
             this.transContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.transContextMenu_Opening);
             // 
             // addTransToolStripMenuItem
             // 
             this.addTransToolStripMenuItem.Name = "addTransToolStripMenuItem";
-            this.addTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.addTransToolStripMenuItem.Text = "Add...";
             this.addTransToolStripMenuItem.ToolTipText = "Add transaction";
             this.addTransToolStripMenuItem.Click += new System.EventHandler(this.addTransToolStripMenuItem_Click);
@@ -563,7 +569,7 @@ namespace MoneyBookTools
             // editTransToolStripMenuItem
             // 
             this.editTransToolStripMenuItem.Name = "editTransToolStripMenuItem";
-            this.editTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.editTransToolStripMenuItem.Text = "Edit...";
             this.editTransToolStripMenuItem.ToolTipText = "Modify transaction";
             this.editTransToolStripMenuItem.Click += new System.EventHandler(this.editTransToolStripMenuItem_Click);
@@ -571,20 +577,33 @@ namespace MoneyBookTools
             // setTransStateToolStripMenuItem
             // 
             this.setTransStateToolStripMenuItem.Name = "setTransStateToolStripMenuItem";
-            this.setTransStateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setTransStateToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.setTransStateToolStripMenuItem.Text = "Set State...";
             this.setTransStateToolStripMenuItem.ToolTipText = "Set state of transaction(s)";
             this.setTransStateToolStripMenuItem.Click += new System.EventHandler(this.setTransStateToolStripMenuItem_Click);
             // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(163, 6);
+            // 
+            // makeRecTransToolStripMenuItem
+            // 
+            this.makeRecTransToolStripMenuItem.Name = "makeRecTransToolStripMenuItem";
+            this.makeRecTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.makeRecTransToolStripMenuItem.Text = "Make Recurring...";
+            this.makeRecTransToolStripMenuItem.ToolTipText = "Make this a recurring transaction.";
+            this.makeRecTransToolStripMenuItem.Click += new System.EventHandler(this.makeRecTransToolStripMenuItem_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(163, 6);
             // 
             // deleteTransToolStripMenuItem
             // 
             this.deleteTransToolStripMenuItem.Name = "deleteTransToolStripMenuItem";
-            this.deleteTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.deleteTransToolStripMenuItem.Text = "Delete";
             this.deleteTransToolStripMenuItem.ToolTipText = "Delete transaction(s)";
             this.deleteTransToolStripMenuItem.Click += new System.EventHandler(this.deleteTransToolStripMenuItem_Click);
@@ -602,6 +621,7 @@ namespace MoneyBookTools
             // 
             // dgvRecurringTransactions
             // 
+            this.dgvRecurringTransactions.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dgvRecurringTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRecurringTransactions.ContextMenuStrip = this.recTransContextMenu;
             this.dgvRecurringTransactions.Location = new System.Drawing.Point(6, 22);
@@ -687,19 +707,6 @@ namespace MoneyBookTools
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1156, 503);
             this.tabControl1.TabIndex = 2;
-            // 
-            // makeRecTransToolStripMenuItem
-            // 
-            this.makeRecTransToolStripMenuItem.Name = "makeRecTransToolStripMenuItem";
-            this.makeRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.makeRecTransToolStripMenuItem.Text = "Make Recurring...";
-            this.makeRecTransToolStripMenuItem.ToolTipText = "Make this a recurring transaction.";
-            this.makeRecTransToolStripMenuItem.Click += new System.EventHandler(this.makeRecTransToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
             // 
             // MainForm
             // 
