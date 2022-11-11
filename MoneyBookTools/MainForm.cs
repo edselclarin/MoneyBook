@@ -788,13 +788,13 @@ namespace MoneyBookTools
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                        //row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
+                        row.DefaultCellStyle.ForeColor = Color.FromArgb(245, 127, 23);
                     }
                     else if (vt.State == MoneyBookDbContextExtension.StateTypes.Staged.ToString())
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                        //row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
+                        row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
                     }
 
                     row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -1001,13 +1001,13 @@ namespace MoneyBookTools
                 {
                     row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                    //row.DefaultCellStyle.ForeColor = Color.Red;
+                    row.DefaultCellStyle.ForeColor = Color.Red;
                 }
                 else if (rt.IsDueSoon)
                 {
                     row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                    //row.DefaultCellStyle.ForeColor = Color.DarkGoldenrod;
+                    row.DefaultCellStyle.ForeColor = Color.FromArgb(245, 127, 23);
                 }
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
