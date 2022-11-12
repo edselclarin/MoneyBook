@@ -1,4 +1,5 @@
-﻿using Ofx;
+﻿using Dark.Net;
+using Ofx;
 
 namespace MoneyBookTools
 {
@@ -14,10 +15,15 @@ namespace MoneyBookTools
 
         public static FileTransactionsForm Create()
         {
-            return new FileTransactionsForm()
+            var form = new FileTransactionsForm()
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         private void FileTransactionsForm_Load(object sender, EventArgs e)
