@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using Dark.Net;
+using System.Configuration;
 
 namespace MoneyBookTools
 {
@@ -11,10 +12,15 @@ namespace MoneyBookTools
 
         public static AboutForm Create()
         {
-            return new AboutForm()
+            var form = new AboutForm()
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         private void AboutForm_Load(object sender, EventArgs e)

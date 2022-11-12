@@ -1,4 +1,5 @@
-﻿using MoneyBook.BusinessModels;
+﻿using Dark.Net;
+using MoneyBook.BusinessModels;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
@@ -20,11 +21,16 @@ namespace MoneyBookTools
 
         public static MainForm Create()
         {
-            return new MainForm()
+            var form = new MainForm()
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 WindowState = FormWindowState.Maximized
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         protected MainForm()

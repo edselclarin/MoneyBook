@@ -4,7 +4,8 @@
     {
         private bool m_bEditMode = false;
 
-        public Color SelectionBackColor { get; set; } = Color.Blue;
+        public Color SelectionForeColor { get; set; } = Color.Black;
+        public Color SelectionBackColor { get; set; } = Color.White;
 
         public CustomListView()
             : base()
@@ -30,7 +31,7 @@
                         {
                             e.Graphics.FillRectangle(bkgrBrush, e.Bounds);
                         }
-                        itemColor = e.Item.BackColor;
+                        itemColor = SelectionForeColor;
                     }
                 }
                 else
@@ -61,7 +62,7 @@
                     {
                         e.Graphics.FillRectangle(bkBrush, e.Bounds);
                     }
-                    itemColor = e.Item.BackColor;
+                    itemColor = SelectionForeColor;
                 }
                 else
                 {

@@ -424,7 +424,7 @@ namespace MoneyBookTools
             this.tableLayoutLedger.Name = "tableLayoutLedger";
             this.tableLayoutLedger.RowCount = 2;
             this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutLedger.Size = new System.Drawing.Size(882, 190);
             this.tableLayoutLedger.TabIndex = 7;
             // 
@@ -439,8 +439,8 @@ namespace MoneyBookTools
             this.stagedToolStripStatusLabel,
             this.finalToolStripStatusLabel,
             this.sumToolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(5, 163);
-            this.statusStrip1.Margin = new System.Windows.Forms.Padding(5, 0, 3, 0);
+            this.statusStrip1.Location = new System.Drawing.Point(5, 161);
+            this.statusStrip1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(874, 27);
             this.statusStrip1.SizingGrip = false;
@@ -513,7 +513,7 @@ namespace MoneyBookTools
             this.sumToolStripStatusLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.sumToolStripStatusLabel.ForeColor = System.Drawing.SystemColors.GrayText;
             this.sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
-            this.sumToolStripStatusLabel.Size = new System.Drawing.Size(78, 22);
+            this.sumToolStripStatusLabel.Size = new System.Drawing.Size(109, 22);
             this.sumToolStripStatusLabel.Spring = true;
             this.sumToolStripStatusLabel.Text = "Sum: 0.00";
             this.sumToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

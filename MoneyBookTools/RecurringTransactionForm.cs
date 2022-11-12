@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using Dark.Net;
+using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
@@ -25,25 +26,35 @@ namespace MoneyBookTools
 
         public static RecurringTransactionForm Create()
         {
-            return new RecurringTransactionForm(true)
+            var form = new RecurringTransactionForm(true)
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 RecurringTransaction = null
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         public static RecurringTransactionForm Create(ViewRecurringTransaction recTrans)
         {
-            return new RecurringTransactionForm(false)
+            var form = new RecurringTransactionForm(false)
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 RecurringTransaction = recTrans
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         public static RecurringTransactionForm Create(ViewTransaction trans)
         {
-            return new RecurringTransactionForm(true)
+            var form = new RecurringTransactionForm(true)
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 RecurringTransaction = new ViewRecurringTransaction()
@@ -59,6 +70,11 @@ namespace MoneyBookTools
                     NewAmount = trans.Amount
                 }
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         private void RecurringTransactionForm_Load(object sender, EventArgs e)

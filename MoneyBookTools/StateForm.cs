@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using Dark.Net;
+using MoneyBook.Data;
 
 namespace MoneyBookTools
 {
@@ -13,10 +14,15 @@ namespace MoneyBookTools
 
         public static StateForm Create()
         {
-            return new StateForm()
+            var form = new StateForm()
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         private void StateForm_Load(object sender, EventArgs e)

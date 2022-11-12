@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using Dark.Net;
+using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
 
@@ -12,18 +13,28 @@ namespace MoneyBookTools
 
         public static TransactionForm Create(int acctId)
         {
-            return new TransactionForm(acctId)
+            var form = new TransactionForm(acctId)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         public static TransactionForm Create(ViewTransaction transaction)
         {
-            return new TransactionForm(transaction)
+            var form = new TransactionForm(transaction)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         protected TransactionForm(int acctId)
