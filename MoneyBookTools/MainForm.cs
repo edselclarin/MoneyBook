@@ -3,6 +3,8 @@ using MoneyBook.BusinessModels;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.ViewModels;
+using System.Diagnostics;
+using System.Security.Policy;
 
 namespace MoneyBookTools
 {
@@ -240,14 +242,7 @@ namespace MoneyBookTools
                     {
                         using var hg = this.CreateHourglass();
 
-                        using var tr = m_db.Database.BeginTransaction();
-
-                        foreach (var ad in accountDataArr)
-                        {
-                            m_db.ImportTransactions(ad.ImportFilePath, ad.Name);
-                        }
-
-                        tr.Commit();
+                        m_db.ImportTransactions(accountDataArr);
 
                         MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
 
@@ -279,11 +274,7 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.DeleteAllTransactions();
-
-                    tr.Commit();
 
                     MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -298,38 +289,60 @@ namespace MoneyBookTools
         {
             try
             {
-                var repeatingTransactions = AppSettings.Instance.RepeatingTransactions;
+                var answer = MessageBox.Show(this,
+                    "Importing data from file will delete all existing recurring transactions from the database. " +
+                    "This cannot be undone. Continue?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
-                if (repeatingTransactions.Count > 0)
+                if (answer == DialogResult.Yes)
                 {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want to import repeating transactions?",
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
+                    var ofd = new OpenFileDialog()
                     {
-                        using var hg = this.CreateHourglass();
+                        InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
+                        Filter = "Data Files|*.json;*.json|All Files|*.*",
+                        Multiselect = false
+                    };
 
-                        using var tr = m_db.Database.BeginTransaction();
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        m_db.ImportRecurringTransactions(ofd.FileName);
 
-                        m_db.ImportRecurringTransactions(repeatingTransactions);
-
-                        tr.Commit();
+                        LoadRecurringTransactionsGrid();
 
                         MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
                     }
-                }
-                else
-                {
-                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             catch (Exception ex)
             {
                 this.ShowException(ex);
             }
+        }
+
+        private void exportRecurringTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var sfd = new SaveFileDialog()
+                {
+                    InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
+                    FileName = $"MoneyTools-RecurringTransactions-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json",
+                    Filter = "Data Files|*.json;*.json|All Files|*.*",
+                };
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    m_db.ExportRecurringTransactions(sfd.FileName);
+
+                    MessageBox.Show(this, "Export complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+
         }
 
         private void deleteRecurringTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -345,11 +358,7 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.DeleteAllRecurringTransactions();
-
-                    tr.Commit();
 
                     MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -380,11 +389,7 @@ namespace MoneyBookTools
                     {
                         using var hg = this.CreateHourglass();
 
-                        using var tr = m_db.Database.BeginTransaction();
-
                         m_db.UpdateAccountData(accountDataArr);
-
-                        tr.Commit();
 
                         MessageBox.Show(this, "Update complete.", this.Text, MessageBoxButtons.OK);
                     }
@@ -414,11 +419,7 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.ResetAccountData();
-
-                    tr.Commit();
 
                     MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -539,7 +540,8 @@ namespace MoneyBookTools
             deleteRecTransToolStripMenuItem.Enabled = count > 0;
 
             editRecTransToolStripMenuItem.Enabled = 
-            copyRecTransToolStripMenuItem.Enabled = count == 1;
+            copyRecTransToolStripMenuItem.Enabled =
+            openWebsiteToolStripMenuItem.Enabled = count == 1;
         }
 
         private void stageRecTransToolStripMenuItem_Click(object sender, EventArgs e)
@@ -577,6 +579,18 @@ namespace MoneyBookTools
                 using var hg = this.CreateHourglass();
 
                 CopyRecurringTransactions();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
+        private void openWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenWebsite();
             }
             catch (Exception ex)
             {
@@ -845,11 +859,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.SetTransactionStates(selectedTransactions, state);
-
-                    tr.Commit();
 
                     LoadTransactionsGrid();
 
@@ -907,11 +917,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.DeleteTransactions(selectedTransactions);
-
-                    tr.Commit();
 
                     LoadTransactionsGrid();
 
@@ -1008,11 +1014,12 @@ namespace MoneyBookTools
             dgvRecurringTransactions.DataSource = recTrans;
 
             // Resize the columns.
-            var widths = new int[] { 90, 90, 275, 80, 80 };
+            var widths = new int[] { 90, 90, 275, 275, 80, 80 };
             int i = 0;
             dgvRecurringTransactions.Columns["DueDate"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Account"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Memo"].Width = widths[i++];
+            dgvRecurringTransactions.Columns["Website"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Amount"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Frequency"].Width = widths[i++];
             dgvRecurringTransactions.Columns["Payee"].Width =
@@ -1057,11 +1064,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.StageRecurringTransactions(selectedRecTrans);
-
-                    tr.Commit();
 
                     LoadRecurringTransactionsGrid();
 
@@ -1088,11 +1091,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.SkipRecurringTransactions(selectedRecTrans);
-
-                    tr.Commit();
 
                     LoadRecurringTransactionsGrid();
                 }
@@ -1117,11 +1116,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.CopyRecurringTransactions(selectedRecTrans);
-
-                    tr.Commit();
 
                     LoadRecurringTransactionsGrid();
 
@@ -1129,6 +1124,21 @@ namespace MoneyBookTools
 
                     LoadAccountsList();
                 }
+            }
+        }
+
+        private void OpenWebsite()
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .GroupBy(x => x.RowIndex)
+                .Select(g => recTrans[g.Key])
+                .FirstOrDefault();
+
+            if (selectedRecTrans != null && !String.IsNullOrEmpty(selectedRecTrans.Website))
+            {
+                Process.Start(new ProcessStartInfo(selectedRecTrans.Website) { UseShellExecute = true });
             }
         }
 
@@ -1150,11 +1160,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    using var tr = m_db.Database.BeginTransaction();
-
                     m_db.DeleteRecurringTransactions(selectedRecTrans);
-
-                    tr.Commit();
 
                     LoadRecurringTransactionsGrid();
                 }

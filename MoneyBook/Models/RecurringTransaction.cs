@@ -18,6 +18,8 @@ namespace MoneyBook.Models
 
         public string Memo { get; set; }
 
+        public string Website { get; set; }
+
         [Required]
         public decimal Amount { get; set; }
 

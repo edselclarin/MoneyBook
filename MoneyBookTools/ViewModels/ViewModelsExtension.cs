@@ -51,6 +51,7 @@ namespace MoneyBookTools.ViewModels
                 TrnsType = tran.TrnsType,
                 Payee = tran.Payee,
                 Memo = tran.Memo,
+                Website = tran.Website,
                 TrnsAmount = tran.Amount,
                 Frequency = tran.Frequency,
                 AcctId = tran.AcctId,

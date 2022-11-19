@@ -1,67 +1,77 @@
 ﻿using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBookTools.ViewModels;
+using Newtonsoft.Json;
 using Ofx;
 
 namespace MoneyBookTools.Data
 {
     public static class MoneyBookToolsDbContextExtension
     {
-        public static void ImportTransactions(this MoneyBookDbContext db, string filename, string accountName)
+        public static void ImportTransactions(this MoneyBookDbContext db, IEnumerable<AccountData> accountDataArr)
         {
-            var context = new OfxContext()
+            using var dbtran = db.Database.BeginTransaction();
+
+            foreach (var ad in accountDataArr)
             {
-                ImportFilePath = filename,
-                AccountTo = accountName
-            };
-
-            context.FromFile(filename);
-
-            // Get account to import into.
-            var acct = db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
-            if (acct == null)
-            {
-                throw new Exception($"Could not find account named '{context.AccountTo.ToUpper()}'.");
-            }
-
-            // Set all imported transactions to first category.
-            var cat = db.Categories.First();
-
-            // Process transactions from only this year.
-            var transactions = context.Transactions
-                .Where(x => x.DatePosted.Year == MoneyBookDbContextExtension.AccountYear)
-                .ToList();
-
-            foreach (var tr in transactions)
-            {
-                bool exists = db.Transactions
-                    .Where(x => x.ExtTrnsId == tr.TransactionId)
-                    .Count() > 0;
-
-                // Add only new transactions.
-                if (!exists)
+                var context = new OfxContext()
                 {
-                    var trNew = new Transaction()
-                    {
-                        Date = tr.DatePosted,
-                        TrnsType = tr.TransactionType,
-                        Payee = tr.Memo,
-                        State = MoneyBookDbContextExtension.StateTypes.New.ToString(),
-                        Amount = tr.TransactionAmount,
-                        ExtTrnsId = tr.TransactionId,
-                        AcctId = acct.AcctId,
-                        CatId = cat.CatId
-                    };
+                    ImportFilePath = ad.ImportFilePath,
+                    AccountTo = ad.Name
+                };
 
-                    db.Transactions.Add(trNew);
+                context.FromFile(ad.ImportFilePath);
+
+                // Get account to import into.
+                var acct = db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
+                if (acct == null)
+                {
+                    throw new Exception($"Could not find account named '{context.AccountTo.ToUpper()}'.");
                 }
+
+                // Set all imported transactions to first category.
+                var cat = db.Categories.First();
+
+                // Process transactions from only this year.
+                var transactions = context.Transactions
+                    .Where(x => x.DatePosted.Year == MoneyBookDbContextExtension.AccountYear)
+                    .ToList();
+
+                foreach (var tr in transactions)
+                {
+                    bool exists = db.Transactions
+                        .Where(x => x.ExtTrnsId == tr.TransactionId)
+                        .Count() > 0;
+
+                    // Add only new transactions.
+                    if (!exists)
+                    {
+                        var trNew = new Transaction()
+                        {
+                            Date = tr.DatePosted,
+                            TrnsType = tr.TransactionType,
+                            Payee = tr.Memo,
+                            State = MoneyBookDbContextExtension.StateTypes.New.ToString(),
+                            Amount = tr.TransactionAmount,
+                            ExtTrnsId = tr.TransactionId,
+                            AcctId = acct.AcctId,
+                            CatId = cat.CatId
+                        };
+
+                        db.Transactions.Add(trNew);
+                    }
+                }
+
+                db.SaveChanges();
             }
 
-            db.SaveChanges();
+            dbtran.Commit();
         }
 
         public static void UpdateAccountData(this MoneyBookDbContext db, AccountData[] accountDataArr)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
             foreach (var ad in accountDataArr)
             {
                 var acct = db.Accounts.FirstOrDefault(x => x.Name == ad.Name);
@@ -73,10 +83,14 @@ namespace MoneyBookTools.Data
             }
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void ResetAccountData(this MoneyBookDbContext db)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
             var accounts = db.Accounts.ToList();
 
             foreach (var acct in accounts)
@@ -86,13 +100,19 @@ namespace MoneyBookTools.Data
             }
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void DeleteAllTransactions(this MoneyBookDbContext db)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
             db.Transactions.RemoveRange(db.Transactions);
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void ImportRecurringTransactions(this MoneyBookDbContext db, IEnumerable<RepeatingTransaction> repeatingTransactions)
@@ -142,15 +162,55 @@ namespace MoneyBookTools.Data
             db.SaveChanges();
         }
 
-        public static void DeleteAllRecurringTransactions(this MoneyBookDbContext db)
+        public static void ImportRecurringTransactions(this MoneyBookDbContext db, string filename)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
+            string json = File.ReadAllText(filename);
+
+            var recTrans = JsonConvert
+                .DeserializeObject<IEnumerable<RecurringTransaction>>(json)
+                .ToList();
+
+            foreach (var rt in recTrans)
+            {
+                rt.RecTrnsId = 0;
+
+            }
+
             db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
 
             db.SaveChanges();
+
+            db.AddRange(recTrans);
+
+            db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+        public static void ExportRecurringTransactions(this MoneyBookDbContext db, string filename)
+        {
+            string json = JsonConvert.SerializeObject(db.RecurringTransactions, Formatting.Indented);
+
+            File.WriteAllText(filename, json);
+        }
+
+        public static void DeleteAllRecurringTransactions(this MoneyBookDbContext db)
+        {
+            using var dbtran = db.Database.BeginTransaction();
+            
+            db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
+
+            db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void StageRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> recTrans)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
             foreach (var rtr in recTrans)
             {
                 var trNew = new Transaction()
@@ -175,10 +235,14 @@ namespace MoneyBookTools.Data
             }
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void SkipRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> transactions)
         {
+            using var dbtran = db.Database.BeginTransaction();
+            
             foreach (var tr in transactions)
             {
                 var trn = db.RecurringTransactions
@@ -188,10 +252,14 @@ namespace MoneyBookTools.Data
             }
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void CopyRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> recTrans)
         {
+            using var dbtran = db.Database.BeginTransaction();
+            
             foreach (var rtr in recTrans)
             {
                 var trNew = new Transaction()
@@ -211,10 +279,14 @@ namespace MoneyBookTools.Data
             }
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void DeleteRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> transactions)
         {
+            using var dbtran = db.Database.BeginTransaction();
+            
             foreach (var tr in transactions)
             {
                 var trn = db.RecurringTransactions
@@ -224,10 +296,14 @@ namespace MoneyBookTools.Data
             }
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void SetTransactionStates(this MoneyBookDbContext db, IEnumerable<ViewTransaction> transactions, MoneyBookDbContextExtension.StateTypes state)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
             foreach (var tr in transactions)
             {
                 var trn = db.Transactions
@@ -235,11 +311,16 @@ namespace MoneyBookTools.Data
 
                 trn?.SetState(state);
             }
+
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void AddTransaction(this MoneyBookDbContext db, ViewTransaction transaction)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
             var cat = db.Categories.FirstOrDefault();
 
             if (cat == null)
@@ -273,6 +354,8 @@ namespace MoneyBookTools.Data
             db.Transactions.Add(trn);
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void UpdateTransaction(this MoneyBookDbContext db, ViewTransaction transaction)
@@ -282,6 +365,8 @@ namespace MoneyBookTools.Data
 
             if (trn != null)
             {
+                using var dbtran = db.Database.BeginTransaction();
+
                 trn.Date = transaction.Date;
                 trn.Payee = transaction.Payee;
                 trn.RefNum = transaction.RefNum;
@@ -301,11 +386,15 @@ namespace MoneyBookTools.Data
                 trn.DateModified = DateTime.Now.Date;
 
                 db.SaveChanges();
+
+                dbtran.Commit();
             }
         }
 
         public static void AddRecurringTransaction(this MoneyBookDbContext db, ViewRecurringTransaction recTrans)
         {
+            using var dbtran = db.Database.BeginTransaction();
+            
             var rt = db.RecurringTransactions
                 .FirstOrDefault(x => 
                 x.DueDate == recTrans.DueDate &&
@@ -339,6 +428,8 @@ namespace MoneyBookTools.Data
             db.RecurringTransactions.Add(newRt);
 
             db.SaveChanges();
+
+            dbtran.Commit();
         }
 
         public static void UpdateRecurringTransaction(this MoneyBookDbContext db, ViewRecurringTransaction recTrans)
@@ -348,9 +439,12 @@ namespace MoneyBookTools.Data
 
             if (rt != null)
             {
+                using var dbtran = db.Database.BeginTransaction();
+
                 rt.DueDate = recTrans.DueDate;
                 rt.Payee = recTrans.Payee;
                 rt.Memo = recTrans.Memo;
+                rt.Website = recTrans.Website;
                 if (recTrans.NewAmount < 0)
                 {
                     rt.TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString();
@@ -365,11 +459,15 @@ namespace MoneyBookTools.Data
                 rt.DateModified = DateTime.Now.Date;
 
                 db.SaveChanges();
+
+                dbtran.Commit();
             }
         }
 
         public static void DeleteTransactions(this MoneyBookDbContext db, IEnumerable<ViewTransaction> transactions)
         {
+            using var dbtran = db.Database.BeginTransaction();
+
             foreach (var tr in transactions)
             {
                 var trn = db.Transactions
@@ -377,7 +475,10 @@ namespace MoneyBookTools.Data
 
                 trn?.Delete();
             }
+
             db.SaveChanges();
+
+            dbtran.Commit();
         }
     }
 }
