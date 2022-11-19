@@ -55,28 +55,28 @@
             this.dateTime.Location = new System.Drawing.Point(91, 14);
             this.dateTime.Name = "dateTime";
             this.dateTime.Size = new System.Drawing.Size(100, 25);
-            this.dateTime.TabIndex = 0;
+            this.dateTime.TabIndex = 3;
             // 
             // textPayee
             // 
             this.textPayee.Location = new System.Drawing.Point(91, 54);
             this.textPayee.Name = "textPayee";
             this.textPayee.Size = new System.Drawing.Size(320, 25);
-            this.textPayee.TabIndex = 1;
+            this.textPayee.TabIndex = 4;
             // 
             // textRefNum
             // 
             this.textRefNum.Location = new System.Drawing.Point(91, 94);
             this.textRefNum.Name = "textRefNum";
             this.textRefNum.Size = new System.Drawing.Size(100, 25);
-            this.textRefNum.TabIndex = 1;
+            this.textRefNum.TabIndex = 5;
             // 
             // textMemo
             // 
             this.textMemo.Location = new System.Drawing.Point(91, 134);
             this.textMemo.Name = "textMemo";
             this.textMemo.Size = new System.Drawing.Size(320, 25);
-            this.textMemo.TabIndex = 1;
+            this.textMemo.TabIndex = 6;
             // 
             // comboState
             // 
@@ -85,14 +85,14 @@
             this.comboState.Location = new System.Drawing.Point(91, 174);
             this.comboState.Name = "comboState";
             this.comboState.Size = new System.Drawing.Size(100, 25);
-            this.comboState.TabIndex = 2;
+            this.comboState.TabIndex = 7;
             // 
             // textAmount
             // 
             this.textAmount.Location = new System.Drawing.Point(91, 214);
             this.textAmount.Name = "textAmount";
             this.textAmount.Size = new System.Drawing.Size(100, 25);
-            this.textAmount.TabIndex = 3;
+            this.textAmount.TabIndex = 0;
             this.textAmount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tableLayoutPanel1
@@ -218,7 +218,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(81, 10);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 26);
-            this.buttonCancel.TabIndex = 1;
+            this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -230,7 +230,7 @@
             this.buttonSave.Location = new System.Drawing.Point(0, 10);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(75, 26);
-            this.buttonSave.TabIndex = 0;
+            this.buttonSave.TabIndex = 1;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
