@@ -67,6 +67,7 @@ namespace MoneyBookTools
                     Frequency = MoneyBookDbContextExtension.TransactionFrequency.Monthly.ToString(),
                     Payee = trans.Payee,
                     Memo = !String.IsNullOrEmpty(trans.Memo) ? trans.Memo : String.Empty,
+                    Website = String.Empty,
                     NewAmount = trans.Amount
                 }
             };
@@ -108,6 +109,7 @@ namespace MoneyBookTools
                             CatId = cats.First().CatId,
                             Payee = DateTime.Now.ToString(),
                             Memo = String.Empty,
+                            Website = String.Empty,
                             NewAmount = 0m,
                             TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString(),
                             Frequency = MoneyBookDbContextExtension.TransactionFrequency.Once.ToString(),
@@ -141,11 +143,7 @@ namespace MoneyBookTools
 
                     var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
-                    using var tr = db.Database.BeginTransaction();
-
                     db.AddRecurringTransaction(RecurringTransaction);
-
-                    tr.Commit();
 
                     DialogResult = DialogResult.OK;
                 }
@@ -167,11 +165,7 @@ namespace MoneyBookTools
 
                         var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
-                        using var tr = db.Database.BeginTransaction();
-
                         db.UpdateRecurringTransaction(RecurringTransaction);
-
-                        tr.Commit();
 
                         DialogResult = DialogResult.OK;
                     }
@@ -196,6 +190,8 @@ namespace MoneyBookTools
             textPayee.DataBindings.Add("Text", RecurringTransaction, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
 
             textMemo.DataBindings.Add("Text", RecurringTransaction, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            textWebsite.DataBindings.Add("Text", RecurringTransaction, "Website", false, DataSourceUpdateMode.OnPropertyChanged);
 
             comboAccounts.DataBindings.Add("Text", RecurringTransaction, "Account", false, DataSourceUpdateMode.OnPropertyChanged);
 

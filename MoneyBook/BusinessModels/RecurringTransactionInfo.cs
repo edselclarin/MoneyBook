@@ -7,6 +7,7 @@
         public string TrnsType { get; set; }
         public string Payee { get; set; }
         public string Memo { get; set; }
+        public string Website { get; set; }
         public decimal Amount { get; set; }
         public string Frequency { get; set; }
         public DateTime DateAdded { get; set; }

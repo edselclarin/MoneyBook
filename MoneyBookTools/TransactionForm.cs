@@ -108,8 +108,6 @@ namespace MoneyBookTools
 
                     var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
-                    using var tr = db.Database.BeginTransaction();
-
                     if (m_bNew)
                     {
                         db.AddTransaction(m_transaction);
@@ -118,8 +116,6 @@ namespace MoneyBookTools
                     {
                         db.UpdateTransaction(m_transaction);
                     }
-
-                    tr.Commit();
 
                     DialogResult = DialogResult.OK;
                 }

@@ -21,6 +21,8 @@ namespace MoneyBookTools.ViewModels
 
         public string Memo { get; set; }
 
+        public string Website { get; set; }
+
         [Browsable(false)]
         public decimal TrnsAmount { get; set; }
 

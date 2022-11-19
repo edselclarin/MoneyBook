@@ -272,6 +272,7 @@ namespace MoneyBook.Data
                     TrnsType = trn.TrnsType,
                     Payee = trn.Payee,
                     Memo = trn.Memo,
+                    Website = trn.Website,
                     Amount = trn.Amount,
                     Frequency = trn.Frequency,
                     DateAdded = trn.DateAdded,
