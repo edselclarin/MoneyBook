@@ -5,7 +5,6 @@ using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
 using MoneyBookTools.ViewModels;
 using System.Diagnostics;
-using System.Security.Policy;
 
 namespace MoneyBookTools
 {
@@ -17,6 +16,8 @@ namespace MoneyBookTools
         private List<AccountSummary> m_summaries;
         private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
         private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
+        private List<ViewTransaction> m_selectedTransactions;
+        private List<ViewRecurringTransaction> m_selectedRecurringTransactions;
 
         #endregion
 
@@ -782,6 +783,31 @@ namespace MoneyBookTools
 
         #region Transactions
 
+        private void SaveSelectedTransactions()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            m_selectedTransactions = dgvAccountTransactions.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(dgvr => transactions[dgvr.Index])
+                .ToList();
+        }
+
+        private void RestoreSelectedTransactions()
+        {
+            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
+            for (int i = 0; i < dgvAccountTransactions.Rows.Count; i++)
+            {
+                if (m_selectedTransactions.Find(x => x.TrnsId == transactions[i].TrnsId) != null)
+                {
+                    dgvAccountTransactions.Rows[i].Selected = true;
+                }
+                else
+                {
+                    dgvAccountTransactions.Rows[i].Selected = false;
+                }
+            }
+        }
+
         private void LoadTransactionsGrid()
         {
             if (listViewAccounts.SelectedIndices.Count > 0)
@@ -801,6 +827,8 @@ namespace MoneyBookTools
                     .Order(m_sortOrder)
                     .AsViewTransactions()
                     .ToList();
+
+                SaveSelectedTransactions();
 
                 dgvAccountTransactions.DataSource = viewTransactions;
 
@@ -828,6 +856,8 @@ namespace MoneyBookTools
 
                     row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
+
+                RestoreSelectedTransactions();
             }
         }
 
@@ -982,6 +1012,31 @@ namespace MoneyBookTools
 
         #region Recurring Transactions
 
+        private void SaveSelectedRecurringTransactions()
+        {
+            var transactions = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            m_selectedRecurringTransactions = dgvRecurringTransactions.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(dgvr => transactions[dgvr.Index])
+                .ToList();
+        }
+
+        private void RestoreSelectedRecurringTransactions()
+        {
+            var transactions = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            for (int i = 0; i < dgvRecurringTransactions.Rows.Count; i++)
+            {
+                if (m_selectedRecurringTransactions.Find(x => x.RecTrnsId == transactions[i].RecTrnsId) != null)
+                {
+                    dgvRecurringTransactions.Rows[i].Selected = true;
+                }
+                else
+                {
+                    dgvRecurringTransactions.Rows[i].Selected = false;
+                }
+            }
+        }
+
         private void LoadRecurringTransactionsGrid()
         {
             var recTrans = m_db.GetRecurringTransactions(MoneyBookDbContextExtension.SortOrder.Ascending)
@@ -1000,6 +1055,8 @@ namespace MoneyBookTools
                     rt.Account = acct.AccountName;
                 }
             }
+
+            SaveSelectedRecurringTransactions();
 
             dgvRecurringTransactions.DataSource = recTrans;
 
@@ -1028,6 +1085,8 @@ namespace MoneyBookTools
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
+
+            RestoreSelectedRecurringTransactions();
         }
 
         private void StageRecurringTransactions()
