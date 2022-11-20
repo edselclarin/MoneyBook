@@ -5,6 +5,20 @@ namespace MoneyBookTools.ViewModels
 {
     public class ViewRecurringTransaction
     {
+        public enum DueStateTypes
+        {
+            Past,     // Overdue
+            Today,    // Due today
+            Soon,     // Due by DueBeforeDay
+            Upcoming, // Due in one week
+            None      // Not due
+        }
+
+        /// <summary>
+        /// Used to determine transactions due soon.
+        /// </summary>
+        public static DayOfWeek DueBeforeDay => DayOfWeek.Thursday;
+
         [Browsable(false)]
         public int RecTrnsId { get; set; }
 
@@ -35,18 +49,33 @@ namespace MoneyBookTools.ViewModels
         public decimal NewAmount { get; set; }
 
         [Browsable(false)]
-        public bool IsOverdue => DueDate.Date < DateTime.Now.Date;
-
-        [Browsable(false)]
-        public bool IsDueToday => DueDate.Date == DateTime.Now.Date;
-
-        [Browsable(false)]
-        public bool IsDueInOneWeek => DueDate.AddDays(-7).Date <= DateTime.Now.Date;
-
-        [Browsable(false)]
-        public bool IsDueBefore(DayOfWeek dow) => DueDate.Date < DateTime.Now.GetDateOfTarget(dow).Date;
+        public DueStateTypes DueState => GetDueState();
 
         [Browsable(false)]
         public int CatId { get; set; }
+
+        private DueStateTypes GetDueState()
+        {
+            if (DueDate.Date < DateTime.Now.Date)
+            {
+                return DueStateTypes.Past;
+            }
+            else if (DueDate.Date == DateTime.Now.Date)
+            {
+                return DueStateTypes.Today;
+            }
+            else if (DueDate.Date < DateTime.Now.GetDateOfTarget(DueBeforeDay).Date)
+            {
+                return DueStateTypes.Soon;
+            }
+            else if (DueDate.AddDays(-7).Date <= DateTime.Now.Date)
+            {
+                return DueStateTypes.Upcoming;
+            }
+            else
+            {
+                return DueStateTypes.None;
+            }
+        }
     }
 }
