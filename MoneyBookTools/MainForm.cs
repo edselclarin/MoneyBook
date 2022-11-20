@@ -823,18 +823,7 @@ namespace MoneyBookTools
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
                     }
 
-                    if (vt.State == MoneyBookDbContextExtension.StateTypes.New.ToString())
-                    {
-                        row.DefaultCellStyle.ForeColor = Color.FromArgb(245, 127, 23);
-                    }
-                    else if (vt.State == MoneyBookDbContextExtension.StateTypes.Staged.ToString())
-                    {
-                        row.DefaultCellStyle.ForeColor = Color.DodgerBlue;
-                    }
-                    else if (vt.State == MoneyBookDbContextExtension.StateTypes.Ignored.ToString())
-                    {
-                        row.DefaultCellStyle.ForeColor = Color.FromArgb(158, 158, 158);
-                    }
+                    row.DefaultCellStyle.ForeColor = TransactionStateColorScheme.Instance.ForeColor(vt.State);
 
                     row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
@@ -1029,24 +1018,12 @@ namespace MoneyBookTools
             {
                 var rt = recTrans[row.Index];
 
-                if (rt.IsOverdue || rt.IsDueToday)
+                if (rt.DueState != ViewRecurringTransaction.DueStateTypes.None)
                 {
                     row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
-
-                    row.DefaultCellStyle.ForeColor = Color.Red;
                 }
-                else if (rt.IsDueBefore(DayOfWeek.Thursday))
-                {
-                    row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 
-                    row.DefaultCellStyle.ForeColor = Color.Yellow;
-                }
-                else if (rt.IsDueInOneWeek)
-                {
-                    row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
-
-                    row.DefaultCellStyle.ForeColor = Color.FromArgb(245, 127, 23);
-                }
+                row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.DueState.ToString());
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
