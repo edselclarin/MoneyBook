@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="RecurringTransactionForm.cs">
+    <Compile Update="Forms\RecurringTransactionForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

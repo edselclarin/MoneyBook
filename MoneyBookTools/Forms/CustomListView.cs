@@ -1,4 +1,4 @@
-﻿namespace MoneyBookTools
+﻿namespace MoneyBookTools.Forms
 {
     public class CustomListView : ListView
     {
@@ -90,8 +90,8 @@
 
         private TextFormatFlags GetTextAlignment(ListView lstView, int colIndex)
         {
-            TextFormatFlags flags = (lstView.View == View.Tile)
-                ? (colIndex == 0) ? TextFormatFlags.Default : TextFormatFlags.Bottom
+            TextFormatFlags flags = lstView.View == View.Tile
+                ? colIndex == 0 ? TextFormatFlags.Default : TextFormatFlags.Bottom
                 : TextFormatFlags.VerticalCenter;
 
             if (lstView.View == View.Details)

@@ -1,4 +1,4 @@
-﻿namespace MoneyBookTools
+﻿namespace MoneyBookTools.Forms
 {
     public static class DataGridViewExtension
     {

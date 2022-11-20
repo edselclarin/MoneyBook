@@ -1,11 +1,11 @@
-﻿namespace MoneyBookTools
+﻿namespace MoneyBookTools.Forms
 {
     class MenuColorTable : ProfessionalColorTable
     {
         public MenuColorTable()
         {
             // see notes
-            base.UseSystemColors = false;
+            UseSystemColors = false;
         }
 
         public override Color ImageMarginGradientBegin => Color.FromArgb(24, 24, 24);

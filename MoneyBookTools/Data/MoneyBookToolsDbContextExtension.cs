@@ -115,53 +115,6 @@ namespace MoneyBookTools.Data
             dbtran.Commit();
         }
 
-        public static void ImportRecurringTransactions(this MoneyBookDbContext db, IEnumerable<RepeatingTransaction> repeatingTransactions)
-        {
-            var accounts = db.Accounts.ToList();
-
-            // Get account to import into.
-            // Set all imported transactions to first category.
-            var cat = db.Categories.First();
-
-            foreach (var tr in repeatingTransactions)
-            {
-                var acct = accounts.SingleOrDefault(x => x.Name == tr.Account);
-
-                if (acct != null)
-                {
-
-                    bool exists = db.RecurringTransactions
-                        .Where(x => x.DueDate == tr.DueDate &&
-                                    x.TrnsType == tr.TrnsType &&
-                                    x.Payee == tr.Payee &&
-                                    x.Memo == tr.Memo &&
-                                    x.Amount == tr.Amount &&
-                                    x.Frequency == tr.Frequency)
-                        .Count() > 0;
-
-                    // Add only new transactions.
-                    if (!exists)
-                    {
-                        var trNew = new RecurringTransaction()
-                        {
-                            DueDate = tr.DueDate,
-                            TrnsType = tr.TrnsType,
-                            Payee = tr.Payee,
-                            Memo = tr.Memo,
-                            Amount = tr.Amount,
-                            Frequency = tr.Frequency,
-                            AcctId = acct.AcctId,
-                            CatId = cat.CatId
-                        };
-
-                        db.RecurringTransactions.Add(trNew);
-                    }
-                }
-            }
-
-            db.SaveChanges();
-        }
-
         public static void ImportRecurringTransactions(this MoneyBookDbContext db, string filename)
         {
             using var dbtran = db.Database.BeginTransaction();
