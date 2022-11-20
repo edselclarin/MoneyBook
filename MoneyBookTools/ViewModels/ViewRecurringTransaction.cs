@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using DateTimeExtensions;
+using System.ComponentModel;
 
 namespace MoneyBookTools.ViewModels
 {
@@ -39,11 +40,11 @@ namespace MoneyBookTools.ViewModels
         [Browsable(false)]
         public bool IsDueToday => DueDate.Date == DateTime.Now.Date;
 
-        /// <summary>
-        /// In 7 days.
-        /// </summary>
         [Browsable(false)]
-        public bool IsDueSoon => DueDate.AddDays(-7).Date <= DateTime.Now.Date;
+        public bool IsDueInOneWeek => DueDate.AddDays(-7).Date <= DateTime.Now.Date;
+
+        [Browsable(false)]
+        public bool IsDueBefore(DayOfWeek dow) => DueDate.Date < DateTime.Now.GetDateOfTarget(dow).Date;
 
         [Browsable(false)]
         public int CatId { get; set; }

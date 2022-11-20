@@ -1035,7 +1035,13 @@ namespace MoneyBookTools
 
                     row.DefaultCellStyle.ForeColor = Color.Red;
                 }
-                else if (rt.IsDueSoon)
+                else if (rt.IsDueBefore(DayOfWeek.Thursday))
+                {
+                    row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+
+                    row.DefaultCellStyle.ForeColor = Color.Yellow;
+                }
+                else if (rt.IsDueInOneWeek)
                 {
                     row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
 

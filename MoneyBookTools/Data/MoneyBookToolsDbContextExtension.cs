@@ -404,7 +404,8 @@ namespace MoneyBookTools.Data
                 x.Amount == recTrans.Amount &&
                 x.Frequency == recTrans.Frequency &&
                 x.Payee == recTrans.Payee &&
-                x.Memo == recTrans.Memo);
+                x.Memo == recTrans.Memo &&
+                x.Website == recTrans.Website);
 
             if (rt != null)
             {
@@ -421,6 +422,7 @@ namespace MoneyBookTools.Data
                 Frequency = recTrans.Frequency,
                 Payee = recTrans.Payee,
                 Memo = recTrans.Memo,
+                Website = recTrans.Website,
                 DateAdded = DateTime.Now,
                 DateModified = DateTime.Now
             };
