@@ -1,6 +1,6 @@
 ﻿using MoneyBookTools.ViewModels;
 
-namespace MoneyBookTools
+namespace MoneyBookTools.Forms
 {
     public class RecurringTransactionStateColorScheme : IStateColorScheme
     {

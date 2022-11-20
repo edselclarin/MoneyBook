@@ -22,7 +22,8 @@
 // SOFTWARE.
 #endregion
 
-namespace DateTimeExtensions
+
+namespace MoneyBookTools.Forms
 {
     public static class DateTimeExtensions
     {

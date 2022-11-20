@@ -1,6 +1,6 @@
 ﻿using MoneyBook.Data;
 
-namespace MoneyBookTools
+namespace MoneyBookTools.Forms
 {
     public class TransactionStateColorScheme : IStateColorScheme
     {
@@ -8,8 +8,8 @@ namespace MoneyBookTools
 
         protected TransactionStateColorScheme() { }
 
-        public static TransactionStateColorScheme Instance 
-        { 
+        public static TransactionStateColorScheme Instance
+        {
             get
             {
                 m_instance ??= new TransactionStateColorScheme();

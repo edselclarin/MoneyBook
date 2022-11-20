@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace MoneyBookTools
+namespace MoneyBookTools.Forms
 {
     public static class FormExtension
     {
@@ -53,7 +53,7 @@ namespace MoneyBookTools
                     (ctrl as DateTimePicker).ChangeTheme(scheme);
                 }
 
-                ChangeTheme(ctrl.Controls, scheme);
+                ctrl.Controls.ChangeTheme(scheme);
             }
         }
 
@@ -102,7 +102,7 @@ namespace MoneyBookTools
         public static void ChangeTheme(this DataGridView dgv, IColorScheme scheme)
         {
             dgv.ForeColor = scheme.DefaultForeColor;
-            dgv.BackgroundColor = 
+            dgv.BackgroundColor =
             dgv.BackColor = scheme.DefaultBackColor;
 
             dgv.EnableHeadersVisualStyles = false; // To allow custom header style.

@@ -1,4 +1,6 @@
 ﻿
+using MoneyBookTools.Forms;
+
 namespace MoneyBookTools
 {
     partial class MainForm
@@ -64,7 +66,7 @@ namespace MoneyBookTools
             this.hSplit1 = new System.Windows.Forms.SplitContainer();
             this.vSplit1 = new System.Windows.Forms.SplitContainer();
             this.groupAccounts = new System.Windows.Forms.GroupBox();
-            this.listViewAccounts = new MoneyBookTools.CustomListView();
+            this.listViewAccounts = new MoneyBookTools.Forms.CustomListView();
             this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.accountToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
