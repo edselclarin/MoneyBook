@@ -36,16 +36,16 @@
             this.textAmount = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.textWebsite = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.comboAccounts = new System.Windows.Forms.ComboBox();
-            this.textWebsite = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -139,17 +139,12 @@
             this.label5.Text = "Frequency";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label2
+            // textWebsite
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(3, 94);
-            this.label2.Margin = new System.Windows.Forms.Padding(3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 26);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Payee";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.textWebsite.Location = new System.Drawing.Point(91, 174);
+            this.textWebsite.Name = "textWebsite";
+            this.textWebsite.Size = new System.Drawing.Size(320, 25);
+            this.textWebsite.TabIndex = 8;
             // 
             // label1
             // 
@@ -197,18 +192,6 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.Location = new System.Drawing.Point(3, 134);
-            this.label4.Margin = new System.Windows.Forms.Padding(3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 26);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Memo";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -242,12 +225,29 @@
             this.comboAccounts.Size = new System.Drawing.Size(156, 25);
             this.comboAccounts.TabIndex = 5;
             // 
-            // textWebsite
+            // label2
             // 
-            this.textWebsite.Location = new System.Drawing.Point(91, 174);
-            this.textWebsite.Name = "textWebsite";
-            this.textWebsite.Size = new System.Drawing.Size(320, 25);
-            this.textWebsite.TabIndex = 8;
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Location = new System.Drawing.Point(3, 94);
+            this.label2.Margin = new System.Windows.Forms.Padding(3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 26);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Payee";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.Location = new System.Drawing.Point(3, 134);
+            this.label4.Margin = new System.Windows.Forms.Padding(3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(82, 26);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Memo";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label7
             // 

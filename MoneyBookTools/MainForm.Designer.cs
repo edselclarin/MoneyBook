@@ -93,11 +93,11 @@ namespace MoneyBookTools
             this.skipRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stageRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.openWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
-            this.openWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit1)).BeginInit();
             this.hSplit1.Panel1.SuspendLayout();
@@ -659,13 +659,13 @@ namespace MoneyBookTools
             this.toolStripSeparator6,
             this.deleteRecTransToolStripMenuItem});
             this.recTransContextMenu.Name = "recTransContextMenu";
-            this.recTransContextMenu.Size = new System.Drawing.Size(181, 192);
+            this.recTransContextMenu.Size = new System.Drawing.Size(149, 170);
             this.recTransContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.recTransContextMenu_Opening);
             // 
             // editRecTranToolStripMenuItem
             // 
             this.editRecTranToolStripMenuItem.Name = "editRecTranToolStripMenuItem";
-            this.editRecTranToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editRecTranToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.editRecTranToolStripMenuItem.Text = "Add...";
             this.editRecTranToolStripMenuItem.ToolTipText = "Add recurring transaction";
             this.editRecTranToolStripMenuItem.Click += new System.EventHandler(this.editRecTranToolStripMenuItem_Click);
@@ -673,7 +673,7 @@ namespace MoneyBookTools
             // editRecTransToolStripMenuItem
             // 
             this.editRecTransToolStripMenuItem.Name = "editRecTransToolStripMenuItem";
-            this.editRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.editRecTransToolStripMenuItem.Text = "Edit...";
             this.editRecTransToolStripMenuItem.ToolTipText = "Edit recurring transaction";
             this.editRecTransToolStripMenuItem.Click += new System.EventHandler(this.editRecTransToolStripMenuItem_Click);
@@ -681,7 +681,7 @@ namespace MoneyBookTools
             // skipRecTransToolStripMenuItem
             // 
             this.skipRecTransToolStripMenuItem.Name = "skipRecTransToolStripMenuItem";
-            this.skipRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.skipRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.skipRecTransToolStripMenuItem.Text = "Skip";
             this.skipRecTransToolStripMenuItem.ToolTipText = "Set next due date of recurring transaction(s)";
             this.skipRecTransToolStripMenuItem.Click += new System.EventHandler(this.skipRecTransToolStripMenuItem_Click);
@@ -689,7 +689,7 @@ namespace MoneyBookTools
             // stageRecTransToolStripMenuItem
             // 
             this.stageRecTransToolStripMenuItem.Name = "stageRecTransToolStripMenuItem";
-            this.stageRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stageRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.stageRecTransToolStripMenuItem.Text = "Stage";
             this.stageRecTransToolStripMenuItem.ToolTipText = "Copy to ledger and set next due date";
             this.stageRecTransToolStripMenuItem.Click += new System.EventHandler(this.stageRecTransToolStripMenuItem_Click);
@@ -697,20 +697,32 @@ namespace MoneyBookTools
             // copyRecTransToolStripMenuItem
             // 
             this.copyRecTransToolStripMenuItem.Name = "copyRecTransToolStripMenuItem";
-            this.copyRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.copyRecTransToolStripMenuItem.Text = "Copy";
             this.copyRecTransToolStripMenuItem.ToolTipText = "Copy to ledger";
             this.copyRecTransToolStripMenuItem.Click += new System.EventHandler(this.copyRecTransToolStripMenuItem_Click);
             // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(145, 6);
+            // 
+            // openWebsiteToolStripMenuItem
+            // 
+            this.openWebsiteToolStripMenuItem.Name = "openWebsiteToolStripMenuItem";
+            this.openWebsiteToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.openWebsiteToolStripMenuItem.Text = "Open Website";
+            this.openWebsiteToolStripMenuItem.Click += new System.EventHandler(this.openWebsiteToolStripMenuItem_Click);
+            // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(145, 6);
             // 
             // deleteRecTransToolStripMenuItem
             // 
             this.deleteRecTransToolStripMenuItem.Name = "deleteRecTransToolStripMenuItem";
-            this.deleteRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.deleteRecTransToolStripMenuItem.Text = "Delete";
             this.deleteRecTransToolStripMenuItem.Click += new System.EventHandler(this.deleteRecTransToolStripMenuItem_Click);
             // 
@@ -722,18 +734,6 @@ namespace MoneyBookTools
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(1156, 503);
             this.mainPanel.TabIndex = 3;
-            // 
-            // openWebsiteToolStripMenuItem
-            // 
-            this.openWebsiteToolStripMenuItem.Name = "openWebsiteToolStripMenuItem";
-            this.openWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openWebsiteToolStripMenuItem.Text = "Open Website";
-            this.openWebsiteToolStripMenuItem.Click += new System.EventHandler(this.openWebsiteToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(177, 6);
             // 
             // MainForm
             // 

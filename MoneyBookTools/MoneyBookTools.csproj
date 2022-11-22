@@ -7,15 +7,12 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>MoneyBookTools.Program</StartupObject>
-    <ApplicationIcon>1156669_m_media_social_icon.ico</ApplicationIcon>
+    <ApplicationIcon>bank-2-256.ico</ApplicationIcon>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="MainForm.cs~RFa2d6f26.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="1156669_m_media_social_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

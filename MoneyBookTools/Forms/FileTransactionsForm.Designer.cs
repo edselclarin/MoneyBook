@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileTransactionsForm));
             this.groupFileTransactions = new System.Windows.Forms.GroupBox();
             this.dgvFileTransactions = new System.Windows.Forms.DataGridView();
             this.groupFileTransactions.SuspendLayout();
@@ -61,6 +62,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(993, 509);
             this.Controls.Add(this.groupFileTransactions);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "FileTransactionsForm";
             this.Text = "File Transactions";
