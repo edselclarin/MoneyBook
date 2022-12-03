@@ -435,5 +435,24 @@ namespace MoneyBookTools.Data
 
             dbtran.Commit();
         }
+
+        public static void SetStateNewToReconciled(this MoneyBookDbContext db, int acctId)
+        {
+            var newTrans = db.GetTransactionsByState(acctId, MoneyBookDbContextExtension.StateTypes.New).ToList();
+            var trans = from ntr in newTrans
+                        join tr in db.Transactions on ntr.TrnsId equals tr.TrnsId
+                        select tr;
+            if (trans.Count() > 0)
+            {
+                foreach (var tr in trans)
+                {
+                    tr.State = MoneyBookDbContextExtension.StateTypes.Reconciled.ToString();
+                }
+
+                db.Transactions.UpdateRange(trans);
+
+                db.SaveChanges();
+            }
+        }
     }
 }

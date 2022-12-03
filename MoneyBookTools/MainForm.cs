@@ -682,6 +682,36 @@ namespace MoneyBookTools
             }
         }
 
+        private void reconcileNewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listViewAccounts.SelectedIndices.Count > 0)
+                {
+                    int index = listViewAccounts.SelectedIndices[0];
+                    var summary = m_summaries[index] as AccountSummary;
+
+                    var answer = MessageBox.Show(this,
+                        $"Are you sure you want to reconcile all new items on account {summary.Account.AccountName}?",
+                        this.Text,
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                    if (answer == DialogResult.Yes)
+                    {
+                        using var hg = this.CreateHourglass();
+
+                        m_db.SetStateNewToReconciled(summary.Account.AcctId);
+
+                        refreshToolStripMenuItem.PerformClick();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void twoWeeksToolStripMenuItem_Click(object sender, EventArgs e)
         {
             twoWeeksToolStripMenuItem.Checked = true;
@@ -734,7 +764,6 @@ namespace MoneyBookTools
 
             refreshToolStripMenuItem.PerformClick();
         }
-
         #endregion
 
         #region Child Form Handlers
@@ -1007,7 +1036,6 @@ namespace MoneyBookTools
                 sumToolStripStatusLabel.Text = String.Empty;
             }
         }
-
         #endregion
 
         #region Recurring Transactions
