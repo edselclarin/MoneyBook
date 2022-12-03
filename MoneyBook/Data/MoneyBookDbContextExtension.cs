@@ -319,6 +319,29 @@ namespace MoneyBook.Data
             return results.AsEnumerable();
         }
 
+        public static IEnumerable<TransactionInfo> GetTransactionsByState(this MoneyBookDbContext db, int acctId, StateTypes state)
+        {
+            var results = db.Transactions
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == m_year && x.State == state.ToString())
+                .Select(x => new TransactionInfo
+                {
+                    TrnsId = x.TrnsId,
+                    Date = x.Date,
+                    TrnsType = x.TrnsType,
+                    RefNum = x.RefNum,
+                    Payee = x.Payee,
+                    Memo = x.Memo,
+                    State = x.State,
+                    Amount = x.Amount,
+                    DateAdded = x.DateAdded,
+                    DateModified = x.DateModified,
+                    AcctId = x.AcctId,
+                    CatId = x.CatId
+                });
+
+            return results.AsEnumerable();
+        }
+
         public static void Skip(this RecurringTransaction recTran)
         {
             if (recTran.Frequency == TransactionFrequency.Weekly.ToString())
