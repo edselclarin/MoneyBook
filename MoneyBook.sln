@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBook", "MoneyBook\Mone
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookApi", "MoneyBookApi\MoneyBookApi.csproj", "{16DBF542-C6CC-4226-9287-2943B72418AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBookCLI", "MoneyBookCLI\MoneyBookCLI.csproj", "{67747C56-F433-4F53-A0E8-B5EEF1718BA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{16DBF542-C6CC-4226-9287-2943B72418AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16DBF542-C6CC-4226-9287-2943B72418AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16DBF542-C6CC-4226-9287-2943B72418AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67747C56-F433-4F53-A0E8-B5EEF1718BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67747C56-F433-4F53-A0E8-B5EEF1718BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67747C56-F433-4F53-A0E8-B5EEF1718BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67747C56-F433-4F53-A0E8-B5EEF1718BA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

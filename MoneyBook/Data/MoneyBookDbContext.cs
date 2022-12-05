@@ -7,6 +7,7 @@ namespace MoneyBook.Data
     {
         private readonly string m_connStr;
 
+        public DbSet<account_detail> account_details { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Institution> Institutions { get; set; }
