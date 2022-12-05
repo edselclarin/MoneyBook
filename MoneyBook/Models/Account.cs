@@ -16,19 +16,14 @@ namespace MoneyBook.Models
         public string AcctType { get; set; }
 
         [Required]
+        public int AcctTypeId { get; set; }
+
+        [Required]
         public decimal StartingBalance { get; set; }
 
         public decimal ReserveAmount { get; set; }
 
-        public decimal Credits { get; set; }
-
-        public decimal Debits { get; set; }
-
-        public decimal Balance { get; set; }
-
-        public decimal AvailableBalance { get; set; }
-
-        [Required]
+         [Required]
         public DateTime DateAdded { get; set; }
 
         [Required]

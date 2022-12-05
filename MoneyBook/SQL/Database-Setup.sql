@@ -39,6 +39,25 @@ BEGIN
 		'SchoolsFirst FCU', 'CREDIT UNION');
 END
 
+-- Create AccountTypes table.
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='AccountTypes' and xtype='U')
+BEGIN
+	CREATE TABLE AccountTypes (
+		AcctTypeId INT NOT NULL,
+		TypeName VARCHAR(128) NOT NULL DEFAULT('New AccountType')
+	);
+
+	INSERT INTO AccountTypes 
+		(AcctTypeId, TypeName)
+	VALUES 
+		(1, 'CHECKING');
+
+	INSERT INTO AccountTypes 
+		(AcctTypeId, TypeName)
+	VALUES 
+		(2, 'SAVINGS');
+END
+
 -- Create Accounts table.
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Accounts' and xtype='U')
 BEGIN
@@ -47,12 +66,9 @@ BEGIN
 		[Name] VARCHAR(64) NOT NULL DEFAULT('ACCT'),
 		[Description] VARCHAR (128) DEFAULT(''),
 		[AcctType] VARCHAR (128) NOT NULL DEFAULT('SAVINGS'),
+		[AcctTypeId] INT NOT NULL DEFAULT(1),
 		[StartingBalance] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),
 		[ReserveAmount] DECIMAL(10, 2) NOT NULL DEFAULT(0.00),
-		[Credits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
-		[Debits] DECIMAL(10, 2) NOT NULL DEFAULT (0),
-		[Balance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
-		[AvailableBalance] DECIMAL(10, 2) NOT NULL DEFAULT (0),
 		[DateAdded] DATE NOT NULL DEFAULT(GETDATE()),
 		[DateModified] DATE NOT NULL DEFAULT(GETDATE()),
 		[ExtAcctId] VARCHAR (128) NOT NULL DEFAULT(''),
@@ -61,34 +77,34 @@ BEGIN
 	);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFCHK', 'Checking', 'CHECKING', 0.00, '70', 1);
+		'SFCHK', 'Checking', 'CHECKING', 1, 0.00, '70', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV1', 'Primary Savings', 'SAVINGS', 5.00, '01', 1);
+		'SFSAV1', 'Primary Savings', 'SAVINGS', 2, 5.00, '01', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV2', 'Secondary Savings', 'SAVINGS', 5.00, '02', 1);
+		'SFSAV2', 'Secondary Savings', 'SAVINGS', 2, 5.00, '02', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 5.00, '03', 1);
+		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 2, 5.00, '03', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 5.00, '01', 1);
+		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 2, 5.00, '01', 1);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
 	VALUES (
-		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 0.00, '20', 1);
+		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 2, 0.00, '20', 1);
 END
 
 -- Create Transactions table.
