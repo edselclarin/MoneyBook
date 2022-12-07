@@ -88,7 +88,7 @@ namespace MoneyBook.Data
                 AcctId = acct.AcctId,
                 AccountName = acct.Name,
                 Description = acct.Description,
-                AcctType = acct.AcctType,
+                AcctTypeId = acct.AcctTypeId,
                 StartingBalance = acct.StartingBalance,
                 ReserveAmount = acct.ReserveAmount,
                 DateAdded = acct.DateAdded,
