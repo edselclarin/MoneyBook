@@ -13,9 +13,6 @@ namespace MoneyBook.Models
         public string Description { get; set; }
 
         [Required]
-        public string AcctType { get; set; }
-
-        [Required]
         public int AcctTypeId { get; set; }
 
         [Required]
