@@ -59,7 +59,8 @@ namespace MoneyBook.Data
             BiWeekly,
             Monthly,
             Quarterly,
-            Yearly
+            Yearly,
+            Paused
         }
 
         public static CategoryInfo ToCategoryInfo(this Category cat)
