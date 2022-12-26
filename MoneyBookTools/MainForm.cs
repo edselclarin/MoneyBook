@@ -1104,12 +1104,19 @@ namespace MoneyBookTools
             {
                 var rt = recTrans[row.Index];
 
-                if (rt.DueState != ViewRecurringTransaction.DueStateTypes.None)
+                if (rt.Frequency == MoneyBookDbContextExtension.TransactionFrequency.Paused.ToString())
                 {
-                    row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+                    row.DefaultCellStyle.ForeColor = RecurringTransactionsFrequencyColorScheme.Instance.ForeColor(rt.Frequency.ToString());
                 }
+                else
+                {
+                    if (rt.DueState != ViewRecurringTransaction.DueStateTypes.None)
+                    {
+                        row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
+                    }
 
-                row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.DueState.ToString());
+                    row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.DueState.ToString());
+                }
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
