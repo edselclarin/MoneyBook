@@ -6,9 +6,9 @@ namespace MoneyBook.Data
 {
     public static class MoneyBookDbContextExtension
     {
-        private static int m_year = 2022;
+        private static int m_minYear = 2022;
 
-        public static int AccountYear => m_year;
+        public static int MinimumAccountYear => m_minYear;
 
         public enum TransactionTypes
         {
@@ -300,7 +300,7 @@ namespace MoneyBook.Data
         public static IEnumerable<TransactionInfo> GetTransactions(this MoneyBookDbContext db, int acctId)
         {
             var results = db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == m_year)
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= m_minYear)
                 .Select(x => new TransactionInfo
                 {
                     TrnsId = x.TrnsId,
@@ -323,7 +323,7 @@ namespace MoneyBook.Data
         public static IEnumerable<TransactionInfo> GetTransactionsByState(this MoneyBookDbContext db, int acctId, StateTypes state)
         {
             var results = db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year == m_year && x.State == state.ToString())
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= m_minYear && x.State == state.ToString())
                 .Select(x => new TransactionInfo
                 {
                     TrnsId = x.TrnsId,

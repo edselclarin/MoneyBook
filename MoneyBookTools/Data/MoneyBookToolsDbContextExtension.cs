@@ -34,7 +34,7 @@ namespace MoneyBookTools.Data
 
                 // Process transactions from only this year.
                 var transactions = context.Transactions
-                    .Where(x => x.DatePosted.Year == MoneyBookDbContextExtension.AccountYear)
+                    .Where(x => x.DatePosted.Year >= MoneyBookDbContextExtension.MinimumAccountYear)
                     .ToList();
 
                 foreach (var tr in transactions)
