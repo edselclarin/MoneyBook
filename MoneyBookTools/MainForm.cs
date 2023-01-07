@@ -200,6 +200,8 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
+                    LoadRecurringTransactionsGrid();
+
                     LoadTransactionsGrid();
 
                     LoadAccountsList();
@@ -1040,6 +1042,9 @@ namespace MoneyBookTools
 
         #region Recurring Transactions
 
+        /// <summary>
+        /// Remember selected recurring transaction(s).
+        /// </summary>
         private void SaveSelectedRecurringTransactions()
         {
             var transactions = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
@@ -1049,6 +1054,9 @@ namespace MoneyBookTools
                 .ToList();
         }
 
+        /// <summary>
+        /// Reselect recurring transaction(s).
+        /// </summary>
         private void RestoreSelectedRecurringTransactions()
         {
             var transactions = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
