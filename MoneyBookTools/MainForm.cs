@@ -200,11 +200,11 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
-                    LoadRecurringTransactionsGrid();
+                    LoadAccountsList();
 
                     LoadTransactionsGrid();
 
-                    LoadAccountsList();
+                    LoadRecurringTransactionsGrid();
                 }
             }
             catch (Exception ex)
@@ -455,6 +455,8 @@ namespace MoneyBookTools
                 using var hg = this.CreateHourglass();
 
                 RestoreDatabase();
+
+                refreshToolStripMenuItem.PerformClick();
             }
             catch (Exception ex)
             {
