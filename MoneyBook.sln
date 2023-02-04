@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookTools", "MoneyBook
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBook", "MoneyBook\MoneyBook.csproj", "{86C7BCFD-62B8-4ED9-97AE-FC5709826754}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookApi", "MoneyBookApi\MoneyBookApi.csproj", "{16DBF542-C6CC-4226-9287-2943B72418AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBook2023", "MoneyBook2023\MoneyBook2023.csproj", "{B449B734-CDE0-4683-A464-91AB25839B56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{86C7BCFD-62B8-4ED9-97AE-FC5709826754}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86C7BCFD-62B8-4ED9-97AE-FC5709826754}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86C7BCFD-62B8-4ED9-97AE-FC5709826754}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16DBF542-C6CC-4226-9287-2943B72418AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16DBF542-C6CC-4226-9287-2943B72418AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16DBF542-C6CC-4226-9287-2943B72418AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16DBF542-C6CC-4226-9287-2943B72418AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B449B734-CDE0-4683-A464-91AB25839B56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B449B734-CDE0-4683-A464-91AB25839B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B449B734-CDE0-4683-A464-91AB25839B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B449B734-CDE0-4683-A464-91AB25839B56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
