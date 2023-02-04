@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MoneyBook2023
 {
@@ -13,5 +7,14 @@ namespace MoneyBook2023
 	/// </summary>
 	public partial class App : Application
 	{
+		private void Application_Startup(object sender, StartupEventArgs e)
+		{
+			var wnd = new MainWindow()
+			{
+				WindowState = WindowState.Maximized
+			};
+
+			wnd.Show();
+		}
 	}
 }
