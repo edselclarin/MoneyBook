@@ -288,7 +288,6 @@ namespace MoneyBookTools.Data
             trn.Date = transaction.Date;
             trn.Payee = transaction.Payee;
             trn.RefNum = transaction.RefNum;
-            trn.Payee = transaction.Payee;
             trn.Memo = transaction.Memo;
             trn.State = transaction.State;
             trn.ExtTrnsId = String.Empty;
@@ -302,6 +301,7 @@ namespace MoneyBookTools.Data
                 trn.TrnsType = MoneyBookDbContextExtension.TransactionTypes.CREDIT.ToString();
                 trn.Amount = transaction.NewAmount;
             }
+            trn.DateAdded =
             trn.DateModified = DateTime.Now.Date;
 
             db.Transactions.Add(trn);
