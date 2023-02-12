@@ -721,6 +721,7 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = true;
             thisMonthToolStripMenuItem.Checked = false;
             thisYearToolStripMenuItem.Checked = false;
+            clearToolStripMenuItem.Checked = false;
 
             m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
 
@@ -732,6 +733,7 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = false;
             thisMonthToolStripMenuItem.Checked = true;
             thisYearToolStripMenuItem.Checked = false;
+            clearToolStripMenuItem.Checked = false;
 
             m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisMonth;
 
@@ -743,8 +745,21 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = false;
             thisMonthToolStripMenuItem.Checked = false;
             thisYearToolStripMenuItem.Checked = true;
+            clearToolStripMenuItem.Checked = false;
 
             m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisYear;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            twoWeeksToolStripMenuItem.Checked = false;
+            thisMonthToolStripMenuItem.Checked = false;
+            thisYearToolStripMenuItem.Checked = false;
+            clearToolStripMenuItem.Checked = true;
+
+            m_dateFilter = MoneyBookDbContextExtension.DateFilter.None;
 
             refreshToolStripMenuItem.PerformClick();
         }

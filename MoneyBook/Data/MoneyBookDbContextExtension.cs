@@ -41,6 +41,7 @@ namespace MoneyBook.Data
         
         public enum DateFilter : int
         {
+            None,
             TwoWeeks,
             ThisMonth,
             ThisYear,
@@ -127,6 +128,7 @@ namespace MoneyBook.Data
                 case DateFilter.ThisYear:
                     return transactions
                         .Where(x => x.Date.Year == DateTime.Now.Year);
+                case DateFilter.None:
                 default:
                     return transactions;
             }

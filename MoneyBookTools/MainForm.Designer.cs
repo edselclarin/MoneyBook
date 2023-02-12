@@ -100,6 +100,8 @@ namespace MoneyBookTools
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hSplit1)).BeginInit();
             this.hSplit1.Panel1.SuspendLayout();
@@ -197,16 +199,18 @@ namespace MoneyBookTools
             this.filterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.twoWeeksToolStripMenuItem,
             this.thisMonthToolStripMenuItem,
-            this.thisYearToolStripMenuItem});
+            this.thisYearToolStripMenuItem,
+            this.toolStripSeparator10,
+            this.clearToolStripMenuItem});
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
-            this.filterToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.filterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.filterToolStripMenuItem.Text = "Filter...";
             this.filterToolStripMenuItem.ToolTipText = "Show transactions...";
             // 
             // twoWeeksToolStripMenuItem
             // 
             this.twoWeeksToolStripMenuItem.Name = "twoWeeksToolStripMenuItem";
-            this.twoWeeksToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.twoWeeksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.twoWeeksToolStripMenuItem.Text = "Two Weeks";
             this.twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks";
             this.twoWeeksToolStripMenuItem.Click += new System.EventHandler(this.twoWeeksToolStripMenuItem_Click);
@@ -214,7 +218,7 @@ namespace MoneyBookTools
             // thisMonthToolStripMenuItem
             // 
             this.thisMonthToolStripMenuItem.Name = "thisMonthToolStripMenuItem";
-            this.thisMonthToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.thisMonthToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.thisMonthToolStripMenuItem.Text = "This Month";
             this.thisMonthToolStripMenuItem.ToolTipText = "Of the current month";
             this.thisMonthToolStripMenuItem.Click += new System.EventHandler(this.thisMonthToolStripMenuItem_Click);
@@ -222,7 +226,7 @@ namespace MoneyBookTools
             // thisYearToolStripMenuItem
             // 
             this.thisYearToolStripMenuItem.Name = "thisYearToolStripMenuItem";
-            this.thisYearToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.thisYearToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.thisYearToolStripMenuItem.Text = "This Year";
             this.thisYearToolStripMenuItem.ToolTipText = "Of the current year";
             this.thisYearToolStripMenuItem.Click += new System.EventHandler(this.thisYearToolStripMenuItem_Click);
@@ -233,13 +237,13 @@ namespace MoneyBookTools
             this.dateDescendingToolStripMenuItem,
             this.dateAscendingToolStripMenuItem});
             this.sortToolStripMenuItem.Name = "sortToolStripMenuItem";
-            this.sortToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.sortToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sortToolStripMenuItem.Text = "Sort...";
             // 
             // dateDescendingToolStripMenuItem
             // 
             this.dateDescendingToolStripMenuItem.Name = "dateDescendingToolStripMenuItem";
-            this.dateDescendingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.dateDescendingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dateDescendingToolStripMenuItem.Text = "Date Descending";
             this.dateDescendingToolStripMenuItem.ToolTipText = "Sort by date in descending order.";
             this.dateDescendingToolStripMenuItem.Click += new System.EventHandler(this.dateDescendingToolStripMenuItem_Click);
@@ -247,7 +251,7 @@ namespace MoneyBookTools
             // dateAscendingToolStripMenuItem
             // 
             this.dateAscendingToolStripMenuItem.Name = "dateAscendingToolStripMenuItem";
-            this.dateAscendingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.dateAscendingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dateAscendingToolStripMenuItem.Text = "Date Ascending";
             this.dateAscendingToolStripMenuItem.ToolTipText = "Sort by date in ascending order.";
             this.dateAscendingToolStripMenuItem.Click += new System.EventHandler(this.dateAscendingToolStripMenuItem_Click);
@@ -573,13 +577,13 @@ namespace MoneyBookTools
             this.toolStripSeparator2,
             this.deleteTransToolStripMenuItem});
             this.transContextMenu.Name = "transContextMenu";
-            this.transContextMenu.Size = new System.Drawing.Size(181, 176);
+            this.transContextMenu.Size = new System.Drawing.Size(167, 154);
             this.transContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.transContextMenu_Opening);
             // 
             // addTransToolStripMenuItem
             // 
             this.addTransToolStripMenuItem.Name = "addTransToolStripMenuItem";
-            this.addTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.addTransToolStripMenuItem.Text = "Add...";
             this.addTransToolStripMenuItem.ToolTipText = "Add transaction";
             this.addTransToolStripMenuItem.Click += new System.EventHandler(this.addTransToolStripMenuItem_Click);
@@ -587,7 +591,7 @@ namespace MoneyBookTools
             // editTransToolStripMenuItem
             // 
             this.editTransToolStripMenuItem.Name = "editTransToolStripMenuItem";
-            this.editTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.editTransToolStripMenuItem.Text = "Edit...";
             this.editTransToolStripMenuItem.ToolTipText = "Modify transaction";
             this.editTransToolStripMenuItem.Click += new System.EventHandler(this.editTransToolStripMenuItem_Click);
@@ -595,7 +599,7 @@ namespace MoneyBookTools
             // setTransStateToolStripMenuItem
             // 
             this.setTransStateToolStripMenuItem.Name = "setTransStateToolStripMenuItem";
-            this.setTransStateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.setTransStateToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.setTransStateToolStripMenuItem.Text = "Set State...";
             this.setTransStateToolStripMenuItem.ToolTipText = "Set state of transaction(s)";
             this.setTransStateToolStripMenuItem.Click += new System.EventHandler(this.setTransStateToolStripMenuItem_Click);
@@ -603,12 +607,12 @@ namespace MoneyBookTools
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(163, 6);
             // 
             // reconcileNewToolStripMenuItem
             // 
             this.reconcileNewToolStripMenuItem.Name = "reconcileNewToolStripMenuItem";
-            this.reconcileNewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reconcileNewToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.reconcileNewToolStripMenuItem.Text = "Reconcile New";
             this.reconcileNewToolStripMenuItem.ToolTipText = "Set state of new transactions to Reconciled";
             this.reconcileNewToolStripMenuItem.Click += new System.EventHandler(this.reconcileNewToolStripMenuItem_Click);
@@ -616,12 +620,12 @@ namespace MoneyBookTools
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(163, 6);
             // 
             // makeRecTransToolStripMenuItem
             // 
             this.makeRecTransToolStripMenuItem.Name = "makeRecTransToolStripMenuItem";
-            this.makeRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.makeRecTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.makeRecTransToolStripMenuItem.Text = "Make Recurring...";
             this.makeRecTransToolStripMenuItem.ToolTipText = "Make this a recurring transaction.";
             this.makeRecTransToolStripMenuItem.Click += new System.EventHandler(this.makeRecTransToolStripMenuItem_Click);
@@ -629,12 +633,12 @@ namespace MoneyBookTools
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(163, 6);
             // 
             // deleteTransToolStripMenuItem
             // 
             this.deleteTransToolStripMenuItem.Name = "deleteTransToolStripMenuItem";
-            this.deleteTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteTransToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.deleteTransToolStripMenuItem.Text = "Delete";
             this.deleteTransToolStripMenuItem.ToolTipText = "Delete transaction(s)";
             this.deleteTransToolStripMenuItem.Click += new System.EventHandler(this.deleteTransToolStripMenuItem_Click);
@@ -752,6 +756,19 @@ namespace MoneyBookTools
             this.mainPanel.Size = new System.Drawing.Size(1156, 503);
             this.mainPanel.TabIndex = 3;
             // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(177, 6);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearToolStripMenuItem.Text = "&Clear";
+            this.clearToolStripMenuItem.ToolTipText = "Clear filter";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -860,5 +877,7 @@ namespace MoneyBookTools
         private ToolStripMenuItem openWebsiteToolStripMenuItem;
         private ToolStripMenuItem reconcileNewToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator9;
+        private ToolStripSeparator toolStripSeparator10;
+        private ToolStripMenuItem clearToolStripMenuItem;
     }
 }
