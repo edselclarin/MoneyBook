@@ -1,6 +1,5 @@
 ﻿using Dark.Net;
 using MoneyBook.Data;
-using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
 using MoneyBookTools.ViewModels;
@@ -9,25 +8,33 @@ namespace MoneyBookTools
 {
     public partial class RecurringTransactionForm : Form
     {
-        private bool m_bNew;
+        private Mode m_mode;
         private MoneyBookDbContext m_db;
         private string m_originalHash;
 
+        public enum Mode
+        {
+            Add,
+            Edit,
+            Stage
+        }
+
         public ViewRecurringTransaction RecurringTransaction { get; set; }
 
-        protected RecurringTransactionForm(bool bNew)
+        protected RecurringTransactionForm(Mode mode)
         {
             InitializeComponent();
 
-            m_bNew = bNew;
+            m_mode = mode;
 
-            Text = bNew ? "Add Recurring Transaction" : "Edit Recurring Transaction";
-            buttonSave.Text = bNew ? "Add" : "Save";
+            Text = $"{mode} Recurring Transaction";
+
+            buttonSave.Text = mode.ToString();
         }
 
-        public static RecurringTransactionForm Create()
+        public static RecurringTransactionForm CreateAddForm()
         {
-            var form = new RecurringTransactionForm(true)
+            var form = new RecurringTransactionForm(Mode.Add)
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 RecurringTransaction = null
@@ -39,23 +46,9 @@ namespace MoneyBookTools
             return form;
         }
 
-        public static RecurringTransactionForm Create(ViewRecurringTransaction recTrans)
+        public static RecurringTransactionForm CreateAddForm(ViewTransaction trans)
         {
-            var form = new RecurringTransactionForm(false)
-            {
-                StartPosition = FormStartPosition.CenterScreen,
-                RecurringTransaction = recTrans
-            };
-
-            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
-            form.ChangeTheme(DarkColorScheme.Create());
-
-            return form;
-        }
-
-        public static RecurringTransactionForm Create(ViewTransaction trans)
-        {
-            var form = new RecurringTransactionForm(true)
+            var form = new RecurringTransactionForm(Mode.Add)
             {
                 StartPosition = FormStartPosition.CenterScreen,
                 RecurringTransaction = new ViewRecurringTransaction()
@@ -79,6 +72,34 @@ namespace MoneyBookTools
             return form;
         }
 
+        public static RecurringTransactionForm CreateEditForm(ViewRecurringTransaction recTrans)
+        {
+            var form = new RecurringTransactionForm(Mode.Edit)
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+                RecurringTransaction = recTrans
+            };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
+        }
+
+        public static RecurringTransactionForm CreateStageForm(ViewRecurringTransaction recTrans)
+        {
+            var form = new RecurringTransactionForm(Mode.Stage)
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+                RecurringTransaction = recTrans
+            };
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
+        }
+
         private void RecurringTransactionForm_Load(object sender, EventArgs e)
         {
             try
@@ -94,11 +115,7 @@ namespace MoneyBookTools
                 
                 comboFrequency.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.TransactionFrequency));
 
-                if (!m_bNew)
-                {
-                    RecurringTransaction.NewAmount = RecurringTransaction.Amount;
-                }
-                else
+                if (m_mode == Mode.Add)
                 {
                     if (RecurringTransaction == null)
                     {
@@ -118,6 +135,22 @@ namespace MoneyBookTools
                         };
                     }
                 }
+                else if (m_mode == Mode.Edit || m_mode == Mode.Stage)
+                {
+                    RecurringTransaction.NewAmount = RecurringTransaction.Amount;
+
+                    if (m_mode == Mode.Stage)
+                    {
+                        label1.ForeColor =
+                        label4.ForeColor =
+                        label6.ForeColor = Color.Yellow;
+
+                        comboAccounts.Enabled =
+                        textPayee.Enabled =
+                        textWebsite.Enabled =
+                        comboFrequency.Enabled = false;
+                    }
+                }
 
                 m_originalHash = RecurringTransaction.GetHash();
 
@@ -131,7 +164,7 @@ namespace MoneyBookTools
 
         private void RecurringTransactionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (m_bNew)
+            if (m_mode == Mode.Add)
             {
                 var answer = MessageBox.Show(this,
                     "Add recurring transaction?",
@@ -149,7 +182,7 @@ namespace MoneyBookTools
                     DialogResult = DialogResult.OK;
                 }
             }
-            else
+            else if (m_mode == Mode.Edit)
             {
                 bool isModified = RecurringTransaction.GetHash().CompareTo(m_originalHash) != 0;
 
@@ -170,6 +203,28 @@ namespace MoneyBookTools
 
                         DialogResult = DialogResult.OK;
                     }
+                }
+            }
+            else if (m_mode == Mode.Stage)
+            {
+                var answer = MessageBox.Show(this,
+                    "Stage recurring transaction?",
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var hg = new Hourglass(this);
+
+                    var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+
+                    var transactions = new ViewRecurringTransaction[]
+                    {
+                        RecurringTransaction
+                    };
+                    db.StageRecurringTransactions(transactions);
+
+                    DialogResult = DialogResult.OK;
                 }
             }
         }

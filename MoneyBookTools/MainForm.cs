@@ -541,10 +541,12 @@ namespace MoneyBookTools
                 .GroupBy(x => x.RowIndex)
                 .Count();
 
-            stageRecTransToolStripMenuItem.Enabled =
+            addRecTransToolStripMenuItem.Enabled = count <= 1;
+
             skipRecTransToolStripMenuItem.Enabled = 
             deleteRecTransToolStripMenuItem.Enabled = count > 0;
 
+            stageRecTransToolStripMenuItem.Enabled =
             editRecTransToolStripMenuItem.Enabled = 
             copyRecTransToolStripMenuItem.Enabled =
             openWebsiteToolStripMenuItem.Enabled = count == 1;
@@ -556,7 +558,7 @@ namespace MoneyBookTools
             {
                 using var hg = this.CreateHourglass();
 
-                StageRecurringTransactions();
+                ShowStageRecTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -618,7 +620,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void editRecTranToolStripMenuItem_Click(object sender, EventArgs e)
+        private void addRecTransToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -947,7 +949,7 @@ namespace MoneyBookTools
 
             if (selectedTransaction != null)
             {
-                var dlg = RecurringTransactionForm.Create(selectedTransaction);
+                var dlg = RecurringTransactionForm.CreateAddForm(selectedTransaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -1149,33 +1151,6 @@ namespace MoneyBookTools
             RestoreSelectedRecurringTransactions();
         }
 
-        private void StageRecurringTransactions()
-        {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Select(g => recTrans[g.Key])
-                .ToList();
-
-            if (selectedRecTrans.Count() > 0)
-            {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you want to stage these {selectedRecTrans.Count()} recurring transactions?",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    m_db.StageRecurringTransactions(selectedRecTrans);
-
-                    LoadRecurringTransactionsGrid();
-
-                    LoadTransactionsGrid();
-                }
-            }
-        }
-
         private void SkipRecurringTransactions()
         {
             var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
@@ -1272,7 +1247,7 @@ namespace MoneyBookTools
 
         private void ShowAddRecTransactionDialog()
         {
-            var dlg = RecurringTransactionForm.Create();
+            var dlg = RecurringTransactionForm.CreateAddForm();
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
@@ -1294,10 +1269,35 @@ namespace MoneyBookTools
 
             if (selectedRecTrans != null)
             {
-                var dlg = RecurringTransactionForm.Create(selectedRecTrans.Transaction);
+                var dlg = RecurringTransactionForm.CreateEditForm(selectedRecTrans.Transaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
+                    LoadRecurringTransactionsGrid();
+                }
+            }
+        }
+
+        private void ShowStageRecTransactionDialog()
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => new
+                {
+                    RowIndex = x.RowIndex,
+                    Transaction = recTrans[x.RowIndex]
+                })
+                .FirstOrDefault();
+
+            if (selectedRecTrans != null)
+            {
+                var dlg = RecurringTransactionForm.CreateStageForm(selectedRecTrans.Transaction);
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadTransactionsGrid();
+
                     LoadRecurringTransactionsGrid();
                 }
             }

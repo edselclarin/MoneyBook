@@ -90,7 +90,7 @@ namespace MoneyBookTools
             this.groupUpcoming = new System.Windows.Forms.GroupBox();
             this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
             this.recTransContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editRecTranToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stageRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -670,7 +670,7 @@ namespace MoneyBookTools
             // recTransContextMenu
             // 
             this.recTransContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editRecTranToolStripMenuItem,
+            this.addRecTransToolStripMenuItem,
             this.editRecTransToolStripMenuItem,
             this.skipRecTransToolStripMenuItem,
             this.stageRecTransToolStripMenuItem,
@@ -685,11 +685,11 @@ namespace MoneyBookTools
             // 
             // editRecTranToolStripMenuItem
             // 
-            this.editRecTranToolStripMenuItem.Name = "editRecTranToolStripMenuItem";
-            this.editRecTranToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.editRecTranToolStripMenuItem.Text = "Add...";
-            this.editRecTranToolStripMenuItem.ToolTipText = "Add recurring transaction";
-            this.editRecTranToolStripMenuItem.Click += new System.EventHandler(this.editRecTranToolStripMenuItem_Click);
+            this.addRecTransToolStripMenuItem.Name = "addRecTransToolStripMenuItem";
+            this.addRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.addRecTransToolStripMenuItem.Text = "Add...";
+            this.addRecTransToolStripMenuItem.ToolTipText = "Add recurring transaction";
+            this.addRecTransToolStripMenuItem.Click += new System.EventHandler(this.addRecTransToolStripMenuItem_Click);
             // 
             // editRecTransToolStripMenuItem
             // 
@@ -850,7 +850,7 @@ namespace MoneyBookTools
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
-        private ToolStripMenuItem editRecTranToolStripMenuItem;
+        private ToolStripMenuItem addRecTransToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator6;
         private ToolStripMenuItem deleteRecTransToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator7;
