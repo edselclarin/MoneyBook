@@ -173,7 +173,7 @@ namespace MoneyBookTools.Data
                     Payee = rtr.Payee,
                     Memo= rtr.Memo,
                     State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
-                    Amount = rtr.TrnsAmount,
+                    Amount = Math.Abs(rtr.NewAmount),
                     ExtTrnsId = String.Empty,
                     AcctId = rtr.AcctId,
                     CatId = rtr.CatId
