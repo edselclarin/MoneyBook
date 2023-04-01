@@ -7,9 +7,23 @@
         /// </summary>
         public static List<OfxTransaction> GetTransactions(this OFX ofx)
         {
-            var transactions = new List<OfxTransaction>();
+            List<STMTTRN> trns;
+            if (ofx.BANKMSGSRSV1 != null)
+            {
+                trns = ofx.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKTRANLIST.STMTTRN;
+            }
+            else if (ofx.CREDITCARDMSGSRSV1 != null)
+            {
+                trns = ofx.CREDITCARDMSGSRSV1.CCSTMTTRNRS.CCSTMTRS.BANKTRANLIST.STMTTRN;
+            }
+            else
+            {
+                throw new Exception("Invalid transactions list.");
+            }
 
-            foreach (var trn in ofx.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKTRANLIST.STMTTRN)
+            var transactions = new List<OfxTransaction>();
+            
+            foreach (var trn in trns)
             {
                 var dtAvailable = new DateTime(
                     Convert.ToInt32(trn.DTAVAIL[0..4]),
@@ -44,14 +58,32 @@
         /// </summary>
         public static OfxAccount GetAccountFrom(this OFX ofx)
         {
-            var acctFrom = ofx.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKACCTFROM;
-
-            return new OfxAccount()
+            if (ofx.BANKMSGSRSV1 != null)
             {
-                BankId = acctFrom.BANKID,
-                AcctId = acctFrom.ACCTID,
-                AcctType = acctFrom.ACCTTYPE
-            };
+                var acctFrom = ofx.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKACCTFROM;
+
+                return new OfxAccount()
+                {
+                    BankId = acctFrom.BANKID,
+                    AcctId = acctFrom.ACCTID,
+                    AcctType = acctFrom.ACCTTYPE
+                };
+            }
+            else if (ofx.CREDITCARDMSGSRSV1 != null)
+            {
+                var acctFrom = ofx.CREDITCARDMSGSRSV1.CCSTMTTRNRS.CCSTMTRS.CCACCTFROM;
+
+                return new OfxAccount()
+                {
+                    BankId = String.Empty,
+                    AcctId = acctFrom.ACCTID,
+                    AcctType = "CREDIT"
+                };
+            }
+            else
+            {
+                throw new Exception("Unrecognized OFX format.");
+            }
         }
 
         /// <summary>

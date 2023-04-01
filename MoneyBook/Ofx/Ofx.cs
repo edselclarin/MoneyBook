@@ -138,10 +138,60 @@ namespace Ofx
 		public STMTTRNRS STMTTRNRS { get; set; }
 	}
 
-	// The XmlTypeAttribute.Namespace below must be initialized to something if it is also initialized on the derived type.
-	// However, the actual value does not need to be the same as the child's namespace, so modify to be something more appropriate
-	// based on additional XML samples.
-	[XmlType("OFX", Namespace = "")]
+    [XmlRoot(ElementName = "CCACCTFROM")]
+    public class CCACCTFROM
+    {
+
+        [XmlElement(ElementName = "ACCTID")]
+        public string ACCTID { get; set; }
+    }
+
+    [XmlRoot(ElementName = "CCSTMTRS")]
+    public class CCSTMTRS
+    {
+
+        [XmlElement(ElementName = "CURDEF")]
+        public string CURDEF { get; set; }
+
+        [XmlElement(ElementName = "CCACCTFROM")]
+        public CCACCTFROM CCACCTFROM { get; set; }
+
+        [XmlElement(ElementName = "BANKTRANLIST")]
+        public BANKTRANLIST BANKTRANLIST { get; set; }
+
+        [XmlElement(ElementName = "LEDGERBAL")]
+        public LEDGERBAL LEDGERBAL { get; set; }
+
+        [XmlElement(ElementName = "AVAILBAL")]
+        public AVAILBAL AVAILBAL { get; set; }
+    }
+
+    [XmlRoot(ElementName = "CCSTMTTRNRS")]
+    public class CCSTMTTRNRS
+    {
+
+        [XmlElement(ElementName = "TRNUID")]
+        public string TRNUID { get; set; }
+
+        [XmlElement(ElementName = "STATUS")]
+        public STATUS STATUS { get; set; }
+
+        [XmlElement(ElementName = "CCSTMTRS")]
+        public CCSTMTRS CCSTMTRS { get; set; }
+    }
+
+    [XmlRoot(ElementName = "CREDITCARDMSGSRSV1")]
+    public class CREDITCARDMSGSRSV1
+    {
+
+        [XmlElement(ElementName = "CCSTMTTRNRS")]
+        public CCSTMTTRNRS CCSTMTTRNRS { get; set; }
+    }
+
+    // The XmlTypeAttribute.Namespace below must be initialized to something if it is also initialized on the derived type.
+    // However, the actual value does not need to be the same as the child's namespace, so modify to be something more appropriate
+    // based on additional XML samples.
+    [XmlType("OFX", Namespace = "")]
 	[XmlInclude(typeof(OFX))]
 	[XmlRoot(ElementName = "OFX", Namespace = "http://ofx.net/types/2003/04")]
 	public class OFX
@@ -150,6 +200,8 @@ namespace Ofx
 		public SIGNONMSGSRSV1 SIGNONMSGSRSV1 { get; set; }
 		[XmlElement(ElementName = "BANKMSGSRSV1")]
 		public BANKMSGSRSV1 BANKMSGSRSV1 { get; set; }
+        [XmlElement(ElementName = "CREDITCARDMSGSRSV1")]
+        public CREDITCARDMSGSRSV1 CREDITCARDMSGSRSV1 { get; set; }
         [XmlAttribute(AttributeName = "ofx", Namespace = "http://www.w3.org/2000/xmlns/")]
         public string Ofx { get; set; }
     }
