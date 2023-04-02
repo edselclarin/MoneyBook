@@ -16,6 +16,7 @@ namespace MoneyBookTools
         private List<AccountSummary> m_summaries;
         private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
         private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
+        private MoneyBookDbContextExtension.StateTypes? m_stateFilter = null;
         private List<ViewTransaction> m_selectedTransactions;
         private List<ViewRecurringTransaction> m_selectedRecurringTransactions;
 
@@ -62,6 +63,7 @@ namespace MoneyBookTools
 
             twoWeeksToolStripMenuItem.Checked = true;
             dateDescendingToolStripMenuItem.Checked = true;
+            anyStatusMenuItem.Checked = true;
 
             vSplit1.Dock =
             hSplit1.Dock = 
@@ -785,6 +787,71 @@ namespace MoneyBookTools
 
             refreshToolStripMenuItem.PerformClick();
         }
+
+        private void newStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            newStatusMenuItem.Checked= true;
+            stagedStatusMenuItem.Checked = 
+            reconciledStatusMenuItem.Checked = 
+            ignoredStatusMenuItem.Checked = 
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.New;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void stagedStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            stagedStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked = 
+            reconciledStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked =
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Staged;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void reconciledStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            reconciledStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked = 
+            stagedStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked =
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Reconciled;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void ignoredStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            ignoredStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked = 
+            stagedStatusMenuItem.Checked =
+            reconciledStatusMenuItem.Checked =
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Ignored;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void anyStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            anyStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked = 
+            stagedStatusMenuItem.Checked =
+            reconciledStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked = false;
+
+            m_stateFilter = null;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
         #endregion
 
         #region Child Form Handlers
@@ -872,9 +939,25 @@ namespace MoneyBookTools
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedBalance:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-                var viewTransactions = summary.Transactions
-                    .Filter(m_dateFilter)
-                    .Order(m_sortOrder)
+                IEnumerable<TransactionInfo>? transactions = null;
+                if (m_stateFilter != null)
+                {
+                    // Filter by state and date.
+                    transactions = summary?.Transactions
+                        .Where(x => x.State == m_stateFilter.ToString())
+                        .Filter(m_dateFilter)
+                        .Order(m_sortOrder);
+                }
+                else
+                {
+                    // Filter by date only.
+                    transactions = summary?.Transactions
+                        .Filter(m_dateFilter)
+                        .Order(m_sortOrder);
+                }
+
+                // Filter by date.
+                var viewTransactions = transactions
                     .AsViewTransactions()
                     .ToList();
 
