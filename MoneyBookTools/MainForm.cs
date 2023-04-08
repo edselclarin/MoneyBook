@@ -75,6 +75,13 @@ namespace MoneyBookTools
             dgvRecurringTransactions.Dock = 
             statusStrip1.Dock = 
             tableLayoutLedger.Dock = DockStyle.Fill;
+
+            InitializeEnvironment();
+        }
+
+        private void InitializeEnvironment()
+        {
+            ViewSettings.Instance.DueBeforeDay = AppSettings.Instance.DueBeforeDay;
         }
 
         #endregion
@@ -1220,12 +1227,12 @@ namespace MoneyBookTools
                 }
                 else
                 {
-                    if (rt.DueState != ViewRecurringTransaction.DueStateTypes.None)
+                    if (rt.GetDueState() != DueStateTypes.None)
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
                     }
 
-                    row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.DueState.ToString());
+                    row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.GetDueState().ToString());
                 }
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;

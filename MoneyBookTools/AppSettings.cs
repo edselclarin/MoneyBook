@@ -32,6 +32,7 @@ namespace MoneyBookTools
         }
 
         public IEnumerable<AccountData> Accounts { get; set; }
+        public DayOfWeek DueBeforeDay { get; set; }
     }
 
     public class AccountData

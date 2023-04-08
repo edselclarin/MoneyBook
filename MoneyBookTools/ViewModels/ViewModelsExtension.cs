@@ -1,9 +1,19 @@
 ﻿using MoneyBook.BusinessModels;
+using MoneyBookTools.Forms;
 using System.Reflection;
 using System.Text;
 
 namespace MoneyBookTools.ViewModels
 {
+    public enum DueStateTypes
+    {
+        Past,     // Overdue
+        Today,    // Due today
+        Soon,     // Due by DueBeforeDay
+        Upcoming, // Due in one week
+        None      // Not due
+    }
+
     public static class ViewModelsExtension
     {
         public static string GetHash<T>(this T obj)
@@ -57,6 +67,30 @@ namespace MoneyBookTools.ViewModels
                 AcctId = tran.AcctId,
                 CatId = tran.CatId
             });
+        }
+
+        public static DueStateTypes GetDueState(this ViewRecurringTransaction recTrans)
+        {
+            if (recTrans.DueDate.Date < DateTime.Now.Date)
+            {
+                return DueStateTypes.Past;
+            }
+            else if (recTrans.DueDate.Date == DateTime.Now.Date)
+            {
+                return DueStateTypes.Today;
+            }
+            else if (recTrans.DueDate.Date < DateTime.Now.GetDateOfTarget(ViewSettings.Instance.DueBeforeDay).Date)
+            {
+                return DueStateTypes.Soon;
+            }
+            else if (recTrans.DueDate.AddDays(-7).Date <= DateTime.Now.Date)
+            {
+                return DueStateTypes.Upcoming;
+            }
+            else
+            {
+                return DueStateTypes.None;
+            }
         }
     }
 }

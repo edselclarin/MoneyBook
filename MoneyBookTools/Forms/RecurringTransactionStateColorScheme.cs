@@ -21,12 +21,12 @@ namespace MoneyBookTools.Forms
         {
             switch (state)
             {
-                case nameof(ViewRecurringTransaction.DueStateTypes.Past):
-                case nameof(ViewRecurringTransaction.DueStateTypes.Today):
+                case nameof(DueStateTypes.Past):
+                case nameof(DueStateTypes.Today):
                     return Color.Red;
-                case nameof(ViewRecurringTransaction.DueStateTypes.Soon):
+                case nameof(DueStateTypes.Soon):
                     return Color.Yellow;
-                case nameof(ViewRecurringTransaction.DueStateTypes.Upcoming):
+                case nameof(DueStateTypes.Upcoming):
                     return Color.FromArgb(245, 127, 23); // orange
                 default:
                     return Color.FromArgb(179, 179, 179); // gray
