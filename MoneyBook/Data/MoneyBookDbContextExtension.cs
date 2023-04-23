@@ -493,12 +493,15 @@ namespace MoneyBook.Data
                     var oldCat = oldCategories.FirstOrDefault(x => x.CatId == recTrans.CatId);
                     if (oldCat == null)
                     {
-                        continue;
+                        recTrans.CatId = db.Categories.First().CatId;
                     }
-                    var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
-                    if (newCat == null)
+                    else
                     {
-                        continue;
+                        var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
+                        if (newCat == null)
+                        {
+                            continue;
+                        }
                     }
 
                     var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == recTrans.AcctId);
@@ -513,7 +516,6 @@ namespace MoneyBook.Data
                     }
 
                     recTrans.RecTrnsId = 0;
-                    recTrans.CatId = newCat.CatId;
                     recTrans.AcctId = newAcct.AcctId;
                     recTrans.DateAdded =
                     recTrans.DateModified = DateTime.Now;
