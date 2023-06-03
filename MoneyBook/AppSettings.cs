@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MoneyBookTools
+namespace MoneyBook
 {
     public class AppSettings
     {

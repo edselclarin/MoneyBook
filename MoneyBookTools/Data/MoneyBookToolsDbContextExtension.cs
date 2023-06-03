@@ -1,8 +1,10 @@
-﻿using MoneyBook.Data;
+﻿using MoneyBook;
+using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBookTools.ViewModels;
 using Newtonsoft.Json;
 using Ofx;
+using System.Diagnostics;
 
 namespace MoneyBookTools.Data
 {
@@ -10,62 +12,8 @@ namespace MoneyBookTools.Data
     {
         public static void ImportTransactions(this MoneyBookDbContext db, IEnumerable<AccountData> accountDataArr)
         {
-            using var dbtran = db.Database.BeginTransaction();
-
-            foreach (var ad in accountDataArr)
-            {
-                var context = new OfxContext()
-                {
-                    ImportFilePath = ad.ImportFilePath,
-                    AccountTo = ad.Name
-                };
-
-                context.FromFile(ad.ImportFilePath);
-
-                // Get account to import into.
-                var acct = db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
-                if (acct == null)
-                {
-                    throw new Exception($"Could not find account named '{context.AccountTo.ToUpper()}'.");
-                }
-
-                // Set all imported transactions to first category.
-                var cat = db.Categories.First();
-
-                // Process transactions from only this year.
-                var transactions = context.Transactions
-                    .Where(x => x.DatePosted.Year >= MoneyBookDbContextExtension.MinimumAccountYear)
-                    .ToList();
-
-                foreach (var tr in transactions)
-                {
-                    bool exists = db.Transactions
-                        .Where(x => x.ExtTrnsId == tr.TransactionId)
-                        .Count() > 0;
-
-                    // Add only new transactions.
-                    if (!exists)
-                    {
-                        var trNew = new Transaction()
-                        {
-                            Date = tr.DatePosted,
-                            TrnsType = tr.TransactionType,
-                            Payee = tr.Memo,
-                            State = MoneyBookDbContextExtension.StateTypes.New.ToString(),
-                            Amount = tr.TransactionAmount,
-                            ExtTrnsId = tr.TransactionId,
-                            AcctId = acct.AcctId,
-                            CatId = cat.CatId
-                        };
-
-                        db.Transactions.Add(trNew);
-                    }
-                }
-
-                db.SaveChanges();
-            }
-
-            dbtran.Commit();
+            var importer = new OfxTransactionImporter(db, accountDataArr);
+            importer.Import();
         }
 
         public static void UpdateAccountData(this MoneyBookDbContext db, AccountData[] accountDataArr)
