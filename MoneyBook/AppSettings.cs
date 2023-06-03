@@ -4,10 +4,10 @@ namespace MoneyBook
 {
     public class AppSettings
     {
-        private static string m_filename = "appSettings.json";
-        private static AppSettings m_instance;
+        private static string m_filename = @"C:\ProgramData\MoneyBook\appSettings.json";
+        private static AppSettings? m_instance;
 
-        public static AppSettings Instance
+        public static AppSettings? Instance
         {
             get
             {
@@ -31,15 +31,27 @@ namespace MoneyBook
             }
         }
 
-        public IEnumerable<AccountData> Accounts { get; set; }
+        public string? ConnectionMode { get; set; }
+        public IEnumerable<ConnectionMode>? ConnectionModes { get; set; }
+        public IEnumerable<AccountData>? Accounts { get; set; }
         public DayOfWeek DueBeforeDay { get; set; }
+
+        public string? ConnectionString => 
+            ConnectionModes?
+                .SingleOrDefault(x => x.Name == ConnectionMode)?.ConnectionString;
+    }
+
+    public class ConnectionMode
+    {
+        public string? Name { get; set; }
+        public string? ConnectionString { get; set; }
     }
 
     public class AccountData
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public decimal StartingBalance { get; set; }
         public decimal ReserveAmount { get; set; }
-        public string ImportFilePath { get; set; }
+        public string? ImportFilePath { get; set; }
     }
 }

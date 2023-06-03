@@ -242,8 +242,8 @@ namespace MoneyBookTools
                 var accountDataArr = AppSettings.Instance.Accounts
                     .Where(x => File.Exists(x.ImportFilePath));
 
-                if (accountDataArr.Count() > 0)                {
-
+                if (accountDataArr.Count() > 0)                
+                {
                     var answer = MessageBox.Show(this,
                         $"Are you sure you want to import the transactions from these files into these accounts?" +
                         Environment.NewLine +
