@@ -237,21 +237,12 @@ namespace MoneyBookTools
             }
         }
 
-        private async void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                Enabled = false;
-
-                await Task.Run(() =>
-                {
-                    var dlg = ImportTransactionsForm.Create();
-                    dlg.ShowDialog();
-                });
-
-                Enabled = true;
-
-                BringToFront();
+                var dlg = ImportTransactionsForm.Create();
+                dlg.ShowDialog();
 
                 refreshToolStripMenuItem.PerformClick();
             }

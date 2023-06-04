@@ -54,9 +54,9 @@ namespace MoneyBookTools
                             ex.Message + Environment.NewLine +
                             ex.StackTrace);
                     }
-
-                    ControlBox = true;
                 });
+
+            ControlBox = true;
         }
 
         private void WriteLine(string line)
