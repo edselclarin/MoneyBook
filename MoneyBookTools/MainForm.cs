@@ -112,6 +112,8 @@ namespace MoneyBookTools
                 {
                     listViewAccounts.Items[0].Selected = true;
                 }
+
+                importTransactionsToolStripMenuItem.PerformClick();
             }
             catch (Exception ex)
             {
@@ -235,39 +237,23 @@ namespace MoneyBookTools
             }
         }
 
-        private void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                var accountDataArr = AppSettings.Instance.Accounts
-                    .Where(x => File.Exists(x.ImportFilePath));
+                Enabled = false;
 
-                if (accountDataArr.Count() > 0)                
+                await Task.Run(() =>
                 {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want to import the transactions from these files into these accounts?" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.ImportFilePath} --> {x.Name}")),
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                    var dlg = ImportTransactionsForm.Create();
+                    dlg.ShowDialog();
+                });
 
-                    if (answer == DialogResult.Yes)
-                    {
-                        using var hg = this.CreateHourglass();
+                Enabled = true;
 
-                        m_db.ImportTransactions(accountDataArr);
+                BringToFront();
 
-                        MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
-
-                        refreshToolStripMenuItem.PerformClick();
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "No files found.  Make sure files exists and paths are correct in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                refreshToolStripMenuItem.PerformClick();
             }
             catch (Exception ex)
             {
