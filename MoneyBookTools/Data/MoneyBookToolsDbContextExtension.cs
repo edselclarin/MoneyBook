@@ -3,53 +3,15 @@ using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBookTools.ViewModels;
 using Newtonsoft.Json;
-using Ofx;
-using System.Diagnostics;
 
 namespace MoneyBookTools.Data
 {
     public static class MoneyBookToolsDbContextExtension
     {
-        public static void ImportTransactions(this MoneyBookDbContext db, IEnumerable<AccountData> accountDataArr)
+        public static void ImportTransactions(this MoneyBookDbContext db)
         {
-            var importer = new OfxTransactionImporter(db, accountDataArr);
+            var importer = new OfxTransactionImporter(db);
             importer.Import();
-        }
-
-        public static void UpdateAccountData(this MoneyBookDbContext db, AccountData[] accountDataArr)
-        {
-            using var dbtran = db.Database.BeginTransaction();
-
-            foreach (var ad in accountDataArr)
-            {
-                var acct = db.Accounts.FirstOrDefault(x => x.Name == ad.Name);
-                if (acct != null)
-                {
-                    acct.StartingBalance = ad.StartingBalance;
-                    acct.ReserveAmount = ad.ReserveAmount;
-                }
-            }
-
-            db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public static void ResetAccountData(this MoneyBookDbContext db)
-        {
-            using var dbtran = db.Database.BeginTransaction();
-
-            var accounts = db.Accounts.ToList();
-
-            foreach (var acct in accounts)
-            {
-                acct.StartingBalance = 0m;
-                acct.ReserveAmount = 0m;
-            }
-
-            db.SaveChanges();
-
-            dbtran.Commit();
         }
 
         public static void DeleteAllTransactions(this MoneyBookDbContext db)

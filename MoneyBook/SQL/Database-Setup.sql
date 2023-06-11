@@ -73,38 +73,39 @@ BEGIN
 		[DateModified] DATE NOT NULL DEFAULT(GETDATE()),
 		[ExtAcctId] VARCHAR (128) NOT NULL DEFAULT(''),
 		[InstId] INT NOT NULL DEFAULT(0),
+		[ImportFilePath] VARCHAR(64) DEFAULT(''),
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	);
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId], [ImportFilePath]) 
 	VALUES (
-		'SFCHK', 'Checking', 'CHECKING', 1, 0.00, '70', 1);
+		'SFCHK', 'Checking', 'CHECKING', 1, 0.00, '70', 1, 'C:\Users\Edsel\Downloads\transactions.qfx');
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId], [ImportFilePath]) 
 	VALUES (
-		'SFSAV1', 'Primary Savings', 'SAVINGS', 2, 5.00, '01', 1);
+		'SFSAV1', 'Primary Savings', 'SAVINGS', 2, 5.00, '01', 1, 'C:\Users\Edsel\Downloads\transactions(1).qfx');
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId], [ImportFilePath]) 
 	VALUES (
-		'SFSAV2', 'Secondary Savings', 'SAVINGS', 2, 5.00, '02', 1);
+		'SFSAV2', 'Secondary Savings', 'SAVINGS', 2, 5.00, '02', 1, 'C:\Users\Edsel\Downloads\transactions(2).qfx');
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId], [ImportFilePath]) 
 	VALUES (
-		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 2, 5.00, '03', 1);
+		'SFSAV3-ED', 'Personal Savings', 'SAVINGS', 2, 5.00, '03', 1, 'C:\Users\Edsel\Downloads\transactions(3).qfx');
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId], [ImportFilePath]) 
 	VALUES (
-		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 2, 5.00, '01', 1);
+		'SFSAV5-CP', 'Cal Poly Savings', 'SAVINGS', 2, 5.00, '01', 1, 'C:\Users\Edsel\Downloads\transactions(4).qfx');
 
 	INSERT INTO [Accounts](
-		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId]) 
+		[Name], [Description], [AcctType], [AcctTypeId], [ReserveAmount], [ExtAcctId], [InstId], [ImportFilePath]) 
 	VALUES (
-		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 2, 0.00, '20', 1);
+		'SUMMERSAVER', 'Summer Saver Savings', 'SAVINGS', 2, 0.00, '20', 1, 'C:\Users\Edsel\Downloads\transactions(5).qfx');
 END
 
 -- Create Transactions table.

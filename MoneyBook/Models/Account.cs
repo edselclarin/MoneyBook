@@ -20,7 +20,7 @@ namespace MoneyBook.Models
 
         public decimal ReserveAmount { get; set; }
 
-         [Required]
+        [Required]
         public DateTime DateAdded { get; set; }
 
         [Required]
@@ -31,6 +31,8 @@ namespace MoneyBook.Models
 
         [Required]
         public int InstId { get; set; }
+
+        public string ImportFilePath { get; set; }
 
         public bool IsDeleted { get; set; }
     }

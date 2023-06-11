@@ -360,67 +360,6 @@ namespace MoneyBookTools
             }
         }
 
-        private void updateAccountDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
-
-                if (accountDataArr.Length > 0)
-                {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want the data of all accounts?" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.Name} --> {x.StartingBalance}")),
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
-                    {
-                        using var hg = this.CreateHourglass();
-
-                        m_db.UpdateAccountData(accountDataArr);
-
-                        MessageBox.Show(this, "Update complete.", this.Text, MessageBoxButtons.OK);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void resetAccountDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you reset the account data of all accounts?",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    m_db.ResetAccountData();
-
-                    MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
         private void backupDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

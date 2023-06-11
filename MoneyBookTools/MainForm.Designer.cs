@@ -400,7 +400,6 @@ namespace MoneyBookTools
             this.updateAccountDataToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.updateAccountDataToolStripMenuItem.Text = "Update Account Data";
             this.updateAccountDataToolStripMenuItem.ToolTipText = "Update account data from settings file";
-            this.updateAccountDataToolStripMenuItem.Click += new System.EventHandler(this.updateAccountDataToolStripMenuItem_Click);
             // 
             // resetAccountDataToolStripMenuItem
             // 
@@ -408,7 +407,6 @@ namespace MoneyBookTools
             this.resetAccountDataToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.resetAccountDataToolStripMenuItem.Text = "Reset Account Data";
             this.resetAccountDataToolStripMenuItem.ToolTipText = "Reset account data of all accounts";
-            this.resetAccountDataToolStripMenuItem.Click += new System.EventHandler(this.resetAccountDataToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 

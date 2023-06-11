@@ -1,5 +1,4 @@
 ﻿using Dark.Net;
-using MoneyBook;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
@@ -69,12 +68,9 @@ namespace MoneyBookTools
 
         private void ImportTransactions()
         {
-            var accountDataArr = AppSettings.Instance?.Accounts?
-                .Where(x => File.Exists(x.ImportFilePath));
-
             using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
-            db.ImportTransactions(accountDataArr);
+            db.ImportTransactions();
         }
     }
 }

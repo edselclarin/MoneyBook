@@ -7,34 +7,36 @@ namespace MoneyBook
     public class OfxTransactionImporter : ITransactionImporter
     {
         private MoneyBookDbContext m_db;
-        private IEnumerable<AccountData> m_acctsData;
 
-        public OfxTransactionImporter(MoneyBookDbContext dbContext, IEnumerable<AccountData> acctsData)
+        public OfxTransactionImporter(MoneyBookDbContext dbContext)
         {
             m_db = dbContext;
-            m_acctsData = acctsData;
         }
 
         public void Import()
         {
             using var dbtran = m_db.Database.BeginTransaction();
+            var accts = m_db.Accounts.ToList();
 
-            foreach (var ad in m_acctsData)
+            foreach (var acct in accts)
             {
+                if (String.IsNullOrEmpty(acct.ImportFilePath))
+                {
+                    continue;
+                }
+
+                if (!File.Exists(acct.ImportFilePath))
+                {
+                    continue;
+                }
+
                 var context = new OfxContext()
                 {
-                    ImportFilePath = ad.ImportFilePath,
-                    AccountTo = ad.Name
+                    ImportFilePath = acct.ImportFilePath,
+                    AccountTo = acct.Name
                 };
 
-                context.FromFile(ad.ImportFilePath);
-
-                // Get account to import into.
-                var acct = m_db.Accounts.FirstOrDefault(x => x.Name.ToUpper() == context.AccountTo.ToUpper());
-                if (acct == null)
-                {
-                    throw new Exception($"Could not find account named '{context.AccountTo.ToUpper()}'.");
-                }
+                context.FromFile(acct.ImportFilePath);
 
                 // Set all imported transactions to first category.
                 var cat = m_db.Categories.First();
