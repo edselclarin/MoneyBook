@@ -28,35 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textOutput = new TextBox();
+            btnYes = new Button();
+            btnNo = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
-            // textOutput
+            // btnYes
             // 
-            textOutput.Dock = DockStyle.Fill;
-            textOutput.Location = new Point(0, 0);
-            textOutput.Multiline = true;
-            textOutput.Name = "textOutput";
-            textOutput.ScrollBars = ScrollBars.Both;
-            textOutput.Size = new Size(373, 150);
-            textOutput.TabIndex = 0;
+            btnYes.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnYes.Location = new Point(148, 197);
+            btnYes.Name = "btnYes";
+            btnYes.Size = new Size(75, 23);
+            btnYes.TabIndex = 1;
+            btnYes.Text = "Yes";
+            btnYes.UseVisualStyleBackColor = true;
+            btnYes.Click += btnYes_Click;
+            // 
+            // btnNo
+            // 
+            btnNo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnNo.Location = new Point(229, 197);
+            btnNo.Name = "btnNo";
+            btnNo.Size = new Size(75, 23);
+            btnNo.TabIndex = 0;
+            btnNo.Text = "No";
+            btnNo.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(28, 15);
+            label1.TabIndex = 4;
+            label1.Text = "Text";
             // 
             // ImportTransactionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(373, 150);
-            Controls.Add(textOutput);
+            CancelButton = btnNo;
+            ClientSize = new Size(452, 225);
+            Controls.Add(label1);
+            Controls.Add(btnNo);
+            Controls.Add(btnYes);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "ImportTransactionsForm";
-            Text = "Import Transactions";
+            Text = "Import";
             Load += ImportTransactionsForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private TextBox textOutput;
+        private Button btnYes;
+        private Button btnNo;
+        private Label label1;
     }
 }

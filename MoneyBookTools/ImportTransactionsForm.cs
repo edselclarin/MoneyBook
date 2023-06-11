@@ -2,11 +2,14 @@
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
+using System.Text;
 
 namespace MoneyBookTools
 {
     public partial class ImportTransactionsForm : Form
     {
+        private MoneyBookDbContext m_db;
+
         public static ImportTransactionsForm Create()
         {
             var form = new ImportTransactionsForm()
@@ -24,53 +27,59 @@ namespace MoneyBookTools
         protected ImportTransactionsForm()
         {
             InitializeComponent();
+
+            ControlBox = false;
         }
 
         private async void ImportTransactionsForm_Load(object sender, EventArgs e)
         {
-            ControlBox = false;
+            m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+
+            var sb = new StringBuilder();
+            sb.AppendLine("Import transactions from these files into their respective accounts?");
+            sb.AppendLine();
+            foreach (var acct in m_db.Accounts)
+            {
+                sb.AppendLine($"{acct.ImportFilePath} -> {acct.Name}");
+            }
+            label1.Text = sb.ToString();
+        }
+
+        private async void btnYes_Click(object sender, EventArgs e)
+        {
+            UseWaitCursor = true;
 
             await Task.Run(
                 async () =>
                 {
                     try
                     {
-                        WriteLine("Importing transactions, please wait...");
+                        await Task.Delay(2000);
 
-                        await Task.Run(() => Thread.Sleep(2000));
-
-                        ImportTransactions();
-
-                        Invoke((MethodInvoker)delegate
+                        var sb = new StringBuilder();
+                        foreach (var acct in m_db.Accounts)
                         {
-                            Close();
-                        });
+                            sb.AppendLine($"{acct.ImportFilePath} -> {acct.Name}");
+                        }
+                        sb.AppendLine();
+                        sb.AppendLine("Click Import to import ");
+
+                        m_db.ImportTransactions();
+
+                        MessageBox.Show("Import complete.");
                     }
                     catch (Exception ex)
                     {
-                        WriteLine(
+                        MessageBox.Show(
                             $"EXCEPTION:" + Environment.NewLine +
                             ex.Message + Environment.NewLine +
                             ex.StackTrace);
                     }
                 });
 
-            ControlBox = true;
-        }
+            UseWaitCursor = false;
 
-        private void WriteLine(string line)
-        {
-            textOutput.Invoke((MethodInvoker)delegate
-            {
-                textOutput.AppendText(line + Environment.NewLine);
-            });
-        }
-
-        private void ImportTransactions()
-        {
-            using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
-
-            db.ImportTransactions();
+            Close();
         }
     }
 }
