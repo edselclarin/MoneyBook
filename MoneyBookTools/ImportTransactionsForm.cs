@@ -24,6 +24,20 @@ namespace MoneyBookTools
             return form;
         }
 
+        public static List<string> GetImportFilePaths()
+        {
+            using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+            var filepaths = new List<string>();
+            foreach (string filepath in db.Accounts.Select(x => x.ImportFilePath))
+            {
+                if (File.Exists(filepath))
+                {
+                    filepaths.Add(filepath);
+                }
+            }
+            return filepaths;
+        }
+
         protected ImportTransactionsForm()
         {
             InitializeComponent();
@@ -54,16 +68,6 @@ namespace MoneyBookTools
                 {
                     try
                     {
-                        await Task.Delay(2000);
-
-                        var sb = new StringBuilder();
-                        foreach (var acct in m_db.Accounts)
-                        {
-                            sb.AppendLine($"{acct.ImportFilePath} -> {acct.Name}");
-                        }
-                        sb.AppendLine();
-                        sb.AppendLine("Click Import to import ");
-
                         m_db.ImportTransactions();
 
                         MessageBox.Show("Import complete.");

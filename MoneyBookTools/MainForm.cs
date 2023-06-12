@@ -113,7 +113,13 @@ namespace MoneyBookTools
                     listViewAccounts.Items[0].Selected = true;
                 }
 
-                importTransactionsToolStripMenuItem.PerformClick();
+                if (ImportTransactionsForm.GetImportFilePaths().Count() > 0)
+                {
+                    var dlg = ImportTransactionsForm.Create();
+                    dlg.ShowDialog();
+
+                    refreshToolStripMenuItem.PerformClick();
+                }
             }
             catch (Exception ex)
             {
@@ -241,7 +247,18 @@ namespace MoneyBookTools
         {
             try
             {
+                if (ImportTransactionsForm.GetImportFilePaths().Count() == 0)
+                {
+                    MessageBox.Show(this, "No files were found to import.", this.Text, MessageBoxButtons.OK);
+                    return;
+                }
+
                 var dlg = ImportTransactionsForm.Create();
+                if (dlg == null)
+                {
+                    return;
+                }
+
                 dlg.ShowDialog();
 
                 refreshToolStripMenuItem.PerformClick();
