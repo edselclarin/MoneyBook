@@ -388,21 +388,20 @@ namespace MoneyBook.Data
             tran.IsDeleted = true;
         }
 
-        public static void BackupDatabase(this MoneyBookDbContext db, string filename)
+        public static void BackupDatabase(this MoneyBookDbContext db, string backupDir)
         {
-            var backup = new DatabaseBackup()
+            Directory.CreateDirectory(backupDir);
+
+            var dbBackups = new IDbBackup[]
             {
-                DateCreated = DateTime.Now,
-                Transactions = db.Transactions.ToList(),
-                RecurringTransactions = db.RecurringTransactions.ToList(),
-                Accounts = db.Accounts.ToList(),
-                Institutions = db.Institutions.ToList(),
-                Categories = db.Categories.ToList(),
+                MoneyBookDbTextBackup.Create(db, backupDir),
+                MoneyBookDbTapeBackup.Create(db, backupDir)
             };
 
-            string json = JsonConvert.SerializeObject(backup, Formatting.Indented);
-
-            File.WriteAllText(filename, json);
+            foreach (var backup in dbBackups)
+            {
+                backup.Save();
+            }
         }
 
         public static void RestoreDatabase(this MoneyBookDbContext db, string filename)

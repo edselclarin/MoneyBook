@@ -67,14 +67,14 @@ namespace MoneyBookTools
             anyStatusMenuItem.Checked = true;
 
             vSplit1.Dock =
-            hSplit1.Dock = 
+            hSplit1.Dock =
             groupAccounts.Dock =
             listViewAccounts.Dock =
             groupLedger.Dock =
             dgvAccountTransactions.Dock =
             groupUpcoming.Dock =
-            dgvRecurringTransactions.Dock = 
-            statusStrip1.Dock = 
+            dgvRecurringTransactions.Dock =
+            statusStrip1.Dock =
             tableLayoutLedger.Dock = DockStyle.Fill;
 
             InitializeEnvironment();
@@ -406,7 +406,7 @@ namespace MoneyBookTools
                 this.ShowException(ex);
             }
         }
-      
+
         private void transContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
@@ -486,11 +486,11 @@ namespace MoneyBookTools
 
             addRecTransToolStripMenuItem.Enabled = count <= 1;
 
-            skipRecTransToolStripMenuItem.Enabled = 
+            skipRecTransToolStripMenuItem.Enabled =
             deleteRecTransToolStripMenuItem.Enabled = count > 0;
 
             stageRecTransToolStripMenuItem.Enabled =
-            editRecTransToolStripMenuItem.Enabled = 
+            editRecTransToolStripMenuItem.Enabled =
             copyRecTransToolStripMenuItem.Enabled =
             openWebsiteToolStripMenuItem.Enabled = count == 1;
         }
@@ -731,10 +731,10 @@ namespace MoneyBookTools
 
         private void newStatusMenuItem_Click(object sender, EventArgs e)
         {
-            newStatusMenuItem.Checked= true;
-            stagedStatusMenuItem.Checked = 
-            reconciledStatusMenuItem.Checked = 
-            ignoredStatusMenuItem.Checked = 
+            newStatusMenuItem.Checked = true;
+            stagedStatusMenuItem.Checked =
+            reconciledStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
 
             m_stateFilter = MoneyBookDbContextExtension.StateTypes.New;
@@ -745,7 +745,7 @@ namespace MoneyBookTools
         private void stagedStatusMenuItem_Click(object sender, EventArgs e)
         {
             stagedStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked = 
+            newStatusMenuItem.Checked =
             reconciledStatusMenuItem.Checked =
             ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
@@ -758,7 +758,7 @@ namespace MoneyBookTools
         private void reconciledStatusMenuItem_Click(object sender, EventArgs e)
         {
             reconciledStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked = 
+            newStatusMenuItem.Checked =
             stagedStatusMenuItem.Checked =
             ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
@@ -771,7 +771,7 @@ namespace MoneyBookTools
         private void ignoredStatusMenuItem_Click(object sender, EventArgs e)
         {
             ignoredStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked = 
+            newStatusMenuItem.Checked =
             stagedStatusMenuItem.Checked =
             reconciledStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
@@ -784,7 +784,7 @@ namespace MoneyBookTools
         private void anyStatusMenuItem_Click(object sender, EventArgs e)
         {
             anyStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked = 
+            newStatusMenuItem.Checked =
             stagedStatusMenuItem.Checked =
             reconciledStatusMenuItem.Checked =
             ignoredStatusMenuItem.Checked = false;
@@ -1333,16 +1333,18 @@ namespace MoneyBookTools
 
         private void BackupDatabase()
         {
-            var sfd = new SaveFileDialog()
+            var fbd = new FolderBrowserDialog()
             {
-                InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                FileName = $"MoneyTools-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json",
-                Filter = "Data Files|*.json;*.json|All Files|*.*",
+                ShowNewFolderButton = true,
+                UseDescriptionForTitle = true,
+                Description = "Select Backup Directory",
+                InitialDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook")
             };
 
-            if (sfd.ShowDialog() == DialogResult.OK)
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
-                m_db.BackupDatabase(sfd.FileName);
+                m_db.BackupDatabase(fbd.SelectedPath);
 
                 MessageBox.Show(this, "Backup complete.", this.Text, MessageBoxButtons.OK);
             }
