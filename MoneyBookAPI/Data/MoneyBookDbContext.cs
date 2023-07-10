@@ -4,13 +4,11 @@ namespace MoneyBookAPI.Data;
 
 public partial class MoneyBookDbContext : DbContext
 {
-    public MoneyBookDbContext()
-    {
-    }
+    private readonly string m_connStr;
 
-    public MoneyBookDbContext(DbContextOptions<MoneyBookDbContext> options)
-        : base(options)
+    protected MoneyBookDbContext(string connStr)
     {
+        m_connStr = connStr;
     }
 
     public virtual DbSet<Account> Accounts { get; set; }
@@ -25,10 +23,16 @@ public partial class MoneyBookDbContext : DbContext
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=MoneyBook;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+    public static MoneyBookDbContext Create(IDbContextConfig config)
+    {
+        return new MoneyBookDbContext(config.ConnectionStr);
+    }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    {
+        options.UseSqlServer(m_connStr);
+    }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
