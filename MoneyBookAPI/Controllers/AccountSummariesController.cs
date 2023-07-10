@@ -16,10 +16,10 @@ namespace MoneyBookAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetAccountSummaries")]
-        public IEnumerable<AccountSummary> Get()
+        [HttpGet(Name = "GetAccountSummary")]
+        public IActionResult Get(int acctId)
         {
-            return _db.GetAccountSummaries();
+            return Ok(_db.GetAccountSummary(acctId));
         }
     }
 }

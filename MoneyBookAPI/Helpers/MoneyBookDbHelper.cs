@@ -4,14 +4,24 @@ namespace MoneyBookAPI.Helpers
 {
     public static class MoneyBookDbHelper
     {
+        #region Accounts
+        public static IEnumerable<Account> GetAccounts(this MoneyBookDbContext db)
+        {
+            return db.Accounts
+                .Where(x => x.IsDeleted == false)
+                .AsEnumerable();
+        }
+
         public static PagedResponse<Account> GetAccounts(this MoneyBookDbContext db, int page, int pageSize)
         {
-            var accts = db.Accounts
-                .Where(x => x.IsDeleted == false);
+            var accts = db.GetAccounts();
 
             var totalItems = accts.Count();
             var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-            var pagedData = accts.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var pagedData = accts
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
 
             return new PagedResponse<Account>
             {
@@ -22,53 +32,34 @@ namespace MoneyBookAPI.Helpers
                 TotalItems = totalItems
             };
         }
-
-        public static IEnumerable<TransactionInfo> GetTransactions(this MoneyBookDbContext db, int acctId)
-        {
-            var results = db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MoneyBook.MinimumAccountYear)
-                .Select(x => new TransactionInfo
-                {
-                    TrnsId = x.TrnsId,
-                    Date = x.Date,
-                    TrnsType = x.TrnsType,
-                    RefNum = x.RefNum,
-                    Payee = x.Payee,
-                    Memo = x.Memo,
-                    State = x.State,
-                    Amount = x.Amount,
-                    DateAdded = x.DateAdded,
-                    DateModified = x.DateModified,
-                    AcctId = x.AcctId,
-                    CatId = x.CatId
-                });
-
-            return results.AsEnumerable();
-        }
         
-        public static List<AccountSummary> GetAccountSummaries(this MoneyBookDbContext db)
+        public static Account? GetAccount(this MoneyBookDbContext db, int acctId)
         {
-            var summaries = new List<AccountSummary>();
+            return db.GetAccounts()
+                .SingleOrDefault(x => x.AcctId == acctId);
+        }
+        #endregion
 
-            var accts = db.Accounts
-                .Where(x => x.IsDeleted == false)
-                .Select(x => x.ToAccountInfo())
-                .ToList();
+        #region Transactions
+        public static IEnumerable<Transaction> GetTransactions(this MoneyBookDbContext db, int acctId)
+        {
+            return db.Transactions
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MoneyBook.MinimumAccountYear)
+                .AsEnumerable();
+        }
+        #endregion
 
-            foreach (var acct in accts)
+        #region AccountSummaries
+        public static AccountSummary? GetAccountSummary(this MoneyBookDbContext db, int acctId)
+        {
+            if (db.GetAccount(acctId) is not Account acct ||
+                db.GetTransactions(acctId) is not IEnumerable<Transaction> trans)
             {
-                var transactions = db.GetTransactions(acct.AcctId);
-
-                var summary = new AccountSummary()
-                {
-                    Account = acct,
-                    Transactions = transactions.ToList()
-                };
-
-                summaries.Add(summary);
+                return null;
             }
 
-            return summaries;
+            return AccountSummary.Create(acct, trans);
         }
+        #endregion
     }
 }
