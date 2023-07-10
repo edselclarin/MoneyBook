@@ -2,9 +2,8 @@
 
 namespace MoneyBookAPI.Helpers
 {
-    public static class MoneyBookDbHelper
+    public static class AccountsHelper
     {
-        #region Accounts
         public static IEnumerable<Account> GetAccounts(this MoneyBookDbContext db)
         {
             return db.Accounts
@@ -38,18 +37,7 @@ namespace MoneyBookAPI.Helpers
             return db.GetAccounts()
                 .SingleOrDefault(x => x.AcctId == acctId);
         }
-        #endregion
 
-        #region Transactions
-        public static IEnumerable<Transaction> GetTransactions(this MoneyBookDbContext db, int acctId)
-        {
-            return db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MoneyBook.MinimumAccountYear)
-                .AsEnumerable();
-        }
-        #endregion
-
-        #region AccountSummaries
         public static AccountSummary? GetAccountSummary(this MoneyBookDbContext db, int acctId)
         {
             if (db.GetAccount(acctId) is not Account acct ||
@@ -60,6 +48,5 @@ namespace MoneyBookAPI.Helpers
 
             return AccountSummary.Create(acct, trans);
         }
-        #endregion
     }
 }

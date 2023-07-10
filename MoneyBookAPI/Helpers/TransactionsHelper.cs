@@ -4,6 +4,13 @@ namespace MoneyBookAPI.Helpers
 {
     public static class TransactionsHelper
     {
+        public static IEnumerable<Transaction> GetTransactions(this MoneyBookDbContext db, int acctId)
+        {
+            return db.Transactions
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MoneyBook.MinimumAccountYear)
+                .AsEnumerable();
+        }
+
         public static decimal GetCredits(this IEnumerable<Transaction> transactions)
         {
             return transactions
