@@ -30,11 +30,7 @@ namespace MoneyBookTools
             {
                 Text = $"About {Application.ProductName}";
 
-                var vals = ConfigurationManager.AppSettings.GetValues("DbMode");
-                if (vals != null || vals.Length > 0)
-                {
-                    textBox1.AppendText($"DbMode: {vals[0]}");
-                }
+                textBox1.AppendText($"DbMode: {MoneyBook.AppSettings.Instance?.ConnectionMode}");
             }
             catch (Exception ex)
             {
