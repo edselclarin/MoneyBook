@@ -79,7 +79,7 @@ namespace MoneyBookTools.ViewModels
             {
                 return DueStateTypes.Today;
             }
-            else if (recTrans.DueDate.Date < DateTime.Now.GetDateOfTarget(ViewSettings.Instance.DueBeforeDay).Date)
+            else if (recTrans.DueDate.Date <= DateTime.Now.GetDateOfTarget(ViewSettings.Instance.DueBeforeDay).Date)
             {
                 return DueStateTypes.Soon;
             }
