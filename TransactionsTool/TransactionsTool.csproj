@@ -11,8 +11,4 @@
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

@@ -12,6 +12,8 @@ namespace TransactionsTool
         {
             // Activate Caliburn logging.
             LogManager.GetLog = type => new DebugLog(type);
+
+            MainEngine.Instance.Init();
         }
     }
 }
