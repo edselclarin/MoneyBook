@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainView" Height="450" Width="800">
 
-    <ContentControl x:Name="ActiveItem" Margin="20"/>
+    <ContentControl x:Name="ActiveItem" Margin="20">
+        <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="True"/>
+    </ContentControl>
 
 </Window>
