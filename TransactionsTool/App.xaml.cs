@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Caliburn.Micro;
 using System.Windows;
 
 namespace TransactionsTool
@@ -13,5 +8,10 @@ namespace TransactionsTool
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            // Activate Caliburn logging.
+            LogManager.GetLog = type => new DebugLog(type);
+        }
     }
 }
