@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using TransactionsTool.Models;
@@ -42,12 +43,18 @@ namespace TransactionsTool.ViewModels
         {
             try
             {
-                // test
-                string filename = @"C:\Users\Edsel\Downloads\Chase6979_Activity20230722(1).CSV";
-                Transactions = TransactionFileReaderFactory
-                    .CreateReader(FileReaderTypes.Chase)
-                    .Read(filename)
-                    .ToObservableCollection();
+                var ofd = new OpenFileDialog()
+                {
+                    Filter = "CSV Files (*.csv)|*.csv|QFX Files (*.qfx)|*.qfx|All Files (*.*)|*.*"
+                };
+
+                if (ofd.ShowDialog() == true)
+                {
+                    Transactions = TransactionFileReaderFactory
+                        .CreateReader(FileReaderTypes.Chase)
+                        .Read(ofd.FileName)
+                        .ToObservableCollection();
+                }
             }
             catch (Exception ex)
             {
