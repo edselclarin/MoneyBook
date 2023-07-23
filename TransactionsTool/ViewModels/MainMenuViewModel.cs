@@ -5,19 +5,11 @@
         public delegate void FileOpenHandler();
         public event FileOpenHandler OnFileOpen;
 
-        public void FileOpen()
-        {
-            OnFileOpen?.Invoke();
-        }
+        public void FileOpen() => OnFileOpen?.Invoke();
 
         public delegate void FileExitHandler();
         public event FileExitHandler OnFileExit;
 
-        public void FileExit()
-        {
-            OnFileExit?.Invoke();
-
-            MainEngine.Exit();
-        }
+        public void FileExit() => OnFileExit?.Invoke();
     }
 }

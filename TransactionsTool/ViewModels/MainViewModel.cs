@@ -37,6 +37,12 @@ namespace TransactionsTool.ViewModels
         {
             mainMenu_ = new MainMenuViewModel();
             mainMenu_.OnFileOpen += MainMenu_OnFileOpen;
+            mainMenu_.OnFileExit += MainMenu_OnFileExit;
+        }
+
+        private void MainMenu_OnFileExit()
+        {
+            MainEngine.Exit();
         }
 
         private void MainMenu_OnFileOpen()
