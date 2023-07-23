@@ -1,6 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,16 +22,17 @@ namespace TransactionsTool.Readers
         }
     }
 
-    public class ChaseFileReader : BaseTransactionsFileReader, ITransactionFileReader
+    public class ChaseFileReader : ITransactionFileReader
     {
-        public bool Read(string filePath)
+        public IEnumerable<Transaction> Read(string filePath)
         {
             using (var reader = new StreamReader(filePath))
             using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
             {
                 csv.Context.RegisterClassMap<ChaseClassMap>();
-                Transactions = csv.GetRecords<Transaction>().ToList();
-                return true;
+                return csv
+                    .GetRecords<Transaction>()
+                    .ToList();
             }
         }
     }

@@ -1,7 +1,10 @@
-﻿namespace TransactionsTool.Readers
+﻿using System.Collections.Generic;
+using TransactionsTool.Models;
+
+namespace TransactionsTool.Readers
 {
     public interface ITransactionFileReader
     {
-        bool Read(string filePath);
+        IEnumerable<Transaction> Read(string filePath);
     }
 }

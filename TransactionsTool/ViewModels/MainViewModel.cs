@@ -24,13 +24,11 @@ namespace TransactionsTool.ViewModels
             try
             {
                 // test
-                var reader = (ChaseFileReader)TransactionFileReaderFactory.CreateReader(FileReaderTypes.Chase);
-                reader?.Read(@"C:\Users\Edsel\Downloads\Chase6979_Activity20230722(1).CSV");
-                Transactions = new ObservableCollection<Transaction>();
-                foreach (var transaction in reader.Transactions) 
-                {
-                    Transactions.Add(transaction);
-                }
+                string filename = @"C:\Users\Edsel\Downloads\Chase6979_Activity20230722(1).CSV";
+                Transactions = TransactionFileReaderFactory
+                    .CreateReader(FileReaderTypes.Chase)
+                    .Read(filename)
+                    .ToObservableCollection();
             }
             catch (Exception ex)
             {
