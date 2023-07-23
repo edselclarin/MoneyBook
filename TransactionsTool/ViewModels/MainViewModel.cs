@@ -51,7 +51,7 @@ namespace TransactionsTool.ViewModels
                 if (ofd.ShowDialog() == true)
                 {
                     Transactions = TransactionFileReaderFactory
-                        .CreateReader(FileReaderTypes.Chase)
+                        .CreateReader(ofd.FileName)
                         .Read(ofd.FileName)
                         .ToObservableCollection();
                 }

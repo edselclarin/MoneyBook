@@ -1,17 +1,13 @@
 ﻿namespace TransactionsTool.Readers
 {
-    public enum FileReaderTypes
-    {
-        Chase
-    }
-
     public static class TransactionFileReaderFactory
     {
-        public static ITransactionFileReader? CreateReader(FileReaderTypes type)
+        public static ITransactionFileReader? CreateReader(string filepath)
         {
-            return type switch
+            return System.IO.Path.GetExtension(filepath).ToLower() switch
             {
-                FileReaderTypes.Chase => new ChaseFileReader(),
+                ".csv" => new ChaseFileReader(),
+                ".qfx" => new SchoolsFirstFileReader(),
                 _ => null
             };
         }
