@@ -4,11 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TransactionsTool.Views"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="Transactions Tool" Height="450" Width="800">
+        Title="Transactions Tool" 
+        Height="450" Width="800" 
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-    <ContentControl x:Name="ActiveItem" Margin="20">
-        <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="True"/>
-    </ContentControl>
+        <Border Grid.Row="0"
+                cal:View.Model="{Binding MainMenu}">
+        </Border>
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Transactions}" 
+                  AutoGenerateColumns="True"/>
 
+    </Grid>
 </Window>

@@ -8,6 +8,18 @@ namespace TransactionsTool.ViewModels
 {
     public class MainViewModel : PropertyChangedBase
     {
+        #region Properties
+        private MainMenuViewModel mainMenu_;
+        public MainMenuViewModel MainMenu
+        { 
+            get => mainMenu_;
+            set
+            {
+                mainMenu_ = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private ObservableCollection<Transaction> transactions_;
         public ObservableCollection<Transaction> Transactions
         {
@@ -18,8 +30,15 @@ namespace TransactionsTool.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+        #endregion
 
         public MainViewModel()
+        {
+            mainMenu_ = new MainMenuViewModel();
+            mainMenu_.OnFileOpen += MainMenu_OnFileOpen;
+        }
+
+        private void MainMenu_OnFileOpen()
         {
             try
             {

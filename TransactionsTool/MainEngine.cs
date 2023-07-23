@@ -1,5 +1,4 @@
-﻿using System;
-using TransactionsTool.Readers;
+﻿using System.Windows;
 
 namespace TransactionsTool
 {
@@ -23,6 +22,11 @@ namespace TransactionsTool
         public void Init()
         {
             // Add application initialization code here.
+        }
+
+        public static void Exit()
+        {
+            Application.Current.Shutdown();
         }
     }
 }
