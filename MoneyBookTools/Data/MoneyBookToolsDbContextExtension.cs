@@ -25,76 +25,76 @@ namespace MoneyBookTools.Data
             dbtran.Commit();
         }
 
-        public static void ImportRecurringTransactions(this MoneyBookDbContext db, string filename)
+        public static void ImportReminders(this MoneyBookDbContext db, string filename)
         {
             using var dbtran = db.Database.BeginTransaction();
 
             string json = File.ReadAllText(filename);
 
-            var recTrans = JsonConvert
-                .DeserializeObject<IEnumerable<RecurringTransaction>>(json)
+            var reminders = JsonConvert
+                .DeserializeObject<IEnumerable<Reminder>>(json)
                 .ToList();
 
-            foreach (var rt in recTrans)
+            foreach (var rt in reminders)
             {
-                rt.RecTrnsId = 0;
+                rt.RmdrId = 0;
 
             }
 
-            db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
+            db.Reminders.RemoveRange(db.Reminders);
 
             db.SaveChanges();
 
-            db.AddRange(recTrans);
+            db.AddRange(reminders);
 
             db.SaveChanges();
 
             dbtran.Commit();
         }
 
-        public static void ExportRecurringTransactions(this MoneyBookDbContext db, string filename)
+        public static void ExportReminders(this MoneyBookDbContext db, string filename)
         {
-            string json = JsonConvert.SerializeObject(db.RecurringTransactions, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(db.Reminders, Formatting.Indented);
 
             File.WriteAllText(filename, json);
         }
 
-        public static void DeleteAllRecurringTransactions(this MoneyBookDbContext db)
+        public static void DeleteAllReminders(this MoneyBookDbContext db)
         {
             using var dbtran = db.Database.BeginTransaction();
             
-            db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
+            db.Reminders.RemoveRange(db.Reminders);
 
             db.SaveChanges();
 
             dbtran.Commit();
         }
 
-        public static void StageRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> recTrans)
+        public static void StageReminders(this MoneyBookDbContext db, IEnumerable<ViewReminder> reminders)
         {
             using var dbtran = db.Database.BeginTransaction();
 
-            foreach (var rtr in recTrans)
+            foreach (var rem in reminders)
             {
                 var trNew = new Transaction()
                 {
-                    Date = rtr.DueDate,
-                    TrnsType = rtr.TrnsType,
-                    Payee = rtr.Payee,
-                    Memo= rtr.Memo,
+                    Date = rem.DueDate,
+                    TrnsType = rem.TrnsType,
+                    Payee = rem.Payee,
+                    Memo= rem.Memo,
                     State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
-                    Amount = Math.Abs(rtr.NewAmount),
+                    Amount = Math.Abs(rem.NewAmount),
                     ExtTrnsId = String.Empty,
-                    AcctId = rtr.AcctId,
-                    CatId = rtr.CatId
+                    AcctId = rem.AcctId,
+                    CatId = rem.CatId
                 };
 
                 db.Transactions.Add(trNew);
 
-                var trn = db.RecurringTransactions
-                    .FirstOrDefault(x => x.RecTrnsId == rtr.RecTrnsId);
+                var rmdr = db.Reminders
+                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
 
-                trn?.Skip();
+                rmdr?.Skip();
             }
 
             db.SaveChanges();
@@ -102,16 +102,16 @@ namespace MoneyBookTools.Data
             dbtran.Commit();
         }
 
-        public static void SkipRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> transactions)
+        public static void SkipReminders(this MoneyBookDbContext db, IEnumerable<ViewReminder> reminders)
         {
             using var dbtran = db.Database.BeginTransaction();
             
-            foreach (var tr in transactions)
+            foreach (var rem in reminders)
             {
-                var trn = db.RecurringTransactions
-                    .FirstOrDefault(x => x.RecTrnsId == tr.RecTrnsId);
+                var rmdr = db.Reminders
+                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
 
-                trn?.Skip();
+                rmdr?.Skip();
             }
 
             db.SaveChanges();
@@ -119,23 +119,23 @@ namespace MoneyBookTools.Data
             dbtran.Commit();
         }
 
-        public static void CopyRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> recTrans)
+        public static void CopyReminders(this MoneyBookDbContext db, IEnumerable<ViewReminder> reminders)
         {
             using var dbtran = db.Database.BeginTransaction();
             
-            foreach (var rtr in recTrans)
+            foreach (var rem in reminders)
             {
                 var trNew = new Transaction()
                 {
-                    Date = rtr.DueDate,
-                    TrnsType = rtr.TrnsType,
-                    Payee = rtr.Payee,
-                    Memo = rtr.Memo,
+                    Date = rem.DueDate,
+                    TrnsType = rem.TrnsType,
+                    Payee = rem.Payee,
+                    Memo = rem.Memo,
                     State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
-                    Amount = rtr.TrnsAmount,
+                    Amount = rem.TrnsAmount,
                     ExtTrnsId = String.Empty,
-                    AcctId = rtr.AcctId,
-                    CatId = rtr.CatId
+                    AcctId = rem.AcctId,
+                    CatId = rem.CatId
                 };
 
                 db.Transactions.Add(trNew);
@@ -146,16 +146,16 @@ namespace MoneyBookTools.Data
             dbtran.Commit();
         }
 
-        public static void DeleteRecurringTransactions(this MoneyBookDbContext db, IEnumerable<ViewRecurringTransaction> transactions)
+        public static void DeleteReminders(this MoneyBookDbContext db, IEnumerable<ViewReminder> reminders)
         {
             using var dbtran = db.Database.BeginTransaction();
             
-            foreach (var tr in transactions)
+            foreach (var rem in reminders)
             {
-                var trn = db.RecurringTransactions
-                    .FirstOrDefault(x => x.RecTrnsId == tr.RecTrnsId);
+                var rmdr = db.Reminders
+                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
 
-                trn?.Delete();
+                rmdr?.Delete();
             }
 
             db.SaveChanges();
@@ -254,74 +254,74 @@ namespace MoneyBookTools.Data
             }
         }
 
-        public static void AddRecurringTransaction(this MoneyBookDbContext db, ViewRecurringTransaction recTrans)
+        public static void AddReminder(this MoneyBookDbContext db, ViewReminder reminder)
         {
             using var dbtran = db.Database.BeginTransaction();
             
-            var rt = db.RecurringTransactions
+            var rem = db.Reminders
                 .FirstOrDefault(x => 
-                x.DueDate == recTrans.DueDate &&
-                x.AcctId == recTrans.AcctId &&
-                x.CatId == recTrans.CatId &&
-                x.TrnsType == recTrans.TrnsType &&
-                x.Amount == recTrans.Amount &&
-                x.Frequency == recTrans.Frequency &&
-                x.Payee == recTrans.Payee &&
-                x.Memo == recTrans.Memo &&
-                x.Website == recTrans.Website);
+                x.DueDate == reminder.DueDate &&
+                x.AcctId == reminder.AcctId &&
+                x.CatId == reminder.CatId &&
+                x.TrnsType == reminder.TrnsType &&
+                x.Amount == reminder.Amount &&
+                x.Frequency == reminder.Frequency &&
+                x.Payee == reminder.Payee &&
+                x.Memo == reminder.Memo &&
+                x.Website == reminder.Website);
 
-            if (rt != null)
+            if (rem != null)
             {
-                throw new Exception("Recurring transaction already exists.");
+                throw new Exception("Remidner already exists.");
             }
 
-            var newRt = new RecurringTransaction()
+            var newRem = new Reminder()
             {
-                DueDate = recTrans.DueDate,
-                AcctId = recTrans.AcctId,
-                CatId = recTrans.CatId,
-                TrnsType = recTrans.TrnsType,
-                Amount = recTrans.TrnsAmount,
-                Frequency = recTrans.Frequency,
-                Payee = recTrans.Payee,
-                Memo = recTrans.Memo,
-                Website = recTrans.Website,
+                DueDate = reminder.DueDate,
+                AcctId = reminder.AcctId,
+                CatId = reminder.CatId,
+                TrnsType = reminder.TrnsType,
+                Amount = reminder.TrnsAmount,
+                Frequency = reminder.Frequency,
+                Payee = reminder.Payee,
+                Memo = reminder.Memo,
+                Website = reminder.Website,
                 DateAdded = DateTime.Now,
                 DateModified = DateTime.Now
             };
 
-            db.RecurringTransactions.Add(newRt);
+            db.Reminders.Add(newRem);
 
             db.SaveChanges();
 
             dbtran.Commit();
         }
 
-        public static void UpdateRecurringTransaction(this MoneyBookDbContext db, ViewRecurringTransaction recTrans)
+        public static void UpdateReminder(this MoneyBookDbContext db, ViewReminder reminder)
         {
-            var rt = db.RecurringTransactions
-                .FirstOrDefault(x => x.RecTrnsId == recTrans.RecTrnsId);
+            var rem = db.Reminders
+                .FirstOrDefault(x => x.RmdrId == reminder.RmdrId);
 
-            if (rt != null)
+            if (rem != null)
             {
                 using var dbtran = db.Database.BeginTransaction();
 
-                rt.DueDate = recTrans.DueDate;
-                rt.Payee = recTrans.Payee;
-                rt.Memo = recTrans.Memo;
-                rt.Website = recTrans.Website;
-                if (recTrans.NewAmount < 0)
+                rem.DueDate = reminder.DueDate;
+                rem.Payee = reminder.Payee;
+                rem.Memo = reminder.Memo;
+                rem.Website = reminder.Website;
+                if (reminder.NewAmount < 0)
                 {
-                    rt.TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString();
-                    rt.Amount = Math.Abs(recTrans.NewAmount);
+                    rem.TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString();
+                    rem.Amount = Math.Abs(reminder.NewAmount);
                 }
                 else
                 {
-                    rt.TrnsType = MoneyBookDbContextExtension.TransactionTypes.CREDIT.ToString();
-                    rt.Amount = recTrans.NewAmount;
+                    rem.TrnsType = MoneyBookDbContextExtension.TransactionTypes.CREDIT.ToString();
+                    rem.Amount = reminder.NewAmount;
                 }
-                rt.Frequency = recTrans.Frequency;
-                rt.DateModified = DateTime.Now.Date;
+                rem.Frequency = reminder.Frequency;
+                rem.DateModified = DateTime.Now.Date;
 
                 db.SaveChanges();
 

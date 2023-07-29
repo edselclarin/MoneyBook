@@ -261,30 +261,30 @@ namespace MoneyBook.Data
             }
         }
 
-        public static IEnumerable<RecurringTransactionInfo> GetRecurringTransactions(this MoneyBookDbContext db, SortOrder sortOrder)
+        public static IEnumerable<ReminderInfo> GetReminders(this MoneyBookDbContext db, SortOrder sortOrder)
         {
             var accts = db.Accounts
                 .ToList();
 
-            var results = db.RecurringTransactions
+            var results = db.Reminders
                 .Where(x => x.IsDeleted == false)
-                .Select(trn => new RecurringTransactionInfo
+                .Select(rem => new ReminderInfo
                 {
-                    RecTrnsId = trn.RecTrnsId,
-                    DueDate = trn.DueDate,
-                    TrnsType = trn.TrnsType,
-                    Payee = trn.Payee,
-                    Memo = trn.Memo,
-                    Website = trn.Website,
-                    Amount = trn.Amount,
-                    Frequency = trn.Frequency,
-                    DateAdded = trn.DateAdded,
-                    DateModified = trn.DateModified,
-                    AcctId = trn.AcctId,
-                    CatId = trn.CatId
+                    RmdrId = rem.RmdrId,
+                    DueDate = rem.DueDate,
+                    TrnsType = rem.TrnsType,
+                    Payee = rem.Payee,
+                    Memo = rem.Memo,
+                    Website = rem.Website,
+                    Amount = rem.Amount,
+                    Frequency = rem.Frequency,
+                    DateAdded = rem.DateAdded,
+                    DateModified = rem.DateModified,
+                    AcctId = rem.AcctId,
+                    CatId = rem.CatId
                 });
 
-            IOrderedQueryable<RecurringTransactionInfo> sortedTransactions;
+            IOrderedQueryable<ReminderInfo> sortedTransactions;
             switch (sortOrder)
             {
                 case SortOrder.Ascending:
@@ -345,36 +345,36 @@ namespace MoneyBook.Data
             return results.AsEnumerable();
         }
 
-        public static void Skip(this RecurringTransaction recTran)
+        public static void Skip(this Reminder rem)
         {
-            if (recTran.Frequency == TransactionFrequency.Weekly.ToString())
+            if (rem.Frequency == TransactionFrequency.Weekly.ToString())
             {
-                recTran.DueDate = recTran.DueDate.AddDays(7);
+                rem.DueDate = rem.DueDate.AddDays(7);
             }
-            else if (recTran.Frequency == TransactionFrequency.BiWeekly.ToString())
+            else if (rem.Frequency == TransactionFrequency.BiWeekly.ToString())
             {
-                recTran.DueDate = recTran.DueDate.AddDays(14);
+                rem.DueDate = rem.DueDate.AddDays(14);
             }
-            else if (recTran.Frequency == TransactionFrequency.Monthly.ToString())
+            else if (rem.Frequency == TransactionFrequency.Monthly.ToString())
             {
-                recTran.DueDate = recTran.DueDate.AddMonths(1);
+                rem.DueDate = rem.DueDate.AddMonths(1);
             }
-            else if (recTran.Frequency == TransactionFrequency.Quarterly.ToString())
+            else if (rem.Frequency == TransactionFrequency.Quarterly.ToString())
             {
-                recTran.DueDate = recTran.DueDate.AddMonths(3);
+                rem.DueDate = rem.DueDate.AddMonths(3);
             }
-            else if (recTran.Frequency == TransactionFrequency.Yearly.ToString())
+            else if (rem.Frequency == TransactionFrequency.Yearly.ToString())
             {
-                recTran.DueDate = recTran.DueDate.AddYears(1);
+                rem.DueDate = rem.DueDate.AddYears(1);
             }
 
-            recTran.DateModified = DateTime.Now.Date;
+            rem.DateModified = DateTime.Now.Date;
         }
 
-        public static void Delete(this RecurringTransaction recTran)
+        public static void Delete(this Reminder rem)
         {
             // Soft delete.
-            recTran.IsDeleted = true;
+            rem.IsDeleted = true;
         }
 
         public static void SetState(this Transaction tran, StateTypes state)
@@ -416,7 +416,7 @@ namespace MoneyBook.Data
 
                 // Delete records in all tables.
                 db.Transactions.RemoveRange(db.Transactions);
-                db.RecurringTransactions.RemoveRange(db.RecurringTransactions);
+                db.Reminders.RemoveRange(db.Reminders);
                 db.Accounts.RemoveRange(db.Accounts);
                 db.Institutions.RemoveRange(db.Institutions);
                 db.Categories.RemoveRange(db.Categories);
@@ -486,13 +486,13 @@ namespace MoneyBook.Data
 
                 db.SaveChanges();
 
-                // Add recurring transactions - skip those with bad references.
-                foreach (var recTrans in backup.RecurringTransactions)
+                // Add reminders - skip those with bad references.
+                foreach (var reminder in backup.Reminders)
                 {
-                    var oldCat = oldCategories.FirstOrDefault(x => x.CatId == recTrans.CatId);
+                    var oldCat = oldCategories.FirstOrDefault(x => x.CatId == reminder.CatId);
                     if (oldCat == null)
                     {
-                        recTrans.CatId = db.Categories.First().CatId;
+                        reminder.CatId = db.Categories.First().CatId;
                     }
                     else
                     {
@@ -501,10 +501,10 @@ namespace MoneyBook.Data
                         {
                             continue;
                         }
-                        recTrans.CatId = newCat.CatId;
+                        reminder.CatId = newCat.CatId;
                     }
 
-                    var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == recTrans.AcctId);
+                    var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == reminder.AcctId);
                     if (oldAcct == null)
                     {
                         continue;
@@ -515,12 +515,12 @@ namespace MoneyBook.Data
                         continue;
                     }
 
-                    recTrans.RecTrnsId = 0;
-                    recTrans.AcctId = newAcct.AcctId;
-                    recTrans.DateAdded =
-                    recTrans.DateModified = DateTime.Now;
+                    reminder.RmdrId = 0;
+                    reminder.AcctId = newAcct.AcctId;
+                    reminder.DateAdded =
+                    reminder.DateModified = DateTime.Now;
 
-                    db.RecurringTransactions.Add(recTrans);
+                    db.Reminders.Add(reminder);
                 }
 
                 db.SaveChanges();

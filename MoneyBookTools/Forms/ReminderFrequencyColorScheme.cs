@@ -1,27 +1,22 @@
 ﻿using MoneyBook.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MoneyBookTools.Forms
 {
-    public class RecurringTransactionsFrequencyColorScheme : IFrequencyColorScheme
+    public class ReminderFrequencyColorScheme : IFrequencyColorScheme
     {
-        private static RecurringTransactionsFrequencyColorScheme? m_instance;
+        private static ReminderFrequencyColorScheme? m_instance;
 
-        protected RecurringTransactionsFrequencyColorScheme()
+        protected ReminderFrequencyColorScheme()
         {
         }
 
-        public static RecurringTransactionsFrequencyColorScheme Instance
+        public static ReminderFrequencyColorScheme Instance
         {
             get
             {
                 if (m_instance == null)
                 {
-                    m_instance ??= new RecurringTransactionsFrequencyColorScheme();
+                    m_instance ??= new ReminderFrequencyColorScheme();
                 }
                 return m_instance;
             }

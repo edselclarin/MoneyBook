@@ -2,10 +2,10 @@ IF EXISTS(SELECT * FROM sys.databases WHERE name = 'MoneyBook')
 BEGIN
 	USE [MoneyBook]
 
-	-- Drop Transactions table.
-	IF EXISTS (SELECT * FROM sysobjects WHERE name='RecurringTransactions' and xtype='U')
+	-- Drop Reminders table.
+	IF EXISTS (SELECT * FROM sysobjects WHERE name='Reminders' and xtype='U')
 	BEGIN
-		DROP TABLE [RecurringTransactions]
+		DROP TABLE [Reminders]
 	END
 
 	-- Drop Transactions table.

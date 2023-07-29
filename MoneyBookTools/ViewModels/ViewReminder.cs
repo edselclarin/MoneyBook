@@ -2,10 +2,10 @@
 
 namespace MoneyBookTools.ViewModels
 {
-    public class ViewRecurringTransaction
+    public class ViewReminder
     {
         [Browsable(false)]
-        public int RecTrnsId { get; set; }
+        public int RmdrId { get; set; }
 
         public DateTime DueDate { get; set; }
 

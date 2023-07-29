@@ -19,7 +19,7 @@ namespace MoneyBookTools
         private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
         private MoneyBookDbContextExtension.StateTypes? m_stateFilter = null;
         private List<ViewTransaction> m_selectedTransactions;
-        private List<ViewRecurringTransaction> m_selectedRecurringTransactions;
+        private List<ViewReminder> m_selectedReminders;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace MoneyBookTools
             InitializeComponent();
 
             dgvAccountTransactions.SetDataGridViewStyle();
-            dgvRecurringTransactions.SetDataGridViewStyle();
+            dgvReminders.SetDataGridViewStyle();
 
             listViewAccounts.Dock = DockStyle.Fill;
             listViewAccounts.HeaderStyle = ColumnHeaderStyle.None;
@@ -72,8 +72,8 @@ namespace MoneyBookTools
             listViewAccounts.Dock =
             groupLedger.Dock =
             dgvAccountTransactions.Dock =
-            groupUpcoming.Dock =
-            dgvRecurringTransactions.Dock =
+            groupReminders.Dock =
+            dgvReminders.Dock =
             statusStrip1.Dock =
             tableLayoutLedger.Dock = DockStyle.Fill;
 
@@ -104,7 +104,7 @@ namespace MoneyBookTools
                     m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
                 });
 
-                LoadRecurringTransactionsGrid();
+                LoadRemindersGrid();
 
                 LoadAccountsList();
 
@@ -161,13 +161,13 @@ namespace MoneyBookTools
             e.Cancel = true;
         }
 
-        private void dgvRecurringTransactions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dgvReminders_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                ShowEditRecTransactionDialog();
+                ShowEditReminderDialog();
             }
             catch (Exception ex)
             {
@@ -222,7 +222,7 @@ namespace MoneyBookTools
 
                     LoadTransactionsGrid();
 
-                    LoadRecurringTransactionsGrid();
+                    LoadRemindersGrid();
                 }
             }
             catch (Exception ex)
@@ -293,12 +293,12 @@ namespace MoneyBookTools
             }
         }
 
-        private void importRecurringTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void importRemindersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 var answer = MessageBox.Show(this,
-                    "Importing data from file will delete all existing recurring transactions from the database. " +
+                    "Importing data from file will delete all existing reminders from the database. " +
                     "This cannot be undone. Continue?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -314,9 +314,9 @@ namespace MoneyBookTools
 
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
-                        m_db.ImportRecurringTransactions(ofd.FileName);
+                        m_db.ImportReminders(ofd.FileName);
 
-                        LoadRecurringTransactionsGrid();
+                        LoadRemindersGrid();
 
                         MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
                     }
@@ -328,20 +328,20 @@ namespace MoneyBookTools
             }
         }
 
-        private void exportRecurringTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exportRemindesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 var sfd = new SaveFileDialog()
                 {
                     InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                    FileName = $"MoneyTools-RecurringTransactions-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json",
+                    FileName = $"MoneyTools-Reminders-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json",
                     Filter = "Data Files|*.json;*.json|All Files|*.*",
                 };
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    m_db.ExportRecurringTransactions(sfd.FileName);
+                    m_db.ExportReminders(sfd.FileName);
 
                     MessageBox.Show(this, "Export complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -350,15 +350,14 @@ namespace MoneyBookTools
             {
                 this.ShowException(ex);
             }
-
         }
 
-        private void deleteRecurringTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteRemindersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you delete recurring transactions across all accounts?  NOTE: This cannot be undone.",
+                    $"Are you sure you delete reminders across all accounts?  NOTE: This cannot be undone.",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 
@@ -366,7 +365,7 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
-                    m_db.DeleteAllRecurringTransactions();
+                    m_db.DeleteAllReminders();
 
                     MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -419,7 +418,7 @@ namespace MoneyBookTools
                 setTransStateToolStripMenuItem.Enabled =
                 deleteTransToolStripMenuItem.Enabled = count > 0;
 
-                makeRecTransToolStripMenuItem.Enabled =
+                addReminderToolStripMenuItem.Enabled =
                 editTransToolStripMenuItem.Enabled = count == 1;
             }
             catch (Exception ex)
@@ -477,31 +476,31 @@ namespace MoneyBookTools
             }
         }
 
-        private void recTransContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void remindersContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var count = dgvRecurringTransactions.SelectedCells
+            var count = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
                 .Count();
 
-            addRecTransToolStripMenuItem.Enabled = count <= 1;
+            createReminderToolStripMenuItem.Enabled = count <= 1;
 
-            skipRecTransToolStripMenuItem.Enabled =
-            deleteRecTransToolStripMenuItem.Enabled = count > 0;
+            skipReminderToolStripMenuItem.Enabled =
+            deleteReminderToolStripMenuItem.Enabled = count > 0;
 
-            stageRecTransToolStripMenuItem.Enabled =
-            editRecTransToolStripMenuItem.Enabled =
-            copyRecTransToolStripMenuItem.Enabled =
+            stageReminderToolStripMenuItem.Enabled =
+            editReminderToolStripMenuItem.Enabled =
+            copyReminderToolStripMenuItem.Enabled =
             openWebsiteToolStripMenuItem.Enabled = count == 1;
         }
 
-        private void stageRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void stageReminderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                ShowStageRecTransactionDialog();
+                ShowStageReminderDialog();
             }
             catch (Exception ex)
             {
@@ -509,13 +508,13 @@ namespace MoneyBookTools
             }
         }
 
-        private void skipRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void skipReminderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                SkipRecurringTransactions();
+                SkipReminders();
             }
             catch (Exception ex)
             {
@@ -523,13 +522,13 @@ namespace MoneyBookTools
             }
         }
 
-        private void copyRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void copyReminderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                CopyRecurringTransactions();
+                CopyReminders();
             }
             catch (Exception ex)
             {
@@ -549,13 +548,13 @@ namespace MoneyBookTools
             }
         }
 
-        private void deleteRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void deleteReminderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                DeleteRecurringTransactions();
+                DeleteReminders();
             }
             catch (Exception ex)
             {
@@ -563,13 +562,13 @@ namespace MoneyBookTools
             }
         }
 
-        private void addRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void createReminderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                ShowAddRecTransactionDialog();
+                ShowAddReminderDialog();
             }
             catch (Exception ex)
             {
@@ -577,13 +576,13 @@ namespace MoneyBookTools
             }
         }
 
-        private void editRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void editRemindersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                ShowEditRecTransactionDialog();
+                ShowEditReminderDialog();
             }
             catch (Exception ex)
             {
@@ -591,13 +590,13 @@ namespace MoneyBookTools
             }
         }
 
-        private void makeRecTransToolStripMenuItem_Click(object sender, EventArgs e)
+        private void makeReminderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 using var hg = this.CreateHourglass();
 
-                MakeTransactionRecurring();
+                AddTransactionReminder();
             }
             catch (Exception ex)
             {
@@ -962,7 +961,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void MakeTransactionRecurring()
+        private void AddTransactionReminder()
         {
             var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
             var selectedTransaction = dgvAccountTransactions.SelectedCells
@@ -973,11 +972,11 @@ namespace MoneyBookTools
 
             if (selectedTransaction != null)
             {
-                var dlg = RecurringTransactionForm.CreateAddForm(selectedTransaction);
+                var dlg = ReminderForm.CreateAddForm(selectedTransaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    LoadRecurringTransactionsGrid();
+                    LoadRemindersGrid();
                 }
             }
         }
@@ -1083,144 +1082,144 @@ namespace MoneyBookTools
         }
         #endregion
 
-        #region Recurring Transactions
+        #region Reminders
 
         /// <summary>
-        /// Remember selected recurring transaction(s).
+        /// Remember selected reminder(s).
         /// </summary>
-        private void SaveSelectedRecurringTransactions()
+        private void SaveSelectedReminders()
         {
-            var transactions = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            m_selectedRecurringTransactions = dgvRecurringTransactions.SelectedRows
+            var reminders = dgvReminders.DataSource as List<ViewReminder>;
+            m_selectedReminders = dgvReminders.SelectedRows
                 .Cast<DataGridViewRow>()
-                .Select(dgvr => transactions[dgvr.Index])
+                .Select(dgvr => reminders[dgvr.Index])
                 .ToList();
         }
 
         /// <summary>
-        /// Reselect recurring transaction(s).
+        /// Reselect reminder(s).
         /// </summary>
-        private void RestoreSelectedRecurringTransactions()
+        private void RestoreSelectedReminders()
         {
-            var transactions = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            for (int i = 0; i < dgvRecurringTransactions.Rows.Count; i++)
+            var reminders = dgvReminders.DataSource as List<ViewReminder>;
+            for (int i = 0; i < dgvReminders.Rows.Count; i++)
             {
-                if (m_selectedRecurringTransactions.Find(x => x.RecTrnsId == transactions[i].RecTrnsId) != null)
+                if (m_selectedReminders.Find(x => x.RmdrId == reminders[i].RmdrId) != null)
                 {
-                    dgvRecurringTransactions.Rows[i].Selected = true;
+                    dgvReminders.Rows[i].Selected = true;
                 }
                 else
                 {
-                    dgvRecurringTransactions.Rows[i].Selected = false;
+                    dgvReminders.Rows[i].Selected = false;
                 }
             }
         }
 
-        private void LoadRecurringTransactionsGrid()
+        private void LoadRemindersGrid()
         {
-            var recTrans = m_db.GetRecurringTransactions(MoneyBookDbContextExtension.SortOrder.Ascending)
-                .AsViewRecurringTransactions()
+            var reminders = m_db.GetReminders(MoneyBookDbContextExtension.SortOrder.Ascending)
+                .AsViewReminders()
                 .ToList();
 
             var accts = m_db.GetAccounts()
                 .ToList();
 
-            foreach (var rt in recTrans)
+            foreach (var rem in reminders)
             {
-                var acct = m_db.GetAccounts().SingleOrDefault(x => x.AcctId == rt.AcctId);
+                var acct = m_db.GetAccounts().SingleOrDefault(x => x.AcctId == rem.AcctId);
 
                 if (acct != null)
                 {
-                    rt.Account = acct.AccountName;
+                    rem.Account = acct.AccountName;
                 }
             }
 
-            SaveSelectedRecurringTransactions();
+            SaveSelectedReminders();
 
-            dgvRecurringTransactions.DataSource = recTrans;
+            dgvReminders.DataSource = reminders;
 
             // Resize the columns.
             var widths = new int[] { 90, 90, 275, 275, 80, 80 };
             int i = 0;
-            dgvRecurringTransactions.Columns["DueDate"].Width = widths[i++];
-            dgvRecurringTransactions.Columns["Account"].Width = widths[i++];
-            dgvRecurringTransactions.Columns["Memo"].Width = widths[i++];
-            dgvRecurringTransactions.Columns["Website"].Width = widths[i++];
-            dgvRecurringTransactions.Columns["Amount"].Width = widths[i++];
-            dgvRecurringTransactions.Columns["Frequency"].Width = widths[i++];
-            dgvRecurringTransactions.Columns["Payee"].Width =
-                dgvRecurringTransactions.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgvRecurringTransactions.Margin.Right;
+            dgvReminders.Columns["DueDate"].Width = widths[i++];
+            dgvReminders.Columns["Account"].Width = widths[i++];
+            dgvReminders.Columns["Memo"].Width = widths[i++];
+            dgvReminders.Columns["Website"].Width = widths[i++];
+            dgvReminders.Columns["Amount"].Width = widths[i++];
+            dgvReminders.Columns["Frequency"].Width = widths[i++];
+            dgvReminders.Columns["Payee"].Width =
+                dgvReminders.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgvReminders.Margin.Right;
 
-            foreach (DataGridViewRow row in dgvRecurringTransactions.Rows)
+            foreach (DataGridViewRow row in dgvReminders.Rows)
             {
-                var rt = recTrans[row.Index];
+                var rem = reminders[row.Index];
 
-                if (rt.Frequency == MoneyBookDbContextExtension.TransactionFrequency.Paused.ToString())
+                if (rem.Frequency == MoneyBookDbContextExtension.TransactionFrequency.Paused.ToString())
                 {
-                    row.DefaultCellStyle.ForeColor = RecurringTransactionsFrequencyColorScheme.Instance.ForeColor(rt.Frequency.ToString());
+                    row.DefaultCellStyle.ForeColor = ReminderFrequencyColorScheme.Instance.ForeColor(rem.Frequency.ToString());
                 }
                 else
                 {
-                    if (rt.GetDueState() != DueStateTypes.None)
+                    if (rem.GetDueState() != DueStateTypes.None)
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
                     }
 
-                    row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.GetDueState().ToString());
+                    row.DefaultCellStyle.ForeColor = ReminderStateColorScheme.Instance.ForeColor(rem.GetDueState().ToString());
                 }
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
-            RestoreSelectedRecurringTransactions();
+            RestoreSelectedReminders();
         }
 
-        private void SkipRecurringTransactions()
+        private void SkipReminders()
         {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+            var reminders = dgvReminders.DataSource as List<ViewReminder>;
+            var selectedReminder = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
-                .Select(g => recTrans[g.Key])
+                .Select(g => reminders[g.Key])
                 .ToList();
 
-            if (selectedRecTrans.Count() > 0)
+            if (selectedReminder.Count() > 0)
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you want to skip these {selectedRecTrans.Count()} recurring transactions?",
+                    $"Are you sure you want to skip these {selectedReminder.Count()} reminders?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.SkipRecurringTransactions(selectedRecTrans);
+                    m_db.SkipReminders(selectedReminder);
 
-                    LoadRecurringTransactionsGrid();
+                    LoadRemindersGrid();
                 }
             }
         }
 
-        private void CopyRecurringTransactions()
+        private void CopyReminders()
         {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+            var reminders = dgvReminders.DataSource as List<ViewReminder>;
+            var selectedReminder = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
-                .Select(g => recTrans[g.Key])
+                .Select(g => reminders[g.Key])
                 .ToList();
 
-            if (selectedRecTrans.Count() > 0)
+            if (selectedReminder.Count() > 0)
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you want to copy these {selectedRecTrans.Count()} recurring transactions?",
+                    $"Are you sure you want to copy these {selectedReminder.Count()} reminders?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.CopyRecurringTransactions(selectedRecTrans);
+                    m_db.CopyReminders(selectedReminder);
 
-                    LoadRecurringTransactionsGrid();
+                    LoadRemindersGrid();
 
                     LoadTransactionsGrid();
 
@@ -1231,98 +1230,98 @@ namespace MoneyBookTools
 
         private void OpenWebsite()
         {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+            var reminder = dgvReminders.DataSource as List<ViewReminder>;
+            var selectedReminder = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
-                .Select(g => recTrans[g.Key])
+                .Select(g => reminder[g.Key])
                 .FirstOrDefault();
 
-            if (selectedRecTrans != null && !String.IsNullOrEmpty(selectedRecTrans.Website))
+            if (selectedReminder != null && !String.IsNullOrEmpty(selectedReminder.Website))
             {
-                Process.Start(new ProcessStartInfo(selectedRecTrans.Website) { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo(selectedReminder.Website) { UseShellExecute = true });
             }
         }
 
-        private void DeleteRecurringTransactions()
+        private void DeleteReminders()
         {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+            var reminders = dgvReminders.DataSource as List<ViewReminder>;
+            var selectedReminder = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
-                .Select(g => recTrans[g.Key])
+                .Select(g => reminders[g.Key])
                 .ToList();
 
-            if (selectedRecTrans.Count() > 0)
+            if (selectedReminder.Count() > 0)
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you want to delete these {selectedRecTrans.Count()} recurring transactions?",
+                    $"Are you sure you want to delete these {selectedReminder.Count()} reminders?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.DeleteRecurringTransactions(selectedRecTrans);
+                    m_db.DeleteReminders(selectedReminder);
 
-                    LoadRecurringTransactionsGrid();
+                    LoadRemindersGrid();
                 }
             }
         }
 
-        private void ShowAddRecTransactionDialog()
+        private void ShowAddReminderDialog()
         {
-            var dlg = RecurringTransactionForm.CreateAddForm();
+            var dlg = ReminderForm.CreateAddForm();
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                LoadRecurringTransactionsGrid();
+                LoadRemindersGrid();
             }
         }
 
-        private void ShowEditRecTransactionDialog()
+        private void ShowEditReminderDialog()
         {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+            var reminders = dgvReminders.DataSource as List<ViewReminder>;
+            var selectedReminder = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .Select(x => new
                 {
                     RowIndex = x.RowIndex,
-                    Transaction = recTrans[x.RowIndex]
+                    Transaction = reminders[x.RowIndex]
                 })
                 .FirstOrDefault();
 
-            if (selectedRecTrans != null)
+            if (selectedReminder != null)
             {
-                var dlg = RecurringTransactionForm.CreateEditForm(selectedRecTrans.Transaction);
+                var dlg = ReminderForm.CreateEditForm(selectedReminder.Transaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    LoadRecurringTransactionsGrid();
+                    LoadRemindersGrid();
                 }
             }
         }
 
-        private void ShowStageRecTransactionDialog()
+        private void ShowStageReminderDialog()
         {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+            var reminders = dgvReminders.DataSource as List<ViewReminder>;
+            var selectedReminder = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .Select(x => new
                 {
                     RowIndex = x.RowIndex,
-                    Transaction = recTrans[x.RowIndex]
+                    Transaction = reminders[x.RowIndex]
                 })
                 .FirstOrDefault();
 
-            if (selectedRecTrans != null)
+            if (selectedReminder != null)
             {
-                var dlg = RecurringTransactionForm.CreateStageForm(selectedRecTrans.Transaction);
+                var dlg = ReminderForm.CreateStageForm(selectedReminder.Transaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     LoadTransactionsGrid();
 
-                    LoadRecurringTransactionsGrid();
+                    LoadRemindersGrid();
                 }
             }
         }

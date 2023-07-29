@@ -52,11 +52,11 @@ namespace MoneyBookTools.ViewModels
             });
         }
 
-        public static IEnumerable<ViewRecurringTransaction> AsViewRecurringTransactions(this IEnumerable<RecurringTransactionInfo> transactions)
+        public static IEnumerable<ViewReminder> AsViewReminders(this IEnumerable<ReminderInfo> reminder)
         {
-            return transactions.Select(tran => new ViewRecurringTransaction
+            return reminder.Select(tran => new ViewReminder
             {
-                RecTrnsId = tran.RecTrnsId,
+                RmdrId = tran.RmdrId,
                 DueDate = tran.DueDate,
                 TrnsType = tran.TrnsType,
                 Payee = tran.Payee,
@@ -69,21 +69,21 @@ namespace MoneyBookTools.ViewModels
             });
         }
 
-        public static DueStateTypes GetDueState(this ViewRecurringTransaction recTrans)
+        public static DueStateTypes GetDueState(this ViewReminder reminder)
         {
-            if (recTrans.DueDate.Date < DateTime.Now.Date)
+            if (reminder.DueDate.Date < DateTime.Now.Date)
             {
                 return DueStateTypes.Past;
             }
-            else if (recTrans.DueDate.Date == DateTime.Now.Date)
+            else if (reminder.DueDate.Date == DateTime.Now.Date)
             {
                 return DueStateTypes.Today;
             }
-            else if (recTrans.DueDate.Date <= DateTime.Now.GetDateOfTarget(ViewSettings.Instance.DueBeforeDay).Date)
+            else if (reminder.DueDate.Date <= DateTime.Now.GetDateOfTarget(ViewSettings.Instance.DueBeforeDay).Date)
             {
                 return DueStateTypes.Soon;
             }
-            else if (recTrans.DueDate.AddDays(-7).Date <= DateTime.Now.Date)
+            else if (reminder.DueDate.AddDays(-7).Date <= DateTime.Now.Date)
             {
                 return DueStateTypes.Upcoming;
             }
