@@ -41,6 +41,7 @@ namespace MoneyBook.Data
         
         public enum DateFilter : int
         {
+            None,
             TwoWeeks,
             ThisMonth,
             ThisYear,
@@ -127,6 +128,7 @@ namespace MoneyBook.Data
                 case DateFilter.ThisYear:
                     return transactions
                         .Where(x => x.Date.Year == DateTime.Now.Year);
+                case DateFilter.None:
                 default:
                     return transactions;
             }
@@ -386,21 +388,20 @@ namespace MoneyBook.Data
             tran.IsDeleted = true;
         }
 
-        public static void BackupDatabase(this MoneyBookDbContext db, string filename)
+        public static void BackupDatabase(this MoneyBookDbContext db, string backupDir)
         {
-            var backup = new DatabaseBackup()
+            Directory.CreateDirectory(backupDir);
+
+            var dbBackups = new IDbBackup[]
             {
-                DateCreated = DateTime.Now,
-                Transactions = db.Transactions.ToList(),
-                RecurringTransactions = db.RecurringTransactions.ToList(),
-                Accounts = db.Accounts.ToList(),
-                Institutions = db.Institutions.ToList(),
-                Categories = db.Categories.ToList(),
+                MoneyBookDbTextBackup.Create(db, backupDir),
+                MoneyBookDbTapeBackup.Create(db, backupDir)
             };
 
-            string json = JsonConvert.SerializeObject(backup, Formatting.Indented);
-
-            File.WriteAllText(filename, json);
+            foreach (var backup in dbBackups)
+            {
+                backup.Save();
+            }
         }
 
         public static void RestoreDatabase(this MoneyBookDbContext db, string filename)
@@ -491,12 +492,16 @@ namespace MoneyBook.Data
                     var oldCat = oldCategories.FirstOrDefault(x => x.CatId == recTrans.CatId);
                     if (oldCat == null)
                     {
-                        continue;
+                        recTrans.CatId = db.Categories.First().CatId;
                     }
-                    var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
-                    if (newCat == null)
+                    else
                     {
-                        continue;
+                        var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
+                        if (newCat == null)
+                        {
+                            continue;
+                        }
+                        recTrans.CatId = newCat.CatId;
                     }
 
                     var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == recTrans.AcctId);
@@ -511,7 +516,6 @@ namespace MoneyBook.Data
                     }
 
                     recTrans.RecTrnsId = 0;
-                    recTrans.CatId = newCat.CatId;
                     recTrans.AcctId = newAcct.AcctId;
                     recTrans.DateAdded =
                     recTrans.DateModified = DateTime.Now;
@@ -527,12 +531,16 @@ namespace MoneyBook.Data
                     var oldCat = oldCategories.FirstOrDefault(x => x.CatId == trans.CatId);
                     if (oldCat == null)
                     {
-                        continue;
+                        trans.CatId = db.Categories.First().CatId;
                     }
-                    var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
-                    if (newCat == null)
+                    else
                     {
-                        continue;
+                        var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
+                        if (newCat == null)
+                        {
+                            continue;
+                        }
+                        trans.CatId = newCat.CatId;
                     }
 
                     var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == trans.AcctId);
@@ -547,7 +555,6 @@ namespace MoneyBook.Data
                     }
 
                     trans.TrnsId = 0;
-                    trans.CatId = newCat.CatId;
                     trans.AcctId = newAcct.AcctId;
                     trans.DateAdded =
                     trans.DateModified = DateTime.Now;

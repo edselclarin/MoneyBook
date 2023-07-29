@@ -2,6 +2,6 @@
 {
     public interface IDbContextConfig
     {
-        string ConnectionStr { get; }
+        string? ConnectionStr { get; }
     }
 }

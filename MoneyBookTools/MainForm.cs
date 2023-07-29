@@ -1,4 +1,5 @@
 ﻿using Dark.Net;
+using MoneyBook;
 using MoneyBook.BusinessModels;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
@@ -16,6 +17,7 @@ namespace MoneyBookTools
         private List<AccountSummary> m_summaries;
         private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
         private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
+        private MoneyBookDbContextExtension.StateTypes? m_stateFilter = null;
         private List<ViewTransaction> m_selectedTransactions;
         private List<ViewRecurringTransaction> m_selectedRecurringTransactions;
 
@@ -62,17 +64,25 @@ namespace MoneyBookTools
 
             twoWeeksToolStripMenuItem.Checked = true;
             dateDescendingToolStripMenuItem.Checked = true;
+            anyStatusMenuItem.Checked = true;
 
             vSplit1.Dock =
-            hSplit1.Dock = 
+            hSplit1.Dock =
             groupAccounts.Dock =
             listViewAccounts.Dock =
             groupLedger.Dock =
             dgvAccountTransactions.Dock =
             groupUpcoming.Dock =
-            dgvRecurringTransactions.Dock = 
-            statusStrip1.Dock = 
+            dgvRecurringTransactions.Dock =
+            statusStrip1.Dock =
             tableLayoutLedger.Dock = DockStyle.Fill;
+
+            InitializeEnvironment();
+        }
+
+        private void InitializeEnvironment()
+        {
+            ViewSettings.Instance.DueBeforeDay = AppSettings.Instance.DueBeforeDay;
         }
 
         #endregion
@@ -101,6 +111,14 @@ namespace MoneyBookTools
                 if (listViewAccounts.Items.Count > 0)
                 {
                     listViewAccounts.Items[0].Selected = true;
+                }
+
+                if (ImportTransactionsForm.GetImportFilePaths().Count() > 0)
+                {
+                    var dlg = ImportTransactionsForm.Create();
+                    dlg.ShowDialog();
+
+                    refreshToolStripMenuItem.PerformClick();
                 }
             }
             catch (Exception ex)
@@ -229,35 +247,21 @@ namespace MoneyBookTools
         {
             try
             {
-                var accountDataArr = AppSettings.Instance.Accounts
-                    .Where(x => File.Exists(x.ImportFilePath));
-
-                if (accountDataArr.Count() > 0)                {
-
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want to import the transactions from these files into these accounts?" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.ImportFilePath} --> {x.Name}")),
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
-                    {
-                        using var hg = this.CreateHourglass();
-
-                        m_db.ImportTransactions(accountDataArr);
-
-                        MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
-
-                        refreshToolStripMenuItem.PerformClick();
-                    }
-                }
-                else
+                if (ImportTransactionsForm.GetImportFilePaths().Count() == 0)
                 {
-                    MessageBox.Show(this, "No files found.  Make sure files exists and paths are correct in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, "No files were found to import.", this.Text, MessageBoxButtons.OK);
+                    return;
                 }
+
+                var dlg = ImportTransactionsForm.Create();
+                if (dlg == null)
+                {
+                    return;
+                }
+
+                dlg.ShowDialog();
+
+                refreshToolStripMenuItem.PerformClick();
             }
             catch (Exception ex)
             {
@@ -373,67 +377,6 @@ namespace MoneyBookTools
             }
         }
 
-        private void updateAccountDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var accountDataArr = AppSettings.Instance.Accounts.ToArray();
-
-                if (accountDataArr.Length > 0)
-                {
-                    var answer = MessageBox.Show(this,
-                        $"Are you sure you want the data of all accounts?" +
-                        Environment.NewLine +
-                        Environment.NewLine +
-                        String.Join(Environment.NewLine, accountDataArr.Select(x => $"{x.Name} --> {x.StartingBalance}")),
-                        this.Text,
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                    if (answer == DialogResult.Yes)
-                    {
-                        using var hg = this.CreateHourglass();
-
-                        m_db.UpdateAccountData(accountDataArr);
-
-                        MessageBox.Show(this, "Update complete.", this.Text, MessageBoxButtons.OK);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(this, "No accounts found.  Check imports in appSettings.json.",
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void resetAccountDataToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you reset the account data of all accounts?",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    m_db.ResetAccountData();
-
-                    MessageBox.Show(this, "Reset complete.", this.Text, MessageBoxButtons.OK);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
         private void backupDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -463,7 +406,7 @@ namespace MoneyBookTools
                 this.ShowException(ex);
             }
         }
-      
+
         private void transContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
@@ -541,11 +484,13 @@ namespace MoneyBookTools
                 .GroupBy(x => x.RowIndex)
                 .Count();
 
-            stageRecTransToolStripMenuItem.Enabled =
-            skipRecTransToolStripMenuItem.Enabled = 
+            addRecTransToolStripMenuItem.Enabled = count <= 1;
+
+            skipRecTransToolStripMenuItem.Enabled =
             deleteRecTransToolStripMenuItem.Enabled = count > 0;
 
-            editRecTransToolStripMenuItem.Enabled = 
+            stageRecTransToolStripMenuItem.Enabled =
+            editRecTransToolStripMenuItem.Enabled =
             copyRecTransToolStripMenuItem.Enabled =
             openWebsiteToolStripMenuItem.Enabled = count == 1;
         }
@@ -556,7 +501,7 @@ namespace MoneyBookTools
             {
                 using var hg = this.CreateHourglass();
 
-                StageRecurringTransactions();
+                ShowStageRecTransactionDialog();
             }
             catch (Exception ex)
             {
@@ -618,7 +563,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void editRecTranToolStripMenuItem_Click(object sender, EventArgs e)
+        private void addRecTransToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -721,6 +666,7 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = true;
             thisMonthToolStripMenuItem.Checked = false;
             thisYearToolStripMenuItem.Checked = false;
+            clearToolStripMenuItem.Checked = false;
 
             m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
 
@@ -732,6 +678,7 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = false;
             thisMonthToolStripMenuItem.Checked = true;
             thisYearToolStripMenuItem.Checked = false;
+            clearToolStripMenuItem.Checked = false;
 
             m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisMonth;
 
@@ -743,8 +690,21 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = false;
             thisMonthToolStripMenuItem.Checked = false;
             thisYearToolStripMenuItem.Checked = true;
+            clearToolStripMenuItem.Checked = false;
 
             m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisYear;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            twoWeeksToolStripMenuItem.Checked = false;
+            thisMonthToolStripMenuItem.Checked = false;
+            thisYearToolStripMenuItem.Checked = false;
+            clearToolStripMenuItem.Checked = true;
+
+            m_dateFilter = MoneyBookDbContextExtension.DateFilter.None;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -765,6 +725,71 @@ namespace MoneyBookTools
             dateAscendingToolStripMenuItem.Checked = true;
 
             m_sortOrder = MoneyBookDbContextExtension.SortOrder.Ascending;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void newStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            newStatusMenuItem.Checked = true;
+            stagedStatusMenuItem.Checked =
+            reconciledStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked =
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.New;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void stagedStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            stagedStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked =
+            reconciledStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked =
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Staged;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void reconciledStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            reconciledStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked =
+            stagedStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked =
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Reconciled;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void ignoredStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            ignoredStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked =
+            stagedStatusMenuItem.Checked =
+            reconciledStatusMenuItem.Checked =
+            anyStatusMenuItem.Checked = false;
+
+            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Ignored;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
+        private void anyStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            anyStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked =
+            stagedStatusMenuItem.Checked =
+            reconciledStatusMenuItem.Checked =
+            ignoredStatusMenuItem.Checked = false;
+
+            m_stateFilter = null;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -855,9 +880,25 @@ namespace MoneyBookTools
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedBalance:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-                var viewTransactions = summary.Transactions
-                    .Filter(m_dateFilter)
-                    .Order(m_sortOrder)
+                IEnumerable<TransactionInfo>? transactions = null;
+                if (m_stateFilter != null)
+                {
+                    // Filter by state and date.
+                    transactions = summary?.Transactions
+                        .Where(x => x.State == m_stateFilter.ToString())
+                        .Filter(m_dateFilter)
+                        .Order(m_sortOrder);
+                }
+                else
+                {
+                    // Filter by date only.
+                    transactions = summary?.Transactions
+                        .Filter(m_dateFilter)
+                        .Order(m_sortOrder);
+                }
+
+                // Filter by date.
+                var viewTransactions = transactions
                     .AsViewTransactions()
                     .ToList();
 
@@ -932,7 +973,7 @@ namespace MoneyBookTools
 
             if (selectedTransaction != null)
             {
-                var dlg = RecurringTransactionForm.Create(selectedTransaction);
+                var dlg = RecurringTransactionForm.CreateAddForm(selectedTransaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -1120,45 +1161,18 @@ namespace MoneyBookTools
                 }
                 else
                 {
-                    if (rt.DueState != ViewRecurringTransaction.DueStateTypes.None)
+                    if (rt.GetDueState() != DueStateTypes.None)
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
                     }
 
-                    row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.DueState.ToString());
+                    row.DefaultCellStyle.ForeColor = RecurringTransactionStateColorScheme.Instance.ForeColor(rt.GetDueState().ToString());
                 }
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
             RestoreSelectedRecurringTransactions();
-        }
-
-        private void StageRecurringTransactions()
-        {
-            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
-            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
-                .Cast<DataGridViewCell>()
-                .GroupBy(x => x.RowIndex)
-                .Select(g => recTrans[g.Key])
-                .ToList();
-
-            if (selectedRecTrans.Count() > 0)
-            {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you want to stage these {selectedRecTrans.Count()} recurring transactions?",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    m_db.StageRecurringTransactions(selectedRecTrans);
-
-                    LoadRecurringTransactionsGrid();
-
-                    LoadTransactionsGrid();
-                }
-            }
         }
 
         private void SkipRecurringTransactions()
@@ -1257,7 +1271,7 @@ namespace MoneyBookTools
 
         private void ShowAddRecTransactionDialog()
         {
-            var dlg = RecurringTransactionForm.Create();
+            var dlg = RecurringTransactionForm.CreateAddForm();
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
@@ -1279,10 +1293,35 @@ namespace MoneyBookTools
 
             if (selectedRecTrans != null)
             {
-                var dlg = RecurringTransactionForm.Create(selectedRecTrans.Transaction);
+                var dlg = RecurringTransactionForm.CreateEditForm(selectedRecTrans.Transaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
+                    LoadRecurringTransactionsGrid();
+                }
+            }
+        }
+
+        private void ShowStageRecTransactionDialog()
+        {
+            var recTrans = dgvRecurringTransactions.DataSource as List<ViewRecurringTransaction>;
+            var selectedRecTrans = dgvRecurringTransactions.SelectedCells
+                .Cast<DataGridViewCell>()
+                .Select(x => new
+                {
+                    RowIndex = x.RowIndex,
+                    Transaction = recTrans[x.RowIndex]
+                })
+                .FirstOrDefault();
+
+            if (selectedRecTrans != null)
+            {
+                var dlg = RecurringTransactionForm.CreateStageForm(selectedRecTrans.Transaction);
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadTransactionsGrid();
+
                     LoadRecurringTransactionsGrid();
                 }
             }
@@ -1294,16 +1333,18 @@ namespace MoneyBookTools
 
         private void BackupDatabase()
         {
-            var sfd = new SaveFileDialog()
+            var fbd = new FolderBrowserDialog()
             {
-                InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                FileName = $"MoneyTools-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json",
-                Filter = "Data Files|*.json;*.json|All Files|*.*",
+                ShowNewFolderButton = true,
+                UseDescriptionForTitle = true,
+                Description = "Select Backup Directory",
+                InitialDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook")
             };
 
-            if (sfd.ShowDialog() == DialogResult.OK)
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
-                m_db.BackupDatabase(sfd.FileName);
+                m_db.BackupDatabase(fbd.SelectedPath);
 
                 MessageBox.Show(this, "Backup complete.", this.Text, MessageBoxButtons.OK);
             }

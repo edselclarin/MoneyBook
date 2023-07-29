@@ -31,764 +31,764 @@ namespace MoneyBookTools
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.transactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.twoWeeksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.thisMonthToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.thisYearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dateDescendingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dateAscendingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.operationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteAllTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.importRecurringTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportRecurringTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteRecurringTransactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.updateAccountDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resetAccountDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.backupDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.restoreDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hSplit1 = new System.Windows.Forms.SplitContainer();
-            this.vSplit1 = new System.Windows.Forms.SplitContainer();
-            this.groupAccounts = new System.Windows.Forms.GroupBox();
-            this.listViewAccounts = new MoneyBookTools.Forms.CustomListView();
-            this.tableLayoutLedger = new System.Windows.Forms.TableLayoutPanel();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.accountToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.currentToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.availableToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.stagedToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.finalToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.sumToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.groupLedger = new System.Windows.Forms.GroupBox();
-            this.dgvAccountTransactions = new System.Windows.Forms.DataGridView();
-            this.transContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setTransStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.reconcileNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.makeRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupUpcoming = new System.Windows.Forms.GroupBox();
-            this.dgvRecurringTransactions = new System.Windows.Forms.DataGridView();
-            this.recTransContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editRecTranToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.skipRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stageRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.openWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteRecTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainPanel = new System.Windows.Forms.Panel();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.hSplit1)).BeginInit();
-            this.hSplit1.Panel1.SuspendLayout();
-            this.hSplit1.Panel2.SuspendLayout();
-            this.hSplit1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.vSplit1)).BeginInit();
-            this.vSplit1.Panel1.SuspendLayout();
-            this.vSplit1.Panel2.SuspendLayout();
-            this.vSplit1.SuspendLayout();
-            this.groupAccounts.SuspendLayout();
-            this.tableLayoutLedger.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            this.groupLedger.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).BeginInit();
-            this.transContextMenu.SuspendLayout();
-            this.groupUpcoming.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).BeginInit();
-            this.recTransContextMenu.SuspendLayout();
-            this.mainPanel.SuspendLayout();
-            this.SuspendLayout();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            openToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator5 = new ToolStripSeparator();
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            viewToolStripMenuItem = new ToolStripMenuItem();
+            refreshToolStripMenuItem = new ToolStripMenuItem();
+            transactionsToolStripMenuItem = new ToolStripMenuItem();
+            filterToolStripMenuItem = new ToolStripMenuItem();
+            twoWeeksToolStripMenuItem = new ToolStripMenuItem();
+            thisMonthToolStripMenuItem = new ToolStripMenuItem();
+            thisYearToolStripMenuItem = new ToolStripMenuItem();
+            clearToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator10 = new ToolStripSeparator();
+            newStatusMenuItem = new ToolStripMenuItem();
+            stagedStatusMenuItem = new ToolStripMenuItem();
+            reconciledStatusMenuItem = new ToolStripMenuItem();
+            ignoredStatusMenuItem = new ToolStripMenuItem();
+            anyStatusMenuItem = new ToolStripMenuItem();
+            toolStripSeparator11 = new ToolStripSeparator();
+            sortToolStripMenuItem = new ToolStripMenuItem();
+            dateDescendingToolStripMenuItem = new ToolStripMenuItem();
+            dateAscendingToolStripMenuItem = new ToolStripMenuItem();
+            operationsToolStripMenuItem = new ToolStripMenuItem();
+            importTransactionsToolStripMenuItem = new ToolStripMenuItem();
+            deleteAllTransactionsToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            importRecurringTransactionsToolStripMenuItem = new ToolStripMenuItem();
+            exportRecurringTransactionsToolStripMenuItem = new ToolStripMenuItem();
+            deleteRecurringTransactionsToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator3 = new ToolStripSeparator();
+            updateAccountDataToolStripMenuItem = new ToolStripMenuItem();
+            resetAccountDataToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
+            backupDatabaseToolStripMenuItem = new ToolStripMenuItem();
+            restoreDatabaseToolStripMenuItem = new ToolStripMenuItem();
+            helpToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
+            hSplit1 = new SplitContainer();
+            vSplit1 = new SplitContainer();
+            groupAccounts = new GroupBox();
+            listViewAccounts = new CustomListView();
+            tableLayoutLedger = new TableLayoutPanel();
+            statusStrip1 = new StatusStrip();
+            accountToolStripStatusLabel = new ToolStripStatusLabel();
+            currentToolStripStatusLabel = new ToolStripStatusLabel();
+            availableToolStripStatusLabel = new ToolStripStatusLabel();
+            stagedToolStripStatusLabel = new ToolStripStatusLabel();
+            finalToolStripStatusLabel = new ToolStripStatusLabel();
+            sumToolStripStatusLabel = new ToolStripStatusLabel();
+            groupLedger = new GroupBox();
+            dgvAccountTransactions = new DataGridView();
+            transContextMenu = new ContextMenuStrip(components);
+            addTransToolStripMenuItem = new ToolStripMenuItem();
+            editTransToolStripMenuItem = new ToolStripMenuItem();
+            setTransStateToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator7 = new ToolStripSeparator();
+            reconcileNewToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator9 = new ToolStripSeparator();
+            makeRecTransToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            deleteTransToolStripMenuItem = new ToolStripMenuItem();
+            groupUpcoming = new GroupBox();
+            dgvRecurringTransactions = new DataGridView();
+            recTransContextMenu = new ContextMenuStrip(components);
+            addRecTransToolStripMenuItem = new ToolStripMenuItem();
+            editRecTransToolStripMenuItem = new ToolStripMenuItem();
+            skipRecTransToolStripMenuItem = new ToolStripMenuItem();
+            stageRecTransToolStripMenuItem = new ToolStripMenuItem();
+            copyRecTransToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator8 = new ToolStripSeparator();
+            openWebsiteToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator6 = new ToolStripSeparator();
+            deleteRecTransToolStripMenuItem = new ToolStripMenuItem();
+            mainPanel = new Panel();
+            menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)hSplit1).BeginInit();
+            hSplit1.Panel1.SuspendLayout();
+            hSplit1.Panel2.SuspendLayout();
+            hSplit1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)vSplit1).BeginInit();
+            vSplit1.Panel1.SuspendLayout();
+            vSplit1.Panel2.SuspendLayout();
+            vSplit1.SuspendLayout();
+            groupAccounts.SuspendLayout();
+            tableLayoutLedger.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            groupLedger.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvAccountTransactions).BeginInit();
+            transContextMenu.SuspendLayout();
+            groupUpcoming.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvRecurringTransactions).BeginInit();
+            recTransContextMenu.SuspendLayout();
+            mainPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.viewToolStripMenuItem,
-            this.transactionsToolStripMenuItem,
-            this.operationsToolStripMenuItem,
-            this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1156, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, viewToolStripMenuItem, transactionsToolStripMenuItem, operationsToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1156, 24);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "&File";
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, toolStripSeparator5, exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "&File";
             // 
             // openToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.openToolStripMenuItem.Text = "&Open...";
-            this.openToolStripMenuItem.ToolTipText = "Open file";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new Size(112, 22);
+            openToolStripMenuItem.Text = "&Open...";
+            openToolStripMenuItem.ToolTipText = "Open file";
+            openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
             // toolStripSeparator5
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(109, 6);
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(109, 6);
             // 
             // exitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.ToolTipText = "Close application";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(112, 22);
+            exitToolStripMenuItem.Text = "E&xit";
+            exitToolStripMenuItem.ToolTipText = "Close application";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // viewToolStripMenuItem
             // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.refreshToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "&View";
+            viewToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { refreshToolStripMenuItem });
+            viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            viewToolStripMenuItem.Size = new Size(44, 20);
+            viewToolStripMenuItem.Text = "&View";
             // 
             // refreshToolStripMenuItem
             // 
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.refreshToolStripMenuItem.Text = "&Refresh";
-            this.refreshToolStripMenuItem.ToolTipText = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            refreshToolStripMenuItem.ShortcutKeys = Keys.F5;
+            refreshToolStripMenuItem.Size = new Size(132, 22);
+            refreshToolStripMenuItem.Text = "&Refresh";
+            refreshToolStripMenuItem.ToolTipText = "Refresh";
+            refreshToolStripMenuItem.Click += refreshToolStripMenuItem_Click;
             // 
             // transactionsToolStripMenuItem
             // 
-            this.transactionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.filterToolStripMenuItem,
-            this.sortToolStripMenuItem});
-            this.transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
-            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
-            this.transactionsToolStripMenuItem.Text = "Transactions";
+            transactionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { filterToolStripMenuItem, sortToolStripMenuItem });
+            transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
+            transactionsToolStripMenuItem.Size = new Size(84, 20);
+            transactionsToolStripMenuItem.Text = "Transactions";
             // 
             // filterToolStripMenuItem
             // 
-            this.filterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.twoWeeksToolStripMenuItem,
-            this.thisMonthToolStripMenuItem,
-            this.thisYearToolStripMenuItem});
-            this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
-            this.filterToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
-            this.filterToolStripMenuItem.Text = "Filter...";
-            this.filterToolStripMenuItem.ToolTipText = "Show transactions...";
+            filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, thisYearToolStripMenuItem, clearToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, stagedStatusMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
+            filterToolStripMenuItem.Name = "filterToolStripMenuItem";
+            filterToolStripMenuItem.Size = new Size(109, 22);
+            filterToolStripMenuItem.Text = "Filter...";
+            filterToolStripMenuItem.ToolTipText = "Show transactions...";
             // 
             // twoWeeksToolStripMenuItem
             // 
-            this.twoWeeksToolStripMenuItem.Name = "twoWeeksToolStripMenuItem";
-            this.twoWeeksToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.twoWeeksToolStripMenuItem.Text = "Two Weeks";
-            this.twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks";
-            this.twoWeeksToolStripMenuItem.Click += new System.EventHandler(this.twoWeeksToolStripMenuItem_Click);
+            twoWeeksToolStripMenuItem.Name = "twoWeeksToolStripMenuItem";
+            twoWeeksToolStripMenuItem.Size = new Size(157, 22);
+            twoWeeksToolStripMenuItem.Text = "Two Weeks";
+            twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks";
+            twoWeeksToolStripMenuItem.Click += twoWeeksToolStripMenuItem_Click;
             // 
             // thisMonthToolStripMenuItem
             // 
-            this.thisMonthToolStripMenuItem.Name = "thisMonthToolStripMenuItem";
-            this.thisMonthToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.thisMonthToolStripMenuItem.Text = "This Month";
-            this.thisMonthToolStripMenuItem.ToolTipText = "Of the current month";
-            this.thisMonthToolStripMenuItem.Click += new System.EventHandler(this.thisMonthToolStripMenuItem_Click);
+            thisMonthToolStripMenuItem.Name = "thisMonthToolStripMenuItem";
+            thisMonthToolStripMenuItem.Size = new Size(157, 22);
+            thisMonthToolStripMenuItem.Text = "This Month";
+            thisMonthToolStripMenuItem.ToolTipText = "Of the current month";
+            thisMonthToolStripMenuItem.Click += thisMonthToolStripMenuItem_Click;
             // 
             // thisYearToolStripMenuItem
             // 
-            this.thisYearToolStripMenuItem.Name = "thisYearToolStripMenuItem";
-            this.thisYearToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.thisYearToolStripMenuItem.Text = "This Year";
-            this.thisYearToolStripMenuItem.ToolTipText = "Of the current year";
-            this.thisYearToolStripMenuItem.Click += new System.EventHandler(this.thisYearToolStripMenuItem_Click);
+            thisYearToolStripMenuItem.Name = "thisYearToolStripMenuItem";
+            thisYearToolStripMenuItem.Size = new Size(157, 22);
+            thisYearToolStripMenuItem.Text = "This Year";
+            thisYearToolStripMenuItem.ToolTipText = "Of the current year";
+            thisYearToolStripMenuItem.Click += thisYearToolStripMenuItem_Click;
+            // 
+            // clearToolStripMenuItem
+            // 
+            clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            clearToolStripMenuItem.Size = new Size(157, 22);
+            clearToolStripMenuItem.Text = "Clear Date Filter";
+            clearToolStripMenuItem.ToolTipText = "Show transactions of any date";
+            clearToolStripMenuItem.Click += clearToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator10
+            // 
+            toolStripSeparator10.Name = "toolStripSeparator10";
+            toolStripSeparator10.Size = new Size(154, 6);
+            // 
+            // newStatusMenuItem
+            // 
+            newStatusMenuItem.Name = "newStatusMenuItem";
+            newStatusMenuItem.Size = new Size(157, 22);
+            newStatusMenuItem.Text = "New";
+            newStatusMenuItem.ToolTipText = "Show New transactions";
+            newStatusMenuItem.Click += newStatusMenuItem_Click;
+            // 
+            // stagedStatusMenuItem
+            // 
+            stagedStatusMenuItem.Name = "stagedStatusMenuItem";
+            stagedStatusMenuItem.Size = new Size(157, 22);
+            stagedStatusMenuItem.Text = "Staged";
+            stagedStatusMenuItem.ToolTipText = "Show Staged transactions";
+            stagedStatusMenuItem.Click += stagedStatusMenuItem_Click;
+            // 
+            // reconciledStatusMenuItem
+            // 
+            reconciledStatusMenuItem.Name = "reconciledStatusMenuItem";
+            reconciledStatusMenuItem.Size = new Size(157, 22);
+            reconciledStatusMenuItem.Text = "Reconciled";
+            reconciledStatusMenuItem.ToolTipText = "Show Reconciled transactions";
+            reconciledStatusMenuItem.Click += reconciledStatusMenuItem_Click;
+            // 
+            // ignoredStatusMenuItem
+            // 
+            ignoredStatusMenuItem.Name = "ignoredStatusMenuItem";
+            ignoredStatusMenuItem.Size = new Size(157, 22);
+            ignoredStatusMenuItem.Text = "Ignored";
+            ignoredStatusMenuItem.ToolTipText = "Show Ignored transactions";
+            ignoredStatusMenuItem.Click += ignoredStatusMenuItem_Click;
+            // 
+            // anyStatusMenuItem
+            // 
+            anyStatusMenuItem.Name = "anyStatusMenuItem";
+            anyStatusMenuItem.Size = new Size(157, 22);
+            anyStatusMenuItem.Text = "Any Status";
+            anyStatusMenuItem.ToolTipText = "Show transactions of any status";
+            anyStatusMenuItem.Click += anyStatusMenuItem_Click;
+            // 
+            // toolStripSeparator11
+            // 
+            toolStripSeparator11.Name = "toolStripSeparator11";
+            toolStripSeparator11.Size = new Size(154, 6);
             // 
             // sortToolStripMenuItem
             // 
-            this.sortToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dateDescendingToolStripMenuItem,
-            this.dateAscendingToolStripMenuItem});
-            this.sortToolStripMenuItem.Name = "sortToolStripMenuItem";
-            this.sortToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
-            this.sortToolStripMenuItem.Text = "Sort...";
+            sortToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { dateDescendingToolStripMenuItem, dateAscendingToolStripMenuItem });
+            sortToolStripMenuItem.Name = "sortToolStripMenuItem";
+            sortToolStripMenuItem.Size = new Size(109, 22);
+            sortToolStripMenuItem.Text = "Sort...";
             // 
             // dateDescendingToolStripMenuItem
             // 
-            this.dateDescendingToolStripMenuItem.Name = "dateDescendingToolStripMenuItem";
-            this.dateDescendingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.dateDescendingToolStripMenuItem.Text = "Date Descending";
-            this.dateDescendingToolStripMenuItem.ToolTipText = "Sort by date in descending order.";
-            this.dateDescendingToolStripMenuItem.Click += new System.EventHandler(this.dateDescendingToolStripMenuItem_Click);
+            dateDescendingToolStripMenuItem.Name = "dateDescendingToolStripMenuItem";
+            dateDescendingToolStripMenuItem.Size = new Size(163, 22);
+            dateDescendingToolStripMenuItem.Text = "Date Descending";
+            dateDescendingToolStripMenuItem.ToolTipText = "Sort by date in descending order.";
+            dateDescendingToolStripMenuItem.Click += dateDescendingToolStripMenuItem_Click;
             // 
             // dateAscendingToolStripMenuItem
             // 
-            this.dateAscendingToolStripMenuItem.Name = "dateAscendingToolStripMenuItem";
-            this.dateAscendingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.dateAscendingToolStripMenuItem.Text = "Date Ascending";
-            this.dateAscendingToolStripMenuItem.ToolTipText = "Sort by date in ascending order.";
-            this.dateAscendingToolStripMenuItem.Click += new System.EventHandler(this.dateAscendingToolStripMenuItem_Click);
+            dateAscendingToolStripMenuItem.Name = "dateAscendingToolStripMenuItem";
+            dateAscendingToolStripMenuItem.Size = new Size(163, 22);
+            dateAscendingToolStripMenuItem.Text = "Date Ascending";
+            dateAscendingToolStripMenuItem.ToolTipText = "Sort by date in ascending order.";
+            dateAscendingToolStripMenuItem.Click += dateAscendingToolStripMenuItem_Click;
             // 
             // operationsToolStripMenuItem
             // 
-            this.operationsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importTransactionsToolStripMenuItem,
-            this.deleteAllTransactionsToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.importRecurringTransactionsToolStripMenuItem,
-            this.exportRecurringTransactionsToolStripMenuItem,
-            this.deleteRecurringTransactionsToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.updateAccountDataToolStripMenuItem,
-            this.resetAccountDataToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.backupDatabaseToolStripMenuItem,
-            this.restoreDatabaseToolStripMenuItem});
-            this.operationsToolStripMenuItem.Name = "operationsToolStripMenuItem";
-            this.operationsToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
-            this.operationsToolStripMenuItem.Text = "&Operations";
+            operationsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { importTransactionsToolStripMenuItem, deleteAllTransactionsToolStripMenuItem, toolStripSeparator1, importRecurringTransactionsToolStripMenuItem, exportRecurringTransactionsToolStripMenuItem, deleteRecurringTransactionsToolStripMenuItem, toolStripSeparator3, updateAccountDataToolStripMenuItem, resetAccountDataToolStripMenuItem, toolStripSeparator4, backupDatabaseToolStripMenuItem, restoreDatabaseToolStripMenuItem });
+            operationsToolStripMenuItem.Name = "operationsToolStripMenuItem";
+            operationsToolStripMenuItem.Size = new Size(77, 20);
+            operationsToolStripMenuItem.Text = "&Operations";
             // 
             // importTransactionsToolStripMenuItem
             // 
-            this.importTransactionsToolStripMenuItem.Name = "importTransactionsToolStripMenuItem";
-            this.importTransactionsToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.importTransactionsToolStripMenuItem.Text = "Import Transactions...";
-            this.importTransactionsToolStripMenuItem.ToolTipText = "Import transactions from file";
-            this.importTransactionsToolStripMenuItem.Click += new System.EventHandler(this.importTransactionsToolStripMenuItem_Click);
+            importTransactionsToolStripMenuItem.Name = "importTransactionsToolStripMenuItem";
+            importTransactionsToolStripMenuItem.Size = new Size(241, 22);
+            importTransactionsToolStripMenuItem.Text = "Import Transactions...";
+            importTransactionsToolStripMenuItem.ToolTipText = "Import transactions from file";
+            importTransactionsToolStripMenuItem.Click += importTransactionsToolStripMenuItem_Click;
             // 
             // deleteAllTransactionsToolStripMenuItem
             // 
-            this.deleteAllTransactionsToolStripMenuItem.Name = "deleteAllTransactionsToolStripMenuItem";
-            this.deleteAllTransactionsToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.deleteAllTransactionsToolStripMenuItem.Text = "Delete All Transactions";
-            this.deleteAllTransactionsToolStripMenuItem.ToolTipText = "Delete transactions across all accounts";
-            this.deleteAllTransactionsToolStripMenuItem.Click += new System.EventHandler(this.deleteAllTransactionsToolStripMenuItem_Click);
+            deleteAllTransactionsToolStripMenuItem.Name = "deleteAllTransactionsToolStripMenuItem";
+            deleteAllTransactionsToolStripMenuItem.Size = new Size(241, 22);
+            deleteAllTransactionsToolStripMenuItem.Text = "Delete All Transactions";
+            deleteAllTransactionsToolStripMenuItem.ToolTipText = "Delete transactions across all accounts";
+            deleteAllTransactionsToolStripMenuItem.Click += deleteAllTransactionsToolStripMenuItem_Click;
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(238, 6);
             // 
             // importRecurringTransactionsToolStripMenuItem
             // 
-            this.importRecurringTransactionsToolStripMenuItem.Name = "importRecurringTransactionsToolStripMenuItem";
-            this.importRecurringTransactionsToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.importRecurringTransactionsToolStripMenuItem.Text = "Import Recurring Transactions...";
-            this.importRecurringTransactionsToolStripMenuItem.ToolTipText = "Import recurring transactions from file";
-            this.importRecurringTransactionsToolStripMenuItem.Click += new System.EventHandler(this.importRecurringTransactionsToolStripMenuItem_Click);
+            importRecurringTransactionsToolStripMenuItem.Name = "importRecurringTransactionsToolStripMenuItem";
+            importRecurringTransactionsToolStripMenuItem.Size = new Size(241, 22);
+            importRecurringTransactionsToolStripMenuItem.Text = "Import Recurring Transactions...";
+            importRecurringTransactionsToolStripMenuItem.ToolTipText = "Import recurring transactions from file";
+            importRecurringTransactionsToolStripMenuItem.Click += importRecurringTransactionsToolStripMenuItem_Click;
             // 
             // exportRecurringTransactionsToolStripMenuItem
             // 
-            this.exportRecurringTransactionsToolStripMenuItem.Name = "exportRecurringTransactionsToolStripMenuItem";
-            this.exportRecurringTransactionsToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.exportRecurringTransactionsToolStripMenuItem.Text = "Export Recurring Transactions...";
-            this.exportRecurringTransactionsToolStripMenuItem.Click += new System.EventHandler(this.exportRecurringTransactionsToolStripMenuItem_Click);
+            exportRecurringTransactionsToolStripMenuItem.Name = "exportRecurringTransactionsToolStripMenuItem";
+            exportRecurringTransactionsToolStripMenuItem.Size = new Size(241, 22);
+            exportRecurringTransactionsToolStripMenuItem.Text = "Export Recurring Transactions...";
+            exportRecurringTransactionsToolStripMenuItem.Click += exportRecurringTransactionsToolStripMenuItem_Click;
             // 
             // deleteRecurringTransactionsToolStripMenuItem
             // 
-            this.deleteRecurringTransactionsToolStripMenuItem.Name = "deleteRecurringTransactionsToolStripMenuItem";
-            this.deleteRecurringTransactionsToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.deleteRecurringTransactionsToolStripMenuItem.Text = "Delete Recurring Transactions";
-            this.deleteRecurringTransactionsToolStripMenuItem.ToolTipText = "Delete all recurring transactions";
-            this.deleteRecurringTransactionsToolStripMenuItem.Click += new System.EventHandler(this.deleteRecurringTransactionsToolStripMenuItem_Click);
+            deleteRecurringTransactionsToolStripMenuItem.Name = "deleteRecurringTransactionsToolStripMenuItem";
+            deleteRecurringTransactionsToolStripMenuItem.Size = new Size(241, 22);
+            deleteRecurringTransactionsToolStripMenuItem.Text = "Delete Recurring Transactions";
+            deleteRecurringTransactionsToolStripMenuItem.ToolTipText = "Delete all recurring transactions";
+            deleteRecurringTransactionsToolStripMenuItem.Click += deleteRecurringTransactionsToolStripMenuItem_Click;
             // 
             // toolStripSeparator3
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(238, 6);
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(238, 6);
             // 
             // updateAccountDataToolStripMenuItem
             // 
-            this.updateAccountDataToolStripMenuItem.Name = "updateAccountDataToolStripMenuItem";
-            this.updateAccountDataToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.updateAccountDataToolStripMenuItem.Text = "Update Account Data";
-            this.updateAccountDataToolStripMenuItem.ToolTipText = "Update account data from settings file";
-            this.updateAccountDataToolStripMenuItem.Click += new System.EventHandler(this.updateAccountDataToolStripMenuItem_Click);
+            updateAccountDataToolStripMenuItem.Name = "updateAccountDataToolStripMenuItem";
+            updateAccountDataToolStripMenuItem.Size = new Size(241, 22);
+            updateAccountDataToolStripMenuItem.Text = "Update Account Data";
+            updateAccountDataToolStripMenuItem.ToolTipText = "Update account data from settings file";
             // 
             // resetAccountDataToolStripMenuItem
             // 
-            this.resetAccountDataToolStripMenuItem.Name = "resetAccountDataToolStripMenuItem";
-            this.resetAccountDataToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.resetAccountDataToolStripMenuItem.Text = "Reset Account Data";
-            this.resetAccountDataToolStripMenuItem.ToolTipText = "Reset account data of all accounts";
-            this.resetAccountDataToolStripMenuItem.Click += new System.EventHandler(this.resetAccountDataToolStripMenuItem_Click);
+            resetAccountDataToolStripMenuItem.Name = "resetAccountDataToolStripMenuItem";
+            resetAccountDataToolStripMenuItem.Size = new Size(241, 22);
+            resetAccountDataToolStripMenuItem.Text = "Reset Account Data";
+            resetAccountDataToolStripMenuItem.ToolTipText = "Reset account data of all accounts";
             // 
             // toolStripSeparator4
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(238, 6);
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(238, 6);
             // 
             // backupDatabaseToolStripMenuItem
             // 
-            this.backupDatabaseToolStripMenuItem.Name = "backupDatabaseToolStripMenuItem";
-            this.backupDatabaseToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.backupDatabaseToolStripMenuItem.Text = "Backup Database...";
-            this.backupDatabaseToolStripMenuItem.ToolTipText = "Backup all table data to file";
-            this.backupDatabaseToolStripMenuItem.Click += new System.EventHandler(this.backupDatabaseToolStripMenuItem_Click);
+            backupDatabaseToolStripMenuItem.Name = "backupDatabaseToolStripMenuItem";
+            backupDatabaseToolStripMenuItem.Size = new Size(241, 22);
+            backupDatabaseToolStripMenuItem.Text = "Backup Database...";
+            backupDatabaseToolStripMenuItem.ToolTipText = "Backup database to tape file and text file";
+            backupDatabaseToolStripMenuItem.Click += backupDatabaseToolStripMenuItem_Click;
             // 
             // restoreDatabaseToolStripMenuItem
             // 
-            this.restoreDatabaseToolStripMenuItem.Name = "restoreDatabaseToolStripMenuItem";
-            this.restoreDatabaseToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.restoreDatabaseToolStripMenuItem.Text = "Restore Database...";
-            this.restoreDatabaseToolStripMenuItem.ToolTipText = "Restore table data from file";
-            this.restoreDatabaseToolStripMenuItem.Click += new System.EventHandler(this.restoreDatabaseToolStripMenuItem_Click);
+            restoreDatabaseToolStripMenuItem.Name = "restoreDatabaseToolStripMenuItem";
+            restoreDatabaseToolStripMenuItem.Size = new Size(241, 22);
+            restoreDatabaseToolStripMenuItem.Text = "Restore Database...";
+            restoreDatabaseToolStripMenuItem.ToolTipText = "Restore table data from text file backup";
+            restoreDatabaseToolStripMenuItem.Click += restoreDatabaseToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "&Help";
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem });
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new Size(44, 20);
+            helpToolStripMenuItem.Text = "&Help";
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
-            this.aboutToolStripMenuItem.Text = "&About...";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(116, 22);
+            aboutToolStripMenuItem.Text = "&About...";
+            aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
             // hSplit1
             // 
-            this.hSplit1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hSplit1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.hSplit1.Location = new System.Drawing.Point(0, 0);
-            this.hSplit1.Name = "hSplit1";
-            this.hSplit1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            hSplit1.Dock = DockStyle.Fill;
+            hSplit1.FixedPanel = FixedPanel.Panel2;
+            hSplit1.Location = new Point(0, 0);
+            hSplit1.Name = "hSplit1";
+            hSplit1.Orientation = Orientation.Horizontal;
             // 
             // hSplit1.Panel1
             // 
-            this.hSplit1.Panel1.Controls.Add(this.vSplit1);
+            hSplit1.Panel1.Controls.Add(vSplit1);
             // 
             // hSplit1.Panel2
             // 
-            this.hSplit1.Panel2.Controls.Add(this.groupUpcoming);
-            this.hSplit1.Size = new System.Drawing.Size(1156, 503);
-            this.hSplit1.SplitterDistance = 295;
-            this.hSplit1.TabIndex = 3;
+            hSplit1.Panel2.Controls.Add(groupUpcoming);
+            hSplit1.Size = new Size(1156, 503);
+            hSplit1.SplitterDistance = 295;
+            hSplit1.TabIndex = 3;
             // 
             // vSplit1
             // 
-            this.vSplit1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.vSplit1.Location = new System.Drawing.Point(5, 3);
-            this.vSplit1.Name = "vSplit1";
+            vSplit1.FixedPanel = FixedPanel.Panel1;
+            vSplit1.Location = new Point(5, 3);
+            vSplit1.Name = "vSplit1";
             // 
             // vSplit1.Panel1
             // 
-            this.vSplit1.Panel1.Controls.Add(this.groupAccounts);
+            vSplit1.Panel1.Controls.Add(groupAccounts);
             // 
             // vSplit1.Panel2
             // 
-            this.vSplit1.Panel2.Controls.Add(this.tableLayoutLedger);
-            this.vSplit1.Size = new System.Drawing.Size(1139, 276);
-            this.vSplit1.SplitterDistance = 226;
-            this.vSplit1.TabIndex = 0;
+            vSplit1.Panel2.Controls.Add(tableLayoutLedger);
+            vSplit1.Size = new Size(1139, 276);
+            vSplit1.SplitterDistance = 226;
+            vSplit1.TabIndex = 0;
             // 
             // groupAccounts
             // 
-            this.groupAccounts.Controls.Add(this.listViewAccounts);
-            this.groupAccounts.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupAccounts.Location = new System.Drawing.Point(3, 3);
-            this.groupAccounts.Name = "groupAccounts";
-            this.groupAccounts.Size = new System.Drawing.Size(129, 167);
-            this.groupAccounts.TabIndex = 2;
-            this.groupAccounts.TabStop = false;
-            this.groupAccounts.Text = "Accounts";
+            groupAccounts.Controls.Add(listViewAccounts);
+            groupAccounts.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            groupAccounts.Location = new Point(3, 3);
+            groupAccounts.Name = "groupAccounts";
+            groupAccounts.Size = new Size(129, 167);
+            groupAccounts.TabIndex = 2;
+            groupAccounts.TabStop = false;
+            groupAccounts.Text = "Accounts";
             // 
             // listViewAccounts
             // 
-            this.listViewAccounts.Location = new System.Drawing.Point(6, 22);
-            this.listViewAccounts.Name = "listViewAccounts";
-            this.listViewAccounts.SelectionBackColor = System.Drawing.Color.Blue;
-            this.listViewAccounts.SelectionForeColor = System.Drawing.Color.Black;
-            this.listViewAccounts.Size = new System.Drawing.Size(90, 126);
-            this.listViewAccounts.TabIndex = 1;
-            this.listViewAccounts.UseCompatibleStateImageBehavior = false;
-            this.listViewAccounts.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            listViewAccounts.Location = new Point(6, 22);
+            listViewAccounts.Name = "listViewAccounts";
+            listViewAccounts.SelectionBackColor = Color.Blue;
+            listViewAccounts.SelectionForeColor = Color.Black;
+            listViewAccounts.Size = new Size(90, 126);
+            listViewAccounts.TabIndex = 1;
+            listViewAccounts.UseCompatibleStateImageBehavior = false;
+            listViewAccounts.SelectedIndexChanged += listView1_SelectedIndexChanged;
             // 
             // tableLayoutLedger
             // 
-            this.tableLayoutLedger.ColumnCount = 1;
-            this.tableLayoutLedger.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutLedger.Controls.Add(this.statusStrip1, 0, 1);
-            this.tableLayoutLedger.Controls.Add(this.groupLedger, 0, 0);
-            this.tableLayoutLedger.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutLedger.Name = "tableLayoutLedger";
-            this.tableLayoutLedger.RowCount = 2;
-            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutLedger.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutLedger.Size = new System.Drawing.Size(882, 190);
-            this.tableLayoutLedger.TabIndex = 7;
+            tableLayoutLedger.ColumnCount = 1;
+            tableLayoutLedger.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutLedger.Controls.Add(statusStrip1, 0, 1);
+            tableLayoutLedger.Controls.Add(groupLedger, 0, 0);
+            tableLayoutLedger.Location = new Point(3, 3);
+            tableLayoutLedger.Name = "tableLayoutLedger";
+            tableLayoutLedger.RowCount = 2;
+            tableLayoutLedger.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutLedger.RowStyles.Add(new RowStyle(SizeType.Absolute, 29F));
+            tableLayoutLedger.Size = new Size(882, 190);
+            tableLayoutLedger.TabIndex = 7;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.accountToolStripStatusLabel,
-            this.currentToolStripStatusLabel,
-            this.availableToolStripStatusLabel,
-            this.stagedToolStripStatusLabel,
-            this.finalToolStripStatusLabel,
-            this.sumToolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(2, 161);
-            this.statusStrip1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(878, 27);
-            this.statusStrip1.SizingGrip = false;
-            this.statusStrip1.TabIndex = 6;
-            this.statusStrip1.Text = "statusStrip1";
+            statusStrip1.Dock = DockStyle.None;
+            statusStrip1.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { accountToolStripStatusLabel, currentToolStripStatusLabel, availableToolStripStatusLabel, stagedToolStripStatusLabel, finalToolStripStatusLabel, sumToolStripStatusLabel });
+            statusStrip1.Location = new Point(2, 161);
+            statusStrip1.Margin = new Padding(2, 0, 2, 0);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(878, 27);
+            statusStrip1.SizingGrip = false;
+            statusStrip1.TabIndex = 6;
+            statusStrip1.Text = "statusStrip1";
             // 
             // accountToolStripStatusLabel
             // 
-            this.accountToolStripStatusLabel.AutoSize = false;
-            this.accountToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.accountToolStripStatusLabel.Name = "accountToolStripStatusLabel";
-            this.accountToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
-            this.accountToolStripStatusLabel.Text = "Account";
-            this.accountToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.accountToolStripStatusLabel.ToolTipText = "Account name";
+            accountToolStripStatusLabel.AutoSize = false;
+            accountToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            accountToolStripStatusLabel.Name = "accountToolStripStatusLabel";
+            accountToolStripStatusLabel.Size = new Size(150, 22);
+            accountToolStripStatusLabel.Text = "Account";
+            accountToolStripStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
+            accountToolStripStatusLabel.ToolTipText = "Account name";
             // 
             // currentToolStripStatusLabel
             // 
-            this.currentToolStripStatusLabel.AutoSize = false;
-            this.currentToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.currentToolStripStatusLabel.Name = "currentToolStripStatusLabel";
-            this.currentToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
-            this.currentToolStripStatusLabel.Text = "Current: 0.00";
-            this.currentToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.currentToolStripStatusLabel.ToolTipText = "Current balance";
+            currentToolStripStatusLabel.AutoSize = false;
+            currentToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            currentToolStripStatusLabel.Name = "currentToolStripStatusLabel";
+            currentToolStripStatusLabel.Size = new Size(150, 22);
+            currentToolStripStatusLabel.Text = "Current: 0.00";
+            currentToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            currentToolStripStatusLabel.ToolTipText = "Current balance";
             // 
             // availableToolStripStatusLabel
             // 
-            this.availableToolStripStatusLabel.AutoSize = false;
-            this.availableToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.availableToolStripStatusLabel.Name = "availableToolStripStatusLabel";
-            this.availableToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
-            this.availableToolStripStatusLabel.Text = "Available: 0.00";
-            this.availableToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.availableToolStripStatusLabel.ToolTipText = "Current balance less reserve amount";
+            availableToolStripStatusLabel.AutoSize = false;
+            availableToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            availableToolStripStatusLabel.Name = "availableToolStripStatusLabel";
+            availableToolStripStatusLabel.Size = new Size(150, 22);
+            availableToolStripStatusLabel.Text = "Available: 0.00";
+            availableToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            availableToolStripStatusLabel.ToolTipText = "Current balance less reserve amount";
             // 
             // stagedToolStripStatusLabel
             // 
-            this.stagedToolStripStatusLabel.AutoSize = false;
-            this.stagedToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.stagedToolStripStatusLabel.Name = "stagedToolStripStatusLabel";
-            this.stagedToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
-            this.stagedToolStripStatusLabel.Text = "Staged: 0.00";
-            this.stagedToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.stagedToolStripStatusLabel.ToolTipText = "Balance of staged transactions";
+            stagedToolStripStatusLabel.AutoSize = false;
+            stagedToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            stagedToolStripStatusLabel.Name = "stagedToolStripStatusLabel";
+            stagedToolStripStatusLabel.Size = new Size(150, 22);
+            stagedToolStripStatusLabel.Text = "Staged: 0.00";
+            stagedToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            stagedToolStripStatusLabel.ToolTipText = "Balance of staged transactions";
             // 
             // finalToolStripStatusLabel
             // 
-            this.finalToolStripStatusLabel.AutoSize = false;
-            this.finalToolStripStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.finalToolStripStatusLabel.Name = "finalToolStripStatusLabel";
-            this.finalToolStripStatusLabel.Size = new System.Drawing.Size(150, 22);
-            this.finalToolStripStatusLabel.Text = "Final: 0.00";
-            this.finalToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.finalToolStripStatusLabel.ToolTipText = "Available balance less staged transactions";
+            finalToolStripStatusLabel.AutoSize = false;
+            finalToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            finalToolStripStatusLabel.Name = "finalToolStripStatusLabel";
+            finalToolStripStatusLabel.Size = new Size(150, 22);
+            finalToolStripStatusLabel.Text = "Final: 0.00";
+            finalToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            finalToolStripStatusLabel.ToolTipText = "Available balance less staged transactions";
             // 
             // sumToolStripStatusLabel
             // 
-            this.sumToolStripStatusLabel.AutoSize = false;
-            this.sumToolStripStatusLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.sumToolStripStatusLabel.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
-            this.sumToolStripStatusLabel.Size = new System.Drawing.Size(113, 22);
-            this.sumToolStripStatusLabel.Spring = true;
-            this.sumToolStripStatusLabel.Text = "Sum: 0.00";
-            this.sumToolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.sumToolStripStatusLabel.ToolTipText = "Sum of selected transactions";
+            sumToolStripStatusLabel.AutoSize = false;
+            sumToolStripStatusLabel.Font = new Font("Segoe UI", 11F, FontStyle.Italic, GraphicsUnit.Point);
+            sumToolStripStatusLabel.ForeColor = SystemColors.GrayText;
+            sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
+            sumToolStripStatusLabel.Size = new Size(113, 22);
+            sumToolStripStatusLabel.Spring = true;
+            sumToolStripStatusLabel.Text = "Sum: 0.00";
+            sumToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            sumToolStripStatusLabel.ToolTipText = "Sum of selected transactions";
             // 
             // groupLedger
             // 
-            this.groupLedger.Controls.Add(this.dgvAccountTransactions);
-            this.groupLedger.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupLedger.Location = new System.Drawing.Point(3, 3);
-            this.groupLedger.Name = "groupLedger";
-            this.groupLedger.Size = new System.Drawing.Size(137, 66);
-            this.groupLedger.TabIndex = 5;
-            this.groupLedger.TabStop = false;
-            this.groupLedger.Text = "Ledger";
+            groupLedger.Controls.Add(dgvAccountTransactions);
+            groupLedger.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            groupLedger.Location = new Point(3, 3);
+            groupLedger.Name = "groupLedger";
+            groupLedger.Size = new Size(137, 66);
+            groupLedger.TabIndex = 5;
+            groupLedger.TabStop = false;
+            groupLedger.Text = "Ledger";
             // 
             // dgvAccountTransactions
             // 
-            this.dgvAccountTransactions.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.dgvAccountTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAccountTransactions.ContextMenuStrip = this.transContextMenu;
-            this.dgvAccountTransactions.Location = new System.Drawing.Point(6, 24);
-            this.dgvAccountTransactions.Name = "dgvAccountTransactions";
-            this.dgvAccountTransactions.RowTemplate.Height = 25;
-            this.dgvAccountTransactions.Size = new System.Drawing.Size(101, 29);
-            this.dgvAccountTransactions.TabIndex = 3;
-            this.dgvAccountTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
-            this.dgvAccountTransactions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAccountTransactions_CellMouseDoubleClick);
-            this.dgvAccountTransactions.SelectionChanged += new System.EventHandler(this.dgvAccountTransactions_SelectionChanged);
+            dgvAccountTransactions.BackgroundColor = SystemColors.Window;
+            dgvAccountTransactions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAccountTransactions.ContextMenuStrip = transContextMenu;
+            dgvAccountTransactions.Location = new Point(6, 24);
+            dgvAccountTransactions.Name = "dgvAccountTransactions";
+            dgvAccountTransactions.RowTemplate.Height = 25;
+            dgvAccountTransactions.Size = new Size(101, 29);
+            dgvAccountTransactions.TabIndex = 3;
+            dgvAccountTransactions.CellBeginEdit += dataGridView_CellBeginEdit;
+            dgvAccountTransactions.CellMouseDoubleClick += dgvAccountTransactions_CellMouseDoubleClick;
+            dgvAccountTransactions.SelectionChanged += dgvAccountTransactions_SelectionChanged;
             // 
             // transContextMenu
             // 
-            this.transContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addTransToolStripMenuItem,
-            this.editTransToolStripMenuItem,
-            this.setTransStateToolStripMenuItem,
-            this.toolStripSeparator7,
-            this.reconcileNewToolStripMenuItem,
-            this.toolStripSeparator9,
-            this.makeRecTransToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.deleteTransToolStripMenuItem});
-            this.transContextMenu.Name = "transContextMenu";
-            this.transContextMenu.Size = new System.Drawing.Size(181, 176);
-            this.transContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.transContextMenu_Opening);
+            transContextMenu.Items.AddRange(new ToolStripItem[] { addTransToolStripMenuItem, editTransToolStripMenuItem, setTransStateToolStripMenuItem, toolStripSeparator7, reconcileNewToolStripMenuItem, toolStripSeparator9, makeRecTransToolStripMenuItem, toolStripSeparator2, deleteTransToolStripMenuItem });
+            transContextMenu.Name = "transContextMenu";
+            transContextMenu.Size = new Size(167, 154);
+            transContextMenu.Opening += transContextMenu_Opening;
             // 
             // addTransToolStripMenuItem
             // 
-            this.addTransToolStripMenuItem.Name = "addTransToolStripMenuItem";
-            this.addTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addTransToolStripMenuItem.Text = "Add...";
-            this.addTransToolStripMenuItem.ToolTipText = "Add transaction";
-            this.addTransToolStripMenuItem.Click += new System.EventHandler(this.addTransToolStripMenuItem_Click);
+            addTransToolStripMenuItem.Name = "addTransToolStripMenuItem";
+            addTransToolStripMenuItem.Size = new Size(166, 22);
+            addTransToolStripMenuItem.Text = "Add...";
+            addTransToolStripMenuItem.ToolTipText = "Add transaction";
+            addTransToolStripMenuItem.Click += addTransToolStripMenuItem_Click;
             // 
             // editTransToolStripMenuItem
             // 
-            this.editTransToolStripMenuItem.Name = "editTransToolStripMenuItem";
-            this.editTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.editTransToolStripMenuItem.Text = "Edit...";
-            this.editTransToolStripMenuItem.ToolTipText = "Modify transaction";
-            this.editTransToolStripMenuItem.Click += new System.EventHandler(this.editTransToolStripMenuItem_Click);
+            editTransToolStripMenuItem.Name = "editTransToolStripMenuItem";
+            editTransToolStripMenuItem.Size = new Size(166, 22);
+            editTransToolStripMenuItem.Text = "Edit...";
+            editTransToolStripMenuItem.ToolTipText = "Modify transaction";
+            editTransToolStripMenuItem.Click += editTransToolStripMenuItem_Click;
             // 
             // setTransStateToolStripMenuItem
             // 
-            this.setTransStateToolStripMenuItem.Name = "setTransStateToolStripMenuItem";
-            this.setTransStateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.setTransStateToolStripMenuItem.Text = "Set State...";
-            this.setTransStateToolStripMenuItem.ToolTipText = "Set state of transaction(s)";
-            this.setTransStateToolStripMenuItem.Click += new System.EventHandler(this.setTransStateToolStripMenuItem_Click);
+            setTransStateToolStripMenuItem.Name = "setTransStateToolStripMenuItem";
+            setTransStateToolStripMenuItem.Size = new Size(166, 22);
+            setTransStateToolStripMenuItem.Text = "Set State...";
+            setTransStateToolStripMenuItem.ToolTipText = "Set state of transaction(s)";
+            setTransStateToolStripMenuItem.Click += setTransStateToolStripMenuItem_Click;
             // 
             // toolStripSeparator7
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator7.Name = "toolStripSeparator7";
+            toolStripSeparator7.Size = new Size(163, 6);
             // 
             // reconcileNewToolStripMenuItem
             // 
-            this.reconcileNewToolStripMenuItem.Name = "reconcileNewToolStripMenuItem";
-            this.reconcileNewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.reconcileNewToolStripMenuItem.Text = "Reconcile New";
-            this.reconcileNewToolStripMenuItem.ToolTipText = "Set state of new transactions to Reconciled";
-            this.reconcileNewToolStripMenuItem.Click += new System.EventHandler(this.reconcileNewToolStripMenuItem_Click);
+            reconcileNewToolStripMenuItem.Name = "reconcileNewToolStripMenuItem";
+            reconcileNewToolStripMenuItem.Size = new Size(166, 22);
+            reconcileNewToolStripMenuItem.Text = "Reconcile New";
+            reconcileNewToolStripMenuItem.ToolTipText = "Set state of new transactions to Reconciled";
+            reconcileNewToolStripMenuItem.Click += reconcileNewToolStripMenuItem_Click;
             // 
             // toolStripSeparator9
             // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator9.Name = "toolStripSeparator9";
+            toolStripSeparator9.Size = new Size(163, 6);
             // 
             // makeRecTransToolStripMenuItem
             // 
-            this.makeRecTransToolStripMenuItem.Name = "makeRecTransToolStripMenuItem";
-            this.makeRecTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.makeRecTransToolStripMenuItem.Text = "Make Recurring...";
-            this.makeRecTransToolStripMenuItem.ToolTipText = "Make this a recurring transaction.";
-            this.makeRecTransToolStripMenuItem.Click += new System.EventHandler(this.makeRecTransToolStripMenuItem_Click);
+            makeRecTransToolStripMenuItem.Name = "makeRecTransToolStripMenuItem";
+            makeRecTransToolStripMenuItem.Size = new Size(166, 22);
+            makeRecTransToolStripMenuItem.Text = "Make Recurring...";
+            makeRecTransToolStripMenuItem.ToolTipText = "Make this a recurring transaction.";
+            makeRecTransToolStripMenuItem.Click += makeRecTransToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(163, 6);
             // 
             // deleteTransToolStripMenuItem
             // 
-            this.deleteTransToolStripMenuItem.Name = "deleteTransToolStripMenuItem";
-            this.deleteTransToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.deleteTransToolStripMenuItem.Text = "Delete";
-            this.deleteTransToolStripMenuItem.ToolTipText = "Delete transaction(s)";
-            this.deleteTransToolStripMenuItem.Click += new System.EventHandler(this.deleteTransToolStripMenuItem_Click);
+            deleteTransToolStripMenuItem.Name = "deleteTransToolStripMenuItem";
+            deleteTransToolStripMenuItem.Size = new Size(166, 22);
+            deleteTransToolStripMenuItem.Text = "Delete";
+            deleteTransToolStripMenuItem.ToolTipText = "Delete transaction(s)";
+            deleteTransToolStripMenuItem.Click += deleteTransToolStripMenuItem_Click;
             // 
             // groupUpcoming
             // 
-            this.groupUpcoming.Controls.Add(this.dgvRecurringTransactions);
-            this.groupUpcoming.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupUpcoming.Location = new System.Drawing.Point(3, 3);
-            this.groupUpcoming.Name = "groupUpcoming";
-            this.groupUpcoming.Size = new System.Drawing.Size(151, 74);
-            this.groupUpcoming.TabIndex = 4;
-            this.groupUpcoming.TabStop = false;
-            this.groupUpcoming.Text = "Upcoming Transactions";
+            groupUpcoming.Controls.Add(dgvRecurringTransactions);
+            groupUpcoming.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            groupUpcoming.Location = new Point(3, 3);
+            groupUpcoming.Name = "groupUpcoming";
+            groupUpcoming.Size = new Size(151, 74);
+            groupUpcoming.TabIndex = 4;
+            groupUpcoming.TabStop = false;
+            groupUpcoming.Text = "Upcoming Transactions";
             // 
             // dgvRecurringTransactions
             // 
-            this.dgvRecurringTransactions.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.dgvRecurringTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRecurringTransactions.ContextMenuStrip = this.recTransContextMenu;
-            this.dgvRecurringTransactions.Location = new System.Drawing.Point(6, 22);
-            this.dgvRecurringTransactions.Name = "dgvRecurringTransactions";
-            this.dgvRecurringTransactions.RowTemplate.Height = 25;
-            this.dgvRecurringTransactions.Size = new System.Drawing.Size(128, 34);
-            this.dgvRecurringTransactions.TabIndex = 3;
-            this.dgvRecurringTransactions.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_CellBeginEdit);
-            this.dgvRecurringTransactions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvRecurringTransactions_CellMouseDoubleClick);
+            dgvRecurringTransactions.BackgroundColor = SystemColors.Window;
+            dgvRecurringTransactions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRecurringTransactions.ContextMenuStrip = recTransContextMenu;
+            dgvRecurringTransactions.Location = new Point(6, 22);
+            dgvRecurringTransactions.Name = "dgvRecurringTransactions";
+            dgvRecurringTransactions.RowTemplate.Height = 25;
+            dgvRecurringTransactions.Size = new Size(128, 34);
+            dgvRecurringTransactions.TabIndex = 3;
+            dgvRecurringTransactions.CellBeginEdit += dataGridView_CellBeginEdit;
+            dgvRecurringTransactions.CellMouseDoubleClick += dgvRecurringTransactions_CellMouseDoubleClick;
             // 
             // recTransContextMenu
             // 
-            this.recTransContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editRecTranToolStripMenuItem,
-            this.editRecTransToolStripMenuItem,
-            this.skipRecTransToolStripMenuItem,
-            this.stageRecTransToolStripMenuItem,
-            this.copyRecTransToolStripMenuItem,
-            this.toolStripSeparator8,
-            this.openWebsiteToolStripMenuItem,
-            this.toolStripSeparator6,
-            this.deleteRecTransToolStripMenuItem});
-            this.recTransContextMenu.Name = "recTransContextMenu";
-            this.recTransContextMenu.Size = new System.Drawing.Size(149, 170);
-            this.recTransContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.recTransContextMenu_Opening);
+            recTransContextMenu.Items.AddRange(new ToolStripItem[] { addRecTransToolStripMenuItem, editRecTransToolStripMenuItem, skipRecTransToolStripMenuItem, stageRecTransToolStripMenuItem, copyRecTransToolStripMenuItem, toolStripSeparator8, openWebsiteToolStripMenuItem, toolStripSeparator6, deleteRecTransToolStripMenuItem });
+            recTransContextMenu.Name = "recTransContextMenu";
+            recTransContextMenu.Size = new Size(149, 170);
+            recTransContextMenu.Opening += recTransContextMenu_Opening;
             // 
-            // editRecTranToolStripMenuItem
+            // addRecTransToolStripMenuItem
             // 
-            this.editRecTranToolStripMenuItem.Name = "editRecTranToolStripMenuItem";
-            this.editRecTranToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.editRecTranToolStripMenuItem.Text = "Add...";
-            this.editRecTranToolStripMenuItem.ToolTipText = "Add recurring transaction";
-            this.editRecTranToolStripMenuItem.Click += new System.EventHandler(this.editRecTranToolStripMenuItem_Click);
+            addRecTransToolStripMenuItem.Name = "addRecTransToolStripMenuItem";
+            addRecTransToolStripMenuItem.Size = new Size(148, 22);
+            addRecTransToolStripMenuItem.Text = "Add...";
+            addRecTransToolStripMenuItem.ToolTipText = "Add recurring transaction";
+            addRecTransToolStripMenuItem.Click += addRecTransToolStripMenuItem_Click;
             // 
             // editRecTransToolStripMenuItem
             // 
-            this.editRecTransToolStripMenuItem.Name = "editRecTransToolStripMenuItem";
-            this.editRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.editRecTransToolStripMenuItem.Text = "Edit...";
-            this.editRecTransToolStripMenuItem.ToolTipText = "Edit recurring transaction";
-            this.editRecTransToolStripMenuItem.Click += new System.EventHandler(this.editRecTransToolStripMenuItem_Click);
+            editRecTransToolStripMenuItem.Name = "editRecTransToolStripMenuItem";
+            editRecTransToolStripMenuItem.Size = new Size(148, 22);
+            editRecTransToolStripMenuItem.Text = "Edit...";
+            editRecTransToolStripMenuItem.ToolTipText = "Edit recurring transaction";
+            editRecTransToolStripMenuItem.Click += editRecTransToolStripMenuItem_Click;
             // 
             // skipRecTransToolStripMenuItem
             // 
-            this.skipRecTransToolStripMenuItem.Name = "skipRecTransToolStripMenuItem";
-            this.skipRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.skipRecTransToolStripMenuItem.Text = "Skip";
-            this.skipRecTransToolStripMenuItem.ToolTipText = "Set next due date of recurring transaction(s)";
-            this.skipRecTransToolStripMenuItem.Click += new System.EventHandler(this.skipRecTransToolStripMenuItem_Click);
+            skipRecTransToolStripMenuItem.Name = "skipRecTransToolStripMenuItem";
+            skipRecTransToolStripMenuItem.Size = new Size(148, 22);
+            skipRecTransToolStripMenuItem.Text = "Skip";
+            skipRecTransToolStripMenuItem.ToolTipText = "Set next due date of recurring transaction(s)";
+            skipRecTransToolStripMenuItem.Click += skipRecTransToolStripMenuItem_Click;
             // 
             // stageRecTransToolStripMenuItem
             // 
-            this.stageRecTransToolStripMenuItem.Name = "stageRecTransToolStripMenuItem";
-            this.stageRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.stageRecTransToolStripMenuItem.Text = "Stage";
-            this.stageRecTransToolStripMenuItem.ToolTipText = "Copy to ledger and set next due date";
-            this.stageRecTransToolStripMenuItem.Click += new System.EventHandler(this.stageRecTransToolStripMenuItem_Click);
+            stageRecTransToolStripMenuItem.Name = "stageRecTransToolStripMenuItem";
+            stageRecTransToolStripMenuItem.Size = new Size(148, 22);
+            stageRecTransToolStripMenuItem.Text = "Stage";
+            stageRecTransToolStripMenuItem.ToolTipText = "Copy to ledger and set next due date";
+            stageRecTransToolStripMenuItem.Click += stageRecTransToolStripMenuItem_Click;
             // 
             // copyRecTransToolStripMenuItem
             // 
-            this.copyRecTransToolStripMenuItem.Name = "copyRecTransToolStripMenuItem";
-            this.copyRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.copyRecTransToolStripMenuItem.Text = "Copy";
-            this.copyRecTransToolStripMenuItem.ToolTipText = "Copy to ledger";
-            this.copyRecTransToolStripMenuItem.Click += new System.EventHandler(this.copyRecTransToolStripMenuItem_Click);
+            copyRecTransToolStripMenuItem.Name = "copyRecTransToolStripMenuItem";
+            copyRecTransToolStripMenuItem.Size = new Size(148, 22);
+            copyRecTransToolStripMenuItem.Text = "Copy";
+            copyRecTransToolStripMenuItem.ToolTipText = "Copy to ledger";
+            copyRecTransToolStripMenuItem.Click += copyRecTransToolStripMenuItem_Click;
             // 
             // toolStripSeparator8
             // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(145, 6);
+            toolStripSeparator8.Name = "toolStripSeparator8";
+            toolStripSeparator8.Size = new Size(145, 6);
             // 
             // openWebsiteToolStripMenuItem
             // 
-            this.openWebsiteToolStripMenuItem.Name = "openWebsiteToolStripMenuItem";
-            this.openWebsiteToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.openWebsiteToolStripMenuItem.Text = "Open Website";
-            this.openWebsiteToolStripMenuItem.Click += new System.EventHandler(this.openWebsiteToolStripMenuItem_Click);
+            openWebsiteToolStripMenuItem.Name = "openWebsiteToolStripMenuItem";
+            openWebsiteToolStripMenuItem.Size = new Size(148, 22);
+            openWebsiteToolStripMenuItem.Text = "Open Website";
+            openWebsiteToolStripMenuItem.Click += openWebsiteToolStripMenuItem_Click;
             // 
             // toolStripSeparator6
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(145, 6);
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new Size(145, 6);
             // 
             // deleteRecTransToolStripMenuItem
             // 
-            this.deleteRecTransToolStripMenuItem.Name = "deleteRecTransToolStripMenuItem";
-            this.deleteRecTransToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.deleteRecTransToolStripMenuItem.Text = "Delete";
-            this.deleteRecTransToolStripMenuItem.Click += new System.EventHandler(this.deleteRecTransToolStripMenuItem_Click);
+            deleteRecTransToolStripMenuItem.Name = "deleteRecTransToolStripMenuItem";
+            deleteRecTransToolStripMenuItem.Size = new Size(148, 22);
+            deleteRecTransToolStripMenuItem.Text = "Delete";
+            deleteRecTransToolStripMenuItem.Click += deleteRecTransToolStripMenuItem_Click;
             // 
             // mainPanel
             // 
-            this.mainPanel.Controls.Add(this.hSplit1);
-            this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.Location = new System.Drawing.Point(0, 24);
-            this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(1156, 503);
-            this.mainPanel.TabIndex = 3;
+            mainPanel.Controls.Add(hSplit1);
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(0, 24);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(1156, 503);
+            mainPanel.TabIndex = 3;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1156, 527);
-            this.Controls.Add(this.mainPanel);
-            this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "MainForm";
-            this.Text = "MoneyBookTools";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.hSplit1.Panel1.ResumeLayout(false);
-            this.hSplit1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.hSplit1)).EndInit();
-            this.hSplit1.ResumeLayout(false);
-            this.vSplit1.Panel1.ResumeLayout(false);
-            this.vSplit1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.vSplit1)).EndInit();
-            this.vSplit1.ResumeLayout(false);
-            this.groupAccounts.ResumeLayout(false);
-            this.tableLayoutLedger.ResumeLayout(false);
-            this.tableLayoutLedger.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.groupLedger.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountTransactions)).EndInit();
-            this.transContextMenu.ResumeLayout(false);
-            this.groupUpcoming.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvRecurringTransactions)).EndInit();
-            this.recTransContextMenu.ResumeLayout(false);
-            this.mainPanel.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1156, 527);
+            Controls.Add(mainPanel);
+            Controls.Add(menuStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
+            Name = "MainForm";
+            Text = "MoneyBookTools";
+            Load += MainForm_Load;
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            hSplit1.Panel1.ResumeLayout(false);
+            hSplit1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)hSplit1).EndInit();
+            hSplit1.ResumeLayout(false);
+            vSplit1.Panel1.ResumeLayout(false);
+            vSplit1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)vSplit1).EndInit();
+            vSplit1.ResumeLayout(false);
+            groupAccounts.ResumeLayout(false);
+            tableLayoutLedger.ResumeLayout(false);
+            tableLayoutLedger.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            groupLedger.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvAccountTransactions).EndInit();
+            transContextMenu.ResumeLayout(false);
+            groupUpcoming.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvRecurringTransactions).EndInit();
+            recTransContextMenu.ResumeLayout(false);
+            mainPanel.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -833,7 +833,7 @@ namespace MoneyBookTools
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
-        private ToolStripMenuItem editRecTranToolStripMenuItem;
+        private ToolStripMenuItem addRecTransToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator6;
         private ToolStripMenuItem deleteRecTransToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator7;
@@ -860,5 +860,13 @@ namespace MoneyBookTools
         private ToolStripMenuItem openWebsiteToolStripMenuItem;
         private ToolStripMenuItem reconcileNewToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator9;
+        private ToolStripSeparator toolStripSeparator10;
+        private ToolStripMenuItem clearToolStripMenuItem;
+        private ToolStripMenuItem stagedStatusMenuItem;
+        private ToolStripSeparator toolStripSeparator11;
+        private ToolStripMenuItem anyStatusMenuItem;
+        private ToolStripMenuItem newStatusMenuItem;
+        private ToolStripMenuItem reconciledStatusMenuItem;
+        private ToolStripMenuItem ignoredStatusMenuItem;
     }
 }
