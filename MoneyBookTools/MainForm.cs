@@ -139,7 +139,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void ListViewAccounts_RetrieveVirtualItem(object? sender, RetrieveVirtualItemEventArgs e)
+        private void ListViewAccounts_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             var summary = m_summaries[e.ItemIndex];
 
@@ -148,7 +148,7 @@ namespace MoneyBookTools
             e.Item.SubItems.Add(summary.AvailableBalance.ToString());
         }
 
-        private void ListView1_Resize(object? sender, EventArgs e)
+        private void ListView1_Resize(object sender, EventArgs e)
         {
             if (listViewAccounts.Columns.Count == 2)
             {
@@ -796,7 +796,7 @@ namespace MoneyBookTools
 
         #region Child Form Handlers
 
-        private void transactionForm_FormClosed(object? sender, FormClosedEventArgs e)
+        private void transactionForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             try
             {
@@ -879,7 +879,7 @@ namespace MoneyBookTools
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedBalance:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-                IEnumerable<TransactionInfo>? transactions = null;
+                IEnumerable<TransactionInfo> transactions = null;
                 if (m_stateFilter != null)
                 {
                     // Filter by state and date.

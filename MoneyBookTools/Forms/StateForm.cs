@@ -46,7 +46,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void RadioButton_Click(object? sender, EventArgs e)
+        private void RadioButton_Click(object sender, EventArgs e)
         {
             var radioButton = sender as RadioButton;
             TransactionState = (MoneyBookDbContextExtension.StateTypes)radioButton.Tag;

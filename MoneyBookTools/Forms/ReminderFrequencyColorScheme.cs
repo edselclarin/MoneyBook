@@ -4,7 +4,7 @@ namespace MoneyBookTools.Forms
 {
     public class ReminderFrequencyColorScheme : IFrequencyColorScheme
     {
-        private static ReminderFrequencyColorScheme? m_instance;
+        private static ReminderFrequencyColorScheme m_instance;
 
         protected ReminderFrequencyColorScheme()
         {

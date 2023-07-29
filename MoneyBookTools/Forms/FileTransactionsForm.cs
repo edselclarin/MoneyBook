@@ -32,7 +32,7 @@ namespace MoneyBookTools
             this.Shown += FileTransactionsForm_Shown;
         }
 
-        private void FileTransactionsForm_Shown(object? sender, EventArgs e)
+        private void FileTransactionsForm_Shown(object sender, EventArgs e)
         {
             try
             {

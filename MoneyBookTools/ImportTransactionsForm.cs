@@ -45,7 +45,7 @@ namespace MoneyBookTools
             ControlBox = false;
         }
 
-        private async void ImportTransactionsForm_Load(object sender, EventArgs e)
+        private void ImportTransactionsForm_Load(object sender, EventArgs e)
         {
             m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
@@ -63,23 +63,22 @@ namespace MoneyBookTools
         {
             UseWaitCursor = true;
 
-            await Task.Run(
-                async () =>
+            await Task.Run(() =>
+            {
+                try
                 {
-                    try
-                    {
-                        m_db.ImportTransactions();
+                    m_db.ImportTransactions();
 
-                        MessageBox.Show("Import complete.");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(
-                            $"EXCEPTION:" + Environment.NewLine +
-                            ex.Message + Environment.NewLine +
-                            ex.StackTrace);
-                    }
-                });
+                    MessageBox.Show("Import complete.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"EXCEPTION:" + Environment.NewLine +
+                        ex.Message + Environment.NewLine +
+                        ex.StackTrace);
+                }
+            });
 
             UseWaitCursor = false;
 

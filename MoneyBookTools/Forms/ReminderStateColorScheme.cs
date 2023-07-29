@@ -4,7 +4,7 @@ namespace MoneyBookTools.Forms
 {
     public class ReminderStateColorScheme : IStateColorScheme
     {
-        private static ReminderStateColorScheme? m_instance;
+        private static ReminderStateColorScheme m_instance;
 
         protected ReminderStateColorScheme() { }
 
