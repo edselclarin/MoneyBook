@@ -74,7 +74,7 @@ namespace MoneyBookTools
             dgvAccountTransactions.Dock =
             groupReminders.Dock =
             dgvReminders.Dock =
-            statusStrip1.Dock =
+            mainStatusStrip1.Dock =
             tableLayoutLedger.Dock = DockStyle.Fill;
 
             InitializeEnvironment();
@@ -406,7 +406,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void transContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void transactionsContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
             {
