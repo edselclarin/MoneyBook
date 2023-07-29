@@ -1,6 +1,6 @@
 ﻿namespace MoneyBookTools
 {
-    partial class RecurringTransactionForm
+    partial class ReminderForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecurringTransactionForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReminderForm));
             this.dateTime = new System.Windows.Forms.DateTimePicker();
             this.textPayee = new System.Windows.Forms.TextBox();
             this.textMemo = new System.Windows.Forms.TextBox();
@@ -261,7 +261,7 @@
             this.label7.Text = "Website";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // RecurringTransactionForm
+            // ReminderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -272,10 +272,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "RecurringTransactionForm";
-            this.Text = "Recurring Transaction";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RecurringTransactionForm_FormClosing);
-            this.Load += new System.EventHandler(this.RecurringTransactionForm_Load);
+            this.Name = "ReminderForm";
+            this.Text = "Reminder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReminderForm_FormClosing);
+            this.Load += new System.EventHandler(this.ReminderForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);

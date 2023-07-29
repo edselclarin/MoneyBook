@@ -2,17 +2,17 @@
 
 namespace MoneyBookTools.Forms
 {
-    public class RecurringTransactionStateColorScheme : IStateColorScheme
+    public class ReminderStateColorScheme : IStateColorScheme
     {
-        private static RecurringTransactionStateColorScheme? m_instance;
+        private static ReminderStateColorScheme m_instance;
 
-        protected RecurringTransactionStateColorScheme() { }
+        protected ReminderStateColorScheme() { }
 
-        public static RecurringTransactionStateColorScheme Instance
+        public static ReminderStateColorScheme Instance
         {
             get
             {
-                m_instance ??= new RecurringTransactionStateColorScheme();
+                m_instance ??= new ReminderStateColorScheme();
                 return m_instance;
             }
         }

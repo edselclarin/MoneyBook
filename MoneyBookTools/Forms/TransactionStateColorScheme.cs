@@ -4,7 +4,7 @@ namespace MoneyBookTools.Forms
 {
     public class TransactionStateColorScheme : IStateColorScheme
     {
-        private static TransactionStateColorScheme? m_instance;
+        private static TransactionStateColorScheme m_instance;
 
         protected TransactionStateColorScheme() { }
 

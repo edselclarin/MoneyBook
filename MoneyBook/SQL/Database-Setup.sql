@@ -129,11 +129,11 @@ BEGIN
 	)
 	END
 
--- Create Transactions table.
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='RecurringTransactions' and xtype='U')
+-- Create Reminders table.
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Reminders' and xtype='U')
 BEGIN
-	CREATE TABLE [RecurringTransactions] (
-		[RecTrnsId] INT PRIMARY KEY IDENTITY (1, 1),
+	CREATE TABLE [Reminders] (
+		[RmdrId] INT PRIMARY KEY IDENTITY (1, 1),
 		[DueDate] DATE NOT NULL DEFAULT(GETDATE()),
 		[TrnsType] VARCHAR(16) NOT NULL DEFAULT('DEBIT'),
 		[Payee] VARCHAR(128) NOT NULL DEFAULT(''),
@@ -148,4 +148,3 @@ BEGIN
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	)
 	END
-

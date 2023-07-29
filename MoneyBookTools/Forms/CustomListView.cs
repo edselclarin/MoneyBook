@@ -15,7 +15,7 @@
             DrawSubItem += NewListView_DrawSubItem;
         }
 
-        private void NewListView_DrawSubItem(object? sender, DrawListViewSubItemEventArgs e)
+        private void NewListView_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {
             if (OwnerDraw)
             {
@@ -42,7 +42,7 @@
             }
         }
 
-        private void NewListView_DrawItem(object? sender, DrawListViewItemEventArgs e)
+        private void NewListView_DrawItem(object sender, DrawListViewItemEventArgs e)
         {
             if (OwnerDraw)
             {
@@ -80,7 +80,7 @@
             }
         }
 
-        private void NewListView_DrawColumnHeader(object? sender, DrawListViewColumnHeaderEventArgs e)
+        private void NewListView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
             if (OwnerDraw)
             {

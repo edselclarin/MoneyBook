@@ -6,7 +6,7 @@ using MoneyBookTools.ViewModels;
 
 namespace MoneyBookTools
 {
-    public partial class RecurringTransactionForm : Form
+    public partial class ReminderForm : Form
     {
         private Mode m_mode;
         private MoneyBookDbContext m_db;
@@ -19,25 +19,25 @@ namespace MoneyBookTools
             Stage
         }
 
-        public ViewRecurringTransaction RecurringTransaction { get; set; }
+        public ViewReminder Reminder { get; set; }
 
-        protected RecurringTransactionForm(Mode mode)
+        protected ReminderForm(Mode mode)
         {
             InitializeComponent();
 
             m_mode = mode;
 
-            Text = $"{mode} Recurring Transaction";
+            Text = $"{mode} Reminder";
 
             buttonSave.Text = mode.ToString();
         }
 
-        public static RecurringTransactionForm CreateAddForm()
+        public static ReminderForm CreateAddForm()
         {
-            var form = new RecurringTransactionForm(Mode.Add)
+            var form = new ReminderForm(Mode.Add)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                RecurringTransaction = null
+                Reminder = null
             };
 
             DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
@@ -46,12 +46,12 @@ namespace MoneyBookTools
             return form;
         }
 
-        public static RecurringTransactionForm CreateAddForm(ViewTransaction trans)
+        public static ReminderForm CreateAddForm(ViewTransaction trans)
         {
-            var form = new RecurringTransactionForm(Mode.Add)
+            var form = new ReminderForm(Mode.Add)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                RecurringTransaction = new ViewRecurringTransaction()
+                Reminder = new ViewReminder()
                 {
                     DueDate = trans.Date,
                     AcctId = trans.AcctId,
@@ -72,12 +72,12 @@ namespace MoneyBookTools
             return form;
         }
 
-        public static RecurringTransactionForm CreateEditForm(ViewRecurringTransaction recTrans)
+        public static ReminderForm CreateEditForm(ViewReminder reminder)
         {
-            var form = new RecurringTransactionForm(Mode.Edit)
+            var form = new ReminderForm(Mode.Edit)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                RecurringTransaction = recTrans
+                Reminder = reminder
             };
 
             DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
@@ -86,12 +86,12 @@ namespace MoneyBookTools
             return form;
         }
 
-        public static RecurringTransactionForm CreateStageForm(ViewRecurringTransaction recTrans)
+        public static ReminderForm CreateStageForm(ViewReminder reminder)
         {
-            var form = new RecurringTransactionForm(Mode.Stage)
+            var form = new ReminderForm(Mode.Stage)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                RecurringTransaction = recTrans
+                Reminder = reminder
             };
 
             DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
@@ -100,7 +100,7 @@ namespace MoneyBookTools
             return form;
         }
 
-        private void RecurringTransactionForm_Load(object sender, EventArgs e)
+        private void ReminderForm_Load(object sender, EventArgs e)
         {
             try
             {
@@ -117,9 +117,9 @@ namespace MoneyBookTools
 
                 if (m_mode == Mode.Add)
                 {
-                    if (RecurringTransaction == null)
+                    if (Reminder == null)
                     {
-                        RecurringTransaction = new ViewRecurringTransaction()
+                        Reminder = new ViewReminder()
                         {
                             DueDate = DateTime.Now,
                             AcctId = accts[comboAccounts.SelectedIndex].AcctId,
@@ -137,7 +137,7 @@ namespace MoneyBookTools
                 }
                 else if (m_mode == Mode.Edit || m_mode == Mode.Stage)
                 {
-                    RecurringTransaction.NewAmount = RecurringTransaction.Amount;
+                    Reminder.NewAmount = Reminder.Amount;
 
                     if (m_mode == Mode.Stage)
                     {
@@ -152,7 +152,7 @@ namespace MoneyBookTools
                     }
                 }
 
-                m_originalHash = RecurringTransaction.GetHash();
+                m_originalHash = Reminder.GetHash();
 
                 FillForm();
             }
@@ -162,12 +162,12 @@ namespace MoneyBookTools
             }
         }
 
-        private void RecurringTransactionForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void ReminderForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (m_mode == Mode.Add)
             {
                 var answer = MessageBox.Show(this,
-                    "Add recurring transaction?",
+                    "Add reminder?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
@@ -177,14 +177,14 @@ namespace MoneyBookTools
 
                     var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
-                    db.AddRecurringTransaction(RecurringTransaction);
+                    db.AddReminder(Reminder);
 
                     DialogResult = DialogResult.OK;
                 }
             }
             else if (m_mode == Mode.Edit)
             {
-                bool isModified = RecurringTransaction.GetHash().CompareTo(m_originalHash) != 0;
+                bool isModified = Reminder.GetHash().CompareTo(m_originalHash) != 0;
 
                 if (isModified)
                 {
@@ -199,7 +199,7 @@ namespace MoneyBookTools
 
                         var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
-                        db.UpdateRecurringTransaction(RecurringTransaction);
+                        db.UpdateReminder(Reminder);
 
                         DialogResult = DialogResult.OK;
                     }
@@ -208,7 +208,7 @@ namespace MoneyBookTools
             else if (m_mode == Mode.Stage)
             {
                 var answer = MessageBox.Show(this,
-                    "Stage recurring transaction?",
+                    "Stage reminder?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
@@ -218,11 +218,11 @@ namespace MoneyBookTools
 
                     var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
 
-                    var transactions = new ViewRecurringTransaction[]
+                    var reminders = new ViewReminder[]
                     {
-                        RecurringTransaction
+                        Reminder
                     };
-                    db.StageRecurringTransactions(transactions);
+                    db.StageReminders(reminders);
 
                     DialogResult = DialogResult.OK;
                 }
@@ -241,19 +241,19 @@ namespace MoneyBookTools
 
         private void FillForm()
         {
-            dateTime.DataBindings.Add("Value", RecurringTransaction, "DueDate", false, DataSourceUpdateMode.OnPropertyChanged);
+            dateTime.DataBindings.Add("Value", Reminder, "DueDate", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textPayee.DataBindings.Add("Text", RecurringTransaction, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
+            textPayee.DataBindings.Add("Text", Reminder, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textMemo.DataBindings.Add("Text", RecurringTransaction, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
+            textMemo.DataBindings.Add("Text", Reminder, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textWebsite.DataBindings.Add("Text", RecurringTransaction, "Website", false, DataSourceUpdateMode.OnPropertyChanged);
+            textWebsite.DataBindings.Add("Text", Reminder, "Website", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            comboAccounts.DataBindings.Add("Text", RecurringTransaction, "Account", false, DataSourceUpdateMode.OnPropertyChanged);
+            comboAccounts.DataBindings.Add("Text", Reminder, "Account", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            comboFrequency.DataBindings.Add("Text", RecurringTransaction, "Frequency", false, DataSourceUpdateMode.OnPropertyChanged);
+            comboFrequency.DataBindings.Add("Text", Reminder, "Frequency", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textAmount.DataBindings.Add("Text", RecurringTransaction, "NewAmount", true, DataSourceUpdateMode.OnPropertyChanged);
+            textAmount.DataBindings.Add("Text", Reminder, "NewAmount", true, DataSourceUpdateMode.OnPropertyChanged);
             textAmount.DataBindings[0].FormatString = "0.00";
         }
     }

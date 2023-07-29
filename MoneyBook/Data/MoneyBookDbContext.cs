@@ -11,7 +11,7 @@ namespace MoneyBook.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<RecurringTransaction> RecurringTransactions { get; set; }
+        public DbSet<Reminder> Reminders { get; set; }
 
         public static MoneyBookDbContext Create(IDbContextConfig config)
         {

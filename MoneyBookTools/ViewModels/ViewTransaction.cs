@@ -12,7 +12,7 @@ namespace MoneyBookTools.ViewModels
         [Browsable(false)]
         public string TrnsType { get; set; }
 
-        public string? RefNum { get; set; }
+        public string RefNum { get; set; }
         
         public string Payee { get; set; }
         

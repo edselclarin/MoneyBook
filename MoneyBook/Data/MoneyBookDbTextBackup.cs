@@ -30,13 +30,13 @@ namespace MoneyBook.Data
             {
                 DateCreated = DateTime.Now,
                 Transactions = _dbContext.Transactions.ToList(),
-                RecurringTransactions = _dbContext.RecurringTransactions.ToList(),
+                Reminders = _dbContext.Reminders.ToList(),
                 Accounts = _dbContext.Accounts.ToList(),
                 Institutions = _dbContext.Institutions.ToList(),
                 Categories = _dbContext.Categories.ToList(),
             };
 
-            string filePath = Path.Combine(_backupDir, $"MoneyBook-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json");
+            string filePath = Path.Combine(_backupDir, $"MoneyBook-v2-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json");
             string json = JsonConvert.SerializeObject(backup, Formatting.Indented);
             File.WriteAllText(filePath, json);
         }

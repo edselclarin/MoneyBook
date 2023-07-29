@@ -31,7 +31,7 @@ namespace MoneyBook.Data
             conn.Open();
 
             string databaseName = new SqlConnectionStringBuilder(conn.ConnectionString).InitialCatalog;
-            string filePath = Path.Combine(_backupDir, $"MoneyBook-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.bak");
+            string filePath = Path.Combine(_backupDir, $"MoneyBook-v2-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.bak");
 
             using var cmd = new SqlCommand()
             {
