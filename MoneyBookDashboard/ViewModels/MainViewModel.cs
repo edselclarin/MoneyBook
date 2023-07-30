@@ -8,10 +8,10 @@ namespace MoneyBookDashboard.ViewModels
         public MainViewModel() 
         {
             Items.Add(new AccountsViewModel(new AccountDataProvider()));
-            Items.Add(new TransactionsViewModel());
-            Items.Add(new RemindersViewModel());
+            Items.Add(new TransactionsViewModel(new TransactionDataProvider()));
+            Items.Add(new RemindersViewModel(new ReminderDataProvider()));
 
-            Items.Apply(item => (item as ScreenViewModelBase).LoadAsync());
+            Items.Apply(item => (item as IViewModel).LoadAsync());
         }
     }
 }

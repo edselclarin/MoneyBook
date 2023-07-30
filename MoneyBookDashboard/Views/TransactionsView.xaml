@@ -7,6 +7,6 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Background="DarkSeaGreen">
     <Grid>
-            
+        <DataGrid ItemsSource="{Binding Transactions}" IsReadOnly="True"/>
     </Grid>
 </UserControl>
