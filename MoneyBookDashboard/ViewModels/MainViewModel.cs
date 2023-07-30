@@ -1,17 +1,17 @@
 ﻿using Caliburn.Micro;
-using System.Collections.ObjectModel;
+using MoneyBookDashboard.Data;
 
 namespace MoneyBookDashboard.ViewModels
 {
     public class MainViewModel : Conductor<Screen>.Collection.AllActive
-    {
-        public ObservableCollection<Screen> Items { get; } = new ObservableCollection<Screen>();
-
+    {   
         public MainViewModel() 
         {
-            Items.Add(new AccountsViewModel());
+            Items.Add(new AccountsViewModel(new AccountDataProvider()));
             Items.Add(new TransactionsViewModel());
             Items.Add(new RemindersViewModel());
+
+            Items.Apply(item => (item as ScreenViewModelBase).LoadAsync());
         }
     }
 }

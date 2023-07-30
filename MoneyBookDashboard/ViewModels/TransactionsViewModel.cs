@@ -1,8 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
 
 namespace MoneyBookDashboard.ViewModels
 {
-    public class TransactionsViewModel : Screen
+    public class TransactionsViewModel : ScreenViewModelBase
     {
+        public override async Task LoadAsync()
+        {
+        }
     }
 }
