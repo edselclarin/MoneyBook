@@ -12,6 +12,8 @@ namespace MoneyBook.Data
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Reminder> Reminders { get; set; }
+        public DbSet<TransactionSummary> TransactionSummaries { get; set; }
+        public DbSet<AccountSummaryModel> AccountSummaries { get; set; }
 
         public static MoneyBookDbContext Create(IDbContextConfig config)
         {

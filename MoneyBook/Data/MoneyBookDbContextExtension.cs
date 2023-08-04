@@ -115,6 +115,34 @@ namespace MoneyBook.Data
             };
         }
 
+        public static AccountSummaryNew ToAccountSummary(this AccountSummaryModel acctSummary)
+        {
+            return new AccountSummaryNew
+            {
+                AcctId = acctSummary.AcctId,
+                Name = acctSummary.Name,
+                Description = acctSummary.Description,
+                AcctTypeId = acctSummary.AcctTypeId,
+                StartingBalance = acctSummary.StartingBalance,
+                ReserveAmount = acctSummary.ReserveAmount,
+                DateAdded = acctSummary.DateAdded,
+                DateModified = acctSummary.DateModified,
+                ExtAcctId = acctSummary.ExtAcctId,
+                InstId = acctSummary.InstId,
+                ImportFilePath = acctSummary.ImportFilePath,
+                IsDeleted = acctSummary.IsDeleted,
+                Credits = acctSummary.Credits,
+                Debits = acctSummary.Debits,
+                Total = acctSummary.Total,
+                StagedCredits = acctSummary.StagedCredits,
+                StagedDebits = acctSummary.StagedDebits,
+                StagedTotal = acctSummary.StagedTotal,
+                Balance = acctSummary.Balance,
+                AvailableBalance = acctSummary.AvailableBalance,
+                FinalBalance = acctSummary.FinalBalance
+            };
+        }
+
         public static IEnumerable<TransactionInfo> Filter(this IEnumerable<TransactionInfo> transactions, DateFilter dateFilter)
         {
             switch (dateFilter)
@@ -259,6 +287,14 @@ namespace MoneyBook.Data
             {
                 return null;
             }
+        }
+
+        public static List<AccountSummaryNew> GetAccountSummariesNew(this MoneyBookDbContext db)
+        {
+            return db.AccountSummaries
+                .OrderBy(x => x.AcctId)
+                .Select(x => x.ToAccountSummary())
+                .ToList();
         }
 
         public static IEnumerable<ReminderInfo> GetReminders(this MoneyBookDbContext db, SortOrder sortOrder)
