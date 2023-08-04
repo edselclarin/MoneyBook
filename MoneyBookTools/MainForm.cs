@@ -870,17 +870,17 @@ namespace MoneyBookTools
         {
             if (listViewAccounts.SelectedIndices.Count > 0)
             {
-                var summaries = m_db.GetAccountSummaries();
                 int index = listViewAccounts.SelectedIndices[0];
-                var summary = summaries[index] as AccountSummary;
-                summary = m_db.GetAccountSummary(summary.Account.AcctId);
+                var summary = m_summaries[index] as AccountSummaryNew;
+                summary = m_db.GetAccountSummaryNew(summary.AcctId);
 
-                accountToolStripStatusLabel.Text = summary?.Account.AccountName;
+                accountToolStripStatusLabel.Text = summary?.Name;
                 currentToolStripStatusLabel.Text = $"Current: {summary?.Balance:0.00}";
                 availableToolStripStatusLabel.Text = $"Available: {summary?.AvailableBalance:0.00}";
-                stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedBalance:0.00}";
+                stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedTotal:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
+#if false
                 IEnumerable<TransactionInfo> transactions = null;
                 if (m_stateFilter != null)
                 {
@@ -933,6 +933,7 @@ namespace MoneyBookTools
                 }
 
                 RestoreSelectedTransactions();
+#endif
             }
         }
 
@@ -1082,7 +1083,7 @@ namespace MoneyBookTools
                 sumToolStripStatusLabel.Text = String.Empty;
             }
         }
-        #endregion
+#endregion
 
         #region Reminders
 

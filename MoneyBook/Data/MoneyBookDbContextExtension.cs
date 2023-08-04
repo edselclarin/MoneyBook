@@ -297,6 +297,13 @@ namespace MoneyBook.Data
                 .ToList();
         }
 
+        public static AccountSummaryNew? GetAccountSummaryNew(this MoneyBookDbContext db, int acctId)
+        {
+            return db.AccountSummaries
+                ?.SingleOrDefault(x => x.AcctId == acctId)
+                ?.ToAccountSummary();
+        }
+
         public static IEnumerable<ReminderInfo> GetReminders(this MoneyBookDbContext db, SortOrder sortOrder)
         {
             var accts = db.Accounts
