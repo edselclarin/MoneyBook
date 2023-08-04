@@ -2,6 +2,7 @@
 using MoneyBook;
 using MoneyBook.BusinessModels;
 using MoneyBook.Data;
+using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
 using MoneyBookTools.ViewModels;
@@ -14,7 +15,7 @@ namespace MoneyBookTools
         #region Fields
 
         private MoneyBookDbContext m_db;
-        private List<AccountSummary> m_summaries;
+        private List<AccountSummaryNew> m_summaries;
         private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
         private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
         private MoneyBookDbContextExtension.StateTypes? m_stateFilter = null;
@@ -143,8 +144,8 @@ namespace MoneyBookTools
         {
             var summary = m_summaries[e.ItemIndex];
 
-            e.Item = new ListViewItem(summary.Account.AccountName);
-            e.Item.Tag = summary.Account;
+            e.Item = new ListViewItem(summary.Name);
+            e.Item.Tag = summary;
             e.Item.SubItems.Add(summary.AvailableBalance.ToString());
         }
 
@@ -637,10 +638,10 @@ namespace MoneyBookTools
                 if (listViewAccounts.SelectedIndices.Count > 0)
                 {
                     int index = listViewAccounts.SelectedIndices[0];
-                    var summary = m_summaries[index] as AccountSummary;
+                    var summary = m_summaries[index] as AccountSummaryNew;
 
                     var answer = MessageBox.Show(this,
-                        $"Are you sure you want to reconcile all new items on account {summary.Account.AccountName}?",
+                        $"Are you sure you want to reconcile all new items on account {summary.Name}?",
                         this.Text,
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
@@ -648,7 +649,7 @@ namespace MoneyBookTools
                     {
                         using var hg = this.CreateHourglass();
 
-                        m_db.SetStateNewToReconciled(summary.Account.AcctId);
+                        m_db.SetStateNewToReconciled(summary.AcctId);
 
                         refreshToolStripMenuItem.PerformClick();
                     }
@@ -830,7 +831,7 @@ namespace MoneyBookTools
                 listViewAccounts.RetrieveVirtualItem += ListViewAccounts_RetrieveVirtualItem;
             }
 
-            m_summaries = m_db.GetAccountSummaries();
+            m_summaries = m_db.GetAccountSummariesNew();
 
             listViewAccounts.VirtualListSize = m_summaries.Count;
             listViewAccounts.Invalidate();
@@ -869,8 +870,9 @@ namespace MoneyBookTools
         {
             if (listViewAccounts.SelectedIndices.Count > 0)
             {
+                var summaries = m_db.GetAccountSummaries();
                 int index = listViewAccounts.SelectedIndices[0];
-                var summary = m_summaries[index] as AccountSummary;
+                var summary = summaries[index] as AccountSummary;
                 summary = m_db.GetAccountSummary(summary.Account.AcctId);
 
                 accountToolStripStatusLabel.Text = summary?.Account.AccountName;
@@ -1024,9 +1026,9 @@ namespace MoneyBookTools
             if (listViewAccounts.SelectedIndices.Count > 0)
             {
                 int index = listViewAccounts.SelectedIndices[0];
-                var summary = m_summaries[index] as AccountSummary;
+                var summary = m_summaries[index] as AccountSummaryNew;
 
-                var dlg = TransactionForm.Create(summary.Account.AcctId);
+                var dlg = TransactionForm.Create(summary.AcctId);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {

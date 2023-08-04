@@ -148,3 +148,41 @@ BEGIN
 		[IsDeleted] BIT NOT NULL DEFAULT(CONVERT(BIT, 0))
 	)
 	END
+
+GO
+
+CREATE VIEW TransactionSummaries AS
+SELECT AcctId,
+       Credits,
+       Debits,
+	   Credits - Debits as Total,
+       StagedCredits,
+       StagedDebits,
+       StagedCredits - StagedDebits AS StagedTotal
+FROM (
+    SELECT AcctId,
+           SUM(CASE WHEN TrnsType = 'DEBIT'  AND State != 'Ignored' THEN Amount ELSE 0 END) AS Debits,
+           SUM(CASE WHEN TrnsType = 'CREDIT' AND State != 'Ignored' THEN Amount ELSE 0 END) AS Credits,
+           SUM(CASE WHEN TrnsType = 'DEBIT'  AND State = 'Staged' THEN Amount ELSE 0 END) AS StagedDebits,
+           SUM(CASE WHEN TrnsType = 'CREDIT' AND State = 'Staged' THEN Amount ELSE 0 END) AS StagedCredits
+    FROM Transactions
+    WHERE IsDeleted = CONVERT(BIT, 0)
+    GROUP BY AcctId
+) AS Totals;
+
+GO
+
+CREATE VIEW AccountSummaries AS
+select  a.*,
+		t.Credits,
+		t.Debits,
+		t.Total,
+		t.StagedCredits,
+		t.StagedDebits,
+		t.StagedTotal,
+		a.StartingBalance + t.Total - t.StagedTotal as Balance,
+		a.StartingBalance + t.Total - t.StagedTotal - a.ReserveAmount as AvailableBalance,
+		a.StartingBalance + t.Total - a.ReserveAmount as FinalBalance		
+from Accounts a, TransactionSummaries t
+where a.AcctId = t.AcctId
+
