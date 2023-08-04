@@ -880,12 +880,11 @@ namespace MoneyBookTools
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedTotal:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-#if false
                 IEnumerable<TransactionInfo> transactions = null;
                 if (m_stateFilter != null)
                 {
                     // Filter by state and date.
-                    transactions = summary?.Transactions
+                    transactions = m_db.GetTransactions(summary.AcctId)
                         .Where(x => x.State == m_stateFilter.ToString())
                         .Filter(m_dateFilter)
                         .Order(m_sortOrder);
@@ -893,7 +892,7 @@ namespace MoneyBookTools
                 else
                 {
                     // Filter by date only.
-                    transactions = summary?.Transactions
+                    transactions = m_db.GetTransactions(summary.AcctId)
                         .Filter(m_dateFilter)
                         .Order(m_sortOrder);
                 }
@@ -933,7 +932,6 @@ namespace MoneyBookTools
                 }
 
                 RestoreSelectedTransactions();
-#endif
             }
         }
 
