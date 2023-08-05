@@ -306,6 +306,7 @@ namespace MoneyBookTools.Data
             {
                 using var dbtran = db.Database.BeginTransaction();
 
+                rem.AcctId = reminder.AcctId;
                 rem.DueDate = reminder.DueDate;
                 rem.Payee = reminder.Payee;
                 rem.Memo = reminder.Memo;

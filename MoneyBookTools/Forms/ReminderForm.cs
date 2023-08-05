@@ -1,4 +1,5 @@
 ﻿using Dark.Net;
+using MoneyBook.BusinessModels;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
@@ -112,7 +113,7 @@ namespace MoneyBookTools
                 comboAccounts.DataSource = accts;
                 comboAccounts.DisplayMember = "AccountName";
                 comboAccounts.SelectedIndex = 0;
-                
+
                 comboFrequency.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.TransactionFrequency));
 
                 if (m_mode == Mode.Add)
@@ -255,6 +256,16 @@ namespace MoneyBookTools
 
             textAmount.DataBindings.Add("Text", Reminder, "NewAmount", true, DataSourceUpdateMode.OnPropertyChanged);
             textAmount.DataBindings[0].FormatString = "0.00";
+        }
+
+        private void comboAccounts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var accts = comboAccounts.DataSource as List<AccountInfo>;
+            var selectedAcct = accts[comboAccounts.SelectedIndex];
+            if (Reminder.AcctId != selectedAcct.AcctId)
+            {
+                Reminder.AcctId = selectedAcct.AcctId;
+            }
         }
     }
 }
