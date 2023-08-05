@@ -357,19 +357,9 @@ namespace MoneyBookTools
         {
             try
             {
-                var answer = MessageBox.Show(this,
-                    $"Are you sure you delete reminders across all accounts?  NOTE: This cannot be undone.",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                using var hg = this.CreateHourglass();
 
-                if (answer == DialogResult.Yes)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    m_db.DeleteAllReminders();
-
-                    MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
-                }
+                DeleteReminders();
             }
             catch (Exception ex)
             {
@@ -542,20 +532,6 @@ namespace MoneyBookTools
             try
             {
                 OpenWebsite();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void deleteReminderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                using var hg = this.CreateHourglass();
-
-                DeleteReminders();
             }
             catch (Exception ex)
             {
@@ -1178,22 +1154,22 @@ namespace MoneyBookTools
         private void SkipReminders()
         {
             var reminders = dgvReminders.DataSource as List<ViewReminder>;
-            var selectedReminder = dgvReminders.SelectedCells
+            var selectedReminders = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
                 .Select(g => reminders[g.Key])
                 .ToList();
 
-            if (selectedReminder.Count() > 0)
+            if (selectedReminders.Count() > 0)
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you want to skip these {selectedReminder.Count()} reminders?",
+                    $"Are you sure you want to skip these {selectedReminders.Count()} reminders?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.SkipReminders(selectedReminder);
+                    m_db.SkipReminders(selectedReminders);
 
                     LoadRemindersGrid();
                 }
@@ -1203,22 +1179,22 @@ namespace MoneyBookTools
         private void CopyReminders()
         {
             var reminders = dgvReminders.DataSource as List<ViewReminder>;
-            var selectedReminder = dgvReminders.SelectedCells
+            var selectedReminders = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
                 .Select(g => reminders[g.Key])
                 .ToList();
 
-            if (selectedReminder.Count() > 0)
+            if (selectedReminders.Count() > 0)
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you want to copy these {selectedReminder.Count()} reminders?",
+                    $"Are you sure you want to copy these {selectedReminders.Count()} reminders?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.CopyReminders(selectedReminder);
+                    m_db.CopyReminders(selectedReminders);
 
                     LoadRemindersGrid();
 
@@ -1247,22 +1223,22 @@ namespace MoneyBookTools
         private void DeleteReminders()
         {
             var reminders = dgvReminders.DataSource as List<ViewReminder>;
-            var selectedReminder = dgvReminders.SelectedCells
+            var selectedReminders = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
                 .Select(g => reminders[g.Key])
                 .ToList();
 
-            if (selectedReminder.Count() > 0)
+            if (selectedReminders.Count() > 0)
             {
                 var answer = MessageBox.Show(this,
-                    $"Are you sure you want to delete these {selectedReminder.Count()} reminders?",
+                    $"Are you sure you want to delete these {selectedReminders.Count()} reminders?",
                     this.Text,
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.DeleteReminders(selectedReminder);
+                    m_db.DeleteReminders(selectedReminders);
 
                     LoadRemindersGrid();
                 }
@@ -1305,7 +1281,7 @@ namespace MoneyBookTools
         private void ShowStageReminderDialog()
         {
             var reminders = dgvReminders.DataSource as List<ViewReminder>;
-            var selectedReminder = dgvReminders.SelectedCells
+            var selectedReminders = dgvReminders.SelectedCells
                 .Cast<DataGridViewCell>()
                 .Select(x => new
                 {
@@ -1314,9 +1290,9 @@ namespace MoneyBookTools
                 })
                 .FirstOrDefault();
 
-            if (selectedReminder != null)
+            if (selectedReminders != null)
             {
-                var dlg = ReminderForm.CreateStageForm(selectedReminder.Transaction);
+                var dlg = ReminderForm.CreateStageForm(selectedReminders.Transaction);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {

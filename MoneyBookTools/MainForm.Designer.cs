@@ -85,7 +85,7 @@ namespace MoneyBookTools
             sumToolStripStatusLabel = new ToolStripStatusLabel();
             groupLedger = new GroupBox();
             dgvAccountTransactions = new DataGridView();
-            tranactionsContextMenu = new ContextMenuStrip(components);
+            transactionsContextMenu = new ContextMenuStrip(components);
             addTransToolStripMenuItem = new ToolStripMenuItem();
             editTransToolStripMenuItem = new ToolStripMenuItem();
             setTransStateToolStripMenuItem = new ToolStripMenuItem();
@@ -122,7 +122,7 @@ namespace MoneyBookTools
             mainStatusStrip1.SuspendLayout();
             groupLedger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvAccountTransactions).BeginInit();
-            tranactionsContextMenu.SuspendLayout();
+            transactionsContextMenu.SuspendLayout();
             groupReminders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvReminders).BeginInit();
             remindersContextMenu.SuspendLayout();
@@ -570,7 +570,7 @@ namespace MoneyBookTools
             // 
             dgvAccountTransactions.BackgroundColor = SystemColors.Window;
             dgvAccountTransactions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAccountTransactions.ContextMenuStrip = tranactionsContextMenu;
+            dgvAccountTransactions.ContextMenuStrip = transactionsContextMenu;
             dgvAccountTransactions.Location = new Point(6, 24);
             dgvAccountTransactions.Name = "dgvAccountTransactions";
             dgvAccountTransactions.RowTemplate.Height = 25;
@@ -580,12 +580,12 @@ namespace MoneyBookTools
             dgvAccountTransactions.CellMouseDoubleClick += dgvAccountTransactions_CellMouseDoubleClick;
             dgvAccountTransactions.SelectionChanged += dgvAccountTransactions_SelectionChanged;
             // 
-            // tranactionsContextMenu
+            // transactionsContextMenu
             // 
-            tranactionsContextMenu.Items.AddRange(new ToolStripItem[] { addTransToolStripMenuItem, editTransToolStripMenuItem, setTransStateToolStripMenuItem, toolStripSeparator7, reconcileNewToolStripMenuItem, toolStripSeparator9, addReminderToolStripMenuItem, toolStripSeparator2, deleteTransToolStripMenuItem });
-            tranactionsContextMenu.Name = "transContextMenu";
-            tranactionsContextMenu.Size = new Size(160, 154);
-            tranactionsContextMenu.Opening += transactionsContextMenu_Opening;
+            transactionsContextMenu.Items.AddRange(new ToolStripItem[] { addTransToolStripMenuItem, editTransToolStripMenuItem, setTransStateToolStripMenuItem, toolStripSeparator7, reconcileNewToolStripMenuItem, toolStripSeparator9, addReminderToolStripMenuItem, toolStripSeparator2, deleteTransToolStripMenuItem });
+            transactionsContextMenu.Name = "transContextMenu";
+            transactionsContextMenu.Size = new Size(160, 154);
+            transactionsContextMenu.Opening += transactionsContextMenu_Opening;
             // 
             // addTransToolStripMenuItem
             // 
@@ -785,7 +785,7 @@ namespace MoneyBookTools
             mainStatusStrip1.PerformLayout();
             groupLedger.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvAccountTransactions).EndInit();
-            tranactionsContextMenu.ResumeLayout(false);
+            transactionsContextMenu.ResumeLayout(false);
             groupReminders.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvReminders).EndInit();
             remindersContextMenu.ResumeLayout(false);
@@ -807,7 +807,7 @@ namespace MoneyBookTools
         private GroupBox groupReminders;
         private ContextMenuStrip remindersContextMenu;
         private ToolStripMenuItem skipReminderToolStripMenuItem;
-        private ContextMenuStrip tranactionsContextMenu;
+        private ContextMenuStrip transactionsContextMenu;
         private ToolStripMenuItem deleteTransToolStripMenuItem;
         private ToolStripMenuItem setTransStateToolStripMenuItem;
         private ToolStripMenuItem stageReminderToolStripMenuItem;
