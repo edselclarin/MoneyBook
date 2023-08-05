@@ -1,0 +1,9 @@
+﻿Updating Views in EF Core
+=========================
+
+Views models do not have keys like normal entity models.  For that reason, 
+EF Core 5/6 doesn't support updating views.  To get around this limitation,
+decorate view models with the Keyless attribute.
+
+Reference:
+https://www.michalbialecki.com/en/2020/09/09/working-with-views-in-entity-framework-core-5/
