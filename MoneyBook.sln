@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBook", "MoneyBook\Mone
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionsTool", "TransactionsTool\TransactionsTool.csproj", "{EAB62994-A43A-486E-A493-A1F5449DFA3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyBookTest", "MoneyBookTest\MoneyBookTest.csproj", "{79205AE1-CFBC-4876-913F-DFAD56E5AEB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookTest", "MoneyBookTest\MoneyBookTest.csproj", "{79205AE1-CFBC-4876-913F-DFAD56E5AEB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
