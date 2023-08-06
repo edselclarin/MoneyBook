@@ -12,11 +12,11 @@ namespace MoneyBookDashboard.Data
             {
                 return new List<Account>()
                 {
-                    new Account() { AcctId = 1, Name = "CHECKING",  StartingBalance = 10000.0m },
-                    new Account() { AcctId = 2, Name = "SAVINGS-1", StartingBalance = 10000.0m },
-                    new Account() { AcctId = 3, Name = "SAVINGS-2", StartingBalance = 10000.0m },
-                    new Account() { AcctId = 4, Name = "SAVINGS-3", StartingBalance = 10000.0m },
-                    new Account() { AcctId = 5, Name = "OTHER",     StartingBalance = 10000.0m }
+                    new Account() { AcctId = 1, Name = "CHECKING",  FinalBalance = 10000.0m },
+                    new Account() { AcctId = 2, Name = "SAVINGS-1", FinalBalance = 10000.0m },
+                    new Account() { AcctId = 3, Name = "SAVINGS-2", FinalBalance = 10000.0m },
+                    new Account() { AcctId = 4, Name = "SAVINGS-3", FinalBalance = 10000.0m },
+                    new Account() { AcctId = 5, Name = "OTHER",     FinalBalance = 10000.0m }
                 };
             });
         }

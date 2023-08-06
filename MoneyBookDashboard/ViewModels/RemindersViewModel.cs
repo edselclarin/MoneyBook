@@ -1,23 +1,16 @@
 ﻿using Caliburn.Micro;
-using MoneyBookDashboard.Data;
-using MoneyBookDashboard.Models;
-using System.Collections.Generic;
+using MoneyBook.Data;
+using MoneyBook.DataProviders;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MoneyBookDashboard.ViewModels
 {
     public class RemindersViewModel : Screen, IViewModel
     {
-        private IReminderDataProvider dataProvider_;
-
-        public RemindersViewModel(IReminderDataProvider dataProvider)
-        {
-            dataProvider_ = dataProvider;
-        }
-
-        private ObservableCollection<Reminder> reminders_;
-        public ObservableCollection<Reminder> Reminders
+        private ObservableCollection<Models.Reminder> reminders_;
+        public ObservableCollection<Models.Reminder> Reminders
         {
             get => reminders_;
             set
@@ -29,13 +22,26 @@ namespace MoneyBookDashboard.ViewModels
         
         public async Task LoadAsync()
         {
-            if (await dataProvider_.GetAllAsync() is IEnumerable<Reminder> reminders)
-            {
-                Reminders = new();
+            Reminders = new();
 
-                foreach (var reminder in reminders)
+            if (DataProviderFactory.Create(typeof(MoneyBook.Models.Reminder)) is MoneyBook.DataProviders.ReminderDataProvider dp)
+            {
+                var res = await dp.GetPagedAsync(0, 100);
+                if (res is not null)
                 {
-                    Reminders.Add(reminder);
+                    foreach (var rem in res.Items.OrderBy(x => x.DueDate))
+                    {
+                        Reminders.Add(new MoneyBookDashboard.Models.Reminder
+                        {
+                            RmdrId = rem.RmdrId,
+                            DueDate = rem.DueDate,
+                            Payee = rem.Payee,
+                            Memo = rem.Memo,
+                            Website = rem.Website,
+                            Amount = rem.GetAmount(),
+                            Frequency = rem.Frequency
+                        });
+                    }
                 }
             }
         }

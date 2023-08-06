@@ -425,6 +425,18 @@ namespace MoneyBook.Data
             tran.State = state.ToString();
         }
 
+        public static decimal GetAmount(this Reminder rem)
+        {
+            return rem.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase) 
+                ? -rem.Amount : rem.Amount;
+        }
+
+        public static decimal GetAmount(this Transaction tran)
+        {
+            return tran.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase) 
+                ? -tran.Amount : tran.Amount;
+        }
+
         public static void Delete(this Transaction tran)
         {
             // Soft delete.

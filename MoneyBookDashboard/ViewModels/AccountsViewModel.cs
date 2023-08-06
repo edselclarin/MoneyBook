@@ -1,23 +1,15 @@
 ﻿using Caliburn.Micro;
-using MoneyBookDashboard.Data;
-using MoneyBookDashboard.Models;
-using System.Collections.Generic;
+using MoneyBook.DataProviders;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MoneyBookDashboard.ViewModels
 {
     public class AccountsViewModel : Screen, IViewModel
     {
-        private IAccountDataProvider dataProvider_;
-
-        public AccountsViewModel(IAccountDataProvider dataProvider)
-        {
-            dataProvider_ = dataProvider;
-        }
-
-        private ObservableCollection<Account> accounts_; 
-        public ObservableCollection<Account> Accounts 
+        private ObservableCollection<MoneyBookDashboard.Models.Account> accounts_; 
+        public ObservableCollection<MoneyBookDashboard.Models.Account> Accounts 
         {
             get => accounts_;
             set
@@ -29,13 +21,22 @@ namespace MoneyBookDashboard.ViewModels
 
         public async Task LoadAsync()
         {
-            if (await dataProvider_.GetAllAsync() is IEnumerable<Account> accounts)
-            {
-                Accounts = new();
+            Accounts = new();
 
-                foreach (var account in accounts)
+            if (DataProviderFactory.Create(typeof(MoneyBook.Models.AccountSummaryModel)) is MoneyBook.DataProviders.AccountSummaryDataProvider dp)
+            {
+                var res = await dp.GetPagedAsync(0, 100);
+                if (res is not null)
                 {
-                    Accounts.Add(account);
+                    foreach (var acct in res.Items.OrderBy(x => x. AcctId))
+                    {
+                        Accounts.Add(new Models.Account
+                        {
+                            AcctId = acct.AcctId,
+                            Name = acct.Name,
+                            FinalBalance = acct.FinalBalance
+                        });
+                    }
                 }
             }
         }

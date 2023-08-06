@@ -30,7 +30,7 @@
                                         FontSize="16"
                                         FontWeight="Bold"
                                         Grid.Column="0"/>
-                            <TextBlock Text="{Binding Balance, Converter={StaticResource DecimalToCurrencyConverter}}"
+                            <TextBlock Text="{Binding FinalBalance, Converter={StaticResource DecimalToCurrencyConverter}}"
                                         Margin="3"
                                         Foreground="#333333"
                                         FontSize="11"

@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using MoneyBookDashboard.Data;
 
 namespace MoneyBookDashboard.ViewModels
 {
@@ -7,9 +6,9 @@ namespace MoneyBookDashboard.ViewModels
     {   
         public MainViewModel() 
         {
-            Items.Add(new AccountsViewModel(new AccountDataProvider()));
-            Items.Add(new TransactionsViewModel(new TransactionDataProvider()));
-            Items.Add(new RemindersViewModel(new ReminderDataProvider()));
+            Items.Add(new AccountsViewModel());
+            Items.Add(new TransactionsViewModel());
+            Items.Add(new RemindersViewModel());
 
             Items.Apply(item => (item as IViewModel).LoadAsync());
         }
