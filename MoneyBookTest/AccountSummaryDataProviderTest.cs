@@ -1,21 +1,17 @@
-﻿using MoneyBook.Data;
-using MoneyBook.DataProviders;
+﻿using MoneyBook.DataProviders;
+using MoneyBook.Models;
 
 namespace MoneyBookTest
 {
     public class AccountSummaryDataProviderTest
     {
-        private MoneyBookDbContext db_;
         private AccountSummaryDataProvider dp_;
 
         [SetUp]
         public void Setup()
         {
-            db_ = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
-            Assert.IsNotNull(db_, "db_ is null");
-
-            dp_ = AccountSummaryDataProvider.Create(db_);
-            Assert.IsNotNull(db_, "dp_ is null");
+            dp_ = (AccountSummaryDataProvider)DataProviderFactory.Create(typeof(AccountSummaryModel));
+            Assert.IsNotNull(dp_, "dp_ is null");
         }
 
         [Test]
@@ -25,8 +21,8 @@ namespace MoneyBookTest
             Assert.IsNotNull(res, "res is null");
             Assert.IsNotNull(res.Items, "res.Items is null");
             Assert.IsTrue(
-                (res.Count >= 0 || res.Count <= 50) && 
-                res.Total > 0 && 
+                (res.Count >= 0 || res.Count <= 50) &&
+                res.Total > 0 &&
                 (res.Take >= 0 || res.Take <= 50));
         }
 

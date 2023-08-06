@@ -3,18 +3,8 @@ using MoneyBook.Models;
 
 namespace MoneyBook.DataProviders
 {
-    public class ReminderDataProvider : IDataProvider<Reminder>
+    public class ReminderDataProvider : BaseDataProvider, IDataProvider<Reminder>
     {
-        private MoneyBookDbContext db_;
-
-        public static ReminderDataProvider Create(MoneyBookDbContext db)
-        {
-            return new ReminderDataProvider()
-            {
-                db_ = db
-            };
-        }
-
         public Task<PagedResponse<Reminder>> GetPagedAsync(int skip, int take, int? fkId = null, DateTime? dateTimeFrom = null)
         {
             return Task.Run(() =>

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransactionsTool", "Transac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookTest", "MoneyBookTest\MoneyBookTest.csproj", "{79205AE1-CFBC-4876-913F-DFAD56E5AEB1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyBookCLI", "MoneyBookCLI\MoneyBookCLI.csproj", "{9297F03D-9BCA-4F40-A600-BEC9DB58F3CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{79205AE1-CFBC-4876-913F-DFAD56E5AEB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79205AE1-CFBC-4876-913F-DFAD56E5AEB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79205AE1-CFBC-4876-913F-DFAD56E5AEB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9297F03D-9BCA-4F40-A600-BEC9DB58F3CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9297F03D-9BCA-4F40-A600-BEC9DB58F3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9297F03D-9BCA-4F40-A600-BEC9DB58F3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9297F03D-9BCA-4F40-A600-BEC9DB58F3CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

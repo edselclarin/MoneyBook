@@ -3,18 +3,8 @@ using MoneyBook.Models;
 
 namespace MoneyBook.DataProviders
 {
-    public class TransactionDataProvider : IDataProvider<Transaction>
+    public class TransactionDataProvider : BaseDataProvider, IDataProvider<Transaction>
     {
-        private MoneyBookDbContext db_;
-
-        public static TransactionDataProvider Create(MoneyBookDbContext db)
-        {
-            return new TransactionDataProvider()
-            {
-                db_ = db
-            };
-        }
-        
         public Task<PagedResponse<Transaction>> GetPagedAsync(int skip, int take, int? fkId = null, DateTime? dateTimeFrom = null)
         {
             return Task.Run(() =>

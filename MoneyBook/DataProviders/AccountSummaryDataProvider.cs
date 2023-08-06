@@ -3,18 +3,8 @@ using MoneyBook.Models;
 
 namespace MoneyBook.DataProviders
 {
-    public class AccountSummaryDataProvider : IDataProvider<AccountSummaryModel>
+    public class AccountSummaryDataProvider : BaseDataProvider, IDataProvider<AccountSummaryModel>
     {
-        private MoneyBookDbContext db_;
-
-        public static AccountSummaryDataProvider Create(MoneyBookDbContext db)
-        {
-            return new AccountSummaryDataProvider()
-            { 
-                db_ = db 
-            };
-        }
-
         public Task<PagedResponse<AccountSummaryModel>> GetPagedAsync(int skip, int take, int? fkId = null, DateTime? dateTimeFrom = null)
         {
             return Task.Run(() => 

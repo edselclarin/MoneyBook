@@ -1,21 +1,17 @@
-﻿using MoneyBook.Data;
-using MoneyBook.DataProviders;
+﻿using MoneyBook.DataProviders;
+using MoneyBook.Models;
 
 namespace MoneyBookTest
 {
     public class TransactionDataProviderTest
     {
-        private MoneyBookDbContext db_;
         private TransactionDataProvider dp_;
 
         [SetUp]
         public void Setup()
         {
-            db_ = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
-            Assert.IsNotNull(db_, "db_ is null");
-
-            dp_ = TransactionDataProvider.Create(db_);
-            Assert.IsNotNull(db_, "dp_ is null");
+            dp_ = (TransactionDataProvider)DataProviderFactory.Create(typeof(Transaction));
+            Assert.IsNotNull(dp_, "dp_ is null");
         }
 
         [Test]
@@ -81,10 +77,10 @@ namespace MoneyBookTest
         }
 
         [Test]
-        public void GetAllSinceLastWeek()
+        public void GetAllSinceLastMonth()
         {
             Console.WriteLine($"### GetAllSinceLastWeek() ###");
-            var dt = DateTime.Now.AddDays(-7);
+            var dt = DateTime.Now.AddMonths(-1);
             int take = 100;
             int skip = 0;
             int count = 0;
@@ -133,11 +129,11 @@ namespace MoneyBookTest
             var res = dp_.GetPagedAsync(0, 1).Result;
             Assert.IsNotNull(res, "res is null");
             Assert.IsTrue(res.Count == 1);
-            int trnsId = res.Items.First().TrnsId;
-            var item = dp_.GetAsync(trnsId).Result;
+            int id = res.Items.First().TrnsId;
+            var item = dp_.GetAsync(id).Result;
             Assert.IsNotNull(item, "item is null");
-            Assert.True(item.TrnsId == trnsId, "id mismatch");
-            Console.WriteLine($"Transaction: {trnsId}, {item.Date}, {item.Payee}, {item.State}, {item.TrnsType}, {item.Amount}");
+            Assert.True(item.TrnsId == id, "id mismatch");
+            Console.WriteLine($"Transaction: {id}, {item.Date}, {item.Payee}, {item.State}, {item.TrnsType}, {item.Amount}");
         }
 
         [Test]
