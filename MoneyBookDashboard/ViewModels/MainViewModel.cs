@@ -15,6 +15,7 @@ namespace MoneyBookDashboard.ViewModels
             Items.Apply(item => (item as IViewModel).LoadAsync());
 
             MinimizeCommand = new DelegateCommand(Minimize, CanMinimize);
+            MaximizeCommand = new DelegateCommand(Maximize, CanMaximize);
             CloseCommand = new DelegateCommand(Close, CanClose);
         }
 
@@ -24,6 +25,18 @@ namespace MoneyBookDashboard.ViewModels
             Application.Current.MainWindow.WindowState = System.Windows.WindowState.Minimized;
         }
         public ICommand MinimizeCommand { get; private set; }
+
+        private bool CanMaximize() => true;
+        private void Maximize(object parameter)
+        {
+            Application.Current.MainWindow.WindowState = Application.Current.MainWindow.WindowState switch
+            {
+                WindowState.Normal => WindowState.Maximized,
+                WindowState.Maximized => WindowState.Normal,
+                _ => Application.Current.MainWindow.WindowState
+            };
+        }
+        public ICommand MaximizeCommand { get; private set; }
 
         private bool CanClose() => true;
         private void Close(object parameter)

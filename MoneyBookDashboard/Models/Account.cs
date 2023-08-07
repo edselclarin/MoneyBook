@@ -4,6 +4,6 @@
     {
         public int AcctId { get; set; }
         public string Name { get; set; }
-        public decimal FinalBalance { get; set; }
+        public decimal AvailableBalance { get; set; }
     }
 }

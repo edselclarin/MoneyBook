@@ -34,7 +34,7 @@ namespace MoneyBookDashboard.ViewModels
                         {
                             AcctId = item.AcctId,
                             Name = item.Name,
-                            FinalBalance = item.FinalBalance
+                            AvailableBalance = item.AvailableBalance
                         });
                     }
                 }

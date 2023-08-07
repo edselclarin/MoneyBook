@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="MoneyBook Dashboard" Height="450" Width="800"
+        Title="MoneyBook Dashboard" Height="720" Width="1280"
         Background="DarkGray"
         WindowStyle="None"
-        WindowState="Maximized" WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -20,8 +20,9 @@
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="25" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0" Text="MoneyBook Dashboard" 
@@ -31,8 +32,9 @@
                        VerticalAlignment="Center"
                        Margin="6 0 0 0"/>
             <Button Grid.Column="1" Content="_" BorderThickness="0" Margin="1" Background="Transparent" Command="{Binding MinimizeCommand}"/>
-            <Button Grid.Column="2" Content="X" BorderThickness="0" Margin="1" Background="Transparent" Command="{Binding CloseCommand}"/>
-            
+            <Button Grid.Column="2" Content="[ ]" BorderThickness="0" Margin="1" Background="Transparent" Command="{Binding MaximizeCommand}"/>
+            <Button Grid.Column="3" Content="X" BorderThickness="0" Margin="1" Background="Transparent" Command="{Binding CloseCommand}"/>
+
         </Grid>
 
         <Grid Grid.Row="1">
