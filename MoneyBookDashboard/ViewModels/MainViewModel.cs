@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
+using System.Windows;
+using System.Windows.Input;
 
 namespace MoneyBookDashboard.ViewModels
 {
     public class MainViewModel : Conductor<Screen>.Collection.AllActive
-    {   
+    {
         public MainViewModel() 
         {
             Items.Add(new AccountsViewModel());
@@ -11,6 +13,23 @@ namespace MoneyBookDashboard.ViewModels
             Items.Add(new RemindersViewModel());
 
             Items.Apply(item => (item as IViewModel).LoadAsync());
+
+            MinimizeCommand = new DelegateCommand(Minimize, CanMinimize);
+            CloseCommand = new DelegateCommand(Close, CanClose);
         }
+
+        private bool CanMinimize() => true;
+        private void Minimize(object parameter)
+        {
+            Application.Current.MainWindow.WindowState = System.Windows.WindowState.Minimized;
+        }
+        public ICommand MinimizeCommand { get; private set; }
+
+        private bool CanClose() => true;
+        private void Close(object parameter)
+        {
+            Application.Current.MainWindow.Close();
+        }
+        public ICommand CloseCommand { get; private set; }
     }
 }

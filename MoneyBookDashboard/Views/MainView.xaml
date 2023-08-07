@@ -30,8 +30,8 @@
                        Foreground="PaleGreen"
                        VerticalAlignment="Center"
                        Margin="6 0 0 0"/>
-            <Button Grid.Column="1" Content="_" BorderThickness="0" Margin="1" Background="Transparent"/>
-            <Button Grid.Column="2" Content="X" BorderThickness="0" Margin="1" Background="Transparent"/>
+            <Button Grid.Column="1" Content="_" BorderThickness="0" Margin="1" Background="Transparent" Command="{Binding MinimizeCommand}"/>
+            <Button Grid.Column="2" Content="X" BorderThickness="0" Margin="1" Background="Transparent" Command="{Binding CloseCommand}"/>
             
         </Grid>
 
