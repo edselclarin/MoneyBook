@@ -7,48 +7,75 @@
         mc:Ignorable="d"
         Title="MoneyBook Dashboard" Height="450" Width="800"
         Background="DarkGray"
+        WindowStyle="None"
         WindowState="Maximized" WindowStartupLocation="CenterScreen">
 
     <Grid>
-        
         <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="200" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="180" />
-                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="MoneyBook Dashboard" 
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Foreground="PaleGreen"
+                       VerticalAlignment="Center"
+                       Margin="6 0 0 0"/>
+            <Button Grid.Column="1" Content="_" BorderThickness="0" Margin="1" Background="Transparent"/>
+            <Button Grid.Column="2" Content="X" BorderThickness="0" Margin="1" Background="Transparent"/>
             
-            <!-- Accounts View -->
-            <ContentControl Grid.Column="0"
-                            cal:View.Model="{Binding Items[0]}" />
-
-            <!-- Vertical Splitter -->
-            <GridSplitter Grid.Row="0" Grid.Column="1" 
-                          Width="5" 
-                          HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-
-            <!-- Transactions View -->
-            <ContentControl Grid.Column="2"
-                            cal:View.Model="{Binding Items[1]}" />
         </Grid>
 
-        <!-- Horizontal Splitter -->
-        <GridSplitter Grid.Row="1"
-                      Height="5" 
-                      HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+        <Grid Grid.Row="1">
+        
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="280" />
+            </Grid.RowDefinitions>
 
-        <!-- Reminders View -->
-        <ContentControl Grid.Row="2" 
-                        Grid.ColumnSpan="3" 
-                        cal:View.Model="{Binding Items[2]}" />
+            <Grid Grid.Row="0">
+            
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+            
+                <!-- Accounts View -->
+                <ContentControl Grid.Column="0"
+                                cal:View.Model="{Binding Items[0]}" />
+
+                <!-- Vertical Splitter -->
+                <GridSplitter Grid.Row="0" Grid.Column="1" 
+                              Width="5" 
+                              HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+
+                <!-- Transactions View -->
+                <ContentControl Grid.Column="2"
+                                cal:View.Model="{Binding Items[1]}" />
+            </Grid>
+
+            <!-- Horizontal Splitter -->
+            <GridSplitter Grid.Row="1"
+                          Height="5" 
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+
+            <!-- Reminders View -->
+            <ContentControl Grid.Row="2" 
+                            Grid.ColumnSpan="3" 
+                            cal:View.Model="{Binding Items[2]}" />
     
+        </Grid>
     </Grid>
 
 </Window>
