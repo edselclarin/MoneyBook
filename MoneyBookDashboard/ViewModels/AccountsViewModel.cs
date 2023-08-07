@@ -25,16 +25,16 @@ namespace MoneyBookDashboard.ViewModels
 
             if (DataProviderFactory.Create(typeof(MoneyBook.Models.AccountSummaryModel)) is MoneyBook.DataProviders.AccountSummaryDataProvider dp)
             {
-                var res = await dp.GetPagedAsync(0, 100);
-                if (res is not null)
+                if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<MoneyBook.Models.AccountSummaryModel> res)
                 {
-                    foreach (var acct in res.Items.OrderBy(x => x. AcctId))
+                    var items = res.Items.OrderBy(x => x.AcctId);
+                    foreach (var item in items)
                     {
                         Accounts.Add(new Models.Account
                         {
-                            AcctId = acct.AcctId,
-                            Name = acct.Name,
-                            FinalBalance = acct.FinalBalance
+                            AcctId = item.AcctId,
+                            Name = item.Name,
+                            FinalBalance = item.FinalBalance
                         });
                     }
                 }

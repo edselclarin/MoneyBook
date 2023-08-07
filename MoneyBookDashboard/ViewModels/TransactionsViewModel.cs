@@ -27,22 +27,22 @@ namespace MoneyBookDashboard.ViewModels
 
             if (DataProviderFactory.Create(typeof(MoneyBook.Models.Transaction)) is MoneyBook.DataProviders.TransactionDataProvider dp)
             {
-                var res = await dp.GetPagedAsync(0, 100, dateTimeFrom: DateTime.Now.AddDays(-30));
-                if (res is not null)
+                if ((await dp.GetPagedAsync(0, 100, dateTimeFrom: DateTime.Now.AddDays(-30))) is PagedResponse<MoneyBook.Models.Transaction> res)
                 {
-                    foreach (var tran in res.Items.OrderByDescending(x => x.Date))
+                    var items = res.Items.OrderByDescending(x => x.Date);
+                    foreach (var item in items)
                     {
                         Transactions.Add(new MoneyBookDashboard.Models.Transaction
                         {
-                            TrnsId = tran.TrnsId,
-                            Date = tran.Date,
-                            RefNum = tran.RefNum,
-                            Payee = tran.Payee,
-                            Memo = tran.Memo,
-                            State = tran.State,
-                            Amount = tran.GetAmount(),
-                            AcctId = tran.AcctId,
-                            CatId = tran.CatId
+                            TrnsId = item.TrnsId,
+                            Date = item.Date,
+                            RefNum = item.RefNum,
+                            Payee = item.Payee,
+                            Memo = item.Memo,
+                            State = item.State,
+                            Amount = item.GetAmount(),
+                            AcctId = item.AcctId,
+                            CatId = item.CatId
                         });
                     }
                 }

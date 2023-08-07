@@ -26,20 +26,20 @@ namespace MoneyBookDashboard.ViewModels
 
             if (DataProviderFactory.Create(typeof(MoneyBook.Models.Reminder)) is MoneyBook.DataProviders.ReminderDataProvider dp)
             {
-                var res = await dp.GetPagedAsync(0, 100);
-                if (res is not null)
+                if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<MoneyBook.Models.Reminder> res)
                 {
-                    foreach (var rem in res.Items.OrderBy(x => x.DueDate))
+                    var items = res.Items.OrderBy(x => x.DueDate);
+                    foreach (var item in items)
                     {
                         Reminders.Add(new MoneyBookDashboard.Models.Reminder
                         {
-                            RmdrId = rem.RmdrId,
-                            DueDate = rem.DueDate,
-                            Payee = rem.Payee,
-                            Memo = rem.Memo,
-                            Website = rem.Website,
-                            Amount = rem.GetAmount(),
-                            Frequency = rem.Frequency
+                            RmdrId = item.RmdrId,
+                            DueDate = item.DueDate,
+                            Payee = item.Payee,
+                            Memo = item.Memo,
+                            Website = item.Website,
+                            Amount = item.GetAmount(),
+                            Frequency = item.Frequency
                         });
                     }
                 }
