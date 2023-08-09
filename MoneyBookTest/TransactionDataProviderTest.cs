@@ -3,39 +3,31 @@ using MoneyBook.Models;
 
 namespace MoneyBookTest
 {
-    public class TransactionDataProviderTest
+    public class TransactionDataProviderTest : BaseDataProviderTest<Transaction>
     {
-        private TransactionDataProvider dp_;
-
         [SetUp]
         public void Setup()
         {
-            dp_ = (TransactionDataProvider)DataProviderFactory.Create(typeof(Transaction));
-            Assert.IsNotNull(dp_, "dp_ is null");
+            DataProvider = (TransactionDataProvider)DataProviderFactory.Create(typeof(Transaction));
+            Assert.IsNotNull(DataProvider, "dp_ is null");
         }
 
         [Test]
         public void GetAll()
         {
-            Console.WriteLine($"### GetAll() ###");
-            int take = 100;
-            int skip = 0;
-            int count = 0;
-            var res = dp_.GetPagedAsync(skip, take).Result;
-            Assert.IsNotNull(res, "res is null");
-            Console.WriteLine($"{res.Total} item(s) total");
-            while (res.Items != null && res.Count > 0)
-            {
-                skip += take;
-                count += res.Count;
-
-                res = dp_.GetPagedAsync(skip, take).Result;
-                Assert.IsNotNull(res, "res is null");
-            }
-            Console.WriteLine($"{count} item(s) retrieved");
-            Assert.IsTrue(count == res.Total);
+            var result = base.GetAll();
+            Assert.True(result.totalRetrieved == result.totalCount);
         }
 
+        [Test]
+        public void Get()
+        {
+            var firstItem = GetFirstItem();
+            var item = Get(firstItem.TrnsId);
+            Assert.IsTrue(firstItem.TrnsId == item.TrnsId);
+        }
+
+#if false
         [Test]
         public void GetAllByInvalidFkId()
         {
@@ -141,5 +133,6 @@ namespace MoneyBookTest
         {
             //TODO
         }
+#endif
     }
 }

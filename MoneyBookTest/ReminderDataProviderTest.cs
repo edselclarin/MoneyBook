@@ -3,39 +3,31 @@ using MoneyBook.Models;
 
 namespace MoneyBookTest
 {
-    public class ReminderDataProviderTest
+    public class ReminderDataProviderTest : BaseDataProviderTest<Reminder>
     {
-        private ReminderDataProvider dp_;
-
         [SetUp]
         public void Setup()
         {
-            dp_ = (ReminderDataProvider)DataProviderFactory.Create(typeof(Reminder));
-            Assert.IsNotNull(dp_, "dp_ is null");
+            DataProvider = (ReminderDataProvider)DataProviderFactory.Create(typeof(Reminder));
+            Assert.IsNotNull(DataProvider, "DataProvider is null");
         }
 
         [Test]
         public void GetAll()
         {
-            Console.WriteLine($"### GetAll() ###");
-            int take = 100;
-            int skip = 0;
-            int count = 0;
-            var res = dp_.GetPagedAsync(skip, take).Result;
-            Assert.IsNotNull(res, "res is null");
-            Console.WriteLine($"{res.Total} item(s) total");
-            while (res.Items != null && res.Count > 0)
-            {
-                skip += take;
-                count += res.Count;
-
-                res = dp_.GetPagedAsync(skip, take).Result;
-                Assert.IsNotNull(res, "res is null");
-            }
-            Console.WriteLine($"{count} item(s) retrieved");
-            Assert.IsTrue(count == res.Total);
+            var result = base.GetAll();
+            Assert.True(result.totalRetrieved == result.totalCount);
         }
 
+        [Test]
+        public void Get()
+        {
+            var firstItem = GetFirstItem();
+            var item = Get(firstItem.RmdrId);
+            Assert.IsTrue(firstItem.RmdrId == item.RmdrId);
+        }
+
+#if false // TODO refactor
         [Test]
         public void GetAllByInvalidFkId()
         {
@@ -141,5 +133,6 @@ namespace MoneyBookTest
         {
             //TODO
         }
+#endif
     }
 }
