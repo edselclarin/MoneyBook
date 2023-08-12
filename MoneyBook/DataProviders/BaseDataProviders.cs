@@ -29,6 +29,10 @@ namespace MoneyBook.DataProviders
             {
                 return new AccountTypeDataProvider();
             }
+            else if (entityType == typeof(Institution))
+            {
+                return new InstitutionDataProvider();
+            }
             else if (entityType == typeof(Transaction))
             {
                 return new TransactionDataProvider();
@@ -39,7 +43,7 @@ namespace MoneyBook.DataProviders
             }
             else
             {
-                throw new Exception($"DataProviderFactory: No data provider available for {entityType.Name}.");
+                throw new Exception($"Could not find a data provider available for {entityType.Name}.");
             }
         }
     }
