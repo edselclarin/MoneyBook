@@ -21,6 +21,10 @@ namespace MoneyBook.DataProviders
             {
                 return new AccountSummaryDataProvider();
             }
+            else if (entityType == typeof(Account))
+            {
+                return new AccountDataProvider();
+            }
             else if (entityType == typeof(Transaction))
             {
                 return new TransactionDataProvider();
