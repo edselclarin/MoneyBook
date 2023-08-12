@@ -6,8 +6,14 @@ namespace MoneyBookTest
     {
         protected IDataProvider<T> DataProvider { get; set; }
 
-        public (int totalCount, int totalRetrieved) GetAll()
+        public List<T> GetAllItems()
         {
+            return GetAllItemsPaged().items;
+        }
+
+        public (int totalCount, int totalRetrieved, List<T> items) GetAllItemsPaged()
+        {
+            var items = new List<T>();
             int take = 100;
             int skip = 0;
             int count = 0;
@@ -19,13 +25,14 @@ namespace MoneyBookTest
             {
                 skip += take;
                 count += res.Count;
+                items.AddRange(res.Items);
 
                 res = DataProvider.GetPagedAsync(skip, take).Result;
                 Assert.IsNotNull(res, "res is null");
             }
 
             Assert.IsTrue(count == res.Total);
-            return (res.Total, count);
+            return (res.Total, count, items);
         }
 
         public T GetFirstItem()

@@ -1,17 +1,11 @@
 ﻿using MoneyBook.DataProviders;
 using MoneyBook.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MoneyBookTest
 {
     public class AccountTypeDataProviderTest : BaseDataProviderTest<AccountType>
     {
-        [SetUp]
-        public void Setup()
+        public AccountTypeDataProviderTest()
         {
             DataProvider = (AccountTypeDataProvider)DataProviderFactory.Create(typeof(AccountType));
             Assert.IsNotNull(DataProvider, "DataProvider is null");
@@ -20,7 +14,7 @@ namespace MoneyBookTest
         [Test]
         public void GetAll()
         {
-            var result = base.GetAll();
+            var result = base.GetAllItemsPaged();
             Assert.True(result.totalRetrieved == result.totalCount);
         }
 

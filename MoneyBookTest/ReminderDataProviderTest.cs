@@ -5,8 +5,7 @@ namespace MoneyBookTest
 {
     public class ReminderDataProviderTest : BaseDataProviderTest<Reminder>
     {
-        [SetUp]
-        public void Setup()
+        public ReminderDataProviderTest()
         {
             DataProvider = (ReminderDataProvider)DataProviderFactory.Create(typeof(Reminder));
             Assert.IsNotNull(DataProvider, "DataProvider is null");
@@ -15,7 +14,7 @@ namespace MoneyBookTest
         [Test]
         public void GetAll()
         {
-            var result = base.GetAll();
+            var result = base.GetAllItemsPaged();
             Assert.True(result.totalRetrieved == result.totalCount);
         }
 

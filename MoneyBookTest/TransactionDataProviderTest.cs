@@ -5,8 +5,7 @@ namespace MoneyBookTest
 {
     public class TransactionDataProviderTest : BaseDataProviderTest<Transaction>
     {
-        [SetUp]
-        public void Setup()
+        public TransactionDataProviderTest()
         {
             DataProvider = (TransactionDataProvider)DataProviderFactory.Create(typeof(Transaction));
             Assert.IsNotNull(DataProvider, "dp_ is null");
@@ -15,7 +14,7 @@ namespace MoneyBookTest
         [Test]
         public void GetAll()
         {
-            var result = base.GetAll();
+            var result = base.GetAllItemsPaged();
             Assert.True(result.totalRetrieved == result.totalCount);
         }
 
