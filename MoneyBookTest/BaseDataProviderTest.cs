@@ -1,10 +1,16 @@
-﻿using MoneyBook.DataProviders;
+﻿using MoneyBook.Data;
+using MoneyBook.DataProviders;
 
 namespace MoneyBookTest
 {
     public abstract class BaseDataProviderTest<T>
     {
         protected IDataProvider<T> DataProvider { get; set; }
+
+        public MoneyBookDbTransaction CreateDbTransaction()
+        {
+            return DataProvider.CreateDbTransaction();
+        }
 
         public List<T> GetAllItems()
         {
@@ -59,8 +65,22 @@ namespace MoneyBookTest
         public T Insert(T item)
         {
             var existingItem = DataProvider.FindAsync(item).Result;
-            Assert.IsNotNull(existingItem, "item already exists");
+            Assert.IsNull(existingItem, "item already exists");
             return DataProvider.UpsertAsync(item).Result;
+        }
+
+        public T Update(int id, T item)
+        {
+            var existingItem = DataProvider.GetAsync(id).Result;
+            Assert.IsNotNull(existingItem, $"item not found, id={id}");
+            return DataProvider.UpsertAsync(item).Result;
+        }
+
+        public void Delete(int id)
+        {
+            var item = DataProvider.GetAsync(id).Result;
+            Assert.IsNotNull(item, $"item not found, id={id}");
+            DataProvider.DeleteAsync(id);
         }
     }
 }

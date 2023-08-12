@@ -1,4 +1,6 @@
-﻿namespace MoneyBook.DataProviders
+﻿using MoneyBook.Data;
+
+namespace MoneyBook.DataProviders
 {
     public interface IDataProvider<T>
     {
@@ -7,5 +9,6 @@
         Task<T> FindAsync(T item);
         Task<T> UpsertAsync(T item);
         Task DeleteAsync(int id);
+        MoneyBookDbTransaction CreateDbTransaction();
     }
 }

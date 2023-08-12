@@ -27,26 +27,57 @@ namespace MoneyBookTest
         }
 
 
-        //[Test]
-        //public void InsertUpdateDelete()
-        //{
-        //    var acctTypesDataProviderTest = new AccountTypeDataProviderTest();
-        //    Assert.IsNotNull(acctTypesDataProviderTest, "acctTypesDataProviderTest is null");
+        [Test]
+        public void InsertUpdateDelete()
+        {
+            var instutionsDataProviderTest = new InstitutionDataProviderTest();
+            Assert.IsNotNull(instutionsDataProviderTest, "instutionsDataProviderTest is null");
 
-        //    var acctType = acctTypesDataProviderTest.GetAllItems()
-        //        .SingleOrDefault(x => x.TypeName.Equals("checking", StringComparison.InvariantCultureIgnoreCase));
-        //    Assert.IsNotNull(acctType, "acctType is null");
+            var inst = instutionsDataProviderTest.GetAllItems()
+                .FirstOrDefault();
+            Assert.IsNotNull(inst, "inst is null");
 
-        //    var newAcct = new Account()
-        //    {
-        //        Name = "TEST ACCOUNT",
-        //        AcctTypeId = acctType.AcctTypeId,
-        //        StartingBalance = 0m,
-        //        DateAdded = DateTime.Now,
-        //        DateModified = DateTime.Now,
-        //        ExtAcctId = "111",
-        //        InstId = 0, //TODO need this
-        //    };
-        //}
+            var acctTypesDataProviderTest = new AccountTypeDataProviderTest();
+            Assert.IsNotNull(acctTypesDataProviderTest, "acctTypesDataProviderTest is null");
+
+            var acctType = acctTypesDataProviderTest.GetAllItems()
+                .SingleOrDefault(x => x.TypeName.Equals("checking", StringComparison.InvariantCultureIgnoreCase));
+            Assert.IsNotNull(acctType, "acctType is null");
+
+            var newItem = new Account()
+            {
+                Name = "TEST ACCOUNT",
+                AcctTypeId = acctType.AcctTypeId,
+                StartingBalance = 0m,
+                DateAdded = DateTime.Now,
+                DateModified = DateTime.Now,
+                ExtAcctId = "111",
+                InstId = inst.InstId
+            };
+
+            using (var tr = CreateDbTransaction())
+            {
+                newItem = Insert(newItem);
+                tr.SetCommitFlag(true);
+            }
+
+            Account item;
+            using (var tr2 = CreateDbTransaction())
+            {
+                item = Get(newItem.AcctId);
+                item.Name = "RENAMED ACCOUNT";
+                Update(item.AcctId, item);
+                tr2.SetCommitFlag(true);
+            }
+
+            item = Get(item.AcctId);
+            Assert.IsNotNull(item, "item is null");
+
+            using (var tr3 = CreateDbTransaction())
+            {
+                Delete(item.AcctId);
+                tr3.SetCommitFlag(true);
+            }
+        }
     }
 }

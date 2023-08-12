@@ -65,5 +65,11 @@ namespace MoneyBook.DataProviders
         public Task<AccountSummaryModel> UpsertAsync(AccountSummaryModel item) { throw new NotSupportedException(); }
 
         public Task DeleteAsync(int id) { throw new NotSupportedException(); }
+
+
+        public MoneyBookDbTransaction CreateDbTransaction()
+        {
+            return base.CreateDbTransaction();
+        }
     }
 }

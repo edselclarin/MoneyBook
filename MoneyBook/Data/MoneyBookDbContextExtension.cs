@@ -1,4 +1,5 @@
-﻿using MoneyBook.BusinessModels;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using MoneyBook.BusinessModels;
 using MoneyBook.Models;
 using Newtonsoft.Json;
 
@@ -620,6 +621,36 @@ namespace MoneyBook.Data
                 db.SaveChanges();
 
                 tr.Commit();
+            }
+        }
+    }
+
+    public class MoneyBookDbTransaction : IDisposable
+    {
+        private IDbContextTransaction dbTran_;
+        private bool bCommit_;
+
+        public MoneyBookDbTransaction(MoneyBookDbContext db)
+        {
+            dbTran_ = db.Database.BeginTransaction();
+            if (dbTran_ is null)
+            {
+                throw new Exception("dbTran_ is null");
+            }
+            bCommit_ = false;
+        }
+
+        public void SetCommitFlag(bool bCommit)
+        {
+            bCommit_ = bCommit;
+        }
+
+        public void Dispose()
+        {
+            if (bCommit_)
+            {
+                dbTran_.Commit();
+                dbTran_.Dispose();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using MoneyBook.Models;
+﻿using MoneyBook.Data;
+using MoneyBook.Models;
 
 namespace MoneyBook.DataProviders
 {
@@ -94,6 +95,11 @@ namespace MoneyBook.DataProviders
                 db_.Accounts.Remove(acct);
                 await db_.SaveChangesAsync();
             }
+        }
+
+        public MoneyBookDbTransaction CreateDbTransaction()
+        {
+            return base.CreateDbTransaction();
         }
     }
 }

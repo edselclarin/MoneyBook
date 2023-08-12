@@ -100,5 +100,10 @@ namespace MoneyBook.DataProviders
                 await db_.SaveChangesAsync();
             }
         }
+
+        public MoneyBookDbTransaction CreateDbTransaction()
+        {
+            return base.CreateDbTransaction();
+        }
     }
 }
