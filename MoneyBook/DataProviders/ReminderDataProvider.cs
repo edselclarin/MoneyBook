@@ -51,6 +51,21 @@ namespace MoneyBook.DataProviders
             });
         }
 
+        public Task<Reminder> FindAsync(Reminder item)
+        {
+            return Task.Run(() =>
+            {
+                return db_.Reminders.SingleOrDefault(x =>
+                    x.IsDeleted == false &&
+                    x.DueDate == item.DueDate &&
+                    x.TrnsType == item.TrnsType &&
+                    x.Payee == item.Payee &&
+                    x.Amount == item.Amount &&
+                    x.AcctId == item.AcctId &&
+                    x.CatId == item.CatId) is Reminder rem ? rem : null;
+            });
+        }
+
         public Task<Reminder> GetAsync(int id)
         {
             return Task.Run(() =>
@@ -60,7 +75,7 @@ namespace MoneyBook.DataProviders
             });
         }
 
-        public async Task UpsertAsync(Reminder item)
+        public async Task<Reminder> UpsertAsync(Reminder item)
         {
             if (db_.Reminders.SingleOrDefault(x => x.IsDeleted == false && x.RmdrId == item.RmdrId) is not null)
             {
@@ -71,6 +86,8 @@ namespace MoneyBook.DataProviders
                 db_.Reminders.Add(item);
             }
             await db_.SaveChangesAsync();
+
+            return FindAsync(item).Result;
         }
 
         public async Task DeleteAsync(int id)

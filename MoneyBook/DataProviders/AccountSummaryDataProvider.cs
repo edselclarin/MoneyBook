@@ -40,6 +40,19 @@ namespace MoneyBook.DataProviders
             });
         }
 
+        public Task<AccountSummaryModel> FindAsync(AccountSummaryModel item)
+        {
+            return Task.Run(() =>
+            {
+                return db_.AccountSummaries.SingleOrDefault(x =>
+                    x.IsDeleted == false &&
+                    x.Name == item.Name &&
+                    x.AcctTypeId == item.AcctTypeId &&
+                    x.ExtAcctId == item.ExtAcctId &&
+                    x.InstId == item.InstId) is AccountSummaryModel summary ? summary : null;
+            });
+        }
+
         public Task<AccountSummaryModel> GetAsync(int id)
         {
             return Task.Run(() =>
@@ -49,7 +62,7 @@ namespace MoneyBook.DataProviders
             });
         }
 
-        public Task UpsertAsync(AccountSummaryModel item) { throw new NotSupportedException();  }
+        public Task<AccountSummaryModel> UpsertAsync(AccountSummaryModel item) { throw new NotSupportedException(); }
 
         public Task DeleteAsync(int id) { throw new NotSupportedException(); }
     }

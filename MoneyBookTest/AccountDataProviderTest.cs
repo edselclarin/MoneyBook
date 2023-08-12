@@ -1,5 +1,6 @@
 ﻿using MoneyBook.DataProviders;
 using MoneyBook.Models;
+using System.Xml.Linq;
 
 namespace MoneyBookTest
 {
@@ -26,5 +27,15 @@ namespace MoneyBookTest
             var item = Get(firstItem.AcctId);
             Assert.IsTrue(firstItem.AcctId == item.AcctId);
         }
+
+        //[Test]
+        //public void InsertUpdateDelete()
+        //{
+        //    var newAcct = new Account()
+        //    {
+        //        Name = "TEST ACCOUNT",
+        //        AcctTypeId = ""
+        //    };
+        //}
     }
 }

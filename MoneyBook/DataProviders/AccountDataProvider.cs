@@ -59,7 +59,20 @@ namespace MoneyBook.DataProviders
             });
         }
 
-        public async Task UpsertAsync(Account item)
+        public Task<Account> FindAsync(Account item)
+        {
+            return Task.Run(() =>
+            {
+                return db_.Accounts.SingleOrDefault(x =>
+                    x.IsDeleted == false &&
+                    x.Name == item.Name &&
+                    x.AcctTypeId == item.AcctTypeId &&
+                    x.ExtAcctId == item.ExtAcctId &&
+                    x.InstId == item.InstId ) is Account acct ? acct : null;
+            });
+        }
+
+        public async Task<Account> UpsertAsync(Account item)
         {
             if (db_.Accounts.SingleOrDefault(x => x.IsDeleted == false && x.AcctId == item.AcctId) is not null)
             {
@@ -70,6 +83,8 @@ namespace MoneyBook.DataProviders
                 db_.Accounts.Add(item);
             }
             await db_.SaveChangesAsync();
+
+            return FindAsync(item).Result;
         }
 
         public async Task DeleteAsync(int id)

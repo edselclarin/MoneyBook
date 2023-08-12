@@ -43,5 +43,17 @@ namespace MoneyBookTest
             Assert.IsNotNull(item, "item is null");
             return item;
         }
+
+        public T Find(T item)
+        {
+            return DataProvider.FindAsync(item).Result;
+        }
+
+        public T Insert(T item)
+        {
+            var existingItem = DataProvider.FindAsync(item).Result;
+            Assert.IsNotNull(existingItem, "item already exists");
+            return DataProvider.UpsertAsync(item).Result;
+        }
     }
 }

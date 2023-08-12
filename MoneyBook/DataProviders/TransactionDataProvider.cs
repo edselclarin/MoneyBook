@@ -1,5 +1,6 @@
 ﻿using MoneyBook.Data;
 using MoneyBook.Models;
+using System.Runtime.Intrinsics.Arm;
 
 namespace MoneyBook.DataProviders
 {
@@ -51,6 +52,22 @@ namespace MoneyBook.DataProviders
             });
         }
 
+        public Task<Transaction> FindAsync(Transaction item)
+        {
+            return Task.Run(() =>
+            {
+                return db_.Transactions.SingleOrDefault(x =>
+                    x.IsDeleted == false &&
+                    x.Date == item.Date &&
+                    x.TrnsType == item.TrnsType &&
+                    x.State == item.State &&
+                    x.Amount == item.Amount &&
+                    x.ExtTrnsId == item.ExtTrnsId &&
+                    x.AcctId == item.AcctId &&
+                    x.CatId == item.CatId) is Transaction tran ? tran : null;
+            });
+        }
+
         public Task<Transaction> GetAsync(int id)
         {
             return Task.Run(() =>
@@ -60,7 +77,7 @@ namespace MoneyBook.DataProviders
             });
         }
 
-        public async Task UpsertAsync(Transaction item)
+        public async Task<Transaction> UpsertAsync(Transaction item)
         {
             if (db_.Transactions.SingleOrDefault(x => x.IsDeleted == false &&  x.TrnsId == item.TrnsId) is not null)
             {
@@ -71,6 +88,8 @@ namespace MoneyBook.DataProviders
                 db_.Transactions.Add(item);
             }
             await db_.SaveChangesAsync();
+
+            return FindAsync(item).Result;
         }
 
         public async Task DeleteAsync(int id)
