@@ -2,7 +2,6 @@
 using MoneyBook;
 using MoneyBook.BusinessModels;
 using MoneyBook.Data;
-using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
 using MoneyBookTools.ViewModels;
@@ -770,7 +769,7 @@ namespace MoneyBookTools
             refreshToolStripMenuItem.PerformClick();
         }
 
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        private void editAccountToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -781,6 +780,13 @@ namespace MoneyBookTools
                 this.ShowException(ex);
             }
         }
+
+        private void listViewAccounts_DoubleClick(object sender, EventArgs e)
+        {
+            editAccountToolStripMenuItem.PerformClick();
+
+        }
+        
         #endregion
 
         #region Child Form Handlers
@@ -827,8 +833,11 @@ namespace MoneyBookTools
 
         private void ShowEditAccountDialog()
         {
-            if (m_summaries.FirstOrDefault() is AccountSummaryNew summary)
+            if (listViewAccounts.SelectedIndices.Count > 0)
             {
+                int index = listViewAccounts.SelectedIndices[0];
+                var summary = m_summaries[index] as AccountSummaryNew;
+
                 var dlg = AccountForm.Create(summary.AcctId);
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {

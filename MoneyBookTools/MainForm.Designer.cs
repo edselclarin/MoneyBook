@@ -76,6 +76,7 @@ namespace MoneyBookTools
             groupAccounts = new GroupBox();
             listViewAccounts = new CustomListView();
             accountsContextMenuStrip = new ContextMenuStrip(components);
+            editAccountToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutLedger = new TableLayoutPanel();
             mainStatusStrip1 = new StatusStrip();
             accountToolStripStatusLabel = new ToolStripStatusLabel();
@@ -109,7 +110,6 @@ namespace MoneyBookTools
             toolStripSeparator6 = new ToolStripSeparator();
             deleteReminderToolStripMenuItem = new ToolStripMenuItem();
             mainPanel = new Panel();
-            editToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)hSplit1).BeginInit();
             hSplit1.Panel1.SuspendLayout();
@@ -469,12 +469,20 @@ namespace MoneyBookTools
             listViewAccounts.TabIndex = 1;
             listViewAccounts.UseCompatibleStateImageBehavior = false;
             listViewAccounts.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            listViewAccounts.DoubleClick += listViewAccounts_DoubleClick;
             // 
             // accountsContextMenuStrip
             // 
-            accountsContextMenuStrip.Items.AddRange(new ToolStripItem[] { editToolStripMenuItem });
+            accountsContextMenuStrip.Items.AddRange(new ToolStripItem[] { editAccountToolStripMenuItem });
             accountsContextMenuStrip.Name = "accountsContextMenuStrip";
             accountsContextMenuStrip.Size = new Size(181, 48);
+            // 
+            // editAccountToolStripMenuItem
+            // 
+            editAccountToolStripMenuItem.Name = "editAccountToolStripMenuItem";
+            editAccountToolStripMenuItem.Size = new Size(180, 22);
+            editAccountToolStripMenuItem.Text = "Edit";
+            editAccountToolStripMenuItem.Click += editAccountToolStripMenuItem_Click;
             // 
             // tableLayoutLedger
             // 
@@ -766,13 +774,6 @@ namespace MoneyBookTools
             mainPanel.Size = new Size(1156, 503);
             mainPanel.TabIndex = 3;
             // 
-            // editToolStripMenuItem
-            // 
-            editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new Size(180, 22);
-            editToolStripMenuItem.Text = "Edit";
-            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -890,6 +891,6 @@ namespace MoneyBookTools
         private ToolStripMenuItem reconciledStatusMenuItem;
         private ToolStripMenuItem ignoredStatusMenuItem;
         private ContextMenuStrip accountsContextMenuStrip;
-        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem editAccountToolStripMenuItem;
     }
 }

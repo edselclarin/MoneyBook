@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dark.Net;
 using Microsoft.Extensions.DependencyInjection;
 using MoneyBook;
 using MoneyBook.Data;
@@ -15,12 +15,17 @@ namespace MoneyBookTools.Forms
 
         public static AccountForm Create(int acctId)
         {
-            var frm = new AccountForm()
+            var form = new AccountForm()
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
-            frm.m_acctId = acctId;
-            return frm;
+
+            form.m_acctId = acctId;
+
+            DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
+            form.ChangeTheme(DarkColorScheme.Create());
+
+            return form;
         }
 
         protected AccountForm()
