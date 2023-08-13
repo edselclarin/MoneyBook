@@ -1,4 +1,7 @@
-﻿using MoneyBook.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MoneyBook;
+using MoneyBook.Data;
 using MoneyBook.DataProviders;
 using MoneyBook.Models;
 using MoneyBookTools.FormModels;
@@ -39,10 +42,10 @@ namespace MoneyBookTools.Forms
         {
             try
             {
-                var adp = (AccountDataProvider)DataProviderFactory.Create(typeof(Account));
+                var adp = (IDataProvider<Account>)MoneyBookServices.ServiceProvider.GetRequiredService(typeof(IDataProvider<Account>));
                 var acct = await adp.GetAsync(m_acctId);
 
-                var atdp = (AccountTypeDataProvider)DataProviderFactory.Create(typeof(AccountType));
+                var atdp = (IDataProvider<AccountType>)MoneyBookServices.ServiceProvider.GetRequiredService(typeof(IDataProvider<AccountType>));
                 var acctType = await atdp.GetAsync(acct.AcctTypeId);
 
                 m_formModel = new AccountFormModel()
@@ -81,7 +84,7 @@ namespace MoneyBookTools.Forms
                 using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
                 using var tr = db.Database.BeginTransaction();
 
-                var adp = (AccountDataProvider)DataProviderFactory.Create(typeof(Account));
+                var adp = (IDataProvider<Account>)MoneyBookServices.ServiceProvider.GetRequiredService(typeof(IDataProvider<Account>));
                 var acct = await adp.GetAsync(m_formModel.AcctId);
 
                 acct.Name = m_formModel.Name;
@@ -89,7 +92,7 @@ namespace MoneyBookTools.Forms
                 acct.StartingBalance = m_formModel.StartingBalance;
                 acct.ReserveAmount = m_formModel.ReserveAmount;
 
-                if (await adp.UpsertAsync(acct) is not Account)
+                if (await adp.UpsertAsync(acct) is null)
                 {
                     throw new Exception("Failed to update account info.");
                 }
