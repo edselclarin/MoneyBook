@@ -769,6 +769,18 @@ namespace MoneyBookTools
 
             refreshToolStripMenuItem.PerformClick();
         }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowEditAccountDialog();
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
         #endregion
 
         #region Child Form Handlers
@@ -811,6 +823,18 @@ namespace MoneyBookTools
 
             listViewAccounts.VirtualListSize = m_summaries.Count;
             listViewAccounts.Invalidate();
+        }
+
+        private void ShowEditAccountDialog()
+        {
+            if (m_summaries.FirstOrDefault() is AccountSummaryNew summary)
+            {
+                var dlg = AccountForm.Create(summary.AcctId);
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    refreshToolStripMenuItem.PerformClick();
+                }
+            }
         }
 
         #endregion
@@ -1057,7 +1081,7 @@ namespace MoneyBookTools
                 sumToolStripStatusLabel.Text = String.Empty;
             }
         }
-#endregion
+        #endregion
 
         #region Reminders
 
@@ -1302,7 +1326,6 @@ namespace MoneyBookTools
                 }
             }
         }
-
         #endregion
 
         #region Database Operations

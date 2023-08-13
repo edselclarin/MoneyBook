@@ -75,6 +75,7 @@ namespace MoneyBookTools
             vSplit1 = new SplitContainer();
             groupAccounts = new GroupBox();
             listViewAccounts = new CustomListView();
+            accountsContextMenuStrip = new ContextMenuStrip(components);
             tableLayoutLedger = new TableLayoutPanel();
             mainStatusStrip1 = new StatusStrip();
             accountToolStripStatusLabel = new ToolStripStatusLabel();
@@ -108,6 +109,7 @@ namespace MoneyBookTools
             toolStripSeparator6 = new ToolStripSeparator();
             deleteReminderToolStripMenuItem = new ToolStripMenuItem();
             mainPanel = new Panel();
+            editToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)hSplit1).BeginInit();
             hSplit1.Panel1.SuspendLayout();
@@ -118,6 +120,7 @@ namespace MoneyBookTools
             vSplit1.Panel2.SuspendLayout();
             vSplit1.SuspendLayout();
             groupAccounts.SuspendLayout();
+            accountsContextMenuStrip.SuspendLayout();
             tableLayoutLedger.SuspendLayout();
             mainStatusStrip1.SuspendLayout();
             groupLedger.SuspendLayout();
@@ -457,6 +460,7 @@ namespace MoneyBookTools
             // 
             // listViewAccounts
             // 
+            listViewAccounts.ContextMenuStrip = accountsContextMenuStrip;
             listViewAccounts.Location = new Point(6, 22);
             listViewAccounts.Name = "listViewAccounts";
             listViewAccounts.SelectionBackColor = Color.Blue;
@@ -465,6 +469,12 @@ namespace MoneyBookTools
             listViewAccounts.TabIndex = 1;
             listViewAccounts.UseCompatibleStateImageBehavior = false;
             listViewAccounts.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            // 
+            // accountsContextMenuStrip
+            // 
+            accountsContextMenuStrip.Items.AddRange(new ToolStripItem[] { editToolStripMenuItem });
+            accountsContextMenuStrip.Name = "accountsContextMenuStrip";
+            accountsContextMenuStrip.Size = new Size(181, 48);
             // 
             // tableLayoutLedger
             // 
@@ -549,7 +559,7 @@ namespace MoneyBookTools
             sumToolStripStatusLabel.Font = new Font("Segoe UI", 11F, FontStyle.Italic, GraphicsUnit.Point);
             sumToolStripStatusLabel.ForeColor = SystemColors.GrayText;
             sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
-            sumToolStripStatusLabel.Size = new Size(82, 22);
+            sumToolStripStatusLabel.Size = new Size(113, 22);
             sumToolStripStatusLabel.Spring = true;
             sumToolStripStatusLabel.Text = "Sum: 0.00";
             sumToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -756,6 +766,13 @@ namespace MoneyBookTools
             mainPanel.Size = new Size(1156, 503);
             mainPanel.TabIndex = 3;
             // 
+            // editToolStripMenuItem
+            // 
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new Size(180, 22);
+            editToolStripMenuItem.Text = "Edit";
+            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -779,6 +796,7 @@ namespace MoneyBookTools
             ((System.ComponentModel.ISupportInitialize)vSplit1).EndInit();
             vSplit1.ResumeLayout(false);
             groupAccounts.ResumeLayout(false);
+            accountsContextMenuStrip.ResumeLayout(false);
             tableLayoutLedger.ResumeLayout(false);
             tableLayoutLedger.PerformLayout();
             mainStatusStrip1.ResumeLayout(false);
@@ -871,5 +889,7 @@ namespace MoneyBookTools
         private ToolStripMenuItem newStatusMenuItem;
         private ToolStripMenuItem reconciledStatusMenuItem;
         private ToolStripMenuItem ignoredStatusMenuItem;
+        private ContextMenuStrip accountsContextMenuStrip;
+        private ToolStripMenuItem editToolStripMenuItem;
     }
 }
