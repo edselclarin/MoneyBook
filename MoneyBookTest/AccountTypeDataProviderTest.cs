@@ -1,4 +1,5 @@
-﻿using MoneyBook.DataProviders;
+﻿using MoneyBook;
+using MoneyBook.DataProviders;
 using MoneyBook.Models;
 
 namespace MoneyBookTest
@@ -7,7 +8,7 @@ namespace MoneyBookTest
     {
         public AccountTypeDataProviderTest()
         {
-            DataProvider = (AccountTypeDataProvider)DataProviderFactory.Create(typeof(AccountType));
+            DataProvider = (IDataProvider<AccountType>)MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<AccountType>));
             Assert.IsNotNull(DataProvider, "DataProvider is null");
         }
 

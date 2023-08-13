@@ -33,7 +33,7 @@ var dp = new AccountDataProviderTest();
 using (var tr = dp.CreateDbTransaction())
 {
     newItem = dp.Insert(newItem);
-    tr.SetCommitFlag(true);
+    tr.Commit();
 }
 
 Account item;
@@ -42,7 +42,7 @@ using (var tr2 = dp.CreateDbTransaction())
     item = dp.Get(newItem.AcctId);
     item.Name = "RENAMED ACCOUNT";
     dp.Update(item.AcctId, item);
-    tr2.SetCommitFlag(true);
+    tr2.Commit();
 }
 
 item = dp.Get(newItem.AcctId);
@@ -53,7 +53,7 @@ Debug.WriteLine($"acct: {item.AcctId}, {item.Name}");
 using (var tr3 = dp.CreateDbTransaction())
 {
     dp.Delete(item.AcctId);
-    tr3.SetCommitFlag(true);
+    tr3.Commit();
 }
 
 return;

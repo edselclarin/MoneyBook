@@ -76,11 +76,11 @@ namespace MoneyBookTest
             return DataProvider.UpsertAsync(item).Result;
         }
 
-        public void Delete(int id)
+        public async void Delete(int id)
         {
             var item = DataProvider.GetAsync(id).Result;
             Assert.IsNotNull(item, $"item not found, id={id}");
-            DataProvider.DeleteAsync(id);
+            await DataProvider.DeleteAsync(id);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
+using MoneyBook;
 using MoneyBook.Data;
 using MoneyBook.DataProviders;
+using MoneyBook.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,9 +26,9 @@ namespace MoneyBookDashboard.ViewModels
         {
             Reminders = new();
 
-            if (DataProviderFactory.Create(typeof(MoneyBook.Models.Reminder)) is MoneyBook.DataProviders.ReminderDataProvider dp)
+            if (MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<Reminder>)) is IDataProvider<Reminder> dp)
             {
-                if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<MoneyBook.Models.Reminder> res)
+                if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<Reminder> res)
                 {
                     var items = res.Items.OrderBy(x => x.DueDate);
                     foreach (var item in items)

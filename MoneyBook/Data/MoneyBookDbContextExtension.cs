@@ -645,6 +645,12 @@ namespace MoneyBook.Data
             bCommit_ = bCommit;
         }
 
+        public void Commit()
+        {
+            dbTran_.Commit();
+            bCommit_ = false;
+        }
+
         public void Dispose()
         {
             if (bCommit_)

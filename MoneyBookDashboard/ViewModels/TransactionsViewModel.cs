@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
+using MoneyBook;
 using MoneyBook.Data;
 using MoneyBook.DataProviders;
+using MoneyBook.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -25,9 +27,9 @@ namespace MoneyBookDashboard.ViewModels
         {
             Transactions = new();
 
-            if (DataProviderFactory.Create(typeof(MoneyBook.Models.Transaction)) is MoneyBook.DataProviders.TransactionDataProvider dp)
+            if (MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<Transaction>)) is IDataProvider<Transaction> dp)
             {
-                if ((await dp.GetPagedAsync(0, 100, dateTimeFrom: DateTime.Now.AddDays(-30))) is PagedResponse<MoneyBook.Models.Transaction> res)
+                if ((await dp.GetPagedAsync(0, 100, dateTimeFrom: DateTime.Now.AddDays(-30))) is PagedResponse<Transaction> res)
                 {
                     var items = res.Items.OrderByDescending(x => x.Date);
                     foreach (var item in items)
