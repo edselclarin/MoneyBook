@@ -101,7 +101,7 @@ namespace MoneyBookTools
 
                 await Task.Run(() =>
                 {
-                    m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                    m_db = new MoneyBookDbContext();
                 });
 
                 LoadRemindersGrid();

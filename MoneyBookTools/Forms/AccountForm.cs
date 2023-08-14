@@ -86,7 +86,7 @@ namespace MoneyBookTools.Forms
         {
             try
             {
-                using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                using var db = new MoneyBookDbContext();
                 using var tr = db.Database.BeginTransaction();
 
                 var adp = (IDataProvider<Account>)MoneyBookServices.ServiceProvider.GetRequiredService(typeof(IDataProvider<Account>));

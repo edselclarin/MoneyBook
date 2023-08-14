@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MoneyBook.Data;
 using MoneyBook.DataProviders;
 using MoneyBook.Models;
 
@@ -17,6 +18,7 @@ namespace MoneyBook
                     m_services = new();
 
                     // Register dependencies.
+                    m_services.AddSingleton<IDbContextConfig, MoneyBookDbContextConfig>();
                     m_services.AddScoped<IDataProvider<Account>, AccountDataProvider>();
                     m_services.AddScoped<IDataProvider<AccountType>, AccountTypeDataProvider>();
                     m_services.AddScoped<IDataProvider<AccountSummaryModel>, AccountSummaryDataProvider>();

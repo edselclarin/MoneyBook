@@ -16,14 +16,10 @@ namespace MoneyBook.Data
         public DbSet<TransactionSummary> TransactionSummaries { get; set; }
         public DbSet<AccountSummaryModel> AccountSummaries { get; set; }
 
-        public static MoneyBookDbContext Create(IDbContextConfig config)
+        public MoneyBookDbContext()
         {
-            return new MoneyBookDbContext(config.ConnectionStr);
-        }
-
-        protected MoneyBookDbContext(string connStr)
-        {
-            m_connStr = connStr;
+            var config = (IDbContextConfig)MoneyBookServices.ServiceProvider.GetService(typeof(IDbContextConfig));
+            m_connStr = config.ConnectionStr;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

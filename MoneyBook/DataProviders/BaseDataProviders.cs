@@ -1,5 +1,4 @@
 ﻿using MoneyBook.Data;
-using MoneyBook.Models;
 
 namespace MoneyBook.DataProviders
 {
@@ -10,7 +9,7 @@ namespace MoneyBook.DataProviders
 
         protected BaseDataProvider()
         {
-            db_ = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+            db_ = new MoneyBookDbContext();
         }
 
         public MoneyBookDbTransaction CreateDbTransaction()

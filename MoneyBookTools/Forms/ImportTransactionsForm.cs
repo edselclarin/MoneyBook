@@ -26,7 +26,7 @@ namespace MoneyBookTools
 
         public static List<string> GetImportFilePaths()
         {
-            using var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+            using var db = new MoneyBookDbContext();
             var filepaths = new List<string>();
             foreach (string filepath in db.Accounts.Select(x => x.ImportFilePath))
             {
@@ -47,7 +47,7 @@ namespace MoneyBookTools
 
         private void ImportTransactionsForm_Load(object sender, EventArgs e)
         {
-            m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+            m_db = new MoneyBookDbContext();
 
             var sb = new StringBuilder();
             sb.AppendLine("Import transactions from these files into their respective accounts?");

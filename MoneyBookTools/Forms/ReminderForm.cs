@@ -105,7 +105,7 @@ namespace MoneyBookTools
         {
             try
             {
-                m_db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                m_db = new MoneyBookDbContext();
 
                 var cats = m_db.Categories.ToList();
 
@@ -176,7 +176,7 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                    var db = new MoneyBookDbContext();
 
                     db.AddReminder(Reminder);
 
@@ -198,7 +198,7 @@ namespace MoneyBookTools
                     {
                         using var hg = new Hourglass(this);
 
-                        var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                        var db = new MoneyBookDbContext();
 
                         db.UpdateReminder(Reminder);
 
@@ -217,7 +217,7 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                    var db = new MoneyBookDbContext();
 
                     var reminders = new ViewReminder[]
                     {

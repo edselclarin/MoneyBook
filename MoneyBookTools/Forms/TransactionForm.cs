@@ -107,7 +107,7 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = MoneyBookDbContext.Create(MoneyBookToolsDbContextConfig.Instance);
+                    var db = new MoneyBookDbContext();
 
                     if (m_bNew)
                     {
