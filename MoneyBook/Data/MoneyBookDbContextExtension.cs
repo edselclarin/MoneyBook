@@ -25,6 +25,11 @@ namespace MoneyBook.Data
             New,
 
             /// <summary>
+            /// Newly imported but pending
+            /// </summary>
+            Pending,
+
+            /// <summary>
             /// Projected transaction, not yet registered at institution.
             /// </summary>
             Staged,

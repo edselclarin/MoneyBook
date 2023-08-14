@@ -22,6 +22,7 @@ namespace MoneyBookTools.Forms
             switch (state)
             {
                 case nameof(MoneyBookDbContextExtension.StateTypes.New):
+                case nameof(MoneyBookDbContextExtension.StateTypes.Pending):
                     return Color.FromArgb(245, 127, 23); // orange
                 case nameof(MoneyBookDbContextExtension.StateTypes.Ignored):
                     return Color.DimGray;
