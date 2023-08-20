@@ -258,43 +258,6 @@ namespace MoneyBook.Data
             }
         }
 
-        public static AccountBrief? GetAccountBrief(this MoneyBookDbContext db, int acctId)
-        {
-            var accts = db.Accounts
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId)
-                .Select(x => x.ToAccountInfo());
-
-            if (accts != null && accts.Count() > 0)
-            {
-                var acct = accts.First();
-
-                var transactions = db.GetTransactions(acct.AcctId);
-
-                var summary = new AccountSummary()
-                {
-                    Account = acct,
-                    Transactions = transactions.ToList()
-                };
-
-                var brief = new AccountBrief()
-                {
-                    Account = acct,
-                    Credits = summary.Credits,
-                    Debits = summary.Debits,
-                    StagedBalance = summary.StagedBalance,
-                    Balance = summary.Balance,
-                    AvailableBalance = summary.AvailableBalance,
-                    ProjectedBalance = summary.FinalBalance
-                };
-
-                return brief;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         public static List<AccountSummaryNew> GetAccountSummariesNew(this MoneyBookDbContext db)
         {
             return db.AccountSummaries
