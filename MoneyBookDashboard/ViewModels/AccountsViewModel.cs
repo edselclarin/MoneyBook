@@ -25,9 +25,9 @@ namespace MoneyBookDashboard.ViewModels
         {
             Accounts = new();
 
-            if (MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<AccountSummaryModel>)) is IDataProvider<AccountSummaryModel> dp)
+            if (MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<AccountSummary>)) is IDataProvider<AccountSummary> dp)
             {
-                if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<MoneyBook.Models.AccountSummaryModel> res)
+                if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<MoneyBook.Models.AccountSummary> res)
                 {
                     var items = res.Items.OrderBy(x => x.AcctId);
                     foreach (var item in items)

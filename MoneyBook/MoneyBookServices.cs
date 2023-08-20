@@ -21,7 +21,7 @@ namespace MoneyBook
                     m_services.AddSingleton<IDbContextConfig, MoneyBookDbContextConfig>();
                     m_services.AddScoped<IDataProvider<Account>, AccountDataProvider>();
                     m_services.AddScoped<IDataProvider<AccountType>, AccountTypeDataProvider>();
-                    m_services.AddScoped<IDataProvider<AccountSummaryModel>, AccountSummaryDataProvider>();
+                    m_services.AddScoped<IDataProvider<AccountSummary>, AccountSummaryDataProvider>();
                     m_services.AddScoped<IDataProvider<AccountType>, AccountTypeDataProvider>();
                     m_services.AddScoped<IDataProvider<Institution>, InstitutionDataProvider>();
                     m_services.AddScoped<IDataProvider<Reminder>, ReminderDataProvider>();

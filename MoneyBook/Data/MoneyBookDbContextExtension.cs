@@ -87,9 +87,9 @@ namespace MoneyBook.Data
             };
         }
 
-        public static AccountSummaryNew ToAccountSummary(this AccountSummaryModel acctSummary)
+        public static AccountSummary ToAccountSummary(this Models.AccountSummary acctSummary)
         {
-            return new AccountSummaryNew
+            return new AccountSummary
             {
                 AcctId = acctSummary.AcctId,
                 Name = acctSummary.Name,
@@ -155,7 +155,7 @@ namespace MoneyBook.Data
             return task.Items;
         }
 
-        public static List<AccountSummaryNew> GetAccountSummariesNew(this MoneyBookDbContext db)
+        public static List<AccountSummary> GetAccountSummariesNew(this MoneyBookDbContext db)
         {
             return db.AccountSummaries
                 .OrderBy(x => x.AcctId)
@@ -163,7 +163,7 @@ namespace MoneyBook.Data
                 .ToList();
         }
 
-        public static AccountSummaryNew? GetAccountSummaryNew(this MoneyBookDbContext db, int acctId)
+        public static AccountSummary? GetAccountSummaryNew(this MoneyBookDbContext db, int acctId)
         {
             return db.AccountSummaries
                 ?.SingleOrDefault(x => x.AcctId == acctId)

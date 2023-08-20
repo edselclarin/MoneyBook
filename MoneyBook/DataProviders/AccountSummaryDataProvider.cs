@@ -3,13 +3,13 @@ using MoneyBook.Models;
 
 namespace MoneyBook.DataProviders
 {
-    public class AccountSummaryDataProvider : BaseDataProvider, IDataProvider<AccountSummaryModel>
+    public class AccountSummaryDataProvider : BaseDataProvider, IDataProvider<AccountSummary>
     {
-        public Task<PagedResponse<AccountSummaryModel>> GetPagedAsync(int skip, int take, int? fkId = null, DateTime? dateTimeFrom = null)
+        public Task<PagedResponse<AccountSummary>> GetPagedAsync(int skip, int take, int? fkId = null, DateTime? dateTimeFrom = null)
         {
             return Task.Run(() => 
             { 
-                IQueryable<AccountSummaryModel> qry = db_.AccountSummaries;
+                IQueryable<AccountSummary> qry = db_.AccountSummaries;
                 qry = fkId switch
                 {
                     null => qry,
@@ -27,7 +27,7 @@ namespace MoneyBook.DataProviders
                     .Take(adjustedTake)
                     .ToList();
 
-                return new PagedResponse<AccountSummaryModel>()
+                return new PagedResponse<AccountSummary>()
                 {
                     Skip = skip,
                     Take = adjustedTake,
@@ -40,7 +40,7 @@ namespace MoneyBook.DataProviders
             });
         }
 
-        public Task<AccountSummaryModel> FindAsync(AccountSummaryModel item)
+        public Task<AccountSummary> FindAsync(AccountSummary item)
         {
             return Task.Run(() =>
             {
@@ -49,11 +49,11 @@ namespace MoneyBook.DataProviders
                     x.Name == item.Name &&
                     x.AcctTypeId == item.AcctTypeId &&
                     x.ExtAcctId == item.ExtAcctId &&
-                    x.InstId == item.InstId) is AccountSummaryModel summary ? summary : null;
+                    x.InstId == item.InstId) is AccountSummary summary ? summary : null;
             });
         }
 
-        public Task<AccountSummaryModel> GetAsync(int id)
+        public Task<AccountSummary> GetAsync(int id)
         {
             return Task.Run(() =>
             {
@@ -62,7 +62,7 @@ namespace MoneyBook.DataProviders
             });
         }
 
-        public Task<AccountSummaryModel> UpsertAsync(AccountSummaryModel item) { throw new NotSupportedException(); }
+        public Task<AccountSummary> UpsertAsync(AccountSummary item) { throw new NotSupportedException(); }
 
         public Task DeleteAsync(int id) { throw new NotSupportedException(); }
     }

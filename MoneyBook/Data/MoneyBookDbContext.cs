@@ -14,7 +14,7 @@ namespace MoneyBook.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Reminder> Reminders { get; set; }
         public DbSet<TransactionSummary> TransactionSummaries { get; set; }
-        public DbSet<AccountSummaryModel> AccountSummaries { get; set; }
+        public DbSet<AccountSummary> AccountSummaries { get; set; }
 
         public MoneyBookDbContext()
         {

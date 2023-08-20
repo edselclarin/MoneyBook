@@ -2,6 +2,7 @@
 using MoneyBook;
 using MoneyBook.BusinessModels;
 using MoneyBook.Data;
+using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
 using MoneyBookTools.ViewModels;
@@ -14,7 +15,7 @@ namespace MoneyBookTools
         #region Fields
 
         private MoneyBookDbContext m_db;
-        private List<AccountSummaryNew> m_summaries;
+        private List<AccountSummary> m_summaries;
         private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
         private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
         private MoneyBookDbContextExtension.StateTypes? m_stateFilter = null;
@@ -613,7 +614,7 @@ namespace MoneyBookTools
                 if (listViewAccounts.SelectedIndices.Count > 0)
                 {
                     int index = listViewAccounts.SelectedIndices[0];
-                    var summary = m_summaries[index] as AccountSummaryNew;
+                    var summary = m_summaries[index] as AccountSummary;
 
                     var answer = MessageBox.Show(this,
                         $"Are you sure you want to reconcile all new items on account {summary.Name}?",
@@ -836,7 +837,7 @@ namespace MoneyBookTools
             if (listViewAccounts.SelectedIndices.Count > 0)
             {
                 int index = listViewAccounts.SelectedIndices[0];
-                var summary = m_summaries[index] as AccountSummaryNew;
+                var summary = m_summaries[index] as AccountSummary;
 
                 var dlg = AccountForm.Create(summary.AcctId);
                 if (dlg.ShowDialog() == DialogResult.OK)
@@ -880,7 +881,7 @@ namespace MoneyBookTools
             if (listViewAccounts.SelectedIndices.Count > 0)
             {
                 int index = listViewAccounts.SelectedIndices[0];
-                var summary = m_summaries[index] as AccountSummaryNew;
+                var summary = m_summaries[index] as AccountSummary;
                 summary = m_db.GetAccountSummaryNew(summary.AcctId);
 
                 accountToolStripStatusLabel.Text = summary?.Name;
@@ -1034,7 +1035,7 @@ namespace MoneyBookTools
             if (listViewAccounts.SelectedIndices.Count > 0)
             {
                 int index = listViewAccounts.SelectedIndices[0];
-                var summary = m_summaries[index] as AccountSummaryNew;
+                var summary = m_summaries[index] as AccountSummary;
 
                 var dlg = TransactionForm.Create(summary.AcctId);
 

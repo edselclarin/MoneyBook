@@ -4,11 +4,11 @@ using MoneyBook.Models;
 
 namespace MoneyBookTest
 {
-    public class AccountSummaryDataProviderTest : BaseDataProviderTest<AccountSummaryModel>
+    public class AccountSummaryDataProviderTest : BaseDataProviderTest<AccountSummary>
     {
         public AccountSummaryDataProviderTest()
         {
-            DataProvider = (IDataProvider<AccountSummaryModel>)MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<AccountSummaryModel>));
+            DataProvider = (IDataProvider<AccountSummary>)MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<AccountSummary>));
             Assert.IsNotNull(DataProvider, "DataProvider is null");
         }
 
