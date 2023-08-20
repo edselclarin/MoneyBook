@@ -70,16 +70,6 @@ namespace MoneyBook.Data
             Paused
         }
 
-        public static InstitutionInfo ToInstitutionInfo(this Institution inst)
-        {
-            return new InstitutionInfo
-            {
-                InstId = inst.InstId,
-                Name = inst.Name,
-                InstType = inst.InstType
-            };
-        }
-
         public static TransactionInfo ToTransactionInfo(this TransactionInfo trn)
         {
             return new TransactionInfo
@@ -156,15 +146,6 @@ namespace MoneyBook.Data
                     return transactions;
                     break;
             }
-        }
-
-        public static IEnumerable<InstitutionInfo> GetInstitutions(this MoneyBookDbContext db)
-        {
-            var results = db.Institutions
-                .Where(x => x.IsDeleted == false)
-                .Select(x => x.ToInstitutionInfo());
-
-            return results.AsEnumerable();
         }
 
         public static async Task<IEnumerable<Account>> GetAccountsAsync(this MoneyBookDbContext db, int skip = 0, int take = 50)
