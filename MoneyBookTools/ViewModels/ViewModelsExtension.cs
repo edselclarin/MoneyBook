@@ -27,15 +27,6 @@ namespace MoneyBookTools.ViewModels
             return sb.ToString();
         }
 
-        public static IEnumerable<ViewAccount> AsViewAccounts(this IEnumerable<AccountInfo> accounts)
-        {
-            return accounts.Select(acct => new ViewAccount
-            {
-                AcctId = acct.AcctId,
-                Account = acct.AccountName,
-            });
-        }
-
         public static IEnumerable<ViewTransaction> AsViewTransactions(this IEnumerable<TransactionInfo> transactions)
         {
             return transactions.Select(tran => new ViewTransaction

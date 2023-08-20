@@ -1125,22 +1125,22 @@ namespace MoneyBookTools
             }
         }
 
-        private void LoadRemindersGrid()
+        private async void LoadRemindersGrid()
         {
             var reminders = m_db.GetReminders(MoneyBookDbContextExtension.SortOrder.Ascending)
                 .AsViewReminders()
                 .ToList();
 
-            var accts = m_db.GetAccounts()
+            var accts = (await m_db.GetAccountsAsync())
                 .ToList();
 
             foreach (var rem in reminders)
             {
-                var acct = m_db.GetAccounts().SingleOrDefault(x => x.AcctId == rem.AcctId);
+                var acct = accts.SingleOrDefault(x => x.AcctId == rem.AcctId);
 
                 if (acct != null)
                 {
-                    rem.Account = acct.AccountName;
+                    rem.Account = acct.Name;
                 }
             }
 

@@ -1,6 +1,6 @@
 ﻿using Dark.Net;
-using MoneyBook.BusinessModels;
 using MoneyBook.Data;
+using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
 using MoneyBookTools.ViewModels;
@@ -101,7 +101,7 @@ namespace MoneyBookTools
             return form;
         }
 
-        private void ReminderForm_Load(object sender, EventArgs e)
+        private async void ReminderForm_Load(object sender, EventArgs e)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace MoneyBookTools
 
                 var cats = m_db.Categories.ToList();
 
-                var accts = m_db.GetAccounts().ToList();
+                var accts = (await m_db.GetAccountsAsync()).ToList();
                 comboAccounts.DataSource = accts;
                 comboAccounts.DisplayMember = "AccountName";
                 comboAccounts.SelectedIndex = 0;
@@ -124,7 +124,7 @@ namespace MoneyBookTools
                         {
                             DueDate = DateTime.Now,
                             AcctId = accts[comboAccounts.SelectedIndex].AcctId,
-                            Account = accts[comboAccounts.SelectedIndex].AccountName,
+                            Account = accts[comboAccounts.SelectedIndex].Name,
                             CatId = cats.First().CatId,
                             Payee = DateTime.Now.ToString(),
                             Memo = String.Empty,
@@ -260,7 +260,7 @@ namespace MoneyBookTools
 
         private void comboAccounts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var accts = comboAccounts.DataSource as List<AccountInfo>;
+            var accts = comboAccounts.DataSource as List<Account>;
             var selectedAcct = accts[comboAccounts.SelectedIndex];
             if (Reminder.AcctId != selectedAcct.AcctId)
             {

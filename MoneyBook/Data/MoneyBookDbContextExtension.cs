@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using MoneyBook.BusinessModels;
+﻿using MoneyBook.BusinessModels;
+using MoneyBook.DataProviders;
 using MoneyBook.Models;
 using Newtonsoft.Json;
 
@@ -86,21 +86,6 @@ namespace MoneyBook.Data
                 InstId = inst.InstId,
                 Name = inst.Name,
                 InstType = inst.InstType
-            };
-        }
-
-        public static AccountInfo ToAccountInfo(this Account acct)
-        {
-            return new AccountInfo
-            {
-                AcctId = acct.AcctId,
-                AccountName = acct.Name,
-                Description = acct.Description,
-                AcctTypeId = acct.AcctTypeId,
-                StartingBalance = acct.StartingBalance,
-                ReserveAmount = acct.ReserveAmount,
-                DateAdded = acct.DateAdded,
-                DateModified = acct.DateModified
             };
         }
 
@@ -200,62 +185,11 @@ namespace MoneyBook.Data
             return results.AsEnumerable();
         }
 
-        public static IEnumerable<AccountInfo> GetAccounts(this MoneyBookDbContext db)
+        public static async Task<IEnumerable<Account>> GetAccountsAsync(this MoneyBookDbContext db, int skip = 0, int take = 50)
         {
-            var results = db.Accounts
-                .Where(x => x.IsDeleted == false)
-                .Select(x => x.ToAccountInfo());
-
-            return results.AsEnumerable();
-        }
-
-        public static List<AccountSummary> GetAccountSummaries(this MoneyBookDbContext db)
-        {
-            var summaries = new List<AccountSummary>();
-
-            var accts = db.Accounts
-                .Where(x => x.IsDeleted == false)
-                .Select(x => x.ToAccountInfo())
-                .ToList();
-
-            foreach (var acct in accts)
-            {
-                var transactions = db.GetTransactions(acct.AcctId);
-
-                var summary = new AccountSummary()
-                {
-                    Account = acct,
-                    Transactions = transactions.ToList()
-                };
-
-                summaries.Add(summary);
-            }
-
-            return summaries;
-        }
-
-        public static AccountSummary? GetAccountSummary(this MoneyBookDbContext db, int acctId)
-        {
-            var accts = db.Accounts
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId)
-                .Select(x => x.ToAccountInfo());
-
-            if (accts != null && accts.Count() > 0)
-            {
-                var transactions = db.GetTransactions(accts.First().AcctId);
-
-                var summary = new AccountSummary()
-                {
-                    Account = accts.First(),
-                    Transactions = transactions.ToList()
-                };
-
-                return summary;
-            }
-            else
-            {
-                return null;
-            }
+            var dp = (IDataProvider<Account>)MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<Account>));
+            var task = await dp.GetPagedAsync(skip, take);
+            return task.Items;
         }
 
         public static List<AccountSummaryNew> GetAccountSummariesNew(this MoneyBookDbContext db)
