@@ -629,40 +629,4 @@ namespace MoneyBook.Data
             }
         }
     }
-
-    public class MoneyBookDbTransaction : IDisposable
-    {
-        private IDbContextTransaction dbTran_;
-        private bool bCommit_;
-
-        public MoneyBookDbTransaction(MoneyBookDbContext db)
-        {
-            dbTran_ = db.Database.BeginTransaction();
-            if (dbTran_ is null)
-            {
-                throw new Exception("dbTran_ is null");
-            }
-            bCommit_ = false;
-        }
-
-        public void SetCommitFlag(bool bCommit)
-        {
-            bCommit_ = bCommit;
-        }
-
-        public void Commit()
-        {
-            dbTran_.Commit();
-            bCommit_ = false;
-        }
-
-        public void Dispose()
-        {
-            if (bCommit_)
-            {
-                dbTran_.Commit();
-                dbTran_.Dispose();
-            }
-        }
-    }
 }

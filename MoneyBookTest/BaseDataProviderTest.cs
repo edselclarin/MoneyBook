@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using MoneyBook.Data;
 using MoneyBook.DataProviders;
 
 namespace MoneyBookTest
@@ -7,7 +8,7 @@ namespace MoneyBookTest
     {
         protected IDataProvider<T> DataProvider { get; set; }
 
-        public MoneyBookDbTransaction CreateDbTransaction()
+        public IDbContextTransaction CreateDbTransaction()
         {
             return DataProvider.CreateDbTransaction();
         }

@@ -1,6 +1,5 @@
 ﻿using MoneyBook.Data;
 using MoneyBook.Models;
-using System.Runtime.Intrinsics.Arm;
 
 namespace MoneyBook.DataProviders
 {
@@ -99,11 +98,6 @@ namespace MoneyBook.DataProviders
                 db_.Transactions.Remove(tran);
                 await db_.SaveChangesAsync();
             }
-        }
-
-        public MoneyBookDbTransaction CreateDbTransaction()
-        {
-            return base.CreateDbTransaction();
         }
     }
 }

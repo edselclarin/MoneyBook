@@ -56,28 +56,28 @@ namespace MoneyBookTest
                 InstId = inst.InstId
             };
 
-            using (var tr = CreateDbTransaction())
+            using (var tr = DataProvider.CreateDbTransaction())
             {
                 newItem = Insert(newItem);
-                tr.SetCommitFlag(true);
+                tr.Commit();
             }
 
             Account item;
-            using (var tr2 = CreateDbTransaction())
+            using (var tr2 = DataProvider.CreateDbTransaction())
             {
                 item = Get(newItem.AcctId);
                 item.Name = "RENAMED ACCOUNT";
                 Update(item.AcctId, item);
-                tr2.SetCommitFlag(true);
+                tr2.Commit();
             }
 
             item = Get(item.AcctId);
             Assert.IsNotNull(item, "item is null");
 
-            using (var tr3 = CreateDbTransaction())
+            using (var tr3 = DataProvider.CreateDbTransaction())
             {
                 Delete(item.AcctId);
-                tr3.SetCommitFlag(true);
+                tr3.Commit();
             }
         }
     }

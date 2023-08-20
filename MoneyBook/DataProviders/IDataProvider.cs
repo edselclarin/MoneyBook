@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using MoneyBook.Data;
 
 namespace MoneyBook.DataProviders
 {
@@ -9,6 +10,6 @@ namespace MoneyBook.DataProviders
         Task<T> FindAsync(T item);
         Task<T> UpsertAsync(T item);
         Task DeleteAsync(int id);
-        MoneyBookDbTransaction CreateDbTransaction();
+        IDbContextTransaction CreateDbTransaction();
     }
 }

@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using MoneyBook.Data;
 
 namespace MoneyBook.DataProviders
 {
@@ -12,9 +13,9 @@ namespace MoneyBook.DataProviders
             db_ = new MoneyBookDbContext();
         }
 
-        public MoneyBookDbTransaction CreateDbTransaction()
+        public IDbContextTransaction CreateDbTransaction()
         {
-            return new MoneyBookDbTransaction(Db);
+            return db_.Database.BeginTransaction();
         }
     }
 }
