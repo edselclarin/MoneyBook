@@ -1,4 +1,7 @@
-﻿using Dark.Net;
+﻿using Autofac;
+using Dark.Net;
+using Microsoft.EntityFrameworkCore;
+using MoneyBook;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
@@ -26,7 +29,7 @@ namespace MoneyBookTools
 
         public static List<string> GetImportFilePaths()
         {
-            using var db = new MoneyBookDbContext();
+            using var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
             var filepaths = new List<string>();
             foreach (string filepath in db.Accounts.Select(x => x.ImportFilePath))
             {
@@ -47,7 +50,7 @@ namespace MoneyBookTools
 
         private void ImportTransactionsForm_Load(object sender, EventArgs e)
         {
-            m_db = new MoneyBookDbContext();
+            m_db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
 
             var sb = new StringBuilder();
             sb.AppendLine("Import transactions from these files into their respective accounts?");

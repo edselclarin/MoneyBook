@@ -1,4 +1,5 @@
-﻿using MoneyBook;
+﻿using Autofac;
+using MoneyBook;
 using MoneyBook.DataProviders;
 using MoneyBook.Models;
 
@@ -8,7 +9,7 @@ namespace MoneyBookTest
     {
         public AccountSummaryDataProviderTest()
         {
-            DataProvider = (IDataProvider<AccountSummary>)MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<AccountSummary>));
+            DataProvider = MoneyBookContainerBuilder.Container.Resolve<IDataProvider<AccountSummary>>();
             Assert.IsNotNull(DataProvider, "DataProvider is null");
         }
 

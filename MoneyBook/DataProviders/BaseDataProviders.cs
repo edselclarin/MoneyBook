@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Autofac;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using MoneyBook.Data;
 
 namespace MoneyBook.DataProviders
@@ -10,7 +12,7 @@ namespace MoneyBook.DataProviders
 
         protected BaseDataProvider()
         {
-            db_ = new MoneyBookDbContext();
+            db_ = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
         }
 
         public IDbContextTransaction CreateDbTransaction()

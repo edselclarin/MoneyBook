@@ -1,7 +1,6 @@
-﻿using Dark.Net;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Autofac;
+using Dark.Net;
 using MoneyBook;
-using MoneyBook.Data;
 using MoneyBook.DataProviders;
 using MoneyBook.Models;
 using MoneyBookTools.FormModels;
@@ -47,10 +46,10 @@ namespace MoneyBookTools.Forms
         {
             try
             {
-                var adp = (IDataProvider<Account>)MoneyBookServices.ServiceProvider.GetRequiredService(typeof(IDataProvider<Account>));
+                var adp = MoneyBookContainerBuilder.Container.Resolve<IDataProvider<Account>>();
                 var acct = await adp.GetAsync(m_acctId);
 
-                var atdp = (IDataProvider<AccountType>)MoneyBookServices.ServiceProvider.GetRequiredService(typeof(IDataProvider<AccountType>));
+                var atdp = MoneyBookContainerBuilder.Container.Resolve<IDataProvider<AccountType>>();
                 var acctType = await atdp.GetAsync(acct.AcctTypeId);
 
                 m_formModel = new AccountFormModel()
@@ -86,16 +85,15 @@ namespace MoneyBookTools.Forms
         {
             try
             {
-                using var db = new MoneyBookDbContext();
-                using var tr = db.Database.BeginTransaction();
-
-                var adp = (IDataProvider<Account>)MoneyBookServices.ServiceProvider.GetRequiredService(typeof(IDataProvider<Account>));
+                var adp = MoneyBookContainerBuilder.Container.Resolve<IDataProvider<Account>>();
                 var acct = await adp.GetAsync(m_formModel.AcctId);
 
                 acct.Name = m_formModel.Name;
                 acct.Description = m_formModel.Description;
                 acct.StartingBalance = m_formModel.StartingBalance;
                 acct.ReserveAmount = m_formModel.ReserveAmount;
+
+                using var tr = adp.CreateDbTransaction();
 
                 if (await adp.UpsertAsync(acct) is null)
                 {

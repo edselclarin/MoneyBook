@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using Autofac;
+using Caliburn.Micro;
 using MoneyBook;
 using MoneyBook.DataProviders;
 using MoneyBook.Models;
@@ -25,7 +26,7 @@ namespace MoneyBookDashboard.ViewModels
         {
             Accounts = new();
 
-            if (MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<AccountSummary>)) is IDataProvider<AccountSummary> dp)
+            if (MoneyBookContainerBuilder.Container.Resolve<IDataProvider<AccountSummary>>() is IDataProvider<AccountSummary> dp)
             {
                 if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<MoneyBook.Models.AccountSummary> res)
                 {

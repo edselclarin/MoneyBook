@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using Autofac;
+using Caliburn.Micro;
 using MoneyBook;
 using MoneyBook.Data;
 using MoneyBook.DataProviders;
@@ -26,7 +27,7 @@ namespace MoneyBookDashboard.ViewModels
         {
             Reminders = new();
 
-            if (MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<Reminder>)) is IDataProvider<Reminder> dp)
+            if (MoneyBookContainerBuilder.Container.Resolve<IDataProvider<Reminder>>() is IDataProvider<Reminder> dp)
             {
                 if ((await dp.GetPagedAsync(0, 100)) is PagedResponse<Reminder> res)
                 {

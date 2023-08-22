@@ -1,4 +1,7 @@
-﻿using Dark.Net;
+﻿using Autofac;
+using Dark.Net;
+using Microsoft.EntityFrameworkCore;
+using MoneyBook;
 using MoneyBook.Data;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
@@ -107,7 +110,7 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = new MoneyBookDbContext();
+                    var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
 
                     if (m_bNew)
                     {

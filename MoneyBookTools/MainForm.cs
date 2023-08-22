@@ -1,4 +1,6 @@
-﻿using Dark.Net;
+﻿using Autofac;
+using Dark.Net;
+using Microsoft.EntityFrameworkCore;
 using MoneyBook;
 using MoneyBook.BusinessModels;
 using MoneyBook.Data;
@@ -102,7 +104,7 @@ namespace MoneyBookTools
 
                 await Task.Run(() =>
                 {
-                    m_db = new MoneyBookDbContext();
+                    m_db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
                 });
 
                 LoadRemindersGrid();

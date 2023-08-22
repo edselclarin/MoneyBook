@@ -1,4 +1,5 @@
-﻿using MoneyBook.BusinessModels;
+﻿using Autofac;
+using MoneyBook.BusinessModels;
 using MoneyBook.DataProviders;
 using MoneyBook.Models;
 using Newtonsoft.Json;
@@ -150,7 +151,7 @@ namespace MoneyBook.Data
 
         public static async Task<IEnumerable<Account>> GetAccountsAsync(this MoneyBookDbContext db, int skip = 0, int take = 50)
         {
-            var dp = (IDataProvider<Account>)MoneyBookServices.ServiceProvider.GetService(typeof(IDataProvider<Account>));
+            var dp = MoneyBookContainerBuilder.Container.Resolve<IDataProvider<Account>>();
             var task = await dp.GetPagedAsync(skip, take);
             return task.Items;
         }

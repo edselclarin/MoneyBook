@@ -1,4 +1,7 @@
-﻿using Dark.Net;
+﻿using Autofac;
+using Dark.Net;
+using Microsoft.EntityFrameworkCore;
+using MoneyBook;
 using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBookTools.Data;
@@ -105,7 +108,7 @@ namespace MoneyBookTools
         {
             try
             {
-                m_db = new MoneyBookDbContext();
+                m_db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
 
                 var cats = m_db.Categories.ToList();
 
@@ -176,7 +179,7 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = new MoneyBookDbContext();
+                    var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
 
                     db.AddReminder(Reminder);
 
@@ -198,7 +201,7 @@ namespace MoneyBookTools
                     {
                         using var hg = new Hourglass(this);
 
-                        var db = new MoneyBookDbContext();
+                        var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
 
                         db.UpdateReminder(Reminder);
 
@@ -217,7 +220,7 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = new MoneyBookDbContext();
+                    var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
 
                     var reminders = new ViewReminder[]
                     {
