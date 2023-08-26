@@ -65,17 +65,6 @@ namespace MoneyBook.Extensions
             rem.DateModified = DateTime.Now.Date;
         }
 
-        public static void Delete(this Reminder rem)
-        {
-            // Soft delete.
-            rem.IsDeleted = true;
-        }
-
-        public static void SetState(this Transaction tran, StateTypes state)
-        {
-            tran.State = state.ToString();
-        }
-
         public static decimal GetAmount(this Reminder rem)
         {
             return rem.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase)
@@ -86,12 +75,6 @@ namespace MoneyBook.Extensions
         {
             return tran.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase)
                 ? -tran.Amount : tran.Amount;
-        }
-
-        public static void Delete(this Transaction tran)
-        {
-            // Soft delete.
-            tran.IsDeleted = true;
         }
 
         public static DueStateTypes GetDueState(this DateTime dueDate)

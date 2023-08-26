@@ -85,7 +85,8 @@ namespace MoneyBook.Data
                 var rmdr = m_db.Reminders
                     .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
 
-                rmdr?.Delete();
+                // Soft delete.
+                rmdr.IsDeleted = true;
             }
 
             m_db.SaveChanges();
@@ -102,7 +103,8 @@ namespace MoneyBook.Data
                 var trn = m_db.Transactions
                     .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
 
-                trn?.Delete();
+                // Soft delete.
+                trn.IsDeleted = true;
             }
 
             m_db.SaveChanges();
@@ -423,7 +425,7 @@ namespace MoneyBook.Data
                 var trn = m_db.Transactions
                     .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
 
-                trn?.SetState(state);
+                trn.State = state.ToString();
             }
 
             m_db.SaveChanges();
