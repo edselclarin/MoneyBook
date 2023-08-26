@@ -1,5 +1,4 @@
-﻿using MoneyBook.BusinessModels;
-using MoneyBook.Data;
+﻿using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBookTools.ViewModels;
 
@@ -35,10 +34,10 @@ namespace MoneyBookTools.Data
             return trn;
         }
 
-        public static IList<TransactionInfo> ToTransactionInfos(this IList<ViewTransaction> transactions)
+        public static IList<Transaction> ToTransactionInfos(this IList<ViewTransaction> transactions)
         {
             return transactions
-                .Select(tran => new TransactionInfo
+                .Select(tran => new Transaction
                 {
                     TrnsId = tran.TrnsId,
                     Date = tran.Date,
@@ -53,7 +52,7 @@ namespace MoneyBookTools.Data
                 .ToList();
         }
 
-        public static IEnumerable<ViewTransaction> ToViewTransactions(this IEnumerable<TransactionInfo> transactions)
+        public static IEnumerable<ViewTransaction> ToViewTransactions(this IEnumerable<Transaction> transactions)
         {
             return transactions.Select(tran => new ViewTransaction
             {
@@ -69,7 +68,7 @@ namespace MoneyBookTools.Data
             });
         }
 
-        public static IEnumerable<ViewReminder> ToViewReminders(this IEnumerable<ReminderInfo> reminder)
+        public static IEnumerable<ViewReminder> ToViewReminders(this IEnumerable<Reminder> reminder)
         {
             return reminder.Select(tran => new ViewReminder
             {

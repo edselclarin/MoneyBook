@@ -1,5 +1,4 @@
-﻿using MoneyBook.BusinessModels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MoneyBook.Data
 {

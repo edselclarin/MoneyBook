@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Dark.Net;
 using MoneyBook;
-using MoneyBook.BusinessModels;
 using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBookTools.Data;
@@ -791,7 +790,7 @@ namespace MoneyBookTools
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedTotal:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-                IEnumerable<TransactionInfo> transactions = m_dbProxy.GetTransactionInfos(summary.AcctId);
+                IEnumerable<Transaction> transactions = m_dbProxy.GetTransactionInfos(summary.AcctId);
                 List<ViewTransaction> accountTransactions;
                 if (m_stateFilter != null)
                 {

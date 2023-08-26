@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using MoneyBook.BusinessModels;
 using MoneyBook.DataProviders;
 using MoneyBook.Models;
 using Newtonsoft.Json;
@@ -94,7 +93,7 @@ namespace MoneyBook.Data
             dbtran.Commit();
         }
 
-        public void DeleteTransactions(IEnumerable<TransactionInfo> transactions)
+        public void DeleteTransactions(IEnumerable<Transaction> transactions)
         {
             using var dbtran = m_db.Database.BeginTransaction();
 
@@ -145,14 +144,14 @@ namespace MoneyBook.Data
             return m_db.Categories;
         }
 
-        public IEnumerable<ReminderInfo> GetReminders(MoneyBookDbContextExtension.SortOrder sortOrder)
+        public IEnumerable<Reminder> GetReminders(MoneyBookDbContextExtension.SortOrder sortOrder)
         {
             var accts = m_db.Accounts
                 .ToList();
 
             var results = m_db.Reminders
                 .Where(x => x.IsDeleted == false)
-                .Select(rem => new ReminderInfo
+                .Select(rem => new Reminder
                 {
                     RmdrId = rem.RmdrId,
                     DueDate = rem.DueDate,
@@ -168,7 +167,7 @@ namespace MoneyBook.Data
                     CatId = rem.CatId
                 });
 
-            IOrderedQueryable<ReminderInfo> sortedTransactions;
+            IOrderedQueryable<Reminder> sortedTransactions;
             switch (sortOrder)
             {
                 case SortOrder.Ascending:
@@ -183,11 +182,11 @@ namespace MoneyBook.Data
             return sortedTransactions.AsEnumerable();
         }
 
-        public IEnumerable<TransactionInfo> GetTransactionInfos(int acctId)
+        public IEnumerable<Transaction> GetTransactionInfos(int acctId)
         {
             var results = m_db.Transactions
                 .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MinimumAccountYear)
-                .Select(x => new TransactionInfo
+                .Select(x => new Transaction
                 {
                     TrnsId = x.TrnsId,
                     Date = x.Date,
@@ -416,7 +415,7 @@ namespace MoneyBook.Data
             }
         }
 
-        public void SetTransactionStates(IEnumerable<TransactionInfo> transactions, MoneyBookDbContextExtension.StateTypes state)
+        public void SetTransactionStates(IEnumerable<Transaction> transactions, MoneyBookDbContextExtension.StateTypes state)
         {
             using var dbtran = m_db.Database.BeginTransaction();
 

@@ -1,6 +1,6 @@
 ﻿using MoneyBook.Models;
 
-namespace MoneyBook.BusinessModels
+namespace MoneyBook.Data
 {
     public class DatabaseBackup
     {

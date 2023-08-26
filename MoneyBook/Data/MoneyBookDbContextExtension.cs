@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using MoneyBook.BusinessModels;
 using MoneyBook.Extensions;
 using MoneyBook.Models;
 
@@ -109,7 +108,7 @@ namespace MoneyBook.Data
             };
         }
 
-        public static IEnumerable<TransactionInfo> Filter(this IEnumerable<TransactionInfo> transactions, DateFilter dateFilter)
+        public static IEnumerable<Transaction> Filter(this IEnumerable<Transaction> transactions, DateFilter dateFilter)
         {
             switch (dateFilter)
             {
@@ -128,7 +127,7 @@ namespace MoneyBook.Data
             }
         }
 
-        public static IEnumerable<TransactionInfo> Order(this IEnumerable<TransactionInfo> transactions, SortOrder sortOrder)
+        public static IEnumerable<Transaction> Order(this IEnumerable<Transaction> transactions, SortOrder sortOrder)
         {
             switch (sortOrder)
             {
@@ -142,11 +141,11 @@ namespace MoneyBook.Data
             }
         }
 
-        public static IEnumerable<TransactionInfo> GetTransactionsByState(this MoneyBookDbContext db, int acctId, StateTypes state)
+        public static IEnumerable<Transaction> GetTransactionsByState(this MoneyBookDbContext db, int acctId, StateTypes state)
         {
             var results = db.Transactions
                 .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= m_minYear && x.State == state.ToString())
-                .Select(x => new TransactionInfo
+                .Select(x => new Transaction
                 {
                     TrnsId = x.TrnsId,
                     Date = x.Date,
