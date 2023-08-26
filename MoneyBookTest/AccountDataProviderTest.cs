@@ -57,7 +57,6 @@ namespace MoneyBookTest
                 InstId = inst.InstId
             };
 
-#if NEEDS_REFACTORING
             using (var tr = DataProvider.CreateDbTransaction())
             {
                 newItem = Insert(newItem);
@@ -81,7 +80,6 @@ namespace MoneyBookTest
                 Delete(item.AcctId);
                 tr3.Commit();
             }
-#endif
         }
     }
 }
