@@ -1,11 +1,10 @@
 ﻿using MoneyBook.Data;
-using MoneyBook.Extensions;
 using MoneyBook.Models;
 using MoneyBookTools.ViewModels;
 
-namespace MoneyBookTools.Data
+namespace MoneyBookTools.Extensions
 {
-    public static class MoneyBookToolsDbContextExtension
+    public static class MoneyBookToolsExtensions
     {
         public static Transaction ToTransaction(this ViewTransaction transaction)
         {
@@ -19,7 +18,7 @@ namespace MoneyBookTools.Data
             trn.RefNum = transaction.RefNum;
             trn.Memo = transaction.Memo;
             trn.State = transaction.State;
-            trn.ExtTrnsId = String.Empty;
+            trn.ExtTrnsId = string.Empty;
             if (transaction.NewAmount < 0)
             {
                 trn.TrnsType = TransactionTypes.DEBIT.ToString();
