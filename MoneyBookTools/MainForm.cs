@@ -228,18 +228,6 @@ namespace MoneyBookTools
             }
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                FileTransactionsForm.Create().ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
         private async void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -283,65 +271,6 @@ namespace MoneyBookTools
                     m_dbProxy.DeleteAllTransactions();
 
                     MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void importRemindersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var answer = MessageBox.Show(this,
-                    "Importing data from file will delete all existing reminders from the database. " +
-                    "This cannot be undone. Continue?",
-                    this.Text,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-
-                if (answer == DialogResult.Yes)
-                {
-                    var ofd = new OpenFileDialog()
-                    {
-                        InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                        Filter = "Data Files|*.json;*.json|All Files|*.*",
-                        Multiselect = false
-                    };
-
-                    if (ofd.ShowDialog() == DialogResult.OK)
-                    {
-                        m_dbProxy.ImportReminders(ofd.FileName);
-
-                        LoadRemindersGrid();
-
-                        MessageBox.Show(this, "Import complete.", this.Text, MessageBoxButtons.OK);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
-        }
-
-        private void exportRemindesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var sfd = new SaveFileDialog()
-                {
-                    InitialDirectory = Environment.SpecialFolder.MyDocuments.ToString(),
-                    FileName = $"MoneyTools-Reminders-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json",
-                    Filter = "Data Files|*.json;*.json|All Files|*.*",
-                };
-
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    m_dbProxy.ExportReminders(sfd.FileName);
-
-                    MessageBox.Show(this, "Export complete.", this.Text, MessageBoxButtons.OK);
                 }
             }
             catch (Exception ex)
@@ -782,31 +711,6 @@ namespace MoneyBookTools
         private void listViewAccounts_DoubleClick(object sender, EventArgs e)
         {
             editAccountToolStripMenuItem.PerformClick();
-
-        }
-        
-        #endregion
-
-        #region Child Form Handlers
-
-        private void transactionForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            try
-            {
-                var form = sender as TransactionForm;
-                if (form.DialogResult == DialogResult.OK)
-                {
-                    using var hg = this.CreateHourglass();
-
-                    LoadTransactionsGrid();
-
-                    LoadAccountsList();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowException(ex);
-            }
         }
 
         #endregion

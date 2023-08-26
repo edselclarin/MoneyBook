@@ -7,38 +7,6 @@ namespace MoneyBookTools.Data
 {
     public static class MoneyBookToolsDbContextExtension
     {
-        public static void StageReminders(this MoneyBookDbContext db, IEnumerable<ViewReminder> reminders)
-        {
-            using var dbtran = db.Database.BeginTransaction();
-
-            foreach (var rem in reminders)
-            {
-                var trNew = new Transaction()
-                {
-                    Date = rem.DueDate,
-                    TrnsType = rem.TrnsType,
-                    Payee = rem.Payee,
-                    Memo= rem.Memo,
-                    State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
-                    Amount = Math.Abs(rem.NewAmount),
-                    ExtTrnsId = String.Empty,
-                    AcctId = rem.AcctId,
-                    CatId = rem.CatId
-                };
-
-                db.Transactions.Add(trNew);
-
-                var rmdr = db.Reminders
-                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
-
-                rmdr?.Skip();
-            }
-
-            db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
         public static Transaction ToTransaction(this ViewTransaction transaction)
         {
             var trn = new Transaction();

@@ -35,8 +35,6 @@ namespace MoneyBookTools
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             mainMenuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            openToolStripMenuItem = new ToolStripMenuItem();
-            toolStripSeparator5 = new ToolStripSeparator();
             exitToolStripMenuItem = new ToolStripMenuItem();
             viewToolStripMenuItem = new ToolStripMenuItem();
             refreshToolStripMenuItem = new ToolStripMenuItem();
@@ -59,13 +57,6 @@ namespace MoneyBookTools
             operationsToolStripMenuItem = new ToolStripMenuItem();
             importTransactionsToolStripMenuItem = new ToolStripMenuItem();
             deleteAllTransactionsToolStripMenuItem = new ToolStripMenuItem();
-            toolStripSeparator1 = new ToolStripSeparator();
-            importRemindersToolStripMenuItem = new ToolStripMenuItem();
-            exportRemindersToolStripMenuItem = new ToolStripMenuItem();
-            deleteRemindersToolStripMenuItem = new ToolStripMenuItem();
-            toolStripSeparator3 = new ToolStripSeparator();
-            updateAccountDataToolStripMenuItem = new ToolStripMenuItem();
-            resetAccountDataToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
             backupDatabaseToolStripMenuItem = new ToolStripMenuItem();
             restoreDatabaseToolStripMenuItem = new ToolStripMenuItem();
@@ -143,28 +134,15 @@ namespace MoneyBookTools
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openToolStripMenuItem, toolStripSeparator5, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "&File";
             // 
-            // openToolStripMenuItem
-            // 
-            openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(112, 22);
-            openToolStripMenuItem.Text = "&Open...";
-            openToolStripMenuItem.ToolTipText = "Open file";
-            openToolStripMenuItem.Click += openToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator5
-            // 
-            toolStripSeparator5.Name = "toolStripSeparator5";
-            toolStripSeparator5.Size = new Size(109, 6);
-            // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(112, 22);
+            exitToolStripMenuItem.Size = new Size(180, 22);
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.ToolTipText = "Close application";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
@@ -180,7 +158,7 @@ namespace MoneyBookTools
             // 
             refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             refreshToolStripMenuItem.ShortcutKeys = Keys.F5;
-            refreshToolStripMenuItem.Size = new Size(132, 22);
+            refreshToolStripMenuItem.Size = new Size(180, 22);
             refreshToolStripMenuItem.Text = "&Refresh";
             refreshToolStripMenuItem.ToolTipText = "Refresh";
             refreshToolStripMenuItem.Click += refreshToolStripMenuItem_Click;
@@ -196,7 +174,7 @@ namespace MoneyBookTools
             // 
             filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, thisYearToolStripMenuItem, clearToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, stagedStatusMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
             filterToolStripMenuItem.Name = "filterToolStripMenuItem";
-            filterToolStripMenuItem.Size = new Size(109, 22);
+            filterToolStripMenuItem.Size = new Size(180, 22);
             filterToolStripMenuItem.Text = "Filter...";
             filterToolStripMenuItem.ToolTipText = "Show transactions...";
             // 
@@ -286,7 +264,7 @@ namespace MoneyBookTools
             // 
             sortToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { dateDescendingToolStripMenuItem, dateAscendingToolStripMenuItem });
             sortToolStripMenuItem.Name = "sortToolStripMenuItem";
-            sortToolStripMenuItem.Size = new Size(109, 22);
+            sortToolStripMenuItem.Size = new Size(180, 22);
             sortToolStripMenuItem.Text = "Sort...";
             // 
             // dateDescendingToolStripMenuItem
@@ -307,7 +285,7 @@ namespace MoneyBookTools
             // 
             // operationsToolStripMenuItem
             // 
-            operationsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { importTransactionsToolStripMenuItem, deleteAllTransactionsToolStripMenuItem, toolStripSeparator1, importRemindersToolStripMenuItem, exportRemindersToolStripMenuItem, deleteRemindersToolStripMenuItem, toolStripSeparator3, updateAccountDataToolStripMenuItem, resetAccountDataToolStripMenuItem, toolStripSeparator4, backupDatabaseToolStripMenuItem, restoreDatabaseToolStripMenuItem });
+            operationsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { importTransactionsToolStripMenuItem, deleteAllTransactionsToolStripMenuItem, toolStripSeparator4, backupDatabaseToolStripMenuItem, restoreDatabaseToolStripMenuItem });
             operationsToolStripMenuItem.Name = "operationsToolStripMenuItem";
             operationsToolStripMenuItem.Size = new Size(77, 20);
             operationsToolStripMenuItem.Text = "&Operations";
@@ -327,54 +305,6 @@ namespace MoneyBookTools
             deleteAllTransactionsToolStripMenuItem.Text = "Delete All Transactions";
             deleteAllTransactionsToolStripMenuItem.ToolTipText = "Delete transactions across all accounts";
             deleteAllTransactionsToolStripMenuItem.Click += deleteAllTransactionsToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator1
-            // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(189, 6);
-            // 
-            // importRemindersToolStripMenuItem
-            // 
-            importRemindersToolStripMenuItem.Name = "importRemindersToolStripMenuItem";
-            importRemindersToolStripMenuItem.Size = new Size(192, 22);
-            importRemindersToolStripMenuItem.Text = "Import Reminders...";
-            importRemindersToolStripMenuItem.ToolTipText = "Import reminders from file";
-            importRemindersToolStripMenuItem.Click += importRemindersToolStripMenuItem_Click;
-            // 
-            // exportRemindersToolStripMenuItem
-            // 
-            exportRemindersToolStripMenuItem.Name = "exportRemindersToolStripMenuItem";
-            exportRemindersToolStripMenuItem.Size = new Size(192, 22);
-            exportRemindersToolStripMenuItem.Text = "Export Reminders...";
-            exportRemindersToolStripMenuItem.ToolTipText = "Export reminders from file";
-            exportRemindersToolStripMenuItem.Click += exportRemindesToolStripMenuItem_Click;
-            // 
-            // deleteRemindersToolStripMenuItem
-            // 
-            deleteRemindersToolStripMenuItem.Name = "deleteRemindersToolStripMenuItem";
-            deleteRemindersToolStripMenuItem.Size = new Size(192, 22);
-            deleteRemindersToolStripMenuItem.Text = "Delete Reminders";
-            deleteRemindersToolStripMenuItem.ToolTipText = "Delete all reminders";
-            deleteRemindersToolStripMenuItem.Click += deleteRemindersToolStripMenuItem_Click;
-            // 
-            // toolStripSeparator3
-            // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(189, 6);
-            // 
-            // updateAccountDataToolStripMenuItem
-            // 
-            updateAccountDataToolStripMenuItem.Name = "updateAccountDataToolStripMenuItem";
-            updateAccountDataToolStripMenuItem.Size = new Size(192, 22);
-            updateAccountDataToolStripMenuItem.Text = "Update Account Data";
-            updateAccountDataToolStripMenuItem.ToolTipText = "Update account data from settings file";
-            // 
-            // resetAccountDataToolStripMenuItem
-            // 
-            resetAccountDataToolStripMenuItem.Name = "resetAccountDataToolStripMenuItem";
-            resetAccountDataToolStripMenuItem.Size = new Size(192, 22);
-            resetAccountDataToolStripMenuItem.Text = "Reset Account Data";
-            resetAccountDataToolStripMenuItem.ToolTipText = "Reset account data of all accounts";
             // 
             // toolStripSeparator4
             // 
@@ -407,7 +337,7 @@ namespace MoneyBookTools
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(116, 22);
+            aboutToolStripMenuItem.Size = new Size(180, 22);
             aboutToolStripMenuItem.Text = "&About...";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
@@ -475,12 +405,12 @@ namespace MoneyBookTools
             // 
             accountsContextMenuStrip.Items.AddRange(new ToolStripItem[] { editAccountToolStripMenuItem });
             accountsContextMenuStrip.Name = "accountsContextMenuStrip";
-            accountsContextMenuStrip.Size = new Size(181, 48);
+            accountsContextMenuStrip.Size = new Size(95, 26);
             // 
             // editAccountToolStripMenuItem
             // 
             editAccountToolStripMenuItem.Name = "editAccountToolStripMenuItem";
-            editAccountToolStripMenuItem.Size = new Size(180, 22);
+            editAccountToolStripMenuItem.Size = new Size(94, 22);
             editAccountToolStripMenuItem.Text = "Edit";
             editAccountToolStripMenuItem.Click += editAccountToolStripMenuItem_Click;
             // 
@@ -842,17 +772,9 @@ namespace MoneyBookTools
         private ToolStripMenuItem operationsToolStripMenuItem;
         private ToolStripMenuItem importTransactionsToolStripMenuItem;
         private ToolStripMenuItem deleteAllTransactionsToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator1;
-        private ToolStripMenuItem importRemindersToolStripMenuItem;
-        private ToolStripMenuItem deleteRemindersToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator3;
-        private ToolStripMenuItem updateAccountDataToolStripMenuItem;
-        private ToolStripMenuItem resetAccountDataToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem backupDatabaseToolStripMenuItem;
         private ToolStripMenuItem restoreDatabaseToolStripMenuItem;
-        private ToolStripMenuItem openToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator5;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem createReminderToolStripMenuItem;
@@ -877,7 +799,6 @@ namespace MoneyBookTools
         private ToolStripMenuItem dateDescendingToolStripMenuItem;
         private ToolStripMenuItem dateAscendingToolStripMenuItem;
         private TableLayoutPanel tableLayoutLedger;
-        private ToolStripMenuItem exportRemindersToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator8;
         private ToolStripMenuItem openWebsiteToolStripMenuItem;
         private ToolStripMenuItem reconcileNewToolStripMenuItem;
