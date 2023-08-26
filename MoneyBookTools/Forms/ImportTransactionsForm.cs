@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Dark.Net;
-using Microsoft.EntityFrameworkCore;
 using MoneyBook;
 using MoneyBook.Data;
-using MoneyBookTools.Data;
+using MoneyBook.DataProviders;
+using MoneyBook.Models;
 using MoneyBookTools.Forms;
 using System.Text;
 
@@ -11,7 +11,7 @@ namespace MoneyBookTools
 {
     public partial class ImportTransactionsForm : Form
     {
-        private MoneyBookDbContext m_db;
+        private IDbContextProxy m_dbProxy;
 
         public static ImportTransactionsForm Create()
         {
@@ -27,11 +27,12 @@ namespace MoneyBookTools
             return form;
         }
 
-        public static List<string> GetImportFilePaths()
+        public async static Task<List<string>> GetImportFilePaths()
         {
-            using var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
+            var adp = MoneyBookContainerBuilder.Container.Resolve<IDataProvider<Account>>();
+            var accts = await adp.GetPagedAsync(0, 100);
             var filepaths = new List<string>();
-            foreach (string filepath in db.Accounts.Select(x => x.ImportFilePath))
+            foreach (string filepath in accts.Items.Select(x => x.ImportFilePath))
             {
                 if (File.Exists(filepath))
                 {
@@ -48,14 +49,16 @@ namespace MoneyBookTools
             ControlBox = false;
         }
 
-        private void ImportTransactionsForm_Load(object sender, EventArgs e)
+        private async void ImportTransactionsForm_Load(object sender, EventArgs e)
         {
-            m_db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
+            m_dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
+
+            var accts = await m_dbProxy.GetAccountsAsync();
 
             var sb = new StringBuilder();
             sb.AppendLine("Import transactions from these files into their respective accounts?");
             sb.AppendLine();
-            foreach (var acct in m_db.Accounts)
+            foreach (var acct in accts)
             {
                 sb.AppendLine($"{acct.ImportFilePath} -> {acct.Name}");
             }
@@ -70,7 +73,7 @@ namespace MoneyBookTools
             {
                 try
                 {
-                    m_db.ImportTransactions();
+                    m_dbProxy.ImportTransactions();
 
                     MessageBox.Show("Import complete.");
                 }

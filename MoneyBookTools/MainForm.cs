@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Dark.Net;
-using Microsoft.EntityFrameworkCore;
 using MoneyBook;
 using MoneyBook.BusinessModels;
 using MoneyBook.Data;
@@ -16,7 +15,7 @@ namespace MoneyBookTools
     {
         #region Fields
 
-        private MoneyBookDbContext m_db;
+        private IDbContextProxy m_dbProxy;
         private List<AccountSummary> m_summaries;
         private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
         private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
@@ -102,10 +101,7 @@ namespace MoneyBookTools
 
                 using var hg = this.CreateHourglass();
 
-                await Task.Run(() =>
-                {
-                    m_db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
-                });
+                m_dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
 
                 LoadRemindersGrid();
 
@@ -116,7 +112,8 @@ namespace MoneyBookTools
                     listViewAccounts.Items[0].Selected = true;
                 }
 
-                if (ImportTransactionsForm.GetImportFilePaths().Count() > 0)
+                var paths = await ImportTransactionsForm.GetImportFilePaths();
+                if (paths.Count() > 0)
                 {
                     var dlg = ImportTransactionsForm.Create();
                     dlg.ShowDialog();
@@ -217,16 +214,13 @@ namespace MoneyBookTools
         {
             try
             {
-                if (m_db != null)
-                {
-                    using var hg = this.CreateHourglass();
+                using var hg = this.CreateHourglass();
 
-                    LoadAccountsList();
+                LoadAccountsList();
 
-                    LoadTransactionsGrid();
+                LoadTransactionsGrid();
 
-                    LoadRemindersGrid();
-                }
+                LoadRemindersGrid();
             }
             catch (Exception ex)
             {
@@ -246,11 +240,12 @@ namespace MoneyBookTools
             }
         }
 
-        private void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void importTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                if (ImportTransactionsForm.GetImportFilePaths().Count() == 0)
+                var paths = await ImportTransactionsForm.GetImportFilePaths();
+                if (paths.Count() == 0)
                 {
                     MessageBox.Show(this, "No files were found to import.", this.Text, MessageBoxButtons.OK);
                     return;
@@ -285,7 +280,7 @@ namespace MoneyBookTools
                 {
                     using var hg = this.CreateHourglass();
 
-                    m_db.DeleteAllTransactions();
+                    m_dbProxy.DeleteAllTransactions();
 
                     MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -317,7 +312,7 @@ namespace MoneyBookTools
 
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
-                        m_db.ImportReminders(ofd.FileName);
+                        m_dbProxy.ImportReminders(ofd.FileName);
 
                         LoadRemindersGrid();
 
@@ -344,7 +339,7 @@ namespace MoneyBookTools
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    m_db.ExportReminders(sfd.FileName);
+                    m_dbProxy.ExportReminders(sfd.FileName);
 
                     MessageBox.Show(this, "Export complete.", this.Text, MessageBoxButtons.OK);
                 }
@@ -627,7 +622,7 @@ namespace MoneyBookTools
                     {
                         using var hg = this.CreateHourglass();
 
-                        m_db.SetStateNewToReconciled(summary.AcctId);
+                        m_dbProxy.SetStateNewToReconciled(summary.AcctId);
 
                         refreshToolStripMenuItem.PerformClick();
                     }
@@ -828,7 +823,7 @@ namespace MoneyBookTools
                 listViewAccounts.RetrieveVirtualItem += ListViewAccounts_RetrieveVirtualItem;
             }
 
-            m_summaries = m_db.GetAccountSummariesNew();
+            m_summaries = m_dbProxy.GetAccountSummariesNew();
 
             listViewAccounts.VirtualListSize = m_summaries.Count;
             listViewAccounts.Invalidate();
@@ -884,7 +879,7 @@ namespace MoneyBookTools
             {
                 int index = listViewAccounts.SelectedIndices[0];
                 var summary = m_summaries[index] as AccountSummary;
-                summary = m_db.GetAccountSummaryNew(summary.AcctId);
+                summary = m_dbProxy.GetAccountSummaryNew(summary.AcctId);
 
                 accountToolStripStatusLabel.Text = summary?.Name;
                 currentToolStripStatusLabel.Text = $"Current: {summary?.Balance:0.00}";
@@ -892,31 +887,31 @@ namespace MoneyBookTools
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedTotal:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-                IEnumerable<TransactionInfo> transactions = null;
+                IEnumerable<TransactionInfo> transactions = m_dbProxy.GetTransactionInfos(summary.AcctId);
+                List<ViewTransaction> accountTransactions;
                 if (m_stateFilter != null)
                 {
                     // Filter by state and date.
-                    transactions = m_db.GetTransactions(summary.AcctId)
+                    accountTransactions = transactions
                         .Where(x => x.State == m_stateFilter.ToString())
                         .Filter(m_dateFilter)
-                        .Order(m_sortOrder);
+                        .Order(m_sortOrder)
+                        .ToViewTransactions()
+                        .ToList();
                 }
                 else
                 {
                     // Filter by date only.
-                    transactions = m_db.GetTransactions(summary.AcctId)
+                    accountTransactions = transactions
                         .Filter(m_dateFilter)
-                        .Order(m_sortOrder);
+                        .Order(m_sortOrder)
+                        .ToViewTransactions()
+                        .ToList();
                 }
-
-                // Filter by date.
-                var viewTransactions = transactions
-                    .AsViewTransactions()
-                    .ToList();
 
                 SaveSelectedTransactions();
 
-                dgvAccountTransactions.DataSource = viewTransactions;
+                dgvAccountTransactions.DataSource = accountTransactions;
 
                 // Resize the columns.
                 var widths = new int[] { 90, 70, 80, 80, 275 };
@@ -931,7 +926,7 @@ namespace MoneyBookTools
 
                 foreach (DataGridViewRow row in dgvAccountTransactions.Rows)
                 {
-                    var vt = viewTransactions[row.Index];
+                    var vt = accountTransactions[row.Index];
 
                     if (vt.State != MoneyBookDbContextExtension.StateTypes.Reconciled.ToString())
                     {
@@ -965,7 +960,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.SetTransactionStates(selectedTransactions, state);
+                    m_dbProxy.SetTransactionStates(selectedTransactions.ToTransactionInfos(), state);
 
                     LoadTransactionsGrid();
 
@@ -1023,7 +1018,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.DeleteTransactions(selectedTransactions);
+                    m_dbProxy.DeleteTransactions(selectedTransactions.ToTransactionInfos());
 
                     LoadTransactionsGrid();
 
@@ -1130,11 +1125,11 @@ namespace MoneyBookTools
 
         private async void LoadRemindersGrid()
         {
-            var reminders = m_db.GetReminders(MoneyBookDbContextExtension.SortOrder.Ascending)
-                .AsViewReminders()
+            var reminders = m_dbProxy.GetReminders(MoneyBookDbContextExtension.SortOrder.Ascending)
+                .ToViewReminders()
                 .ToList();
 
-            var accts = (await m_db.GetAccountsAsync())
+            var accts = (await m_dbProxy.GetAccountsAsync())
                 .ToList();
 
             foreach (var rem in reminders)
@@ -1173,12 +1168,12 @@ namespace MoneyBookTools
                 }
                 else
                 {
-                    if (rem.GetDueState() != DueStateTypes.None)
+                    if (rem.DueDate.GetDueState() != MoneyBookDbContextExtension.DueStateTypes.None)
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
                     }
 
-                    row.DefaultCellStyle.ForeColor = ReminderStateColorScheme.Instance.ForeColor(rem.GetDueState().ToString());
+                    row.DefaultCellStyle.ForeColor = ReminderStateColorScheme.Instance.ForeColor(rem.DueDate.GetDueState().ToString());
                 }
 
                 row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -1205,7 +1200,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.SkipReminders(selectedReminders);
+                    m_dbProxy.SkipReminders(selectedReminders.ToReminders());
 
                     LoadRemindersGrid();
                 }
@@ -1230,7 +1225,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.CopyReminders(selectedReminders);
+                    m_dbProxy.CopyReminders(selectedReminders.ToReminders());
 
                     LoadRemindersGrid();
 
@@ -1274,7 +1269,7 @@ namespace MoneyBookTools
 
                 if (answer == DialogResult.Yes)
                 {
-                    m_db.DeleteReminders(selectedReminders);
+                    m_dbProxy.DeleteReminders(selectedReminders.ToReminders());
 
                     LoadRemindersGrid();
                 }
@@ -1299,13 +1294,13 @@ namespace MoneyBookTools
                 .Select(x => new
                 {
                     RowIndex = x.RowIndex,
-                    Transaction = reminders[x.RowIndex]
+                    ViewReminder = reminders[x.RowIndex]
                 })
                 .FirstOrDefault();
 
             if (selectedReminder != null)
             {
-                var dlg = ReminderForm.CreateEditForm(selectedReminder.Transaction);
+                var dlg = ReminderForm.CreateEditForm(selectedReminder.ViewReminder);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -1322,13 +1317,13 @@ namespace MoneyBookTools
                 .Select(x => new
                 {
                     RowIndex = x.RowIndex,
-                    Transaction = reminders[x.RowIndex]
+                    ViewReminder = reminders[x.RowIndex]
                 })
                 .FirstOrDefault();
 
             if (selectedReminders != null)
             {
-                var dlg = ReminderForm.CreateStageForm(selectedReminders.Transaction);
+                var dlg = ReminderForm.CreateStageForm(selectedReminders.ViewReminder);
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -1355,7 +1350,7 @@ namespace MoneyBookTools
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                m_db.BackupDatabase(fbd.SelectedPath);
+                m_dbProxy.BackupDatabase(fbd.SelectedPath);
 
                 MessageBox.Show(this, "Backup complete.", this.Text, MessageBoxButtons.OK);
             }
@@ -1380,7 +1375,7 @@ namespace MoneyBookTools
 
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    m_db.RestoreDatabase(ofd.FileName);
+                    m_dbProxy.RestoreDatabase(ofd.FileName);
 
                     MessageBox.Show(this, "Restore complete.", this.Text, MessageBoxButtons.OK);
                 }

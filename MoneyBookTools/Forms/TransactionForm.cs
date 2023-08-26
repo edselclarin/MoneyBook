@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Dark.Net;
-using Microsoft.EntityFrameworkCore;
 using MoneyBook;
 using MoneyBook.Data;
+using MoneyBook.Extensions;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
 using MoneyBookTools.ViewModels;
@@ -110,15 +110,17 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
+                    var dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
+
+                    var trans = m_transaction.ToTransaction();
 
                     if (m_bNew)
                     {
-                        db.AddTransaction(m_transaction);
+                        dbProxy.AddTransaction(trans);
                     }
                     else
                     {
-                        db.UpdateTransaction(m_transaction);
+                        dbProxy.UpdateTransaction(trans);
                     }
 
                     DialogResult = DialogResult.OK;

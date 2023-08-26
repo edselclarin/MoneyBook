@@ -1,8 +1,7 @@
 ﻿using Autofac;
 using MoneyBook.BusinessModels;
-using MoneyBook.DataProviders;
+using MoneyBook.Extensions;
 using MoneyBook.Models;
-using Newtonsoft.Json;
 
 namespace MoneyBook.Data
 {
@@ -10,7 +9,7 @@ namespace MoneyBook.Data
     {
         private static int m_minYear = 2022;
 
-        public static int MinimumAccountYear => m_minYear;
+        public static int MinimumAccountYear => 2022;
 
         public enum TransactionTypes
         {
@@ -45,7 +44,7 @@ namespace MoneyBook.Data
             /// </summary>
             Ignored
         }
-        
+
         public enum DateFilter : int
         {
             None,
@@ -71,22 +70,16 @@ namespace MoneyBook.Data
             Paused
         }
 
-        public static TransactionInfo ToTransactionInfo(this TransactionInfo trn)
+        public enum DueStateTypes
         {
-            return new TransactionInfo
-            {
-                TrnsId = trn.TrnsId,
-                Date = trn.Date,
-                TrnsType = trn.TrnsType,
-                Payee = trn.Payee,
-                Memo = trn.Memo,
-                Amount = trn.Amount,
-                DateAdded = trn.DateAdded,
-                DateModified = trn.DateModified,
-                AcctId = trn.AcctId,
-                CatId = trn.CatId
-            };
+            Past,     // Overdue
+            Today,    // Due today
+            Soon,     // Due by DueBeforeDay
+            Upcoming, // Due in one week
+            None      // Not due
         }
+
+        public static DayOfWeek DueBeforeDay { get; set; } = DayOfWeek.Wednesday;
 
         public static AccountSummary ToAccountSummary(this Models.AccountSummary acctSummary)
         {
@@ -147,89 +140,6 @@ namespace MoneyBook.Data
                     return transactions;
                     break;
             }
-        }
-
-        public static async Task<IEnumerable<Account>> GetAccountsAsync(this MoneyBookDbContext db, int skip = 0, int take = 50)
-        {
-            var dp = MoneyBookContainerBuilder.Container.Resolve<IDataProvider<Account>>();
-            var task = await dp.GetPagedAsync(skip, take);
-            return task.Items;
-        }
-
-        public static List<AccountSummary> GetAccountSummariesNew(this MoneyBookDbContext db)
-        {
-            return db.AccountSummaries
-                .OrderBy(x => x.AcctId)
-                .Select(x => x.ToAccountSummary())
-                .ToList();
-        }
-
-        public static AccountSummary? GetAccountSummaryNew(this MoneyBookDbContext db, int acctId)
-        {
-            return db.AccountSummaries
-                ?.SingleOrDefault(x => x.AcctId == acctId)
-                ?.ToAccountSummary();
-        }
-
-        public static IEnumerable<ReminderInfo> GetReminders(this MoneyBookDbContext db, SortOrder sortOrder)
-        {
-            var accts = db.Accounts
-                .ToList();
-
-            var results = db.Reminders
-                .Where(x => x.IsDeleted == false)
-                .Select(rem => new ReminderInfo
-                {
-                    RmdrId = rem.RmdrId,
-                    DueDate = rem.DueDate,
-                    TrnsType = rem.TrnsType,
-                    Payee = rem.Payee,
-                    Memo = rem.Memo,
-                    Website = rem.Website,
-                    Amount = rem.Amount,
-                    Frequency = rem.Frequency,
-                    DateAdded = rem.DateAdded,
-                    DateModified = rem.DateModified,
-                    AcctId = rem.AcctId,
-                    CatId = rem.CatId
-                });
-
-            IOrderedQueryable<ReminderInfo> sortedTransactions;
-            switch (sortOrder)
-            {
-                case SortOrder.Ascending:
-                    sortedTransactions = results.OrderBy(x => x.DueDate);
-                    break;
-                case SortOrder.Descending:
-                default:
-                    sortedTransactions = results.OrderByDescending(x => x.DueDate);
-                    break;
-            }
-
-            return sortedTransactions.AsEnumerable();
-        }
-
-        public static IEnumerable<TransactionInfo> GetTransactions(this MoneyBookDbContext db, int acctId)
-        {
-            var results = db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= m_minYear)
-                .Select(x => new TransactionInfo
-                {
-                    TrnsId = x.TrnsId,
-                    Date = x.Date,
-                    TrnsType = x.TrnsType,
-                    RefNum = x.RefNum,
-                    Payee = x.Payee,
-                    Memo = x.Memo,
-                    State = x.State,
-                    Amount = x.Amount,
-                    DateAdded = x.DateAdded,
-                    DateModified = x.DateModified,
-                    AcctId = x.AcctId,
-                    CatId = x.CatId
-                });
-
-            return results.AsEnumerable();
         }
 
         public static IEnumerable<TransactionInfo> GetTransactionsByState(this MoneyBookDbContext db, int acctId, StateTypes state)
@@ -294,13 +204,13 @@ namespace MoneyBook.Data
 
         public static decimal GetAmount(this Reminder rem)
         {
-            return rem.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase) 
+            return rem.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase)
                 ? -rem.Amount : rem.Amount;
         }
 
         public static decimal GetAmount(this Transaction tran)
         {
-            return tran.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase) 
+            return tran.TrnsType.Equals(TransactionTypes.DEBIT.ToString(), StringComparison.InvariantCultureIgnoreCase)
                 ? -tran.Amount : tran.Amount;
         }
 
@@ -310,183 +220,27 @@ namespace MoneyBook.Data
             tran.IsDeleted = true;
         }
 
-        public static void BackupDatabase(this MoneyBookDbContext db, string backupDir)
+        public static DueStateTypes GetDueState(this DateTime dueDate)
         {
-            Directory.CreateDirectory(backupDir);
-
-            var dbBackups = new IDbBackup[]
+            if (dueDate.Date < DateTime.Now.Date)
             {
-                MoneyBookDbTextBackup.Create(db, backupDir),
-                MoneyBookDbTapeBackup.Create(db, backupDir)
-            };
-
-            foreach (var backup in dbBackups)
-            {
-                backup.Save();
+                return DueStateTypes.Past;
             }
-        }
-
-        public static void RestoreDatabase(this MoneyBookDbContext db, string filename)
-        {
-            if (File.Exists(filename))
+            else if (dueDate.Date == DateTime.Now.Date)
             {
-                string json = File.ReadAllText(filename);
-
-                var backup = JsonConvert.DeserializeObject<DatabaseBackup>(json);
-
-                var tr = db.Database.BeginTransaction();
-
-                // Delete records in all tables.
-                db.Transactions.RemoveRange(db.Transactions);
-                db.Reminders.RemoveRange(db.Reminders);
-                db.Accounts.RemoveRange(db.Accounts);
-                db.Institutions.RemoveRange(db.Institutions);
-                db.Categories.RemoveRange(db.Categories);
-
-                db.SaveChanges();
-
-                // Save old identifiers.
-                var oldCategories = backup.Categories
-                    .Select(x => new Category
-                    {
-                        CatId = x.CatId,
-                        Name = x.Name
-                    })
-                    .ToList();
-                var oldInstitutions = backup.Institutions
-                    .Select(x => new Institution
-                    {
-                        InstId = x.InstId,
-                        Name = x.Name
-                    })
-                    .ToList();
-                var oldAccounts = backup.Accounts
-                    .Select(x => new Account
-                    {
-                        AcctId = x.AcctId,
-                        Name = x.Name
-                    })
-                    .ToList();
-
-                // Add categories.
-                foreach (var cat in backup.Categories)
-                {
-                    cat.CatId = 0;
-                    db.Categories.Add(cat);
-                }
-
-                // Add institutions.
-                foreach (var inst in backup.Institutions)
-                {
-                    inst.InstId = 0;
-                    db.Institutions.Add(inst);
-                }
-
-                db.SaveChanges();
-
-                // Add accounts - skip those with bad references.
-                foreach (var acct in backup.Accounts)
-                {
-                    var oldInst = oldInstitutions.FirstOrDefault(x => x.InstId == acct.InstId);
-                    if (oldInst == null)
-                    {
-                        continue;
-                    }
-                    var newInst = db.Institutions.FirstOrDefault(x => x.Name == oldInst.Name);
-                    if (newInst == null)
-                    {
-                        continue;
-                    }
-
-                    acct.AcctId = 0;
-                    acct.InstId = newInst.InstId;
-                    acct.DateAdded =
-                    acct.DateModified = DateTime.Now;
-
-                    db.Accounts.Add(acct);
-                }
-
-                db.SaveChanges();
-
-                // Add reminders - skip those with bad references.
-                foreach (var reminder in backup.Reminders)
-                {
-                    var oldCat = oldCategories.FirstOrDefault(x => x.CatId == reminder.CatId);
-                    if (oldCat == null)
-                    {
-                        reminder.CatId = db.Categories.First().CatId;
-                    }
-                    else
-                    {
-                        var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
-                        if (newCat == null)
-                        {
-                            continue;
-                        }
-                        reminder.CatId = newCat.CatId;
-                    }
-
-                    var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == reminder.AcctId);
-                    if (oldAcct == null)
-                    {
-                        continue;
-                    }
-                    var newAcct = db.Accounts.FirstOrDefault(x => x.Name == oldAcct.Name);
-                    if (newAcct == null)
-                    {
-                        continue;
-                    }
-
-                    reminder.RmdrId = 0;
-                    reminder.AcctId = newAcct.AcctId;
-                    reminder.DateAdded =
-                    reminder.DateModified = DateTime.Now;
-
-                    db.Reminders.Add(reminder);
-                }
-
-                db.SaveChanges();
-
-                // Add transactions - skip those with bad references.
-                foreach (var trans in backup.Transactions)
-                {
-                    var oldCat = oldCategories.FirstOrDefault(x => x.CatId == trans.CatId);
-                    if (oldCat == null)
-                    {
-                        trans.CatId = db.Categories.First().CatId;
-                    }
-                    else
-                    {
-                        var newCat = db.Categories.FirstOrDefault(x => x.Name == oldCat.Name);
-                        if (newCat == null)
-                        {
-                            continue;
-                        }
-                        trans.CatId = newCat.CatId;
-                    }
-
-                    var oldAcct = oldAccounts.FirstOrDefault(x => x.AcctId == trans.AcctId);
-                    if (oldAcct == null)
-                    {
-                        continue;
-                    }
-                    var newAcct = db.Accounts.FirstOrDefault(x => x.Name == oldAcct.Name);
-                    if (newAcct == null)
-                    {
-                        continue;
-                    }
-
-                    trans.TrnsId = 0;
-                    trans.AcctId = newAcct.AcctId;
-                    trans.DateAdded =
-                    trans.DateModified = DateTime.Now;
-
-                    db.Transactions.Add(trans);
-                }
-
-                db.SaveChanges();
-
-                tr.Commit();
+                return DueStateTypes.Today;
+            }
+            else if (dueDate.Date <= DateTime.Now.GetDateOfTarget(DueBeforeDay).Date)
+            {
+                return DueStateTypes.Soon;
+            }
+            else if (dueDate.AddDays(-7).Date <= DateTime.Now.Date)
+            {
+                return DueStateTypes.Upcoming;
+            }
+            else
+            {
+                return DueStateTypes.None;
             }
         }
     }

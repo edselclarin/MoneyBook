@@ -1,8 +1,4 @@
-﻿using Autofac;
-using Microsoft.EntityFrameworkCore;
-using MoneyBook;
-using MoneyBook.Data;
-using MoneyBook.Models;
+﻿using MoneyBook.Models;
 using MoneyBookTest;
 using NUnit.Framework;
 using System.Diagnostics;
@@ -63,17 +59,7 @@ void Test1()
     }
 }
 
-void Test2()
-{
-    var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
-    foreach (var acct in db.Accounts)
-    {
-        Console.WriteLine(acct.Name);
-    }
-}
-
 
 Test1();
-//Test2();
 
 return;

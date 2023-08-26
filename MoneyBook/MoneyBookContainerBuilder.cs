@@ -18,6 +18,7 @@ namespace MoneyBook
 
                 builder_.RegisterType<MoneyBookDbContextConfig>().As<IDbContextConfig>();
                 builder_.RegisterType<MoneyBookDbContext>().As<DbContext>();
+                builder_.RegisterType<MoneyBookDbContextProxy>().As<IDbContextProxy>();
 
                 builder_.RegisterType<AccountDataProvider>().As<IDataProvider<Account>>();
                 builder_.RegisterType<AccountTypeDataProvider>().As<IDataProvider<AccountType>>();

@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Dark.Net;
-using Microsoft.EntityFrameworkCore;
 using MoneyBook;
 using MoneyBook.Data;
+using MoneyBook.Extensions;
 using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
@@ -13,7 +13,7 @@ namespace MoneyBookTools
     public partial class ReminderForm : Form
     {
         private Mode m_mode;
-        private MoneyBookDbContext m_db;
+        private IDbContextProxy m_dbProxy;
         private string m_originalHash;
 
         public enum Mode
@@ -23,7 +23,7 @@ namespace MoneyBookTools
             Stage
         }
 
-        public ViewReminder Reminder { get; set; }
+        public ViewReminder ViewReminder { get; set; }
 
         protected ReminderForm(Mode mode)
         {
@@ -41,7 +41,7 @@ namespace MoneyBookTools
             var form = new ReminderForm(Mode.Add)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                Reminder = null
+                ViewReminder = null
             };
 
             DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
@@ -55,7 +55,7 @@ namespace MoneyBookTools
             var form = new ReminderForm(Mode.Add)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                Reminder = new ViewReminder()
+                ViewReminder = new ViewReminder()
                 {
                     DueDate = trans.Date,
                     AcctId = trans.AcctId,
@@ -81,7 +81,7 @@ namespace MoneyBookTools
             var form = new ReminderForm(Mode.Edit)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                Reminder = reminder
+                ViewReminder = reminder
             };
 
             DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
@@ -95,7 +95,7 @@ namespace MoneyBookTools
             var form = new ReminderForm(Mode.Stage)
             {
                 StartPosition = FormStartPosition.CenterScreen,
-                Reminder = reminder
+                ViewReminder = reminder
             };
 
             DarkNet.Instance.SetWindowThemeForms(form, Theme.Dark);
@@ -108,22 +108,22 @@ namespace MoneyBookTools
         {
             try
             {
-                m_db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
+                m_dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
 
-                var cats = m_db.Categories.ToList();
+                var cats = m_dbProxy.GetCategories().ToList();
 
-                var accts = (await m_db.GetAccountsAsync()).ToList();
+                var accts = (await m_dbProxy.GetAccountsAsync()).ToList();
                 comboAccounts.DataSource = accts;
-                comboAccounts.DisplayMember = "AccountName";
+                comboAccounts.DisplayMember = "Name";
                 comboAccounts.SelectedIndex = 0;
 
                 comboFrequency.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.TransactionFrequency));
 
                 if (m_mode == Mode.Add)
                 {
-                    if (Reminder == null)
+                    if (ViewReminder == null)
                     {
-                        Reminder = new ViewReminder()
+                        ViewReminder = new ViewReminder()
                         {
                             DueDate = DateTime.Now,
                             AcctId = accts[comboAccounts.SelectedIndex].AcctId,
@@ -141,7 +141,7 @@ namespace MoneyBookTools
                 }
                 else if (m_mode == Mode.Edit || m_mode == Mode.Stage)
                 {
-                    Reminder.NewAmount = Reminder.Amount;
+                    ViewReminder.NewAmount = ViewReminder.Amount;
 
                     if (m_mode == Mode.Stage)
                     {
@@ -156,7 +156,7 @@ namespace MoneyBookTools
                     }
                 }
 
-                m_originalHash = Reminder.GetHash();
+                m_originalHash = ViewReminder.GetHash();
 
                 FillForm();
             }
@@ -179,16 +179,16 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
+                    var dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
 
-                    db.AddReminder(Reminder);
+                    dbProxy.AddReminder(ViewReminder.ToReminder());
 
                     DialogResult = DialogResult.OK;
                 }
             }
             else if (m_mode == Mode.Edit)
             {
-                bool isModified = Reminder.GetHash().CompareTo(m_originalHash) != 0;
+                bool isModified = ViewReminder.GetHash().CompareTo(m_originalHash) != 0;
 
                 if (isModified)
                 {
@@ -201,9 +201,9 @@ namespace MoneyBookTools
                     {
                         using var hg = new Hourglass(this);
 
-                        var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
+                        var dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
 
-                        db.UpdateReminder(Reminder);
+                        dbProxy.UpdateReminder(ViewReminder.ToReminder());
 
                         DialogResult = DialogResult.OK;
                     }
@@ -220,13 +220,13 @@ namespace MoneyBookTools
                 {
                     using var hg = new Hourglass(this);
 
-                    var db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
+                    var dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
 
                     var reminders = new ViewReminder[]
                     {
-                        Reminder
+                        ViewReminder
                     };
-                    db.StageReminders(reminders);
+                    dbProxy.StageReminders(reminders.ToReminders());
 
                     DialogResult = DialogResult.OK;
                 }
@@ -245,19 +245,19 @@ namespace MoneyBookTools
 
         private void FillForm()
         {
-            dateTime.DataBindings.Add("Value", Reminder, "DueDate", false, DataSourceUpdateMode.OnPropertyChanged);
+            dateTime.DataBindings.Add("Value", ViewReminder, "DueDate", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textPayee.DataBindings.Add("Text", Reminder, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
+            textPayee.DataBindings.Add("Text", ViewReminder, "Payee", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textMemo.DataBindings.Add("Text", Reminder, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
+            textMemo.DataBindings.Add("Text", ViewReminder, "Memo", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textWebsite.DataBindings.Add("Text", Reminder, "Website", false, DataSourceUpdateMode.OnPropertyChanged);
+            textWebsite.DataBindings.Add("Text", ViewReminder, "Website", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            comboAccounts.DataBindings.Add("Text", Reminder, "Account", false, DataSourceUpdateMode.OnPropertyChanged);
+            comboAccounts.DataBindings.Add("Text", ViewReminder, "Account", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            comboFrequency.DataBindings.Add("Text", Reminder, "Frequency", false, DataSourceUpdateMode.OnPropertyChanged);
+            comboFrequency.DataBindings.Add("Text", ViewReminder, "Frequency", false, DataSourceUpdateMode.OnPropertyChanged);
 
-            textAmount.DataBindings.Add("Text", Reminder, "NewAmount", true, DataSourceUpdateMode.OnPropertyChanged);
+            textAmount.DataBindings.Add("Text", ViewReminder, "NewAmount", true, DataSourceUpdateMode.OnPropertyChanged);
             textAmount.DataBindings[0].FormatString = "0.00";
         }
 
@@ -265,9 +265,9 @@ namespace MoneyBookTools
         {
             var accts = comboAccounts.DataSource as List<Account>;
             var selectedAcct = accts[comboAccounts.SelectedIndex];
-            if (Reminder.AcctId != selectedAcct.AcctId)
+            if (ViewReminder is not null && ViewReminder.AcctId != selectedAcct.AcctId)
             {
-                Reminder.AcctId = selectedAcct.AcctId;
+                ViewReminder.AcctId = selectedAcct.AcctId;
             }
         }
     }

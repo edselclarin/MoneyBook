@@ -1,4 +1,5 @@
-﻿using MoneyBook.Data;
+﻿using Autofac;
+using MoneyBook.Data;
 using MoneyBook.Models;
 using Ofx;
 
@@ -6,17 +7,16 @@ namespace MoneyBook
 {
     public class OfxTransactionImporter : ITransactionImporter
     {
-        private MoneyBookDbContext m_db;
+        private IDbContextProxy m_dbProxy;
 
-        public OfxTransactionImporter(MoneyBookDbContext dbContext)
+        public OfxTransactionImporter()
         {
-            m_db = dbContext;
+            m_dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
         }
 
-        public void Import()
+        public async void Import()
         {
-            using var dbtran = m_db.Database.BeginTransaction();
-            var accts = m_db.Accounts.ToList();
+            var accts = await m_dbProxy.GetAccountsAsync(0, 100);
 
             foreach (var acct in accts)
             {
@@ -39,16 +39,18 @@ namespace MoneyBook
                 context.FromFile(acct.ImportFilePath);
 
                 // Set all imported transactions to first category.
-                var cat = m_db.Categories.First();
+                var cat = m_dbProxy.GetCategories().First();
 
                 // Process transactions from only this year.
                 var transactions = context.Transactions
                     .Where(x => x.DatePosted.Year >= MoneyBookDbContextExtension.MinimumAccountYear)
                     .ToList();
 
+                var newTransactions = new List<Transaction>();
+
                 foreach (var tr in transactions)
                 {
-                    bool exists = m_db.Transactions
+                    bool exists = m_dbProxy.GetTransactions()
                         .Where(x => x.ExtTrnsId == tr.TransactionId)
                         .Count() > 0;
 
@@ -67,14 +69,12 @@ namespace MoneyBook
                             CatId = cat.CatId
                         };
 
-                        m_db.Transactions.Add(trNew);
+                        newTransactions.Add(trNew);
                     }
                 }
 
-                m_db.SaveChanges();
+                m_dbProxy.AddTransactions(newTransactions);
             }
-
-            dbtran.Commit();
         }
     }
 }
