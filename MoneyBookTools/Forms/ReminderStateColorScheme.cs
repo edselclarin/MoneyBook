@@ -1,4 +1,4 @@
-﻿using static MoneyBook.Data.MoneyBookDbContextExtension;
+﻿using MoneyBook.Data;
 
 namespace MoneyBookTools.Forms
 {

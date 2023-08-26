@@ -1,12 +1,13 @@
 ﻿using Dark.Net;
 using MoneyBook.Data;
+using MoneyBook.Extensions;
 using MoneyBookTools.Forms;
 
 namespace MoneyBookTools
 {
     public partial class StateForm : Form
     {
-        public MoneyBookDbContextExtension.StateTypes TransactionState { get; set; }
+        public StateTypes TransactionState { get; set; }
 
         protected StateForm()
         {
@@ -28,13 +29,13 @@ namespace MoneyBookTools
 
         private void StateForm_Load(object sender, EventArgs e)
         {
-            var stateToControlMap = new (MoneyBookDbContextExtension.StateTypes State, RadioButton Radio)[]
+            var stateToControlMap = new (StateTypes State, RadioButton Radio)[]
             {
-                (MoneyBookDbContextExtension.StateTypes.New, radioButton1),
-                (MoneyBookDbContextExtension.StateTypes.Pending, radioButton2),
-                (MoneyBookDbContextExtension.StateTypes.Staged, radioButton3),
-                (MoneyBookDbContextExtension.StateTypes.Reconciled, radioButton4),
-                (MoneyBookDbContextExtension.StateTypes.Ignored, radioButton5)
+                (StateTypes.New, radioButton1),
+                (StateTypes.Pending, radioButton2),
+                (StateTypes.Staged, radioButton3),
+                (StateTypes.Reconciled, radioButton4),
+                (StateTypes.Ignored, radioButton5)
             };
 
             foreach (var item in stateToControlMap)
@@ -50,7 +51,7 @@ namespace MoneyBookTools
         private void RadioButton_Click(object sender, EventArgs e)
         {
             var radioButton = sender as RadioButton;
-            TransactionState = (MoneyBookDbContextExtension.StateTypes)radioButton.Tag;
+            TransactionState = (StateTypes)radioButton.Tag;
             DialogResult = DialogResult.OK;
         }
     }

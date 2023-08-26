@@ -1,4 +1,5 @@
 ﻿using MoneyBook.Data;
+using MoneyBook.Extensions;
 
 namespace MoneyBookTools.Forms
 {
@@ -26,7 +27,7 @@ namespace MoneyBookTools.Forms
         {
             switch (frequency)
             {
-                case nameof(MoneyBookDbContextExtension.TransactionFrequency.Paused):
+                case nameof(TransactionFrequency.Paused):
                     return Color.FromArgb(193, 1, 193); // purple
                 default:
                     return Color.FromArgb(179, 179, 179); // gray

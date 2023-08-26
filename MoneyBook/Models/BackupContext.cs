@@ -1,8 +1,6 @@
-﻿using MoneyBook.Models;
-
-namespace MoneyBook.Data
+﻿namespace MoneyBook.Models
 {
-    public class DatabaseBackup
+    public class BackupContext
     {
         public DateTime DateCreated { get; set; }
         public List<Transaction> Transactions { get; set; }

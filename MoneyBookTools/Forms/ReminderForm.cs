@@ -62,7 +62,7 @@ namespace MoneyBookTools
                     CatId = 0,
                     TrnsType = trans.TrnsType,
                     TrnsAmount = trans.TrnsAmount,
-                    Frequency = MoneyBookDbContextExtension.TransactionFrequency.Monthly.ToString(),
+                    Frequency = TransactionFrequency.Monthly.ToString(),
                     Payee = trans.Payee,
                     Memo = !String.IsNullOrEmpty(trans.Memo) ? trans.Memo : String.Empty,
                     Website = String.Empty,
@@ -117,7 +117,7 @@ namespace MoneyBookTools
                 comboAccounts.DisplayMember = "Name";
                 comboAccounts.SelectedIndex = 0;
 
-                comboFrequency.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.TransactionFrequency));
+                comboFrequency.DataSource = Enum.GetNames(typeof(TransactionFrequency));
 
                 if (m_mode == Mode.Add)
                 {
@@ -133,8 +133,8 @@ namespace MoneyBookTools
                             Memo = String.Empty,
                             Website = String.Empty,
                             NewAmount = 0m,
-                            TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString(),
-                            Frequency = MoneyBookDbContextExtension.TransactionFrequency.Once.ToString(),
+                            TrnsType = TransactionTypes.DEBIT.ToString(),
+                            Frequency = TransactionFrequency.Once.ToString(),
                             TrnsAmount = 0m
                         };
                     }

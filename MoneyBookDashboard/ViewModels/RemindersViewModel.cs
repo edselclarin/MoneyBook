@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Caliburn.Micro;
 using MoneyBook;
-using MoneyBook.Data;
 using MoneyBook.DataProviders;
+using MoneyBook.Extensions;
 using MoneyBook.Models;
 using System.Collections.ObjectModel;
 using System.Linq;

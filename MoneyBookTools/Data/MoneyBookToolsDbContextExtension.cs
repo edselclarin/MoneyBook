@@ -1,4 +1,5 @@
 ﻿using MoneyBook.Data;
+using MoneyBook.Extensions;
 using MoneyBook.Models;
 using MoneyBookTools.ViewModels;
 
@@ -21,12 +22,12 @@ namespace MoneyBookTools.Data
             trn.ExtTrnsId = String.Empty;
             if (transaction.NewAmount < 0)
             {
-                trn.TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString();
+                trn.TrnsType = TransactionTypes.DEBIT.ToString();
                 trn.Amount = Math.Abs(transaction.NewAmount);
             }
             else
             {
-                trn.TrnsType = MoneyBookDbContextExtension.TransactionTypes.CREDIT.ToString();
+                trn.TrnsType = TransactionTypes.CREDIT.ToString();
                 trn.Amount = transaction.NewAmount;
             }
             trn.DateAdded =

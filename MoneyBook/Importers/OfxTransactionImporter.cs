@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using MoneyBook.Data;
+using MoneyBook.Extensions;
 using MoneyBook.Models;
 using Ofx;
 
@@ -43,14 +44,14 @@ namespace MoneyBook
 
                 // Process transactions from only this year.
                 var transactions = context.Transactions
-                    .Where(x => x.DatePosted.Year >= MoneyBookDbContextExtension.MinimumAccountYear)
+                    .Where(x => x.DatePosted.Year >= MoneyBookGlobals.MinimumAccountYear)
                     .ToList();
 
                 var newTransactions = new List<Transaction>();
 
                 foreach (var tr in transactions)
                 {
-                    bool exists = m_dbProxy.GetTransactions()
+                    bool exists = m_dbProxy.GetAllTransactions()
                         .Where(x => x.ExtTrnsId == tr.TransactionId)
                         .Count() > 0;
 
@@ -62,7 +63,7 @@ namespace MoneyBook
                             Date = tr.DatePosted,
                             TrnsType = tr.TransactionType,
                             Payee = tr.Memo,
-                            State = MoneyBookDbContextExtension.StateTypes.New.ToString(),
+                            State = StateTypes.New.ToString(),
                             Amount = tr.TransactionAmount,
                             ExtTrnsId = tr.TransactionId,
                             AcctId = acct.AcctId,

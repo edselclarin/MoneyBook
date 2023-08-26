@@ -2,6 +2,7 @@
 using Dark.Net;
 using MoneyBook;
 using MoneyBook.Data;
+using MoneyBook.Extensions;
 using MoneyBook.Models;
 using MoneyBookTools.Data;
 using MoneyBookTools.Forms;
@@ -16,9 +17,9 @@ namespace MoneyBookTools
 
         private IDbContextProxy m_dbProxy;
         private List<AccountSummary> m_summaries;
-        private MoneyBookDbContextExtension.DateFilter m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
-        private MoneyBookDbContextExtension.SortOrder m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
-        private MoneyBookDbContextExtension.StateTypes? m_stateFilter = null;
+        private DateFilter m_dateFilter = DateFilter.TwoWeeks;
+        private SortMode m_sortOrder = SortMode.Descending;
+        private StateTypes? m_stateFilter = null;
         private List<ViewTransaction> m_selectedTransactions;
         private List<ViewReminder> m_selectedReminders;
 
@@ -569,7 +570,7 @@ namespace MoneyBookTools
             thisYearToolStripMenuItem.Checked = false;
             clearToolStripMenuItem.Checked = false;
 
-            m_dateFilter = MoneyBookDbContextExtension.DateFilter.TwoWeeks;
+            m_dateFilter = DateFilter.TwoWeeks;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -581,7 +582,7 @@ namespace MoneyBookTools
             thisYearToolStripMenuItem.Checked = false;
             clearToolStripMenuItem.Checked = false;
 
-            m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisMonth;
+            m_dateFilter = DateFilter.ThisMonth;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -593,7 +594,7 @@ namespace MoneyBookTools
             thisYearToolStripMenuItem.Checked = true;
             clearToolStripMenuItem.Checked = false;
 
-            m_dateFilter = MoneyBookDbContextExtension.DateFilter.ThisYear;
+            m_dateFilter = DateFilter.ThisYear;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -605,7 +606,7 @@ namespace MoneyBookTools
             thisYearToolStripMenuItem.Checked = false;
             clearToolStripMenuItem.Checked = true;
 
-            m_dateFilter = MoneyBookDbContextExtension.DateFilter.None;
+            m_dateFilter = DateFilter.None;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -615,7 +616,7 @@ namespace MoneyBookTools
             dateDescendingToolStripMenuItem.Checked = true;
             dateAscendingToolStripMenuItem.Checked = false;
 
-            m_sortOrder = MoneyBookDbContextExtension.SortOrder.Descending;
+            m_sortOrder = SortMode.Descending;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -625,7 +626,7 @@ namespace MoneyBookTools
             dateDescendingToolStripMenuItem.Checked = false;
             dateAscendingToolStripMenuItem.Checked = true;
 
-            m_sortOrder = MoneyBookDbContextExtension.SortOrder.Ascending;
+            m_sortOrder = SortMode.Ascending;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -638,7 +639,7 @@ namespace MoneyBookTools
             ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
 
-            m_stateFilter = MoneyBookDbContextExtension.StateTypes.New;
+            m_stateFilter = StateTypes.New;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -651,7 +652,7 @@ namespace MoneyBookTools
             ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
 
-            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Staged;
+            m_stateFilter = StateTypes.Staged;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -664,7 +665,7 @@ namespace MoneyBookTools
             ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
 
-            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Reconciled;
+            m_stateFilter = StateTypes.Reconciled;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -677,7 +678,7 @@ namespace MoneyBookTools
             reconciledStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
 
-            m_stateFilter = MoneyBookDbContextExtension.StateTypes.Ignored;
+            m_stateFilter = StateTypes.Ignored;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -726,7 +727,8 @@ namespace MoneyBookTools
                 listViewAccounts.RetrieveVirtualItem += ListViewAccounts_RetrieveVirtualItem;
             }
 
-            m_summaries = m_dbProxy.GetAccountSummariesNew();
+            m_summaries = m_dbProxy.GetAccountSummaries()
+                .ToList();
 
             listViewAccounts.VirtualListSize = m_summaries.Count;
             listViewAccounts.Invalidate();
@@ -782,7 +784,7 @@ namespace MoneyBookTools
             {
                 int index = listViewAccounts.SelectedIndices[0];
                 var summary = m_summaries[index] as AccountSummary;
-                summary = m_dbProxy.GetAccountSummaryNew(summary.AcctId);
+                summary = m_dbProxy.GetAccountSummary(summary.AcctId);
 
                 accountToolStripStatusLabel.Text = summary?.Name;
                 currentToolStripStatusLabel.Text = $"Current: {summary?.Balance:0.00}";
@@ -790,7 +792,7 @@ namespace MoneyBookTools
                 stagedToolStripStatusLabel.Text = $"Staged: {summary?.StagedTotal:0.00}";
                 finalToolStripStatusLabel.Text = $"Final: {summary?.FinalBalance:0.00}";
 
-                IEnumerable<Transaction> transactions = m_dbProxy.GetTransactionInfos(summary.AcctId);
+                IEnumerable<Transaction> transactions = m_dbProxy.GetAccountTransactions(summary.AcctId);
                 List<ViewTransaction> accountTransactions;
                 if (m_stateFilter != null)
                 {
@@ -831,7 +833,7 @@ namespace MoneyBookTools
                 {
                     var vt = accountTransactions[row.Index];
 
-                    if (vt.State != MoneyBookDbContextExtension.StateTypes.Reconciled.ToString())
+                    if (vt.State != StateTypes.Reconciled.ToString())
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
                     }
@@ -845,7 +847,7 @@ namespace MoneyBookTools
             }
         }
 
-        private void UpdateTransactionStates(MoneyBookDbContextExtension.StateTypes state)
+        private void UpdateTransactionStates(StateTypes state)
         {
             var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
             var selectedTransactions = dgvAccountTransactions.SelectedCells
@@ -1028,7 +1030,7 @@ namespace MoneyBookTools
 
         private async void LoadRemindersGrid()
         {
-            var reminders = m_dbProxy.GetReminders(MoneyBookDbContextExtension.SortOrder.Ascending)
+            var reminders = m_dbProxy.GetReminders(SortMode.Ascending)
                 .ToViewReminders()
                 .ToList();
 
@@ -1065,13 +1067,13 @@ namespace MoneyBookTools
             {
                 var rem = reminders[row.Index];
 
-                if (rem.Frequency == MoneyBookDbContextExtension.TransactionFrequency.Paused.ToString())
+                if (rem.Frequency == TransactionFrequency.Paused.ToString())
                 {
                     row.DefaultCellStyle.ForeColor = ReminderFrequencyColorScheme.Instance.ForeColor(rem.Frequency.ToString());
                 }
                 else
                 {
-                    if (rem.DueDate.GetDueState() != MoneyBookDbContextExtension.DueStateTypes.None)
+                    if (rem.DueDate.GetDueState() != DueStateTypes.None)
                     {
                         row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
                     }

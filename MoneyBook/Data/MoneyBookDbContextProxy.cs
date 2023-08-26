@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using MoneyBook.DataProviders;
+using MoneyBook.Extensions;
 using MoneyBook.Models;
 using Newtonsoft.Json;
-using static MoneyBook.Data.MoneyBookDbContextExtension;
 
 namespace MoneyBook.Data
 {
@@ -50,7 +50,7 @@ namespace MoneyBook.Data
                     TrnsType = rem.TrnsType,
                     Payee = rem.Payee,
                     Memo = rem.Memo,
-                    State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
+                    State = StateTypes.Staged.ToString(),
                     Amount = rem.Amount,
                     ExtTrnsId = String.Empty,
                     AcctId = rem.AcctId,
@@ -124,27 +124,26 @@ namespace MoneyBook.Data
             return task.Items;
         }
 
-        public List<AccountSummary> GetAccountSummariesNew()
+        public IEnumerable<AccountSummary> GetAccountSummaries()
         {
             return m_db.AccountSummaries
-                .OrderBy(x => x.AcctId)
-                .Select(x => x.ToAccountSummary())
-                .ToList();
+                .OrderBy(x => x.AcctId);
         }
 
-        public AccountSummary GetAccountSummaryNew(int acctId)
+        public AccountSummary GetAccountSummary(int acctId)
         {
             return m_db.AccountSummaries
-                ?.SingleOrDefault(x => x.AcctId == acctId)
-                ?.ToAccountSummary();
+                ?.SingleOrDefault(x => x.AcctId == acctId);
         }
 
         public IEnumerable<Category> GetCategories()
         {
-            return m_db.Categories;
+            return m_db.Categories
+                .Where(x => x.IsDeleted == false)
+                .OrderBy(x => x.CatId);
         }
 
-        public IEnumerable<Reminder> GetReminders(MoneyBookDbContextExtension.SortOrder sortOrder)
+        public IEnumerable<Reminder> GetReminders(SortMode sortOrder)
         {
             var accts = m_db.Accounts
                 .ToList();
@@ -170,10 +169,10 @@ namespace MoneyBook.Data
             IOrderedQueryable<Reminder> sortedTransactions;
             switch (sortOrder)
             {
-                case SortOrder.Ascending:
+                case SortMode.Ascending:
                     sortedTransactions = results.OrderBy(x => x.DueDate);
                     break;
-                case SortOrder.Descending:
+                case SortMode.Descending:
                 default:
                     sortedTransactions = results.OrderByDescending(x => x.DueDate);
                     break;
@@ -182,10 +181,10 @@ namespace MoneyBook.Data
             return sortedTransactions.AsEnumerable();
         }
 
-        public IEnumerable<Transaction> GetTransactionInfos(int acctId)
+        public IEnumerable<Transaction> GetAccountTransactions(int acctId)
         {
             var results = m_db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MinimumAccountYear)
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MoneyBookGlobals.MinimumAccountYear)
                 .Select(x => new Transaction
                 {
                     TrnsId = x.TrnsId,
@@ -238,7 +237,7 @@ namespace MoneyBook.Data
             {
                 string json = File.ReadAllText(filename);
 
-                var backup = JsonConvert.DeserializeObject<DatabaseBackup>(json);
+                var backup = JsonConvert.DeserializeObject<BackupContext>(json);
 
                 var tr = m_db.Database.BeginTransaction();
 
@@ -398,7 +397,7 @@ namespace MoneyBook.Data
 
         public void SetStateNewToReconciled(int acctId)
         {
-            var newTrans = m_db.GetTransactionsByState(acctId, MoneyBookDbContextExtension.StateTypes.New).ToList();
+            var newTrans = GetTransactionsByState(acctId, StateTypes.New).ToList();
             var trans = from ntr in newTrans
                         join tr in m_db.Transactions on ntr.TrnsId equals tr.TrnsId
                         select tr;
@@ -406,7 +405,7 @@ namespace MoneyBook.Data
             {
                 foreach (var tr in trans)
                 {
-                    tr.State = MoneyBookDbContextExtension.StateTypes.Reconciled.ToString();
+                    tr.State = StateTypes.Reconciled.ToString();
                 }
 
                 m_db.Transactions.UpdateRange(trans);
@@ -415,7 +414,7 @@ namespace MoneyBook.Data
             }
         }
 
-        public void SetTransactionStates(IEnumerable<Transaction> transactions, MoneyBookDbContextExtension.StateTypes state)
+        public void SetTransactionStates(IEnumerable<Transaction> transactions, StateTypes state)
         {
             using var dbtran = m_db.Database.BeginTransaction();
 
@@ -449,7 +448,7 @@ namespace MoneyBook.Data
             dbtran.Commit();
         }
 
-        public IEnumerable<Transaction> GetTransactions()
+        public IEnumerable<Transaction> GetAllTransactions()
         {
             return m_db.Transactions;
         }
@@ -599,7 +598,7 @@ namespace MoneyBook.Data
                     TrnsType = rem.TrnsType,
                     Payee = rem.Payee,
                     Memo = rem.Memo,
-                    State = MoneyBookDbContextExtension.StateTypes.Staged.ToString(),
+                    State = StateTypes.Staged.ToString(),
                     Amount = rem.Amount,
                     ExtTrnsId = String.Empty,
                     AcctId = rem.AcctId,
@@ -617,6 +616,15 @@ namespace MoneyBook.Data
             m_db.SaveChanges();
 
             dbtran.Commit();
+        }
+
+        public IEnumerable<Transaction> GetTransactionsByState(int acctId, StateTypes state)
+        {
+            return m_db.Transactions
+                .Where(x => x.IsDeleted == false &&
+                            x.AcctId == acctId &&
+                            x.Date.Year >= MoneyBookGlobals.MinimumAccountYear &&
+                            x.State == state.ToString());
         }
     }
 }

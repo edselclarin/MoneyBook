@@ -1,4 +1,5 @@
 ﻿using MoneyBook.Data;
+using MoneyBook.Extensions;
 
 namespace MoneyBookTools.Forms
 {
@@ -21,14 +22,14 @@ namespace MoneyBookTools.Forms
         {
             switch (state)
             {
-                case nameof(MoneyBookDbContextExtension.StateTypes.New):
-                case nameof(MoneyBookDbContextExtension.StateTypes.Pending):
+                case nameof(StateTypes.New):
+                case nameof(StateTypes.Pending):
                     return Color.FromArgb(245, 127, 23); // orange
-                case nameof(MoneyBookDbContextExtension.StateTypes.Ignored):
+                case nameof(StateTypes.Ignored):
                     return Color.DimGray;
-                case nameof(MoneyBookDbContextExtension.StateTypes.Staged):
+                case nameof(StateTypes.Staged):
                     return Color.DodgerBlue;
-                case nameof(MoneyBookDbContextExtension.StateTypes.Reconciled):
+                case nameof(StateTypes.Reconciled):
                 default:
                     return Color.FromArgb(179, 179, 179); // gray
             }

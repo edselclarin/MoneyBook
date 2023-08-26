@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MoneyBook.Models;
+using Newtonsoft.Json;
 
 namespace MoneyBook.Data
 {
@@ -25,7 +26,7 @@ namespace MoneyBook.Data
 
         public void Save()
         {
-            var backup = new DatabaseBackup()
+            var backup = new BackupContext()
             {
                 DateCreated = DateTime.Now,
                 Transactions = _dbContext.Transactions.ToList(),

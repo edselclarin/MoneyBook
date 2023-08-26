@@ -50,8 +50,8 @@ namespace MoneyBookTools
                 AcctId = acctId,
                 Date = DateTime.Now.Date,
                 Payee = DateTime.Now.ToString(),
-                TrnsType = MoneyBookDbContextExtension.TransactionTypes.DEBIT.ToString(),
-                State = MoneyBookDbContextExtension.StateTypes.New.ToString()
+                TrnsType = TransactionTypes.DEBIT.ToString(),
+                State = StateTypes.New.ToString()
             });
 
             Text = "Add Transaction";
@@ -85,7 +85,7 @@ namespace MoneyBookTools
         {
             try
             {
-                comboState.DataSource = Enum.GetNames(typeof(MoneyBook.Data.MoneyBookDbContextExtension.StateTypes));
+                comboState.DataSource = Enum.GetNames(typeof(StateTypes));
 
                 FillForm();
             }
