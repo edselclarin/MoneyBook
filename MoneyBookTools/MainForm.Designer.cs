@@ -43,9 +43,10 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem = new ToolStripMenuItem();
             thisMonthToolStripMenuItem = new ToolStripMenuItem();
             thisYearToolStripMenuItem = new ToolStripMenuItem();
-            clearToolStripMenuItem = new ToolStripMenuItem();
+            allDatesToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator10 = new ToolStripSeparator();
             newStatusMenuItem = new ToolStripMenuItem();
+            pendingToolStripMenuItem = new ToolStripMenuItem();
             stagedStatusMenuItem = new ToolStripMenuItem();
             reconciledStatusMenuItem = new ToolStripMenuItem();
             ignoredStatusMenuItem = new ToolStripMenuItem();
@@ -142,7 +143,7 @@ namespace MoneyBookTools
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(93, 22);
             exitToolStripMenuItem.Text = "E&xit";
             exitToolStripMenuItem.ToolTipText = "Close application";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
@@ -158,7 +159,7 @@ namespace MoneyBookTools
             // 
             refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             refreshToolStripMenuItem.ShortcutKeys = Keys.F5;
-            refreshToolStripMenuItem.Size = new Size(180, 22);
+            refreshToolStripMenuItem.Size = new Size(132, 22);
             refreshToolStripMenuItem.Text = "&Refresh";
             refreshToolStripMenuItem.ToolTipText = "Refresh";
             refreshToolStripMenuItem.Click += refreshToolStripMenuItem_Click;
@@ -172,7 +173,7 @@ namespace MoneyBookTools
             // 
             // filterToolStripMenuItem
             // 
-            filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, thisYearToolStripMenuItem, clearToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, stagedStatusMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
+            filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, thisYearToolStripMenuItem, allDatesToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, pendingToolStripMenuItem, stagedStatusMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
             filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             filterToolStripMenuItem.Size = new Size(180, 22);
             filterToolStripMenuItem.Text = "Filter...";
@@ -181,7 +182,8 @@ namespace MoneyBookTools
             // twoWeeksToolStripMenuItem
             // 
             twoWeeksToolStripMenuItem.Name = "twoWeeksToolStripMenuItem";
-            twoWeeksToolStripMenuItem.Size = new Size(157, 22);
+            twoWeeksToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.W;
+            twoWeeksToolStripMenuItem.Size = new Size(211, 22);
             twoWeeksToolStripMenuItem.Text = "Two Weeks";
             twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks";
             twoWeeksToolStripMenuItem.Click += twoWeeksToolStripMenuItem_Click;
@@ -189,7 +191,8 @@ namespace MoneyBookTools
             // thisMonthToolStripMenuItem
             // 
             thisMonthToolStripMenuItem.Name = "thisMonthToolStripMenuItem";
-            thisMonthToolStripMenuItem.Size = new Size(157, 22);
+            thisMonthToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.M;
+            thisMonthToolStripMenuItem.Size = new Size(211, 22);
             thisMonthToolStripMenuItem.Text = "This Month";
             thisMonthToolStripMenuItem.ToolTipText = "Of the current month";
             thisMonthToolStripMenuItem.Click += thisMonthToolStripMenuItem_Click;
@@ -197,36 +200,48 @@ namespace MoneyBookTools
             // thisYearToolStripMenuItem
             // 
             thisYearToolStripMenuItem.Name = "thisYearToolStripMenuItem";
-            thisYearToolStripMenuItem.Size = new Size(157, 22);
+            thisYearToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.Y;
+            thisYearToolStripMenuItem.Size = new Size(211, 22);
             thisYearToolStripMenuItem.Text = "This Year";
             thisYearToolStripMenuItem.ToolTipText = "Of the current year";
             thisYearToolStripMenuItem.Click += thisYearToolStripMenuItem_Click;
             // 
-            // clearToolStripMenuItem
+            // allDatesToolStripMenuItem
             // 
-            clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            clearToolStripMenuItem.Size = new Size(157, 22);
-            clearToolStripMenuItem.Text = "Clear Date Filter";
-            clearToolStripMenuItem.ToolTipText = "Show transactions of any date";
-            clearToolStripMenuItem.Click += clearToolStripMenuItem_Click;
+            allDatesToolStripMenuItem.Name = "allDatesToolStripMenuItem";
+            allDatesToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.L;
+            allDatesToolStripMenuItem.Size = new Size(211, 22);
+            allDatesToolStripMenuItem.Text = "All Dates";
+            allDatesToolStripMenuItem.ToolTipText = "Show any transactions of any date";
+            allDatesToolStripMenuItem.Click += allDatesToolStripMenuItem_Click;
             // 
             // toolStripSeparator10
             // 
             toolStripSeparator10.Name = "toolStripSeparator10";
-            toolStripSeparator10.Size = new Size(154, 6);
+            toolStripSeparator10.Size = new Size(208, 6);
             // 
             // newStatusMenuItem
             // 
             newStatusMenuItem.Name = "newStatusMenuItem";
-            newStatusMenuItem.Size = new Size(157, 22);
+            newStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.N;
+            newStatusMenuItem.Size = new Size(211, 22);
             newStatusMenuItem.Text = "New";
             newStatusMenuItem.ToolTipText = "Show New transactions";
             newStatusMenuItem.Click += newStatusMenuItem_Click;
             // 
+            // pendingToolStripMenuItem
+            // 
+            pendingToolStripMenuItem.Name = "pendingToolStripMenuItem";
+            pendingToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.P;
+            pendingToolStripMenuItem.Size = new Size(211, 22);
+            pendingToolStripMenuItem.Text = "Pending";
+            pendingToolStripMenuItem.Click += pendingToolStripMenuItem_Click;
+            // 
             // stagedStatusMenuItem
             // 
             stagedStatusMenuItem.Name = "stagedStatusMenuItem";
-            stagedStatusMenuItem.Size = new Size(157, 22);
+            stagedStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
+            stagedStatusMenuItem.Size = new Size(211, 22);
             stagedStatusMenuItem.Text = "Staged";
             stagedStatusMenuItem.ToolTipText = "Show Staged transactions";
             stagedStatusMenuItem.Click += stagedStatusMenuItem_Click;
@@ -234,7 +249,8 @@ namespace MoneyBookTools
             // reconciledStatusMenuItem
             // 
             reconciledStatusMenuItem.Name = "reconciledStatusMenuItem";
-            reconciledStatusMenuItem.Size = new Size(157, 22);
+            reconciledStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.R;
+            reconciledStatusMenuItem.Size = new Size(211, 22);
             reconciledStatusMenuItem.Text = "Reconciled";
             reconciledStatusMenuItem.ToolTipText = "Show Reconciled transactions";
             reconciledStatusMenuItem.Click += reconciledStatusMenuItem_Click;
@@ -242,7 +258,8 @@ namespace MoneyBookTools
             // ignoredStatusMenuItem
             // 
             ignoredStatusMenuItem.Name = "ignoredStatusMenuItem";
-            ignoredStatusMenuItem.Size = new Size(157, 22);
+            ignoredStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.I;
+            ignoredStatusMenuItem.Size = new Size(211, 22);
             ignoredStatusMenuItem.Text = "Ignored";
             ignoredStatusMenuItem.ToolTipText = "Show Ignored transactions";
             ignoredStatusMenuItem.Click += ignoredStatusMenuItem_Click;
@@ -250,7 +267,8 @@ namespace MoneyBookTools
             // anyStatusMenuItem
             // 
             anyStatusMenuItem.Name = "anyStatusMenuItem";
-            anyStatusMenuItem.Size = new Size(157, 22);
+            anyStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.U;
+            anyStatusMenuItem.Size = new Size(211, 22);
             anyStatusMenuItem.Text = "Any Status";
             anyStatusMenuItem.ToolTipText = "Show transactions of any status";
             anyStatusMenuItem.Click += anyStatusMenuItem_Click;
@@ -258,7 +276,7 @@ namespace MoneyBookTools
             // toolStripSeparator11
             // 
             toolStripSeparator11.Name = "toolStripSeparator11";
-            toolStripSeparator11.Size = new Size(154, 6);
+            toolStripSeparator11.Size = new Size(208, 6);
             // 
             // sortToolStripMenuItem
             // 
@@ -270,7 +288,8 @@ namespace MoneyBookTools
             // dateDescendingToolStripMenuItem
             // 
             dateDescendingToolStripMenuItem.Name = "dateDescendingToolStripMenuItem";
-            dateDescendingToolStripMenuItem.Size = new Size(163, 22);
+            dateDescendingToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.D;
+            dateDescendingToolStripMenuItem.Size = new Size(237, 22);
             dateDescendingToolStripMenuItem.Text = "Date Descending";
             dateDescendingToolStripMenuItem.ToolTipText = "Sort by date in descending order.";
             dateDescendingToolStripMenuItem.Click += dateDescendingToolStripMenuItem_Click;
@@ -278,7 +297,8 @@ namespace MoneyBookTools
             // dateAscendingToolStripMenuItem
             // 
             dateAscendingToolStripMenuItem.Name = "dateAscendingToolStripMenuItem";
-            dateAscendingToolStripMenuItem.Size = new Size(163, 22);
+            dateAscendingToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.A;
+            dateAscendingToolStripMenuItem.Size = new Size(237, 22);
             dateAscendingToolStripMenuItem.Text = "Date Ascending";
             dateAscendingToolStripMenuItem.ToolTipText = "Sort by date in ascending order.";
             dateAscendingToolStripMenuItem.Click += dateAscendingToolStripMenuItem_Click;
@@ -337,7 +357,7 @@ namespace MoneyBookTools
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(180, 22);
+            aboutToolStripMenuItem.Size = new Size(116, 22);
             aboutToolStripMenuItem.Text = "&About...";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
@@ -804,7 +824,6 @@ namespace MoneyBookTools
         private ToolStripMenuItem reconcileNewToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator9;
         private ToolStripSeparator toolStripSeparator10;
-        private ToolStripMenuItem clearToolStripMenuItem;
         private ToolStripMenuItem stagedStatusMenuItem;
         private ToolStripSeparator toolStripSeparator11;
         private ToolStripMenuItem anyStatusMenuItem;
@@ -813,5 +832,7 @@ namespace MoneyBookTools
         private ToolStripMenuItem ignoredStatusMenuItem;
         private ContextMenuStrip accountsContextMenuStrip;
         private ToolStripMenuItem editAccountToolStripMenuItem;
+        private ToolStripMenuItem allDatesToolStripMenuItem;
+        private ToolStripMenuItem pendingToolStripMenuItem;
     }
 }

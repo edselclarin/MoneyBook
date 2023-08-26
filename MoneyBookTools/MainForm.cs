@@ -568,7 +568,7 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = true;
             thisMonthToolStripMenuItem.Checked = false;
             thisYearToolStripMenuItem.Checked = false;
-            clearToolStripMenuItem.Checked = false;
+            allDatesToolStripMenuItem.Checked = false;
 
             m_dateFilter = DateFilter.TwoWeeks;
 
@@ -580,7 +580,7 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = false;
             thisMonthToolStripMenuItem.Checked = true;
             thisYearToolStripMenuItem.Checked = false;
-            clearToolStripMenuItem.Checked = false;
+            allDatesToolStripMenuItem.Checked = false;
 
             m_dateFilter = DateFilter.ThisMonth;
 
@@ -592,19 +592,19 @@ namespace MoneyBookTools
             twoWeeksToolStripMenuItem.Checked = false;
             thisMonthToolStripMenuItem.Checked = false;
             thisYearToolStripMenuItem.Checked = true;
-            clearToolStripMenuItem.Checked = false;
+            allDatesToolStripMenuItem.Checked = false;
 
             m_dateFilter = DateFilter.ThisYear;
 
             refreshToolStripMenuItem.PerformClick();
         }
 
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        private void allDatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             twoWeeksToolStripMenuItem.Checked = false;
             thisMonthToolStripMenuItem.Checked = false;
             thisYearToolStripMenuItem.Checked = false;
-            clearToolStripMenuItem.Checked = true;
+            allDatesToolStripMenuItem.Checked = true;
 
             m_dateFilter = DateFilter.None;
 
@@ -631,26 +631,43 @@ namespace MoneyBookTools
             refreshToolStripMenuItem.PerformClick();
         }
 
-        private void newStatusMenuItem_Click(object sender, EventArgs e)
+        private void UncheckStatusMenuItems()
         {
-            newStatusMenuItem.Checked = true;
+            newStatusMenuItem.Checked = 
+            pendingToolStripMenuItem.Checked =
             stagedStatusMenuItem.Checked =
             reconciledStatusMenuItem.Checked =
             ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
+        }
+
+        private void newStatusMenuItem_Click(object sender, EventArgs e)
+        {
+            UncheckStatusMenuItems();
+
+            newStatusMenuItem.Checked = true;
 
             m_stateFilter = StateTypes.New;
 
             refreshToolStripMenuItem.PerformClick();
         }
 
+        private void pendingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UncheckStatusMenuItems();
+            
+            pendingToolStripMenuItem.Checked = true;
+
+            m_stateFilter = StateTypes.Pending;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
         private void stagedStatusMenuItem_Click(object sender, EventArgs e)
         {
+            UncheckStatusMenuItems();
+
             stagedStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked =
-            reconciledStatusMenuItem.Checked =
-            ignoredStatusMenuItem.Checked =
-            anyStatusMenuItem.Checked = false;
 
             m_stateFilter = StateTypes.Staged;
 
@@ -659,11 +676,9 @@ namespace MoneyBookTools
 
         private void reconciledStatusMenuItem_Click(object sender, EventArgs e)
         {
+            UncheckStatusMenuItems();
+
             reconciledStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked =
-            stagedStatusMenuItem.Checked =
-            ignoredStatusMenuItem.Checked =
-            anyStatusMenuItem.Checked = false;
 
             m_stateFilter = StateTypes.Reconciled;
 
@@ -672,11 +687,9 @@ namespace MoneyBookTools
 
         private void ignoredStatusMenuItem_Click(object sender, EventArgs e)
         {
+            UncheckStatusMenuItems(); 
+            
             ignoredStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked =
-            stagedStatusMenuItem.Checked =
-            reconciledStatusMenuItem.Checked =
-            anyStatusMenuItem.Checked = false;
 
             m_stateFilter = StateTypes.Ignored;
 
@@ -685,11 +698,9 @@ namespace MoneyBookTools
 
         private void anyStatusMenuItem_Click(object sender, EventArgs e)
         {
+            UncheckStatusMenuItems();
+
             anyStatusMenuItem.Checked = true;
-            newStatusMenuItem.Checked =
-            stagedStatusMenuItem.Checked =
-            reconciledStatusMenuItem.Checked =
-            ignoredStatusMenuItem.Checked = false;
 
             m_stateFilter = null;
 
