@@ -10,114 +10,22 @@ namespace MoneyBook.Data
 {
     public class MoneyBookDbContextProxy : IDbContextProxy
     {
+        #region Fields
+
         private MoneyBookDbContext m_db;
+
+        #endregion
+
+        #region Construction
 
         public MoneyBookDbContextProxy() 
         {
             m_db = (MoneyBookDbContext)MoneyBookContainerBuilder.Container.Resolve<DbContext>();
         }
 
-        public void BackupDatabase(string backupDir)
-        {
-            Directory.CreateDirectory(backupDir);
+        #endregion
 
-            var dbBackups = new IDbBackup[]
-            {
-                MoneyBookDbTextBackup.Create(m_db, backupDir),
-                MoneyBookDbTapeBackup.Create(m_db, backupDir)
-            };
-
-            foreach (var backup in dbBackups)
-            {
-                backup.Save();
-            }
-        }
-
-        public IDbContextTransaction CreateContextTransaction()
-        {
-            return m_db.Database.BeginTransaction();
-        }
-
-        public void CopyReminders(IEnumerable<Reminder> reminders)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            foreach (var rem in reminders)
-            {
-                var trNew = new Transaction()
-                {
-                    Date = rem.DueDate,
-                    TrnsType = rem.TrnsType,
-                    Payee = rem.Payee,
-                    Memo = rem.Memo,
-                    State = StateTypes.Staged.ToString(),
-                    Amount = rem.Amount,
-                    ExtTrnsId = String.Empty,
-                    AcctId = rem.AcctId,
-                    CatId = rem.CatId
-                };
-
-                m_db.Transactions.Add(trNew);
-            }
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public void DeleteAllTransactions()
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            m_db.Transactions.RemoveRange(m_db.Transactions);
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public void DeleteReminders(IEnumerable<Reminder> reminders)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            foreach (var rem in reminders)
-            {
-                var rmdr = m_db.Reminders
-                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
-
-                // Soft delete.
-                rmdr.IsDeleted = true;
-            }
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public void DeleteTransactions(IEnumerable<Transaction> transactions)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            foreach (var tr in transactions)
-            {
-                var trn = m_db.Transactions
-                    .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
-
-                // Soft delete.
-                trn.IsDeleted = true;
-            }
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public void ExportReminders(string filename)
-        {
-            string json = JsonConvert.SerializeObject(m_db.Reminders, Formatting.Indented);
-
-            File.WriteAllText(filename, json);
-        }
+        #region Account
 
         public async Task<IEnumerable<Account>> GetAccountsAsync(int skip = 0, int take = 100)
         {
@@ -138,12 +46,183 @@ namespace MoneyBook.Data
                 ?.SingleOrDefault(x => x.AcctId == acctId);
         }
 
-        public IEnumerable<Category> GetCategories()
+        #endregion
+
+        #region Transaction
+
+        public IEnumerable<Transaction> GetAllTransactions()
         {
-            return m_db.Categories
-                .Where(x => x.IsDeleted == false)
-                .OrderBy(x => x.CatId);
+            return m_db.Transactions;
         }
+
+        public IEnumerable<Transaction> GetAccountTransactions(int acctId)
+        {
+            var results = m_db.Transactions
+                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MoneyBookGlobals.MinimumAccountYear)
+                .Select(x => new Transaction
+                {
+                    TrnsId = x.TrnsId,
+                    Date = x.Date,
+                    TrnsType = x.TrnsType,
+                    RefNum = x.RefNum,
+                    Payee = x.Payee,
+                    Memo = x.Memo,
+                    State = x.State,
+                    Amount = x.Amount,
+                    DateAdded = x.DateAdded,
+                    DateModified = x.DateModified,
+                    AcctId = x.AcctId,
+                    CatId = x.CatId
+                });
+
+            return results.AsEnumerable();
+        }
+
+        public IEnumerable<Transaction> GetTransactionsByState(int acctId, StateTypes state)
+        {
+            return m_db.Transactions
+                .Where(x => x.IsDeleted == false &&
+                            x.AcctId == acctId &&
+                            x.Date.Year >= MoneyBookGlobals.MinimumAccountYear &&
+                            x.State == state.ToString());
+        }
+
+        public void SetTransactionStates(IEnumerable<Transaction> transactions, StateTypes state)
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            foreach (var tr in transactions)
+            {
+                var trn = m_db.Transactions
+                    .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
+
+                trn.State = state.ToString();
+            }
+
+            m_db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+        public void SetStateNewToReconciled(int acctId)
+        {
+            var newTrans = GetTransactionsByState(acctId, StateTypes.New).ToList();
+            var trans = from ntr in newTrans
+                        join tr in m_db.Transactions on ntr.TrnsId equals tr.TrnsId
+                        select tr;
+            if (trans.Count() > 0)
+            {
+                foreach (var tr in trans)
+                {
+                    tr.State = StateTypes.Reconciled.ToString();
+                }
+
+                m_db.Transactions.UpdateRange(trans);
+
+                m_db.SaveChanges();
+            }
+        }
+
+        public void DeleteTransactions(IEnumerable<Transaction> transactions)
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            foreach (var tr in transactions)
+            {
+                var trn = m_db.Transactions
+                    .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
+
+                // Soft delete.
+                trn.IsDeleted = true;
+            }
+
+            m_db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+        public void DeleteAllTransactions()
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            m_db.Transactions.RemoveRange(m_db.Transactions);
+
+            m_db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+        public void AddTransactions(IEnumerable<Transaction> transactions)
+        {
+            using var tr = m_db.Database.BeginTransaction();
+
+            m_db.Transactions.AddRange(transactions);
+
+            m_db.SaveChanges();
+
+            tr.Commit();
+        }
+
+        public void ImportTransactions()
+        {
+            var importer = new OfxTransactionImporter();
+            importer.Import();
+        }
+
+        public void AddTransaction(Transaction transaction)
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            var cat = m_db.Categories.FirstOrDefault();
+
+            var trn = new Transaction();
+            trn.AcctId = transaction.AcctId;
+            trn.TrnsType = transaction.TrnsType;
+            trn.CatId = cat == null ? 0 : cat.CatId;
+            trn.Date = transaction.Date;
+            trn.Payee = transaction.Payee;
+            trn.RefNum = transaction.RefNum;
+            trn.Memo = transaction.Memo;
+            trn.State = transaction.State;
+            trn.ExtTrnsId = String.Empty;
+            trn.Amount = Math.Abs(transaction.Amount);
+            trn.DateAdded =
+            trn.DateModified = DateTime.Now.Date;
+
+            m_db.Transactions.Add(trn);
+
+            m_db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+        public void UpdateTransaction(Transaction transaction)
+        {
+            var trn = m_db.Transactions
+                .FirstOrDefault(x => x.TrnsId == transaction.TrnsId);
+
+            if (trn != null)
+            {
+                using var dbtran = m_db.Database.BeginTransaction();
+
+                trn.Date = transaction.Date;
+                trn.Payee = transaction.Payee;
+                trn.RefNum = transaction.RefNum;
+                trn.Payee = transaction.Payee;
+                trn.Memo = transaction.Memo;
+                trn.State = transaction.State;
+                trn.Amount = Math.Abs(transaction.Amount);
+                trn.DateModified = DateTime.Now.Date;
+
+                m_db.SaveChanges();
+
+                dbtran.Commit();
+            }
+        }
+
+        #endregion
+
+        #region Reminder
 
         public IEnumerable<Reminder> GetReminders(SortMode sortOrder)
         {
@@ -183,54 +262,204 @@ namespace MoneyBook.Data
             return sortedTransactions.AsEnumerable();
         }
 
-        public IEnumerable<Transaction> GetAccountTransactions(int acctId)
-        {
-            var results = m_db.Transactions
-                .Where(x => x.IsDeleted == false && x.AcctId == acctId && x.Date.Year >= MoneyBookGlobals.MinimumAccountYear)
-                .Select(x => new Transaction
-                {
-                    TrnsId = x.TrnsId,
-                    Date = x.Date,
-                    TrnsType = x.TrnsType,
-                    RefNum = x.RefNum,
-                    Payee = x.Payee,
-                    Memo = x.Memo,
-                    State = x.State,
-                    Amount = x.Amount,
-                    DateAdded = x.DateAdded,
-                    DateModified = x.DateModified,
-                    AcctId = x.AcctId,
-                    CatId = x.CatId
-                });
-
-            return results.AsEnumerable();
-        }
-
-        public void ImportReminders(string filename)
+        public void AddReminder(Reminder reminder)
         {
             using var dbtran = m_db.Database.BeginTransaction();
 
-            string json = File.ReadAllText(filename);
+            var rem = m_db.Reminders
+                .FirstOrDefault(x =>
+                x.DueDate == reminder.DueDate &&
+                x.AcctId == reminder.AcctId &&
+                x.CatId == reminder.CatId &&
+                x.TrnsType == reminder.TrnsType &&
+                x.Amount == reminder.Amount &&
+                x.Frequency == reminder.Frequency &&
+                x.Payee == reminder.Payee &&
+                x.Memo == reminder.Memo &&
+                x.Website == reminder.Website);
 
-            var reminders = JsonConvert
-                .DeserializeObject<IEnumerable<Reminder>>(json)
-                .ToList();
-
-            foreach (var rt in reminders)
+            if (rem == null)
             {
-                rt.RmdrId = 0;
+                var newRem = new Reminder()
+                {
+                    DueDate = reminder.DueDate,
+                    AcctId = reminder.AcctId,
+                    CatId = reminder.CatId,
+                    TrnsType = reminder.TrnsType,
+                    Amount = reminder.Amount,
+                    Frequency = reminder.Frequency,
+                    Payee = reminder.Payee,
+                    Memo = reminder.Memo,
+                    Website = reminder.Website,
+                    DateAdded = DateTime.Now,
+                    DateModified = DateTime.Now
+                };
 
+                m_db.Reminders.Add(newRem);
+
+                m_db.SaveChanges();
+
+                dbtran.Commit();
             }
+        }
 
-            m_db.Reminders.RemoveRange(m_db.Reminders);
+        public void UpdateReminder(Reminder reminder)
+        {
+            var rem = m_db.Reminders
+                .FirstOrDefault(x => x.RmdrId == reminder.RmdrId);
 
-            m_db.SaveChanges();
+            if (rem != null)
+            {
+                using var dbtran = m_db.Database.BeginTransaction();
 
-            m_db.AddRange(reminders);
+                rem.AcctId = reminder.AcctId;
+                rem.DueDate = reminder.DueDate;
+                rem.Payee = reminder.Payee;
+                rem.Memo = reminder.Memo;
+                rem.Website = reminder.Website;
+                rem.Amount = reminder.Amount;
+                rem.Frequency = reminder.Frequency;
+                rem.DateModified = DateTime.Now.Date;
+
+                m_db.SaveChanges();
+
+                dbtran.Commit();
+            }
+        }
+
+        public void DeleteReminders(IEnumerable<Reminder> reminders)
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            foreach (var rem in reminders)
+            {
+                var rmdr = m_db.Reminders
+                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
+
+                // Soft delete.
+                rmdr.IsDeleted = true;
+            }
 
             m_db.SaveChanges();
 
             dbtran.Commit();
+        }
+
+        public void CopyReminders(IEnumerable<Reminder> reminders)
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            foreach (var rem in reminders)
+            {
+                var trNew = new Transaction()
+                {
+                    Date = rem.DueDate,
+                    TrnsType = rem.TrnsType,
+                    Payee = rem.Payee,
+                    Memo = rem.Memo,
+                    State = StateTypes.Staged.ToString(),
+                    Amount = rem.Amount,
+                    ExtTrnsId = String.Empty,
+                    AcctId = rem.AcctId,
+                    CatId = rem.CatId
+                };
+
+                m_db.Transactions.Add(trNew);
+            }
+
+            m_db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+        public void SkipReminders(IEnumerable<Reminder> reminders)
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            foreach (var rem in reminders)
+            {
+                var rmdr = m_db.Reminders
+                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
+
+                rmdr?.Skip();
+            }
+
+            m_db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+
+        public void StageReminders(IEnumerable<Reminder> reminders)
+        {
+            using var dbtran = m_db.Database.BeginTransaction();
+
+            foreach (var rem in reminders)
+            {
+                var trNew = new Transaction()
+                {
+                    Date = rem.DueDate,
+                    TrnsType = rem.TrnsType,
+                    Payee = rem.Payee,
+                    Memo = rem.Memo,
+                    State = StateTypes.Staged.ToString(),
+                    Amount = rem.Amount,
+                    ExtTrnsId = String.Empty,
+                    AcctId = rem.AcctId,
+                    CatId = rem.CatId
+                };
+
+                m_db.Transactions.Add(trNew);
+
+                var rmdr = m_db.Reminders
+                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
+
+                rmdr?.Skip();
+            }
+
+            m_db.SaveChanges();
+
+            dbtran.Commit();
+        }
+
+        #endregion
+
+        #region Category
+
+        public IEnumerable<Category> GetCategories()
+        {
+            return m_db.Categories
+                .Where(x => x.IsDeleted == false)
+                .OrderBy(x => x.CatId);
+        }
+
+        #endregion 
+
+        #region ContextTransaction
+
+        public IDbContextTransaction CreateContextTransaction()
+        {
+            return m_db.Database.BeginTransaction();
+        }
+
+        #endregion
+
+        #region DatabaseManagement
+
+        public void BackupDatabase(string backupDir)
+        {
+            Directory.CreateDirectory(backupDir);
+
+            var dbBackups = new IDbBackup[]
+            {
+                MoneyBookDbTextBackup.Create(m_db, backupDir),
+                MoneyBookDbTapeBackup.Create(m_db, backupDir)
+            };
+
+            foreach (var backup in dbBackups)
+            {
+                backup.Save();
+            }
         }
 
         public void RestoreDatabase(string filename)
@@ -397,236 +626,6 @@ namespace MoneyBook.Data
             }
         }
 
-        public void SetStateNewToReconciled(int acctId)
-        {
-            var newTrans = GetTransactionsByState(acctId, StateTypes.New).ToList();
-            var trans = from ntr in newTrans
-                        join tr in m_db.Transactions on ntr.TrnsId equals tr.TrnsId
-                        select tr;
-            if (trans.Count() > 0)
-            {
-                foreach (var tr in trans)
-                {
-                    tr.State = StateTypes.Reconciled.ToString();
-                }
-
-                m_db.Transactions.UpdateRange(trans);
-
-                m_db.SaveChanges();
-            }
-        }
-
-        public void SetTransactionStates(IEnumerable<Transaction> transactions, StateTypes state)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            foreach (var tr in transactions)
-            {
-                var trn = m_db.Transactions
-                    .FirstOrDefault(x => x.TrnsId == tr.TrnsId);
-
-                trn.State = state.ToString();
-            }
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public void SkipReminders(IEnumerable<Reminder> reminders)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            foreach (var rem in reminders)
-            {
-                var rmdr = m_db.Reminders
-                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
-
-                rmdr?.Skip();
-            }
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public IEnumerable<Transaction> GetAllTransactions()
-        {
-            return m_db.Transactions;
-        }
-
-        public void AddTransactions(IEnumerable<Transaction> transactions)
-        {
-            using var tr = m_db.Database.BeginTransaction();
-
-            m_db.Transactions.AddRange(transactions);
-
-            m_db.SaveChanges();
-
-            tr.Commit();
-        }
-
-        public void ImportTransactions()
-        {
-            var importer = new OfxTransactionImporter();
-            importer.Import();
-        }
-
-        public void AddTransaction(Transaction transaction)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            var cat = m_db.Categories.FirstOrDefault();
-
-            var trn = new Transaction();
-            trn.AcctId = transaction.AcctId;
-            trn.TrnsType = transaction.TrnsType;
-            trn.CatId = cat == null ? 0 : cat.CatId;
-            trn.Date = transaction.Date;
-            trn.Payee = transaction.Payee;
-            trn.RefNum = transaction.RefNum;
-            trn.Memo = transaction.Memo;
-            trn.State = transaction.State;
-            trn.ExtTrnsId = String.Empty;
-            trn.Amount = Math.Abs(transaction.Amount);
-            trn.DateAdded =
-            trn.DateModified = DateTime.Now.Date;
-
-            m_db.Transactions.Add(trn);
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public void UpdateTransaction(Transaction transaction)
-        {
-            var trn = m_db.Transactions
-                .FirstOrDefault(x => x.TrnsId == transaction.TrnsId);
-
-            if (trn != null)
-            {
-                using var dbtran = m_db.Database.BeginTransaction();
-
-                trn.Date = transaction.Date;
-                trn.Payee = transaction.Payee;
-                trn.RefNum = transaction.RefNum;
-                trn.Payee = transaction.Payee;
-                trn.Memo = transaction.Memo;
-                trn.State = transaction.State;
-                trn.Amount = Math.Abs(transaction.Amount);
-                trn.DateModified = DateTime.Now.Date;
-
-                m_db.SaveChanges();
-
-                dbtran.Commit();
-            }
-        }
-
-        public void AddReminder(Reminder reminder)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            var rem = m_db.Reminders
-                .FirstOrDefault(x =>
-                x.DueDate == reminder.DueDate &&
-                x.AcctId == reminder.AcctId &&
-                x.CatId == reminder.CatId &&
-                x.TrnsType == reminder.TrnsType &&
-                x.Amount == reminder.Amount &&
-                x.Frequency == reminder.Frequency &&
-                x.Payee == reminder.Payee &&
-                x.Memo == reminder.Memo &&
-                x.Website == reminder.Website);
-
-            if (rem == null)
-            {
-                var newRem = new Reminder()
-                {
-                    DueDate = reminder.DueDate,
-                    AcctId = reminder.AcctId,
-                    CatId = reminder.CatId,
-                    TrnsType = reminder.TrnsType,
-                    Amount = reminder.Amount,
-                    Frequency = reminder.Frequency,
-                    Payee = reminder.Payee,
-                    Memo = reminder.Memo,
-                    Website = reminder.Website,
-                    DateAdded = DateTime.Now,
-                    DateModified = DateTime.Now
-                };
-
-                m_db.Reminders.Add(newRem);
-
-                m_db.SaveChanges();
-
-                dbtran.Commit();
-            }
-        }
-
-        public void UpdateReminder(Reminder reminder)
-        {
-            var rem = m_db.Reminders
-                .FirstOrDefault(x => x.RmdrId == reminder.RmdrId);
-
-            if (rem != null)
-            {
-                using var dbtran = m_db.Database.BeginTransaction();
-
-                rem.AcctId = reminder.AcctId;
-                rem.DueDate = reminder.DueDate;
-                rem.Payee = reminder.Payee;
-                rem.Memo = reminder.Memo;
-                rem.Website = reminder.Website;
-                rem.Amount = reminder.Amount;
-                rem.Frequency = reminder.Frequency;
-                rem.DateModified = DateTime.Now.Date;
-
-                m_db.SaveChanges();
-
-                dbtran.Commit();
-            }
-        }
-
-        public void StageReminders(IEnumerable<Reminder> reminders)
-        {
-            using var dbtran = m_db.Database.BeginTransaction();
-
-            foreach (var rem in reminders)
-            {
-                var trNew = new Transaction()
-                {
-                    Date = rem.DueDate,
-                    TrnsType = rem.TrnsType,
-                    Payee = rem.Payee,
-                    Memo = rem.Memo,
-                    State = StateTypes.Staged.ToString(),
-                    Amount = rem.Amount,
-                    ExtTrnsId = String.Empty,
-                    AcctId = rem.AcctId,
-                    CatId = rem.CatId
-                };
-
-                m_db.Transactions.Add(trNew);
-
-                var rmdr = m_db.Reminders
-                    .FirstOrDefault(x => x.RmdrId == rem.RmdrId);
-
-                rmdr?.Skip();
-            }
-
-            m_db.SaveChanges();
-
-            dbtran.Commit();
-        }
-
-        public IEnumerable<Transaction> GetTransactionsByState(int acctId, StateTypes state)
-        {
-            return m_db.Transactions
-                .Where(x => x.IsDeleted == false &&
-                            x.AcctId == acctId &&
-                            x.Date.Year >= MoneyBookGlobals.MinimumAccountYear &&
-                            x.State == state.ToString());
-        }
+        #endregion
     }
 }
