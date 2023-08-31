@@ -11,7 +11,7 @@ namespace MoneyBook.Extensions
             foreach (PropertyInfo prop in obj.GetType().GetProperties())
             {
                 var val = prop.GetValue(obj);
-                sb.Append(val != null ? val.ToString() : "(null)");
+                sb.Append(val != null ? $"name:{prop.Name}|{val}||" : "(null)|(null)||");
             }
             return sb.ToString();
         }
