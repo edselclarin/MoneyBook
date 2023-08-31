@@ -206,6 +206,7 @@ namespace MoneyBook.Data
                 using var dbtran = m_db.Database.BeginTransaction();
 
                 trn.Date = transaction.Date;
+                trn.TrnsType = transaction.TrnsType;
                 trn.Payee = transaction.Payee;
                 trn.RefNum = transaction.RefNum;
                 trn.Payee = transaction.Payee;
