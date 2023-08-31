@@ -87,18 +87,18 @@ namespace MoneyBookTools.Extensions
 
         public static IEnumerable<Reminder> ToReminders(this IEnumerable<ViewReminder> reminder)
         {
-            return reminder.Select(tran => new Reminder
+            return reminder.Select(rem => new Reminder
             {
-                RmdrId = tran.RmdrId,
-                DueDate = tran.DueDate,
-                TrnsType = tran.TrnsType,
-                Payee = tran.Payee,
-                Memo = tran.Memo,
-                Website = tran.Website,
-                Amount = tran.Amount,
-                Frequency = tran.Frequency,
-                AcctId = tran.AcctId,
-                CatId = tran.CatId
+                RmdrId = rem.RmdrId,
+                DueDate = rem.DueDate,
+                TrnsType = rem.TrnsType,
+                Payee = rem.Payee,
+                Memo = rem.Memo,
+                Website = rem.Website,
+                Amount = rem.NewAmount,
+                Frequency = rem.Frequency,
+                AcctId = rem.AcctId,
+                CatId = rem.CatId
             });
         }
 
@@ -108,11 +108,11 @@ namespace MoneyBookTools.Extensions
             {
                 RmdrId = reminder.RmdrId,
                 DueDate = reminder.DueDate,
-                TrnsType = reminder.TrnsType,
+                TrnsType = reminder.NewAmount < 0 ? TransactionTypes.DEBIT.ToString() : TransactionTypes.CREDIT.ToString(),
                 Payee = reminder.Payee,
                 Memo = reminder.Memo,
                 Website = reminder.Website,
-                Amount = reminder.Amount,
+                Amount = Math.Abs(reminder.NewAmount),
                 Frequency = reminder.Frequency,
                 AcctId = reminder.AcctId,
                 CatId = reminder.CatId

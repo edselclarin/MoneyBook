@@ -314,6 +314,7 @@ namespace MoneyBook.Data
                 using var dbtran = m_db.Database.BeginTransaction();
 
                 rem.AcctId = reminder.AcctId;
+                rem.TrnsType = reminder.TrnsType;
                 rem.DueDate = reminder.DueDate;
                 rem.Payee = reminder.Payee;
                 rem.Memo = reminder.Memo;
