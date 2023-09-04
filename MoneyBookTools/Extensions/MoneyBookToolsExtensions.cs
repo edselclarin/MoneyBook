@@ -95,7 +95,7 @@ namespace MoneyBookTools.Extensions
                 Payee = rem.Payee,
                 Memo = rem.Memo,
                 Website = rem.Website,
-                Amount = rem.NewAmount,
+                Amount = Math.Abs(rem.NewAmount),
                 Frequency = rem.Frequency,
                 AcctId = rem.AcctId,
                 CatId = rem.CatId
