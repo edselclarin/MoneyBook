@@ -65,26 +65,23 @@ namespace MoneyBookTools
             label1.Text = sb.ToString();
         }
 
-        private async void btnYes_Click(object sender, EventArgs e)
+        private void btnYes_Click(object sender, EventArgs e)
         {
             UseWaitCursor = true;
 
-            await Task.Run(() =>
+            try
             {
-                try
-                {
-                    m_dbProxy.ImportTransactions();
+                m_dbProxy.ImportTransactions();
 
-                    MessageBox.Show("Import complete.");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        $"EXCEPTION:" + Environment.NewLine +
-                        ex.Message + Environment.NewLine +
-                        ex.StackTrace);
-                }
-            });
+                MessageBox.Show("Import complete.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"EXCEPTION:" + Environment.NewLine +
+                    ex.Message + Environment.NewLine +
+                    ex.StackTrace);
+            }
 
             UseWaitCursor = false;
 
