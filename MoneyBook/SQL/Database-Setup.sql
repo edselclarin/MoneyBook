@@ -184,5 +184,5 @@ select  a.*,
 		a.StartingBalance + t.Total - t.StagedTotal - a.ReserveAmount as AvailableBalance,
 		a.StartingBalance + t.Total - a.ReserveAmount as FinalBalance		
 from Accounts a, TransactionSummaries t
-where a.AcctId = t.AcctId
+where a.AcctId = t.AcctId and a.IsDeleted = CONVERT(BIT, 0)
 
