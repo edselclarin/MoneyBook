@@ -33,9 +33,9 @@ namespace MoneyBookDash.DataProviders
             return new List<ReminderModel>()
             {
                 new ReminderModel() { RmdrId = 6, DueDate = DateTime.Now.AddDays(-10),
-                    Payee = "Water and Trash", Amount = -25.00m, AcctId = 1, AcctName = "SFCHK"  },
+                    Payee = "Water and Trash", Amount = -25.00m, AcctId = 1, AcctName = "CHECKING"  },
                 new ReminderModel() { RmdrId = 7, DueDate = DateTime.Now.AddDays(-12),
-                    Payee = "Allowance", Amount = -10.00m, AcctId = 1, AcctName = "SFCHK"  }
+                    Payee = "Allowance", Amount = -10.00m, AcctId = 1, AcctName = "CHECKING"  }
             };
         }
     }
