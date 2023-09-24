@@ -1,0 +1,75 @@
+﻿<Window x:Class="MoneyBookDash.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MoneyBookDash.Views"
+        mc:Ignorable="d"
+        Title="MoneyBookDash" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Accounts" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="0" Grid.Column="1" Content="Overdue" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="0" Grid.Column="2" Content="Due" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Label Grid.Row="0" Grid.Column="3" Content="Upcoming" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <ListView x:Name="Accounts" Grid.Row="1" Grid.Column="0"
+                  HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="460">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Balance" Width="75" DisplayMemberBinding="{Binding AvailableBalance}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView x:Name="Overdue" Grid.Row="1" Grid.Column="1"
+                  HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="460">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Date" Width="75" DisplayMemberBinding="{Binding DueDate}" />
+                    <GridViewColumn Header="Payee" Width="150" DisplayMemberBinding="{Binding Payee}" />
+                    <GridViewColumn Header="Amount" Width="75" DisplayMemberBinding="{Binding Amount}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView x:Name="DueNow" Grid.Row="1" Grid.Column="2"
+                  HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="460">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Due Date" Width="75" DisplayMemberBinding="{Binding DueDate}" />
+                    <GridViewColumn Header="Payee" Width="150" DisplayMemberBinding="{Binding Payee}" />
+                    <GridViewColumn Header="Amount" Width="75" DisplayMemberBinding="{Binding Amount}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView x:Name="Upcoming" Grid.Row="1" Grid.Column="3"
+                  HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="460">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Due Date" Width="75" DisplayMemberBinding="{Binding DueDate}" />
+                    <GridViewColumn Header="Payee" Width="150" DisplayMemberBinding="{Binding Payee}" />
+                    <GridViewColumn Header="Amount" Width="75" DisplayMemberBinding="{Binding Amount}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
