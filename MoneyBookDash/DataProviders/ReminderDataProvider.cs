@@ -38,5 +38,10 @@ namespace MoneyBookDash.DataProviders
                     Payee = "Allowance", Amount = -10.00m, AcctId = 1, AcctName = "CHECKING"  }
             };
         }
+
+        public static IList<ReminderModel> GetStaged()
+        {
+            return new List<ReminderModel>();
+        }
     }
 }

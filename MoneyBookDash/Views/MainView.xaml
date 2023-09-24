@@ -3,12 +3,38 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:MoneyBookDash.Views"
         xmlns:conv="clr-namespace:MoneyBookDash.Converters"
         mc:Ignorable="d"
         Title="MoneyBookDash" Height="700" Width="1200" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
-    <Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal">
+            <ContentControl Grid.Column="0"
+                            cal:View.Model="{Binding Items[0]}" />
+            <ContentControl Grid.Column="1"
+                            cal:View.Model="{Binding Items[1]}" />
+            <ContentControl Grid.Column="2"
+                            cal:View.Model="{Binding Items[2]}" />
+            <ContentControl Grid.Column="3"
+                            cal:View.Model="{Binding Items[3]}" />
+        </StackPanel>
+    </Grid>
+    
+    <!--<Window.Resources>
         <ResourceDictionary>
             <conv:DateConverter x:Key="DateConverter"/>
         </ResourceDictionary>
@@ -230,5 +256,5 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-    </Grid>
+    </Grid>-->
 </Window>
