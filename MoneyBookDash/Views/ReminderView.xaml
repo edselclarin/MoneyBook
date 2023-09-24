@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <conv:DateConverter x:Key="DateConverter"/>
+            <conv:TitleToBorderColorConverter x:Key="TitleToBorderColorConverter"/>
             <Style x:Key="ListViewStyle" TargetType="ListView">
                 <Setter Property="Margin" Value="7"/>
             </Style>
@@ -17,7 +18,7 @@
                 <Setter Property="MinWidth" Value="250"/>
                 <Setter Property="Margin" Value="3"/>
                 <Setter Property="CornerRadius" Value="4"/>
-                <Setter Property="Background" Value="DarkGray"/>
+                <Setter Property="Background" Value="{Binding Title, Converter={StaticResource TitleToBorderColorConverter}}"/>
             </Style>
             <Style x:Key="LabelStyle" TargetType="Label">
                 <Setter Property="Margin" Value="0 7 0 0"/>
@@ -46,7 +47,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition MinHeight="35"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
@@ -60,7 +61,7 @@
         
         <ListView x:Name="Reminders" 
                   Grid.Row="1" Grid.Column="0"
-                  Style="{StaticResource ListViewStyle}">
+                  Style="{StaticResource ListViewStyle}" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="3">
