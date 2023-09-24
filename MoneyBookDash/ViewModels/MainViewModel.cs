@@ -2,6 +2,7 @@
 using MoneyBookDash.DataProviders;
 using MoneyBookDash.Models;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace MoneyBookDash.ViewModels
 {
@@ -57,22 +58,22 @@ namespace MoneyBookDash.ViewModels
 
         public MainViewModel()
         {
-            foreach (var acct in AccountDataProvider.GetAll())
+            foreach (var acct in AccountDataProvider.GetAll().OrderBy(x => x.AcctId))
             {
                 Accounts.Add(acct);
             }
 
-            foreach (var rmdr in ReminderDataProvider.GetOverdue())
+            foreach (var rmdr in ReminderDataProvider.GetOverdue().OrderByDescending(x => x.DueDate))
             {
                 Overdue.Add(rmdr);
             }
 
-            foreach (var rmdr in ReminderDataProvider.GetDueNow())
+            foreach (var rmdr in ReminderDataProvider.GetDueNow().OrderByDescending(x => x.DueDate))
             {
                 DueNow.Add(rmdr);
             }
 
-            foreach (var rmdr in ReminderDataProvider.GetUpcoming())
+            foreach (var rmdr in ReminderDataProvider.GetUpcoming().OrderByDescending(x => x.DueDate))
             {
                 Upcoming.Add(rmdr);
             }
