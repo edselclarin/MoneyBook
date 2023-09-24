@@ -10,6 +10,33 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <conv:DateConverter x:Key="DateConverter"/>
+            <Style x:Key="ListViewStyle" TargetType="ListView">
+                <Setter Property="Margin" Value="7"/>
+            </Style>
+            <Style x:Key="BorderStyle" TargetType="Border">
+                <Setter Property="MinWidth" Value="250"/>
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="CornerRadius" Value="4"/>
+                <Setter Property="Background" Value="DarkGray"/>
+            </Style>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="Margin" Value="0 7 0 0"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+            <Style x:Key="BoldTextBlockStyle" TargetType="TextBlock">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="#444444"/>
+            </Style>
+            <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+                <Setter Property="Margin" Value="2"/>
+                <Setter Property="FontStyle" Value="Italic"/>
+                <Setter Property="Foreground" Value="#999999"/>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -25,22 +52,15 @@
 
         <Border Grid.Row="0" Grid.Column="0" 
                 Grid.RowSpan="2" 
-                MinWidth="200" 
-                Margin="3" 
-                CornerRadius="4"
-                Background="DarkGray"/>
+                Style="{StaticResource BorderStyle}"/>
 
         <Label Grid.Row="0" Grid.Column="0" 
-               Margin="0 7 0 0"
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center" 
-               FontSize="14" 
-               FontWeight="Bold" 
-               Content="{Binding Title}"/>
+               Content="{Binding Title}"
+               Style="{StaticResource LabelStyle}"/>
         
         <ListView x:Name="Reminders" 
                   Grid.Row="1" Grid.Column="0"
-                  Margin="7">
+                  Style="{StaticResource ListViewStyle}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="3">
@@ -55,31 +75,21 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" 
                                    Grid.ColumnSpan="2" 
-                                   Margin="2"
                                    HorizontalAlignment="Left"
-                                   FontSize="14" 
-                                   FontWeight="Bold"
-                                   Foreground="#444444"
-                                   Text="{Binding Payee}"/>
+                                   Text="{Binding Payee}"
+                                   Style="{StaticResource BoldTextBlockStyle}"/>
                         <TextBlock Grid.Row="0" Grid.Column="2" 
-                                   Margin="2"
                                    HorizontalAlignment="Right"
-                                   FontSize="14" 
-                                   FontWeight="Bold" 
-                                   Foreground="#444444"
-                                   Text="{Binding Amount}"/>
+                                   Text="{Binding Amount}"
+                                   Style="{StaticResource BoldTextBlockStyle}"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" 
-                                   Margin="2"
                                    HorizontalAlignment="Left"
-                                   FontStyle="Italic"
-                                   Foreground="#999999"
-                                   Text="{Binding AcctName}"/>
+                                   Text="{Binding AcctName}"
+                                   Style="{StaticResource TextBlockStyle}"/>
                         <TextBlock Grid.Row="1" Grid.Column="2" 
-                                   Margin="2"                                   
-                                   HorizontalAlignment="Left"
-                                   FontStyle="Italic"
-                                   Foreground="#999999"
-                                   Text="{Binding DueDate, Converter={StaticResource DateConverter}}"/>
+                                   HorizontalAlignment="Right"
+                                   Text="{Binding DueDate, Converter={StaticResource DateConverter}}"
+                                   Style="{StaticResource TextBlockStyle}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
