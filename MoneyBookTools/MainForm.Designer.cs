@@ -47,7 +47,6 @@ namespace MoneyBookTools
             toolStripSeparator10 = new ToolStripSeparator();
             newStatusMenuItem = new ToolStripMenuItem();
             pendingToolStripMenuItem = new ToolStripMenuItem();
-            stagedStatusMenuItem = new ToolStripMenuItem();
             reconciledStatusMenuItem = new ToolStripMenuItem();
             ignoredStatusMenuItem = new ToolStripMenuItem();
             anyStatusMenuItem = new ToolStripMenuItem();
@@ -70,13 +69,7 @@ namespace MoneyBookTools
             accountsContextMenuStrip = new ContextMenuStrip(components);
             editAccountToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutLedger = new TableLayoutPanel();
-            mainStatusStrip1 = new StatusStrip();
-            accountToolStripStatusLabel = new ToolStripStatusLabel();
-            currentToolStripStatusLabel = new ToolStripStatusLabel();
-            availableToolStripStatusLabel = new ToolStripStatusLabel();
-            stagedToolStripStatusLabel = new ToolStripStatusLabel();
-            finalToolStripStatusLabel = new ToolStripStatusLabel();
-            sumToolStripStatusLabel = new ToolStripStatusLabel();
+            ledgerSplit = new SplitContainer();
             groupLedger = new GroupBox();
             dgvAccountTransactions = new DataGridView();
             transactionsContextMenu = new ContextMenuStrip(components);
@@ -89,6 +82,15 @@ namespace MoneyBookTools
             addReminderToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             deleteTransToolStripMenuItem = new ToolStripMenuItem();
+            groupStaged = new GroupBox();
+            dgvStagedAccountTransactions = new DataGridView();
+            mainStatusStrip1 = new StatusStrip();
+            accountToolStripStatusLabel = new ToolStripStatusLabel();
+            currentToolStripStatusLabel = new ToolStripStatusLabel();
+            availableToolStripStatusLabel = new ToolStripStatusLabel();
+            stagedToolStripStatusLabel = new ToolStripStatusLabel();
+            finalToolStripStatusLabel = new ToolStripStatusLabel();
+            sumToolStripStatusLabel = new ToolStripStatusLabel();
             groupReminders = new GroupBox();
             dgvReminders = new DataGridView();
             remindersContextMenu = new ContextMenuStrip(components);
@@ -114,10 +116,16 @@ namespace MoneyBookTools
             groupAccounts.SuspendLayout();
             accountsContextMenuStrip.SuspendLayout();
             tableLayoutLedger.SuspendLayout();
-            mainStatusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ledgerSplit).BeginInit();
+            ledgerSplit.Panel1.SuspendLayout();
+            ledgerSplit.Panel2.SuspendLayout();
+            ledgerSplit.SuspendLayout();
             groupLedger.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvAccountTransactions).BeginInit();
             transactionsContextMenu.SuspendLayout();
+            groupStaged.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvStagedAccountTransactions).BeginInit();
+            mainStatusStrip1.SuspendLayout();
             groupReminders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvReminders).BeginInit();
             remindersContextMenu.SuspendLayout();
@@ -173,7 +181,7 @@ namespace MoneyBookTools
             // 
             // filterToolStripMenuItem
             // 
-            filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, thisYearToolStripMenuItem, allDatesToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, pendingToolStripMenuItem, stagedStatusMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
+            filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, thisYearToolStripMenuItem, allDatesToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, pendingToolStripMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
             filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             filterToolStripMenuItem.Size = new Size(180, 22);
             filterToolStripMenuItem.Text = "Filter...";
@@ -236,15 +244,6 @@ namespace MoneyBookTools
             pendingToolStripMenuItem.Size = new Size(211, 22);
             pendingToolStripMenuItem.Text = "Pending";
             pendingToolStripMenuItem.Click += pendingToolStripMenuItem_Click;
-            // 
-            // stagedStatusMenuItem
-            // 
-            stagedStatusMenuItem.Name = "stagedStatusMenuItem";
-            stagedStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.S;
-            stagedStatusMenuItem.Size = new Size(211, 22);
-            stagedStatusMenuItem.Text = "Staged";
-            stagedStatusMenuItem.ToolTipText = "Show Staged transactions";
-            stagedStatusMenuItem.Click += stagedStatusMenuItem_Click;
             // 
             // reconciledStatusMenuItem
             // 
@@ -376,8 +375,8 @@ namespace MoneyBookTools
             // hSplit1.Panel2
             // 
             hSplit1.Panel2.Controls.Add(groupReminders);
-            hSplit1.Size = new Size(1156, 503);
-            hSplit1.SplitterDistance = 295;
+            hSplit1.Size = new Size(1156, 637);
+            hSplit1.SplitterDistance = 360;
             hSplit1.TabIndex = 3;
             // 
             // vSplit1
@@ -438,8 +437,8 @@ namespace MoneyBookTools
             // 
             tableLayoutLedger.ColumnCount = 1;
             tableLayoutLedger.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutLedger.Controls.Add(ledgerSplit, 0, 0);
             tableLayoutLedger.Controls.Add(mainStatusStrip1, 0, 1);
-            tableLayoutLedger.Controls.Add(groupLedger, 0, 0);
             tableLayoutLedger.Location = new Point(3, 3);
             tableLayoutLedger.Name = "tableLayoutLedger";
             tableLayoutLedger.RowCount = 2;
@@ -448,80 +447,22 @@ namespace MoneyBookTools
             tableLayoutLedger.Size = new Size(882, 190);
             tableLayoutLedger.TabIndex = 7;
             // 
-            // mainStatusStrip1
+            // ledgerSplit
             // 
-            mainStatusStrip1.Dock = DockStyle.None;
-            mainStatusStrip1.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            mainStatusStrip1.Items.AddRange(new ToolStripItem[] { accountToolStripStatusLabel, currentToolStripStatusLabel, availableToolStripStatusLabel, stagedToolStripStatusLabel, finalToolStripStatusLabel, sumToolStripStatusLabel });
-            mainStatusStrip1.Location = new Point(2, 161);
-            mainStatusStrip1.Margin = new Padding(2, 0, 2, 0);
-            mainStatusStrip1.Name = "mainStatusStrip1";
-            mainStatusStrip1.Size = new Size(878, 27);
-            mainStatusStrip1.SizingGrip = false;
-            mainStatusStrip1.TabIndex = 6;
-            mainStatusStrip1.Text = "statusStrip1";
+            ledgerSplit.Location = new Point(3, 3);
+            ledgerSplit.Name = "ledgerSplit";
+            ledgerSplit.Orientation = Orientation.Horizontal;
             // 
-            // accountToolStripStatusLabel
+            // ledgerSplit.Panel1
             // 
-            accountToolStripStatusLabel.AutoSize = false;
-            accountToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            accountToolStripStatusLabel.Name = "accountToolStripStatusLabel";
-            accountToolStripStatusLabel.Size = new Size(150, 22);
-            accountToolStripStatusLabel.Text = "Account";
-            accountToolStripStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
-            accountToolStripStatusLabel.ToolTipText = "Account name";
+            ledgerSplit.Panel1.Controls.Add(groupLedger);
             // 
-            // currentToolStripStatusLabel
+            // ledgerSplit.Panel2
             // 
-            currentToolStripStatusLabel.AutoSize = false;
-            currentToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            currentToolStripStatusLabel.Name = "currentToolStripStatusLabel";
-            currentToolStripStatusLabel.Size = new Size(150, 22);
-            currentToolStripStatusLabel.Text = "Current: 0.00";
-            currentToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
-            currentToolStripStatusLabel.ToolTipText = "Current balance";
-            // 
-            // availableToolStripStatusLabel
-            // 
-            availableToolStripStatusLabel.AutoSize = false;
-            availableToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            availableToolStripStatusLabel.Name = "availableToolStripStatusLabel";
-            availableToolStripStatusLabel.Size = new Size(150, 22);
-            availableToolStripStatusLabel.Text = "Available: 0.00";
-            availableToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
-            availableToolStripStatusLabel.ToolTipText = "Current balance less reserve amount";
-            // 
-            // stagedToolStripStatusLabel
-            // 
-            stagedToolStripStatusLabel.AutoSize = false;
-            stagedToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            stagedToolStripStatusLabel.Name = "stagedToolStripStatusLabel";
-            stagedToolStripStatusLabel.Size = new Size(150, 22);
-            stagedToolStripStatusLabel.Text = "Staged: 0.00";
-            stagedToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
-            stagedToolStripStatusLabel.ToolTipText = "Balance of staged transactions";
-            // 
-            // finalToolStripStatusLabel
-            // 
-            finalToolStripStatusLabel.AutoSize = false;
-            finalToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
-            finalToolStripStatusLabel.Name = "finalToolStripStatusLabel";
-            finalToolStripStatusLabel.Size = new Size(150, 22);
-            finalToolStripStatusLabel.Text = "Final: 0.00";
-            finalToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
-            finalToolStripStatusLabel.ToolTipText = "Available balance less staged transactions";
-            // 
-            // sumToolStripStatusLabel
-            // 
-            sumToolStripStatusLabel.AutoSize = false;
-            sumToolStripStatusLabel.Font = new Font("Segoe UI", 11F, FontStyle.Italic, GraphicsUnit.Point);
-            sumToolStripStatusLabel.ForeColor = SystemColors.GrayText;
-            sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
-            sumToolStripStatusLabel.Size = new Size(113, 22);
-            sumToolStripStatusLabel.Spring = true;
-            sumToolStripStatusLabel.Text = "Sum: 0.00";
-            sumToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
-            sumToolStripStatusLabel.ToolTipText = "Sum of selected transactions";
+            ledgerSplit.Panel2.Controls.Add(groupStaged);
+            ledgerSplit.Size = new Size(271, 155);
+            ledgerSplit.SplitterDistance = 98;
+            ledgerSplit.TabIndex = 4;
             // 
             // groupLedger
             // 
@@ -529,7 +470,7 @@ namespace MoneyBookTools
             groupLedger.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             groupLedger.Location = new Point(3, 3);
             groupLedger.Name = "groupLedger";
-            groupLedger.Size = new Size(137, 66);
+            groupLedger.Size = new Size(125, 65);
             groupLedger.TabIndex = 5;
             groupLedger.TabStop = false;
             groupLedger.Text = "Ledger";
@@ -618,13 +559,112 @@ namespace MoneyBookTools
             deleteTransToolStripMenuItem.ToolTipText = "Delete transaction(s)";
             deleteTransToolStripMenuItem.Click += deleteTransToolStripMenuItem_Click;
             // 
+            // groupStaged
+            // 
+            groupStaged.Controls.Add(dgvStagedAccountTransactions);
+            groupStaged.Location = new Point(3, 3);
+            groupStaged.Name = "groupStaged";
+            groupStaged.Size = new Size(164, 53);
+            groupStaged.TabIndex = 0;
+            groupStaged.TabStop = false;
+            groupStaged.Text = "Staged";
+            // 
+            // dgvStagedAccountTransactions
+            // 
+            dgvStagedAccountTransactions.BackgroundColor = SystemColors.Window;
+            dgvStagedAccountTransactions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvStagedAccountTransactions.ContextMenuStrip = transactionsContextMenu;
+            dgvStagedAccountTransactions.Location = new Point(6, 21);
+            dgvStagedAccountTransactions.Name = "dgvStagedAccountTransactions";
+            dgvStagedAccountTransactions.RowTemplate.Height = 25;
+            dgvStagedAccountTransactions.Size = new Size(101, 29);
+            dgvStagedAccountTransactions.TabIndex = 3;
+            dgvStagedAccountTransactions.CellBeginEdit += dataGridView_CellBeginEdit;
+            dgvStagedAccountTransactions.CellMouseDoubleClick += dgvAccountTransactions_CellMouseDoubleClick;
+            dgvStagedAccountTransactions.SelectionChanged += dgvAccountTransactions_SelectionChanged;
+            // 
+            // mainStatusStrip1
+            // 
+            mainStatusStrip1.Dock = DockStyle.None;
+            mainStatusStrip1.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            mainStatusStrip1.Items.AddRange(new ToolStripItem[] { accountToolStripStatusLabel, currentToolStripStatusLabel, availableToolStripStatusLabel, stagedToolStripStatusLabel, finalToolStripStatusLabel, sumToolStripStatusLabel });
+            mainStatusStrip1.Location = new Point(2, 161);
+            mainStatusStrip1.Margin = new Padding(2, 0, 2, 0);
+            mainStatusStrip1.Name = "mainStatusStrip1";
+            mainStatusStrip1.Size = new Size(878, 27);
+            mainStatusStrip1.SizingGrip = false;
+            mainStatusStrip1.TabIndex = 6;
+            mainStatusStrip1.Text = "statusStrip1";
+            // 
+            // accountToolStripStatusLabel
+            // 
+            accountToolStripStatusLabel.AutoSize = false;
+            accountToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            accountToolStripStatusLabel.Name = "accountToolStripStatusLabel";
+            accountToolStripStatusLabel.Size = new Size(150, 22);
+            accountToolStripStatusLabel.Text = "Account";
+            accountToolStripStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
+            accountToolStripStatusLabel.ToolTipText = "Account name";
+            // 
+            // currentToolStripStatusLabel
+            // 
+            currentToolStripStatusLabel.AutoSize = false;
+            currentToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            currentToolStripStatusLabel.Name = "currentToolStripStatusLabel";
+            currentToolStripStatusLabel.Size = new Size(150, 22);
+            currentToolStripStatusLabel.Text = "Current: 0.00";
+            currentToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            currentToolStripStatusLabel.ToolTipText = "Current balance";
+            // 
+            // availableToolStripStatusLabel
+            // 
+            availableToolStripStatusLabel.AutoSize = false;
+            availableToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            availableToolStripStatusLabel.Name = "availableToolStripStatusLabel";
+            availableToolStripStatusLabel.Size = new Size(150, 22);
+            availableToolStripStatusLabel.Text = "Available: 0.00";
+            availableToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            availableToolStripStatusLabel.ToolTipText = "Current balance less reserve amount";
+            // 
+            // stagedToolStripStatusLabel
+            // 
+            stagedToolStripStatusLabel.AutoSize = false;
+            stagedToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            stagedToolStripStatusLabel.Name = "stagedToolStripStatusLabel";
+            stagedToolStripStatusLabel.Size = new Size(150, 22);
+            stagedToolStripStatusLabel.Text = "Staged: 0.00";
+            stagedToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            stagedToolStripStatusLabel.ToolTipText = "Balance of staged transactions";
+            // 
+            // finalToolStripStatusLabel
+            // 
+            finalToolStripStatusLabel.AutoSize = false;
+            finalToolStripStatusLabel.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Top | ToolStripStatusLabelBorderSides.Right | ToolStripStatusLabelBorderSides.Bottom;
+            finalToolStripStatusLabel.Name = "finalToolStripStatusLabel";
+            finalToolStripStatusLabel.Size = new Size(150, 22);
+            finalToolStripStatusLabel.Text = "Final: 0.00";
+            finalToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            finalToolStripStatusLabel.ToolTipText = "Available balance less staged transactions";
+            // 
+            // sumToolStripStatusLabel
+            // 
+            sumToolStripStatusLabel.AutoSize = false;
+            sumToolStripStatusLabel.Font = new Font("Segoe UI", 11F, FontStyle.Italic, GraphicsUnit.Point);
+            sumToolStripStatusLabel.ForeColor = SystemColors.GrayText;
+            sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
+            sumToolStripStatusLabel.Size = new Size(113, 22);
+            sumToolStripStatusLabel.Spring = true;
+            sumToolStripStatusLabel.Text = "Sum: 0.00";
+            sumToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
+            sumToolStripStatusLabel.ToolTipText = "Sum of selected transactions";
+            // 
             // groupReminders
             // 
             groupReminders.Controls.Add(dgvReminders);
             groupReminders.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             groupReminders.Location = new Point(3, 3);
             groupReminders.Name = "groupReminders";
-            groupReminders.Size = new Size(151, 74);
+            groupReminders.Size = new Size(471, 241);
             groupReminders.TabIndex = 4;
             groupReminders.TabStop = false;
             groupReminders.Text = "Reminders";
@@ -721,14 +761,14 @@ namespace MoneyBookTools
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(0, 24);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(1156, 503);
+            mainPanel.Size = new Size(1156, 637);
             mainPanel.TabIndex = 3;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1156, 527);
+            ClientSize = new Size(1156, 661);
             Controls.Add(mainPanel);
             Controls.Add(mainMenuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -750,11 +790,17 @@ namespace MoneyBookTools
             accountsContextMenuStrip.ResumeLayout(false);
             tableLayoutLedger.ResumeLayout(false);
             tableLayoutLedger.PerformLayout();
-            mainStatusStrip1.ResumeLayout(false);
-            mainStatusStrip1.PerformLayout();
+            ledgerSplit.Panel1.ResumeLayout(false);
+            ledgerSplit.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ledgerSplit).EndInit();
+            ledgerSplit.ResumeLayout(false);
             groupLedger.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvAccountTransactions).EndInit();
             transactionsContextMenu.ResumeLayout(false);
+            groupStaged.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvStagedAccountTransactions).EndInit();
+            mainStatusStrip1.ResumeLayout(false);
+            mainStatusStrip1.PerformLayout();
             groupReminders.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvReminders).EndInit();
             remindersContextMenu.ResumeLayout(false);
@@ -824,7 +870,6 @@ namespace MoneyBookTools
         private ToolStripMenuItem reconcileNewToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator9;
         private ToolStripSeparator toolStripSeparator10;
-        private ToolStripMenuItem stagedStatusMenuItem;
         private ToolStripSeparator toolStripSeparator11;
         private ToolStripMenuItem anyStatusMenuItem;
         private ToolStripMenuItem newStatusMenuItem;
@@ -834,5 +879,8 @@ namespace MoneyBookTools
         private ToolStripMenuItem editAccountToolStripMenuItem;
         private ToolStripMenuItem allDatesToolStripMenuItem;
         private ToolStripMenuItem pendingToolStripMenuItem;
+        private SplitContainer ledgerSplit;
+        private DataGridView dgvStagedAccountTransactions;
+        private GroupBox groupStaged;
     }
 }

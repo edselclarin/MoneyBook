@@ -46,6 +46,7 @@ namespace MoneyBookTools
             InitializeComponent();
 
             dgvAccountTransactions.SetDataGridViewStyle();
+            dgvStagedAccountTransactions.SetDataGridViewStyle();
             dgvReminders.SetDataGridViewStyle();
 
             listViewAccounts.Dock = DockStyle.Fill;
@@ -70,10 +71,13 @@ namespace MoneyBookTools
 
             vSplit1.Dock =
             hSplit1.Dock =
+            ledgerSplit.Dock =
             groupAccounts.Dock =
             listViewAccounts.Dock =
             groupLedger.Dock =
+            groupStaged.Dock =
             dgvAccountTransactions.Dock =
+            dgvStagedAccountTransactions.Dock =
             groupReminders.Dock =
             dgvReminders.Dock =
             mainStatusStrip1.Dock =
@@ -131,7 +135,10 @@ namespace MoneyBookTools
         {
             try
             {
-                CalculateSum();
+                if (sender is DataGridView dgv)
+                {
+                    CalculateSum(dgv);
+                }
             }
             catch (Exception ex)
             {
@@ -179,9 +186,12 @@ namespace MoneyBookTools
         {
             try
             {
-                using var hg = this.CreateHourglass();
+                if (sender is DataGridView dgv)
+                {
+                    using var hg = this.CreateHourglass();
 
-                ShowEditTransactionDialog();
+                    ShowEditTransactionDialog(dgv);
+                }
             }
             catch (Exception ex)
             {
@@ -327,16 +337,25 @@ namespace MoneyBookTools
         {
             try
             {
-                var count = dgvAccountTransactions.SelectedCells
-                    .Cast<DataGridViewCell>()
-                    .GroupBy(x => x.RowIndex)
-                    .Count();
+                if (sender is ContextMenuStrip menuStrip && menuStrip.SourceControl is DataGridView dgv)
+                {
+                    var count = dgv.SelectedCells
+                        .Cast<DataGridViewCell>()
+                        .GroupBy(x => x.RowIndex)
+                        .Count();
 
-                setTransStateToolStripMenuItem.Enabled =
-                deleteTransToolStripMenuItem.Enabled = count > 0;
+                    setTransStateToolStripMenuItem.Enabled =
+                    deleteTransToolStripMenuItem.Enabled = count > 0;
 
-                addReminderToolStripMenuItem.Enabled =
-                editTransToolStripMenuItem.Enabled = count == 1;
+                    addReminderToolStripMenuItem.Enabled =
+                    editTransToolStripMenuItem.Enabled = count == 1;
+
+                    if (dgv == dgvStagedAccountTransactions)
+                    {
+                        reconcileNewToolStripMenuItem.Enabled =
+                        addReminderToolStripMenuItem.Enabled = false;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -362,9 +381,14 @@ namespace MoneyBookTools
         {
             try
             {
-                using var hg = this.CreateHourglass();
+                if (sender is ToolStripMenuItem menuItem &&
+                    menuItem.Owner is ContextMenuStrip menuStrip
+                    && menuStrip.SourceControl is DataGridView dgv)
+                {
+                    using var hg = this.CreateHourglass();
 
-                ShowEditTransactionDialog();
+                    ShowEditTransactionDialog(dgv);
+                }
             }
             catch (Exception ex)
             {
@@ -376,15 +400,20 @@ namespace MoneyBookTools
         {
             try
             {
-                var dlg = StateForm.Create();
-
-                var result = dlg.ShowDialog();
-
-                if (result == DialogResult.OK)
+                if (sender is ToolStripMenuItem menuItem &&
+                    menuItem.Owner is ContextMenuStrip menuStrip
+                    && menuStrip.SourceControl is DataGridView dgv)
                 {
-                    using var hg = this.CreateHourglass();
+                    var dlg = StateForm.Create();
 
-                    UpdateTransactionStates(dlg.TransactionState);
+                    var result = dlg.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        using var hg = this.CreateHourglass();
+
+                        UpdateTransactionStates(dgv, dlg.TransactionState);
+                    }
                 }
             }
             catch (Exception ex)
@@ -511,9 +540,14 @@ namespace MoneyBookTools
         {
             try
             {
-                using var hg = this.CreateHourglass();
+                if (sender is ToolStripMenuItem menuItem &&
+                    menuItem.Owner is ContextMenuStrip menuStrip
+                    && menuStrip.SourceControl is DataGridView dgv)
+                {
+                    using var hg = this.CreateHourglass();
 
-                DeleteTransactions();
+                    DeleteTransactions(dgv);
+                }
             }
             catch (Exception ex)
             {
@@ -633,9 +667,8 @@ namespace MoneyBookTools
 
         private void UncheckStatusMenuItems()
         {
-            newStatusMenuItem.Checked = 
+            newStatusMenuItem.Checked =
             pendingToolStripMenuItem.Checked =
-            stagedStatusMenuItem.Checked =
             reconciledStatusMenuItem.Checked =
             ignoredStatusMenuItem.Checked =
             anyStatusMenuItem.Checked = false;
@@ -655,21 +688,10 @@ namespace MoneyBookTools
         private void pendingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UncheckStatusMenuItems();
-            
+
             pendingToolStripMenuItem.Checked = true;
 
             m_stateFilter = StateTypes.Pending;
-
-            refreshToolStripMenuItem.PerformClick();
-        }
-
-        private void stagedStatusMenuItem_Click(object sender, EventArgs e)
-        {
-            UncheckStatusMenuItems();
-
-            stagedStatusMenuItem.Checked = true;
-
-            m_stateFilter = StateTypes.Staged;
 
             refreshToolStripMenuItem.PerformClick();
         }
@@ -687,8 +709,8 @@ namespace MoneyBookTools
 
         private void ignoredStatusMenuItem_Click(object sender, EventArgs e)
         {
-            UncheckStatusMenuItems(); 
-            
+            UncheckStatusMenuItems();
+
             ignoredStatusMenuItem.Checked = true;
 
             m_stateFilter = StateTypes.Ignored;
@@ -827,41 +849,52 @@ namespace MoneyBookTools
 
                 SaveSelectedTransactions();
 
-                dgvAccountTransactions.DataSource = accountTransactions;
-
-                // Resize the columns.
-                var widths = new int[] { 90, 70, 80, 80, 275 };
-                int i = 0;
-                dgvAccountTransactions.Columns["Date"].Width = widths[i++];
-                dgvAccountTransactions.Columns["RefNum"].Width = widths[i++];
-                dgvAccountTransactions.Columns["State"].Width = widths[i++];
-                dgvAccountTransactions.Columns["Amount"].Width = widths[i++];
-                dgvAccountTransactions.Columns["Memo"].Width = widths[i++];
-                dgvAccountTransactions.Columns["Payee"].Width =
-                    dgvAccountTransactions.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgvAccountTransactions.Margin.Right;
-
-                foreach (DataGridViewRow row in dgvAccountTransactions.Rows)
-                {
-                    var vt = accountTransactions[row.Index];
-
-                    if (vt.State != StateTypes.Reconciled.ToString())
-                    {
-                        row.DefaultCellStyle.Font = new Font(dgvAccountTransactions.Font, FontStyle.Italic);
-                    }
-
-                    row.DefaultCellStyle.ForeColor = TransactionStateColorScheme.Instance.ForeColor(vt.State);
-
-                    row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
-                }
+                LoadTransacationsGrid(dgvAccountTransactions, accountTransactions
+                    .Where(x => x.State != StateTypes.Staged.ToString())
+                    .ToList());
 
                 RestoreSelectedTransactions();
+
+                LoadTransacationsGrid(dgvStagedAccountTransactions, accountTransactions
+                    .Where(x => x.State == StateTypes.Staged.ToString())
+                    .ToList());
             }
         }
 
-        private void UpdateTransactionStates(StateTypes state)
+        private void LoadTransacationsGrid(DataGridView dgv, IList<ViewTransaction> transacations)
         {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransactions = dgvAccountTransactions.SelectedCells
+            dgv.DataSource = transacations;
+
+            // Resize the columns.
+            var widths = new int[] { 90, 70, 80, 80, 275 };
+            int i = 0;
+            dgv.Columns["Date"].Width = widths[i++];
+            dgv.Columns["RefNum"].Width = widths[i++];
+            dgv.Columns["State"].Width = widths[i++];
+            dgv.Columns["Amount"].Width = widths[i++];
+            dgv.Columns["Memo"].Width = widths[i++];
+            dgv.Columns["Payee"].Width =
+                dgv.Width - widths.Sum() - SystemInformation.VerticalScrollBarWidth - dgv.Margin.Right;
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                var vt = transacations[row.Index];
+
+                if (vt.State != StateTypes.Reconciled.ToString())
+                {
+                    row.DefaultCellStyle.Font = new Font(dgv.Font, FontStyle.Italic);
+                }
+
+                row.DefaultCellStyle.ForeColor = TransactionStateColorScheme.Instance.ForeColor(vt.State);
+
+                row.Cells["Amount"].Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+        }
+
+        private void UpdateTransactionStates(DataGridView dgv, StateTypes state)
+        {
+            var transactions = dgv.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgv.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
                 .Select(g => transactions[g.Key])
@@ -905,10 +938,10 @@ namespace MoneyBookTools
             }
         }
 
-        private void DeleteTransactions()
+        private void DeleteTransactions(DataGridView dgv)
         {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransactions = dgvAccountTransactions.SelectedCells
+            var transactions = dgv.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgv.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
                 .Select(g => transactions[g.Key])
@@ -961,10 +994,10 @@ namespace MoneyBookTools
             }
         }
 
-        private void ShowEditTransactionDialog()
+        private void ShowEditTransactionDialog(DataGridView dgv)
         {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransaction = dgvAccountTransactions.SelectedCells
+            var transactions = dgv.DataSource as List<ViewTransaction>;
+            var selectedTransaction = dgv.SelectedCells
                 .Cast<DataGridViewCell>()
                 .Select(x => new
                 {
@@ -986,10 +1019,10 @@ namespace MoneyBookTools
             }
         }
 
-        private void CalculateSum()
+        private void CalculateSum(DataGridView dgv)
         {
-            var transactions = dgvAccountTransactions.DataSource as List<ViewTransaction>;
-            var selectedTransactions = dgvAccountTransactions.SelectedCells
+            var transactions = dgv.DataSource as List<ViewTransaction>;
+            var selectedTransactions = dgv.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
                 .Select(g => transactions[g.Key])
