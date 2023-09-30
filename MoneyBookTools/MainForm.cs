@@ -146,6 +146,21 @@ namespace MoneyBookTools
             }
         }
 
+        private void dgvReminders_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (sender is DataGridView dgv)
+                {
+                    CalculateSum(dgv);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         private void ListViewAccounts_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
         {
             var summary = m_summaries[e.ItemIndex];
@@ -1021,21 +1036,40 @@ namespace MoneyBookTools
 
         private void CalculateSum(DataGridView dgv)
         {
-            var transactions = dgv.DataSource as List<ViewTransaction>;
-            var selectedTransactions = dgv.SelectedCells
+            decimal sum = 0.0m;
+
+            var selectedCells = dgv.SelectedCells
                 .Cast<DataGridViewCell>()
                 .GroupBy(x => x.RowIndex)
-                .Select(g => transactions[g.Key])
                 .ToList();
 
-            if (selectedTransactions.Count() > 1)
+            sumToolStripStatusLabel.Text = string.Empty;
+            
+            if (selectedCells.Count() <= 1)
             {
-                sumToolStripStatusLabel.Text = $"Sum: {selectedTransactions.Sum(x => x.Amount):0.00}";
+                return;
+            }
+
+            if (dgv.DataSource is List<ViewTransaction> transactions)
+            {
+                foreach (var textCell in selectedCells.Select(x => x.First()))
+                {
+                    sum += transactions[textCell.RowIndex].Amount;
+                }
+            }
+            else if (dgv.DataSource is List<ViewReminder> reminders)
+            {
+                foreach (var textCell in selectedCells.Select(x => x.First()))
+                {
+                    sum += reminders[textCell.RowIndex].Amount;
+                }
             }
             else
             {
-                sumToolStripStatusLabel.Text = String.Empty;
+                return;
             }
+
+            sumToolStripStatusLabel.Text = $"Sum: {sum:0.00}";
         }
         #endregion
 
