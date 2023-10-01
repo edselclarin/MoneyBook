@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace MoneyBookDash.DataProviders
 {
-    public static class AccountDataProvider
+    public class TestAccountDataProvider : IAccountDataProvider
     {
-        public static IList<AccountModel> GetAll()
+        public IList<AccountModel> GetAll()
         {
             return new List<AccountModel>()
             {

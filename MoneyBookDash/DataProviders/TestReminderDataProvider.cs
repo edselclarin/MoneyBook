@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace MoneyBookDash.DataProviders
 {
-    public static class ReminderDataProvider
+    public class TestReminderDataProvider : IReminderDataProvider
     {
-        public static IList<ReminderModel> GetOverdue()
+        public IList<ReminderModel> GetOverdue()
         {
             return new List<ReminderModel>()
             {
@@ -15,7 +15,7 @@ namespace MoneyBookDash.DataProviders
             };
         }
 
-        public static IList<ReminderModel> GetDueNow()
+        public IList<ReminderModel> GetDueNow()
         {
             return new List<ReminderModel>()
             {
@@ -28,7 +28,7 @@ namespace MoneyBookDash.DataProviders
             };
         }
 
-        public static IList<ReminderModel> GetUpcoming()
+        public IList<ReminderModel> GetUpcoming()
         {
             return new List<ReminderModel>()
             {
@@ -39,7 +39,7 @@ namespace MoneyBookDash.DataProviders
             };
         }
 
-        public static IList<ReminderModel> GetStaged()
+        public IList<ReminderModel> GetStaged()
         {
             return new List<ReminderModel>();
         }
