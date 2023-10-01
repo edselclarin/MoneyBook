@@ -3,6 +3,7 @@ using MoneyBookDash.DataProviders;
 using MoneyBookDash.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MoneyBookDash
 {
@@ -37,12 +38,16 @@ namespace MoneyBookDash
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>();
 
-            container_
-                .Singleton<IReminderDataProvider, TestReminderDataProvider>();
+            // Register view models.
+            GetType().Assembly.GetTypes()
+                .Where(type => type.IsClass)
+                .Where(type => type.Name.EndsWith("ViewModel"))
+                .ToList()
+                .ForEach(viewModelType => container_.RegisterPerRequest(viewModelType, viewModelType.ToString(), viewModelType));
 
+            // Register other types.
             container_
-                .PerRequest<MainViewModel>()
-                .PerRequest<ReminderViewModel>();
+                .PerRequest<IReminderDataProvider, TestReminderDataProvider>();
         }
 
         protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
