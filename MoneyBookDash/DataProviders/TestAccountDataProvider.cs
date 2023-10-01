@@ -1,4 +1,5 @@
-﻿using MoneyBookDash.Models;
+﻿using MoneyBookDash.DataProviders.Interfaces;
+using MoneyBookDash.Models;
 using System.Collections.Generic;
 
 namespace MoneyBookDash.DataProviders

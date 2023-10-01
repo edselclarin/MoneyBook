@@ -1,20 +1,17 @@
 ﻿using Caliburn.Micro;
-using MoneyBookDash.DataProviders;
+using MoneyBookDash.ViewModels.Interfaces;
 
 namespace MoneyBookDash.ViewModels
 {
     public class MainViewModel : Conductor<Screen>.Collection.AllActive
     {
-        private IReminderDataProvider reminderDataProvider_;
+        private IReminderViewModelFactory reminderViewModelFactory_;
 
-        public MainViewModel(IReminderDataProvider reminderDataProvider)
+        public MainViewModel(IReminderViewModelFactory reminderViewModelFactory)
         {
-            reminderDataProvider_ = reminderDataProvider;
+            reminderViewModelFactory_ = reminderViewModelFactory;
 
-            Items.Add(ReminderViewModel.Create("Overdue", reminderDataProvider_.GetOverdue()));
-            Items.Add(ReminderViewModel.Create("Due", reminderDataProvider_.GetDueNow()));
-            Items.Add(ReminderViewModel.Create("Upcoming", reminderDataProvider_.GetUpcoming()));
-            Items.Add(ReminderViewModel.Create("Staged", reminderDataProvider_.GetStaged()));
+            Items.AddRange(reminderViewModelFactory_.GetAll());
         }
     }
 }

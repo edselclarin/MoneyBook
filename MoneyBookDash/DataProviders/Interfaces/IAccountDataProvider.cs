@@ -1,7 +1,7 @@
 ﻿using MoneyBookDash.Models;
 using System.Collections.Generic;
 
-namespace MoneyBookDash.DataProviders
+namespace MoneyBookDash.DataProviders.Interfaces
 {
     public interface IAccountDataProvider
     {

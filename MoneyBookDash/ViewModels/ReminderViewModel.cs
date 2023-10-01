@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using MoneyBookDash.Models;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace MoneyBookDash.ViewModels
@@ -28,22 +27,6 @@ namespace MoneyBookDash.ViewModels
                 reminders_ = value;
                 NotifyOfPropertyChange();
             }
-        }
-
-        public static ReminderViewModel Create(string title, IEnumerable<ReminderModel> reminders)
-        {
-            var vm = new ReminderViewModel()
-            {
-                Title = title,
-                Reminders = new ObservableCollection<ReminderModel>(),
-            };
-
-            foreach (var rem in reminders)
-            {
-                vm.Reminders.Add(rem);
-            }
-
-            return vm;
         }
     }
 }

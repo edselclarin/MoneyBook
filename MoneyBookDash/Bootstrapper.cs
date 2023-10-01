@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using MoneyBookDash.DataProviders;
+using MoneyBookDash.DataProviders.Interfaces;
 using MoneyBookDash.ViewModels;
+using MoneyBookDash.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +49,8 @@ namespace MoneyBookDash
 
             // Register other types.
             container_
-                .PerRequest<IReminderDataProvider, TestReminderDataProvider>();
+                .PerRequest<IReminderDataProvider, TestReminderDataProvider>()
+                .PerRequest<IReminderViewModelFactory, ReminderViewModelFactory>();
         }
 
         protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)

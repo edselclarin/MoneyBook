@@ -1,4 +1,5 @@
-﻿using MoneyBookDash.Models;
+﻿using MoneyBookDash.DataProviders.Interfaces;
+using MoneyBookDash.Models;
 using System;
 using System.Collections.Generic;
 
@@ -37,11 +38,6 @@ namespace MoneyBookDash.DataProviders
                 new ReminderModel() { RmdrId = 7, DueDate = DateTime.Now.AddDays(-12),
                     Payee = "Allowance", Amount = -10.00m, AcctId = 1, AcctName = "CHECKING"  }
             };
-        }
-
-        public IList<ReminderModel> GetStaged()
-        {
-            return new List<ReminderModel>();
         }
     }
 }
