@@ -362,14 +362,10 @@ namespace MoneyBookTools
                     setTransStateToolStripMenuItem.Enabled =
                     deleteTransToolStripMenuItem.Enabled = count > 0;
 
-                    addReminderToolStripMenuItem.Enabled =
                     editTransToolStripMenuItem.Enabled = count == 1;
 
-                    if (dgv == dgvStagedAccountTransactions)
-                    {
-                        reconcileNewToolStripMenuItem.Enabled =
-                        addReminderToolStripMenuItem.Enabled = false;
-                    }
+                    addReminderToolStripMenuItem.Enabled =
+                    reconcileNewToolStripMenuItem.Enabled = dgv == dgvAccountTransactions;
                 }
             }
             catch (Exception ex)
