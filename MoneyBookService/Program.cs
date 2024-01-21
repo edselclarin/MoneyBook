@@ -6,7 +6,7 @@ namespace MoneyBookService
     {
         static string ServiceName = "MoneyBookService";
         static int ServicePort = 7777;
-        static string ServiceUrl = $"https://*:{ServicePort}";
+        static string ServiceUrl = $"http://*:{ServicePort}";
 
         public static async Task Main(string[] args)
         {
