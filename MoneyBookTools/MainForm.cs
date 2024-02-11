@@ -757,6 +757,41 @@ namespace MoneyBookTools
             editAccountToolStripMenuItem.PerformClick();
         }
 
+        private async void deleteTransactionFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var paths = await ImportTransactionsForm.GetImportFilePaths();
+                if (!paths.Any())
+                {
+                    MessageBox.Show(this, "No transaction files found.", this.Text, MessageBoxButtons.OK);
+                    return;
+                }
+
+                string pathlist = String.Join(Environment.NewLine, paths);
+
+                var answer = MessageBox.Show(this,
+                    $"Are you sure you delete these transaction files? NOTE: This cannot be undone." + Environment.NewLine +
+                    Environment.NewLine +
+                    pathlist,
+                    this.Text,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.Yes)
+                {
+                    using var hg = this.CreateHourglass();
+
+                    DeleteFiles(paths);
+
+                    MessageBox.Show(this, "Delete complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowException(ex);
+            }
+        }
+
         #endregion
 
         #region Accounts
@@ -1040,7 +1075,7 @@ namespace MoneyBookTools
                 .ToList();
 
             sumToolStripStatusLabel.Text = string.Empty;
-            
+
             if (selectedCells.Count() <= 1)
             {
                 return;
@@ -1357,6 +1392,21 @@ namespace MoneyBookTools
                     m_dbProxy.RestoreDatabase(ofd.FileName);
 
                     MessageBox.Show(this, "Restore complete.", this.Text, MessageBoxButtons.OK);
+                }
+            }
+        }
+
+        #endregion
+
+        #region File Operations
+
+        private async void DeleteFiles(IEnumerable<string> paths)
+        {
+            foreach (var path in paths)
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
                 }
             }
         }

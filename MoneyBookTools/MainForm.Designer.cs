@@ -60,6 +60,8 @@ namespace MoneyBookTools
             toolStripSeparator4 = new ToolStripSeparator();
             backupDatabaseToolStripMenuItem = new ToolStripMenuItem();
             restoreDatabaseToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            deleteTransactionFilesToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             hSplit1 = new SplitContainer();
@@ -306,7 +308,7 @@ namespace MoneyBookTools
             // 
             // operationsToolStripMenuItem
             // 
-            operationsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { importTransactionsToolStripMenuItem, deleteAllTransactionsToolStripMenuItem, toolStripSeparator4, backupDatabaseToolStripMenuItem, restoreDatabaseToolStripMenuItem });
+            operationsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { importTransactionsToolStripMenuItem, deleteAllTransactionsToolStripMenuItem, toolStripSeparator4, backupDatabaseToolStripMenuItem, restoreDatabaseToolStripMenuItem, toolStripSeparator1, deleteTransactionFilesToolStripMenuItem });
             operationsToolStripMenuItem.Name = "operationsToolStripMenuItem";
             operationsToolStripMenuItem.Size = new Size(96, 24);
             operationsToolStripMenuItem.Text = "&Operations";
@@ -314,7 +316,8 @@ namespace MoneyBookTools
             // importTransactionsToolStripMenuItem
             // 
             importTransactionsToolStripMenuItem.Name = "importTransactionsToolStripMenuItem";
-            importTransactionsToolStripMenuItem.Size = new Size(243, 26);
+            importTransactionsToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.I;
+            importTransactionsToolStripMenuItem.Size = new Size(297, 26);
             importTransactionsToolStripMenuItem.Text = "Import Transactions...";
             importTransactionsToolStripMenuItem.ToolTipText = "Import transactions from file";
             importTransactionsToolStripMenuItem.Click += importTransactionsToolStripMenuItem_Click;
@@ -322,7 +325,7 @@ namespace MoneyBookTools
             // deleteAllTransactionsToolStripMenuItem
             // 
             deleteAllTransactionsToolStripMenuItem.Name = "deleteAllTransactionsToolStripMenuItem";
-            deleteAllTransactionsToolStripMenuItem.Size = new Size(243, 26);
+            deleteAllTransactionsToolStripMenuItem.Size = new Size(297, 26);
             deleteAllTransactionsToolStripMenuItem.Text = "Delete All Transactions";
             deleteAllTransactionsToolStripMenuItem.ToolTipText = "Delete transactions across all accounts";
             deleteAllTransactionsToolStripMenuItem.Click += deleteAllTransactionsToolStripMenuItem_Click;
@@ -330,12 +333,13 @@ namespace MoneyBookTools
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(240, 6);
+            toolStripSeparator4.Size = new Size(294, 6);
             // 
             // backupDatabaseToolStripMenuItem
             // 
             backupDatabaseToolStripMenuItem.Name = "backupDatabaseToolStripMenuItem";
-            backupDatabaseToolStripMenuItem.Size = new Size(243, 26);
+            backupDatabaseToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.B;
+            backupDatabaseToolStripMenuItem.Size = new Size(297, 26);
             backupDatabaseToolStripMenuItem.Text = "Backup Database...";
             backupDatabaseToolStripMenuItem.ToolTipText = "Backup database to tape file and text file";
             backupDatabaseToolStripMenuItem.Click += backupDatabaseToolStripMenuItem_Click;
@@ -343,10 +347,24 @@ namespace MoneyBookTools
             // restoreDatabaseToolStripMenuItem
             // 
             restoreDatabaseToolStripMenuItem.Name = "restoreDatabaseToolStripMenuItem";
-            restoreDatabaseToolStripMenuItem.Size = new Size(243, 26);
+            restoreDatabaseToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.R;
+            restoreDatabaseToolStripMenuItem.Size = new Size(297, 26);
             restoreDatabaseToolStripMenuItem.Text = "Restore Database...";
             restoreDatabaseToolStripMenuItem.ToolTipText = "Restore table data from text file backup";
             restoreDatabaseToolStripMenuItem.Click += restoreDatabaseToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(294, 6);
+            // 
+            // deleteTransactionFilesToolStripMenuItem
+            // 
+            deleteTransactionFilesToolStripMenuItem.Name = "deleteTransactionFilesToolStripMenuItem";
+            deleteTransactionFilesToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.D;
+            deleteTransactionFilesToolStripMenuItem.Size = new Size(297, 26);
+            deleteTransactionFilesToolStripMenuItem.Text = "Delete Transaction Files";
+            deleteTransactionFilesToolStripMenuItem.Click += deleteTransactionFilesToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
@@ -379,7 +397,7 @@ namespace MoneyBookTools
             // 
             hSplit1.Panel2.Controls.Add(groupReminders);
             hSplit1.Size = new Size(1321, 851);
-            hSplit1.SplitterDistance = 573;
+            hSplit1.SplitterDistance = 568;
             hSplit1.SplitterWidth = 5;
             hSplit1.TabIndex = 3;
             // 
@@ -615,7 +633,7 @@ namespace MoneyBookTools
             mainStatusStrip1.Margin = new Padding(2, 0, 2, 0);
             mainStatusStrip1.Name = "mainStatusStrip1";
             mainStatusStrip1.Padding = new Padding(1, 0, 16, 0);
-            mainStatusStrip1.Size = new Size(900, 27);
+            mainStatusStrip1.Size = new Size(1004, 27);
             mainStatusStrip1.SizingGrip = false;
             mainStatusStrip1.TabIndex = 6;
             mainStatusStrip1.Text = "statusStrip1";
@@ -676,7 +694,7 @@ namespace MoneyBookTools
             sumToolStripStatusLabel.Font = new Font("Segoe UI", 11F, FontStyle.Italic, GraphicsUnit.Point);
             sumToolStripStatusLabel.ForeColor = SystemColors.GrayText;
             sumToolStripStatusLabel.Name = "sumToolStripStatusLabel";
-            sumToolStripStatusLabel.Size = new Size(133, 21);
+            sumToolStripStatusLabel.Size = new Size(237, 21);
             sumToolStripStatusLabel.Spring = true;
             sumToolStripStatusLabel.Text = "Sum: 0.00";
             sumToolStripStatusLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -914,5 +932,7 @@ namespace MoneyBookTools
         private SplitContainer ledgerSplit;
         private DataGridView dgvStagedAccountTransactions;
         private GroupBox groupStaged;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem deleteTransactionFilesToolStripMenuItem;
     }
 }
