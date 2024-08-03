@@ -29,11 +29,11 @@ namespace MoneyBook.Data
             var backup = new BackupContext()
             {
                 DateCreated = DateTime.Now,
-                Transactions = _dbContext.Transactions.ToList(),
-                Reminders = _dbContext.Reminders.ToList(),
-                Accounts = _dbContext.Accounts.ToList(),
-                Institutions = _dbContext.Institutions.ToList(),
-                Categories = _dbContext.Categories.ToList(),
+                Transactions = _dbContext.Transactions.OrderByDescending(x => x.Date).ToList(),
+                Reminders = _dbContext.Reminders.OrderByDescending(x => x.DueDate).ToList(),
+                Accounts = _dbContext.Accounts.OrderByDescending(x => x.DateAdded).ToList(),
+                Institutions = _dbContext.Institutions.OrderByDescending(x => x.InstId).ToList(),
+                Categories = _dbContext.Categories.OrderByDescending(x => x.CatId).ToList(),
             };
 
             string filePath = Path.Combine(_backupDir, $"MoneyBook-v2-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.json");
