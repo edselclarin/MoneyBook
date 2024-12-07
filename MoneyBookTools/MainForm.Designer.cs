@@ -106,6 +106,7 @@ namespace MoneyBookTools
             toolStripSeparator6 = new ToolStripSeparator();
             deleteReminderToolStripMenuItem = new ToolStripMenuItem();
             mainPanel = new Panel();
+            threeMonthsAgoToolStripMenuItem = new ToolStripMenuItem();
             mainMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)hSplit1).BeginInit();
             hSplit1.Panel1.SuspendLayout();
@@ -185,9 +186,9 @@ namespace MoneyBookTools
             // 
             // filterToolStripMenuItem
             // 
-            filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, thisYearToolStripMenuItem, allDatesToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, pendingToolStripMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
+            filterToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { twoWeeksToolStripMenuItem, thisMonthToolStripMenuItem, threeMonthsAgoToolStripMenuItem, thisYearToolStripMenuItem, allDatesToolStripMenuItem, toolStripSeparator10, newStatusMenuItem, pendingToolStripMenuItem, reconciledStatusMenuItem, ignoredStatusMenuItem, anyStatusMenuItem, toolStripSeparator11 });
             filterToolStripMenuItem.Name = "filterToolStripMenuItem";
-            filterToolStripMenuItem.Size = new Size(134, 26);
+            filterToolStripMenuItem.Size = new Size(224, 26);
             filterToolStripMenuItem.Text = "Filter...";
             filterToolStripMenuItem.ToolTipText = "Show transactions...";
             // 
@@ -195,7 +196,7 @@ namespace MoneyBookTools
             // 
             twoWeeksToolStripMenuItem.Name = "twoWeeksToolStripMenuItem";
             twoWeeksToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.W;
-            twoWeeksToolStripMenuItem.Size = new Size(261, 26);
+            twoWeeksToolStripMenuItem.Size = new Size(302, 26);
             twoWeeksToolStripMenuItem.Text = "Two Weeks";
             twoWeeksToolStripMenuItem.ToolTipText = "In past two weeks";
             twoWeeksToolStripMenuItem.Click += twoWeeksToolStripMenuItem_Click;
@@ -204,7 +205,7 @@ namespace MoneyBookTools
             // 
             thisMonthToolStripMenuItem.Name = "thisMonthToolStripMenuItem";
             thisMonthToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.M;
-            thisMonthToolStripMenuItem.Size = new Size(261, 26);
+            thisMonthToolStripMenuItem.Size = new Size(302, 26);
             thisMonthToolStripMenuItem.Text = "This Month";
             thisMonthToolStripMenuItem.ToolTipText = "Of the current month";
             thisMonthToolStripMenuItem.Click += thisMonthToolStripMenuItem_Click;
@@ -213,7 +214,7 @@ namespace MoneyBookTools
             // 
             thisYearToolStripMenuItem.Name = "thisYearToolStripMenuItem";
             thisYearToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.Y;
-            thisYearToolStripMenuItem.Size = new Size(261, 26);
+            thisYearToolStripMenuItem.Size = new Size(302, 26);
             thisYearToolStripMenuItem.Text = "This Year";
             thisYearToolStripMenuItem.ToolTipText = "Of the current year";
             thisYearToolStripMenuItem.Click += thisYearToolStripMenuItem_Click;
@@ -222,7 +223,7 @@ namespace MoneyBookTools
             // 
             allDatesToolStripMenuItem.Name = "allDatesToolStripMenuItem";
             allDatesToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.L;
-            allDatesToolStripMenuItem.Size = new Size(261, 26);
+            allDatesToolStripMenuItem.Size = new Size(302, 26);
             allDatesToolStripMenuItem.Text = "All Dates";
             allDatesToolStripMenuItem.ToolTipText = "Show any transactions of any date";
             allDatesToolStripMenuItem.Click += allDatesToolStripMenuItem_Click;
@@ -230,13 +231,13 @@ namespace MoneyBookTools
             // toolStripSeparator10
             // 
             toolStripSeparator10.Name = "toolStripSeparator10";
-            toolStripSeparator10.Size = new Size(258, 6);
+            toolStripSeparator10.Size = new Size(299, 6);
             // 
             // newStatusMenuItem
             // 
             newStatusMenuItem.Name = "newStatusMenuItem";
             newStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.N;
-            newStatusMenuItem.Size = new Size(261, 26);
+            newStatusMenuItem.Size = new Size(302, 26);
             newStatusMenuItem.Text = "New";
             newStatusMenuItem.ToolTipText = "Show New transactions";
             newStatusMenuItem.Click += newStatusMenuItem_Click;
@@ -245,7 +246,7 @@ namespace MoneyBookTools
             // 
             pendingToolStripMenuItem.Name = "pendingToolStripMenuItem";
             pendingToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.P;
-            pendingToolStripMenuItem.Size = new Size(261, 26);
+            pendingToolStripMenuItem.Size = new Size(302, 26);
             pendingToolStripMenuItem.Text = "Pending";
             pendingToolStripMenuItem.Click += pendingToolStripMenuItem_Click;
             // 
@@ -253,7 +254,7 @@ namespace MoneyBookTools
             // 
             reconciledStatusMenuItem.Name = "reconciledStatusMenuItem";
             reconciledStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.R;
-            reconciledStatusMenuItem.Size = new Size(261, 26);
+            reconciledStatusMenuItem.Size = new Size(302, 26);
             reconciledStatusMenuItem.Text = "Reconciled";
             reconciledStatusMenuItem.ToolTipText = "Show Reconciled transactions";
             reconciledStatusMenuItem.Click += reconciledStatusMenuItem_Click;
@@ -262,7 +263,7 @@ namespace MoneyBookTools
             // 
             ignoredStatusMenuItem.Name = "ignoredStatusMenuItem";
             ignoredStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.I;
-            ignoredStatusMenuItem.Size = new Size(261, 26);
+            ignoredStatusMenuItem.Size = new Size(302, 26);
             ignoredStatusMenuItem.Text = "Ignored";
             ignoredStatusMenuItem.ToolTipText = "Show Ignored transactions";
             ignoredStatusMenuItem.Click += ignoredStatusMenuItem_Click;
@@ -271,7 +272,7 @@ namespace MoneyBookTools
             // 
             anyStatusMenuItem.Name = "anyStatusMenuItem";
             anyStatusMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.U;
-            anyStatusMenuItem.Size = new Size(261, 26);
+            anyStatusMenuItem.Size = new Size(302, 26);
             anyStatusMenuItem.Text = "Any Status";
             anyStatusMenuItem.ToolTipText = "Show transactions of any status";
             anyStatusMenuItem.Click += anyStatusMenuItem_Click;
@@ -279,13 +280,13 @@ namespace MoneyBookTools
             // toolStripSeparator11
             // 
             toolStripSeparator11.Name = "toolStripSeparator11";
-            toolStripSeparator11.Size = new Size(258, 6);
+            toolStripSeparator11.Size = new Size(299, 6);
             // 
             // sortToolStripMenuItem
             // 
             sortToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { dateDescendingToolStripMenuItem, dateAscendingToolStripMenuItem });
             sortToolStripMenuItem.Name = "sortToolStripMenuItem";
-            sortToolStripMenuItem.Size = new Size(134, 26);
+            sortToolStripMenuItem.Size = new Size(224, 26);
             sortToolStripMenuItem.Text = "Sort...";
             // 
             // dateDescendingToolStripMenuItem
@@ -397,7 +398,7 @@ namespace MoneyBookTools
             // 
             hSplit1.Panel2.Controls.Add(groupReminders);
             hSplit1.Size = new Size(1321, 851);
-            hSplit1.SplitterDistance = 568;
+            hSplit1.SplitterDistance = 567;
             hSplit1.SplitterWidth = 5;
             hSplit1.TabIndex = 3;
             // 
@@ -813,6 +814,15 @@ namespace MoneyBookTools
             mainPanel.Size = new Size(1321, 851);
             mainPanel.TabIndex = 3;
             // 
+            // threeMonthsAgoToolStripMenuItem
+            // 
+            threeMonthsAgoToolStripMenuItem.Name = "threeMonthsAgoToolStripMenuItem";
+            threeMonthsAgoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.T;
+            threeMonthsAgoToolStripMenuItem.Size = new Size(302, 26);
+            threeMonthsAgoToolStripMenuItem.Text = "Three Months Ago";
+            threeMonthsAgoToolStripMenuItem.ToolTipText = "Of this month and past two months. For example, if today is in December then all transactions since October will be shown.";
+            threeMonthsAgoToolStripMenuItem.Click += threeMonthsAgoToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -934,5 +944,6 @@ namespace MoneyBookTools
         private GroupBox groupStaged;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem deleteTransactionFilesToolStripMenuItem;
+        private ToolStripMenuItem threeMonthsAgoToolStripMenuItem;
     }
 }

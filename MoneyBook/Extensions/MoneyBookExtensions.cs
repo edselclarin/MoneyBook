@@ -16,6 +16,9 @@ namespace MoneyBook.Extensions
                 case DateFilter.ThisMonth:
                     return transactions
                         .Where(x => x.Date.Month == DateTime.Now.Month);
+                case DateFilter.ThreeMonthsAgo:
+                    return transactions
+                        .Where(x => x.Date >= DateTime.Now.AddDays(-DateTime.Now.Date.Day).AddMonths(-2).Date);
                 case DateFilter.ThisYear:
                     return transactions
                         .Where(x => x.Date.Year == DateTime.Now.Year);

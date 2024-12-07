@@ -45,6 +45,7 @@
         None,
         TwoWeeks,
         ThisMonth,
+        ThreeMonthsAgo,
         ThisYear,
     }
 

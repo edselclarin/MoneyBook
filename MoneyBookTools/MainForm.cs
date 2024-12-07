@@ -632,6 +632,18 @@ namespace MoneyBookTools
             refreshToolStripMenuItem.PerformClick();
         }
 
+        private void threeMonthsAgoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            twoWeeksToolStripMenuItem.Checked = false;
+            thisMonthToolStripMenuItem.Checked = true;
+            thisYearToolStripMenuItem.Checked = false;
+            allDatesToolStripMenuItem.Checked = false;
+
+            m_dateFilter = DateFilter.ThreeMonthsAgo;
+
+            refreshToolStripMenuItem.PerformClick();
+        }
+
         private void thisYearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             twoWeeksToolStripMenuItem.Checked = false;
