@@ -913,9 +913,13 @@ namespace MoneyBookTools
 
                 RestoreSelectedTransactions();
 
-                LoadTransacationsGrid(dgvStagedAccountTransactions, accountTransactions
+                // Show all staged transactions regardless of date.
+                var allStagedAccountTransations = transactions
                     .Where(x => x.State == StateTypes.Staged.ToString())
-                    .ToList());
+                    .Order(m_sortOrder)
+                    .ToViewTransactions()
+                    .ToList();
+                LoadTransacationsGrid(dgvStagedAccountTransactions, allStagedAccountTransations);
             }
         }
 
