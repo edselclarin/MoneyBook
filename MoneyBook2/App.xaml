@@ -1,0 +1,9 @@
+﻿<Application x:Class="MoneyBook2.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MoneyBook2">
+    <Application.Resources>
+        <!-- Register your bootstrapper -->
+        <local:Bootstrapper x:Key="Bootstrapper" />         
+    </Application.Resources>
+</Application>
