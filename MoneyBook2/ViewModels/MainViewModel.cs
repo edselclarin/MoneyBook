@@ -1,23 +1,28 @@
-﻿using Caliburn.Micro;
+﻿using Autofac;
+using Caliburn.Micro;
+using MoneyBook;
+using MoneyBook.Data;
+using MoneyBook.Models;
+using System.Collections.ObjectModel;
 
 namespace MoneyBook2.ViewModels
 {
     public class MainViewModel : Screen
     {
-        private string _message = "Welcome to MoneyBook2!";
-        public string Message
+        private IDbContextProxy _dbProxy;
+
+        private ReadOnlyCollection<AccountSummary> _accountSummaries;
+
+        public ReadOnlyCollection<AccountSummary> AccountSummaries
         {
-            get => _message;
-            set
-            {
-                _message = value;
-                NotifyOfPropertyChange(() => Message);
-            }
+            get { return _accountSummaries; }
+            set { _accountSummaries = value; }
         }
 
-        public void SayHello()
+        public MainViewModel()
         {
-            Message = "You clicked the button!";
+            _dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
+            AccountSummaries = new ReadOnlyCollection<AccountSummary>(_dbProxy.GetAccountSummaries().ToList());
         }
     }
 }
