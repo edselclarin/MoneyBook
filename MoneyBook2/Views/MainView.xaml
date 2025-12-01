@@ -4,100 +4,178 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:MoneyBook2.Views"
         xmlns:viewModels="clr-namespace:MoneyBook2.ViewModels"
-        Title="MoneyBook" Height="450" Width="800"
+        Title="MoneyBook" Height="610" Width="900"
+        Background="#FF505050"
         WindowStartupLocation="CenterScreen">
-
+    <Window.DataContext>
+        <viewModels:MainViewModel/>
+    </Window.DataContext>
+    
     <Window.Resources>
+        <!-- Converters -->
+        <local:DueStateTypesToForegroundConverter x:Key="DueStateTypesToForegroundConverter"/>
+
+        <!-- Font Sizes -->
         <System:Double x:Key="FontSizeMedium">12</System:Double>
 
-        <SolidColorBrush x:Key="Black75Percent" Color="#DD000000" />
+        <!-- Colors -->
+        <SolidColorBrush x:Key="DeepTransparentBlack" Color="#DD000000" />
+        <SolidColorBrush x:Key="SoftTransparentBlack" Color="#AA000000" />
+        <SolidColorBrush x:Key="DarkDimGray" Color="#22000000" />
+        <SolidColorBrush x:Key="DarkGhostWhite" Color="#DDFFFFFF" />
 
+        <!-- Accounts Table Style -->
+        <Style x:Key="AccountsListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource DarkDimGray}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SoftTransparentBlack}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SoftTransparentBlack}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SoftTransparentBlack}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Dues Table Style -->
+        <Style x:Key="DuesListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Foreground" Value="{Binding DueState, Converter={StaticResource DueStateTypesToForegroundConverter}}"/>
+            <Setter Property="Background" Value="{StaticResource DarkDimGray}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SoftTransparentBlack}"/>
+                    <Setter Property="Foreground" Value="{Binding DueState, Converter={StaticResource DueStateTypesToForegroundConverter}}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SoftTransparentBlack}"/>
+                    <Setter Property="Foreground" Value="{Binding DueState, Converter={StaticResource DueStateTypesToForegroundConverter}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource SoftTransparentBlack}"/>
+                    <Setter Property="Foreground" Value="{Binding DueState, Converter={StaticResource DueStateTypesToForegroundConverter}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Column Header Style - Left Justified -->
         <Style x:Key="LeftJustifiedGridViewColumnHeaderStyle" 
                TargetType="GridViewColumnHeader">
             <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Padding" Value="6 3 6 3"/>
-            <Setter Property="Foreground" Value="{StaticResource Black75Percent}"/>
+            <Setter Property="Foreground" Value="{StaticResource DeepTransparentBlack}"/>
+            <Setter Property="Background" Value="{StaticResource DarkGhostWhite}"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
         </Style>
 
+        <!-- Column Header Style - Center Justified -->
+        <Style x:Key="CenterJustifiedGridViewColumnHeaderStyle" 
+               TargetType="GridViewColumnHeader" 
+               BasedOn="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Column Header Style - Right Justified -->
         <Style x:Key="RightJustifiedGridViewColumnHeaderStyle" 
                TargetType="GridViewColumnHeader" 
                BasedOn="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
             <Setter Property="HorizontalContentAlignment" Value="Right"/>
         </Style>
 
-        <Style x:Key="GridViewCellTextStyle" 
+        <!-- Text Block Style -->
+        <Style x:Key="TextBlockStyle" 
                TargetType="TextBlock">
             <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}"/>
             <Setter Property="Padding" Value="4 2 4 2"/>
-            <Setter Property="Foreground" Value="{StaticResource Black75Percent}"/>
-        </Style>
-
-        <Style x:Key="BoldGridViewCellTextStyle" 
-               TargetType="TextBlock" 
-               BasedOn="{StaticResource GridViewCellTextStyle}">
-            <Setter Property="FontWeight" Value="DemiBold"/>
         </Style>
     </Window.Resources>
 
-    <Grid Margin="5">
+    <!-- Shortcut Keys -->
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding RefreshViewCommand}" />
+    </Window.InputBindings>
+
+    <!-- Body -->
+    <Grid x:Name="RootGrid" 
+          Margin="5">
+        
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView ItemsSource="{Binding AccountSummaries}">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-
+        <!-- Accounts Table -->
+        <TextBlock Grid.Row="0"
+                   Text="Accounts"
+                   Style="{StaticResource TextBlockStyle}"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="5 0 0 0"/>        
+        <ListView Grid.Row="1"
+                  Width="430"
+                  Margin="7 7 7 15"
+                  HorizontalAlignment="Left"
+                  Background="{StaticResource DarkDimGray}"
+                  ItemsSource="{Binding Accounts}"
+                  ItemContainerStyle="{StaticResource AccountsListViewItemStyle}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Account" 
-                                    Width="200"
+                    <GridViewColumn Header="Name" 
+                                    Width="150"
                                     HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"
-                                           Style="{StaticResource BoldGridViewCellTextStyle}"/>
+                                           Style="{StaticResource TextBlockStyle}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
                     <GridViewColumn Header="Available" 
-                                    Width="120"
+                                    Width="90"
                                     HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding AvailableBalance}"
-                                           Style="{StaticResource GridViewCellTextStyle}"
+                                           Style="{StaticResource TextBlockStyle}"
                                            TextAlignment="Right"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Staged" 
-                                    Width="120"
+                    <GridViewColumn Header="Due" 
+                                    Width="90"
                                     HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding StagedTotal}"
-                                           Style="{StaticResource GridViewCellTextStyle}"
+                                <TextBlock Text="{Binding TotalDues}"
+                                           Style="{StaticResource TextBlockStyle}"
                                            TextAlignment="Right"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
                     <GridViewColumn Header="Final" 
-                                    Width="120"
+                                    Width="90"
                                     HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding FinalBalance}"
-                                           Style="{StaticResource GridViewCellTextStyle}"
+                                           Style="{StaticResource TextBlockStyle}"
                                            TextAlignment="Right"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -106,5 +184,107 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
+        <!-- Dues Table-->
+        <TextBlock Grid.Row="2"
+                   Text="Dues"
+                   Style="{StaticResource TextBlockStyle}"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="5 0 0 0"/>
+        <ListView Grid.Row="3"
+                  Margin="7 7 7 15"
+                  Background="{StaticResource DarkDimGray}"
+                  HorizontalAlignment="Stretch"
+                  ItemContainerStyle="{StaticResource DuesListViewItemStyle}"
+                  ItemsSource="{Binding Dues}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="" 
+                                    Width="30"
+                                    HeaderContainerStyle="{StaticResource CenterJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected}"
+                                          Command="{Binding DataContext.ToggleSelectedDueCommand, ElementName=RootGrid}"
+                                          CommandParameter="{Binding}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Due Date" 
+                                    Width="80"
+                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DueDate, StringFormat={}{0:d}}"
+                                           Style="{StaticResource TextBlockStyle}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Payee" 
+                                    Width="250"
+                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Payee}"
+                                           Style="{StaticResource TextBlockStyle}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Memo" 
+                                    Width="150"
+                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Memo}"
+                                           Style="{StaticResource TextBlockStyle}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Website" 
+                                    Width="150"
+                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Website}"
+                                           Style="{StaticResource TextBlockStyle}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Frequency" 
+                                    Width="80"
+                                    HeaderContainerStyle="{StaticResource CenterJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Frequency}"
+                                           Style="{StaticResource TextBlockStyle}"
+                                           TextAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Amount" 
+                                    Width="90"
+                                    HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Amount}"
+                                           Style="{StaticResource TextBlockStyle}"
+                                           TextAlignment="Right"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
     </Grid>
 </Window>
