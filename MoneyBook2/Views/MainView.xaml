@@ -4,7 +4,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:MoneyBook2.Views"
         xmlns:viewModels="clr-namespace:MoneyBook2.ViewModels"
-        Title="MoneyBook" Height="610" Width="1000"
+        Title="MoneyBook" Height="620" Width="1000"
         Background="#FF505050"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -14,9 +14,11 @@
     <Window.Resources>
         <!-- Converters -->
         <local:DueStateTypesToForegroundConverter x:Key="DueStateTypesToForegroundConverter"/>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
         <!-- Font Sizes -->
         <System:Double x:Key="FontSizeMedium">12</System:Double>
+        <System:Double x:Key="FontSizeLarge">14</System:Double>
 
         <!-- Colors -->
         <SolidColorBrush x:Key="DeepTransparentBlack" Color="#DD000000" />
@@ -95,11 +97,32 @@
         </Style>
 
         <!-- Text Block Style -->
-        <Style x:Key="TextBlockStyle" 
+        <Style x:Key="MediumTextBlockStyle" 
                TargetType="TextBlock">
             <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}"/>
             <Setter Property="Padding" Value="4 2 4 2"/>
         </Style>
+
+        <!-- Large Text Block Style -->
+        <Style x:Key="LargeTextBlockStyle" 
+               TargetType="TextBlock"
+               BasedOn="{StaticResource MediumTextBlockStyle}">
+            <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}"/>
+            <Setter Property="Padding" Value="4 2 4 2"/>
+        </Style>
+
+        <!-- Hyperlink Style -->
+        <Style TargetType="Hyperlink" x:Key="HyperlinkHighlightStyle">
+            <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}"/>
+            <Setter Property="Foreground" Value="LightBlue"/>
+            <Style.Triggers>
+                <!-- Hover -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Orange"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
     </Window.Resources>
 
     <!-- Shortcut Keys -->
@@ -113,189 +136,205 @@
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Accounts Table -->
-        <TextBlock Grid.Row="0"
-                   Text="Accounts"
-                   Style="{StaticResource TextBlockStyle}"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   Margin="5 0 0 0"/>        
-        <ListView Grid.Row="1"
-                  Width="430"
-                  Margin="7 7 7 15"
+        <GroupBox Grid.Row="0"
+                  Width="450"
+                  BorderThickness="0"
                   HorizontalAlignment="Left"
-                  Background="{StaticResource DarkDimGray}"
-                  ItemsSource="{Binding Accounts}"
-                  ItemContainerStyle="{StaticResource AccountsListViewItemStyle}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" 
-                                    Width="150"
-                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}"
-                                           Style="{StaticResource TextBlockStyle}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                  Margin="0 0 0 10">
+            <GroupBox.Header>
+                <TextBlock Text="Accounts"
+                           Style="{StaticResource LargeTextBlockStyle}"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Margin="0 0 0 7"/>
+            </GroupBox.Header>
+            <ListView HorizontalAlignment="Left"
+                      Background="{StaticResource DarkDimGray}"
+                      ItemContainerStyle="{StaticResource AccountsListViewItemStyle}"
+                      ItemsSource="{Binding Accounts}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" 
+                                        Width="150"
+                                        HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"
+                                               Style="{StaticResource MediumTextBlockStyle}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Available" 
-                                    Width="90"
-                                    HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding AvailableBalance}"
-                                           Style="{StaticResource TextBlockStyle}"
-                                           TextAlignment="Right"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Available" 
+                                        Width="90"
+                                        HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding AvailableBalance}"
+                                               Style="{StaticResource MediumTextBlockStyle}"
+                                               TextAlignment="Right"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Due" 
-                                    Width="90"
-                                    HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding TotalDues}"
-                                           Style="{StaticResource TextBlockStyle}"
-                                           TextAlignment="Right"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Due" 
+                                        Width="90"
+                                        HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding TotalDues}"
+                                               Style="{StaticResource MediumTextBlockStyle}"
+                                               TextAlignment="Right"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Remaining" 
-                                    Width="90"
-                                    HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RemainingBalance}"
-                                           Style="{StaticResource TextBlockStyle}"
-                                           TextAlignment="Right"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Remaining" 
+                                        Width="90"
+                                        HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RemainingBalance}"
+                                               Style="{StaticResource MediumTextBlockStyle}"
+                                               TextAlignment="Right"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                </GridView>
-            </ListView.View>
-        </ListView>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
 
         <!-- Dues Table-->
-        <TextBlock Grid.Row="2"
-                   Text="Dues"
-                   Style="{StaticResource TextBlockStyle}"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   Margin="5 0 0 0"/>
-        <ListView Grid.Row="3"
-                  Margin="7 7 7 15"
-                  Background="{StaticResource DarkDimGray}"
-                  HorizontalAlignment="Stretch"
-                  ItemContainerStyle="{StaticResource DuesListViewItemStyle}"
-                  ItemsSource="{Binding Dues}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="" 
-                                    Width="30"
-                                    HeaderContainerStyle="{StaticResource CenterJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected}"
-                                          Command="{Binding DataContext.ToggleSelectedDueCommand, ElementName=RootGrid}"
-                                          CommandParameter="{Binding}"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+        <GroupBox Grid.Row="1"
+                  BorderThickness="0"
+                  HorizontalAlignment="Left"
+                  Margin="0 0 0 10">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Dues"
+                               Style="{StaticResource LargeTextBlockStyle}"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Margin="0 0 0 7"/>
+                    <Border Width="20"/>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0 3 0 0">
+                        <TextBlock VerticalAlignment="Top"
+                                   Visibility="{Binding AreDuesSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Hyperlink Style="{StaticResource HyperlinkHighlightStyle}"
+                                       Command="{Binding DataContext.ClearSelectionCommand, ElementName=RootGrid}">Clear Selection</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox.Header>
+            <ListView HorizontalAlignment="Stretch"
+                      Background="{StaticResource DarkDimGray}"                      
+                      ItemContainerStyle="{StaticResource DuesListViewItemStyle}"
+                      ItemsSource="{Binding Dues}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="" 
+                                        Width="30"
+                                        HeaderContainerStyle="{StaticResource CenterJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected}"
+                                              Command="{Binding DataContext.ToggleSelectedDueCommand, ElementName=RootGrid}"
+                                              CommandParameter="{Binding}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Account" 
-                                    Width="100"
-                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding AccountName}"
-                                           Style="{StaticResource TextBlockStyle}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Account" 
+                                        Width="100"
+                                        HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding AccountName}"
+                                               Style="{StaticResource MediumTextBlockStyle}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Due Date" 
-                                    Width="80"
-                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DueDate, StringFormat={}{0:d}}"
-                                           Style="{StaticResource TextBlockStyle}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Due Date" 
+                                        Width="80"
+                                        HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DueDate, StringFormat={}{0:d}}"
+                                               Style="{StaticResource MediumTextBlockStyle}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Payee" 
-                                    Width="250"
-                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Payee}"
-                                           Style="{StaticResource TextBlockStyle}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Payee" 
+                                        Width="250"
+                                        HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Payee}"
+                                               Style="{StaticResource MediumTextBlockStyle}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Memo" 
-                                    Width="150"
-                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Memo}"
-                                           Style="{StaticResource TextBlockStyle}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Memo" 
+                                        Width="150"
+                                        HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Memo}"
+                                               Style="{StaticResource MediumTextBlockStyle}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Website" 
-                                    Width="150"
-                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Website}"
-                                           Style="{StaticResource TextBlockStyle}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Website" 
+                                        Width="150"
+                                        HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Website}"
+                                               Style="{StaticResource MediumTextBlockStyle}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Frequency" 
-                                    Width="80"
-                                    HeaderContainerStyle="{StaticResource CenterJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Frequency}"
-                                           Style="{StaticResource TextBlockStyle}"
-                                           TextAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Frequency" 
+                                        Width="80"
+                                        HeaderContainerStyle="{StaticResource CenterJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Frequency}"
+                                               Style="{StaticResource MediumTextBlockStyle}"
+                                               TextAlignment="Center"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                    <GridViewColumn Header="Amount" 
-                                    Width="90"
-                                    HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Amount}"
-                                           Style="{StaticResource TextBlockStyle}"
-                                           TextAlignment="Right"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                        <GridViewColumn Header="Amount" 
+                                        Width="90"
+                                        HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Amount}"
+                                               Style="{StaticResource MediumTextBlockStyle}"
+                                               TextAlignment="Right"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
 
-                </GridView>
-            </ListView.View>
-        </ListView>
-        
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
     </Grid>
 </Window>

@@ -23,6 +23,7 @@ namespace MoneyBook2.ViewModels
             set
             {
                 _accounts = value;
+
                 NotifyOfPropertyChange(() => Accounts);
             }
         }
@@ -34,12 +35,25 @@ namespace MoneyBook2.ViewModels
             set
             {
                 _dues = value;
+
                 NotifyOfPropertyChange(() => Dues);
+            }
+        }
+
+        private bool _areDuesSelected;
+        public bool AreDuesSelected
+        {
+            get { return _areDuesSelected; }
+            set
+            {
+                _areDuesSelected = value;
+                NotifyOfPropertyChange(() => AreDuesSelected);
             }
         }
 
         public ICommand RefreshViewCommand { get; }
         public ICommand ToggleSelectedDueCommand { get; }
+        public ICommand ClearSelectionCommand { get; }
 
         public MainViewModel()
         {
@@ -47,6 +61,7 @@ namespace MoneyBook2.ViewModels
 
             RefreshViewCommand = new RelayCommand<object>(RefreshView);
             ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
+            ClearSelectionCommand = new RelayCommand<Due>(ClearSelection);
 
             this.Activated += OnActivated;
         }
@@ -102,8 +117,9 @@ namespace MoneyBook2.ViewModels
                 })
                 .ToList();
 
-            Dues = new ObservableCollection<Due>(dues);
             Accounts = new ObservableCollection<Account>(accounts);
+            Dues = new ObservableCollection<Due>(dues);
+            AreDuesSelected = Dues.Any(d => d.IsSelected);
         }
 
         private void ToggleSelectedDue(Due due)
@@ -126,8 +142,37 @@ namespace MoneyBook2.ViewModels
             }
             Accounts = new ObservableCollection<Account>(accounts);
 
+            AreDuesSelected = Dues.Any(d => d.IsSelected);
+
             SaveDuesToFile();
         }
+
+        private void ClearSelection(Due due)
+        {
+            var accounts = Accounts.ToList();
+            var dues = Dues.ToList();
+            dues.ForEach(due =>
+            {
+                var account = accounts.FirstOrDefault(a => a.AcctId == due.AcctId);
+                if (account is not null)
+                {
+                    if (due.IsSelected)
+                    {
+                        due.IsSelected = false;
+                        account.TotalDues -= due.Amount;
+                    }
+                }
+            });
+
+            Accounts = new ObservableCollection<Account>(accounts);
+            Dues = new ObservableCollection<Due>(dues);
+            AreDuesSelected = Dues.Any(d => d.IsSelected);
+
+            SaveDuesToFile();
+
+        }
+
+        #region File Operations
 
         private string _duesFilesname = @"C:\ProgramData\MoneyBook\dues.json";
 
@@ -164,5 +209,7 @@ namespace MoneyBook2.ViewModels
                 MessageBox.Show($"Exception while saving dues. {ex.Message}");
             }
         }
+
+        #endregion
     }
 }

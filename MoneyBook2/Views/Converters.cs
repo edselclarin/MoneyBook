@@ -1,10 +1,46 @@
 ﻿using MoneyBook.Data;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace MoneyBook2.Views
 {
+    public class BooleanToVisibilityConverter : IValueConverter
+    {
+        // Converts bool to Visibility
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (!(value is bool boolValue))
+                return Visibility.Collapsed;
+
+            // If parameter is "collapse", invert behavior: false -> Collapsed, true -> Visible
+            if (parameter is string param && param.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+            {
+                return boolValue ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            // Default behavior: true -> Visible, false -> Collapsed
+            return boolValue ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        // Converts back Visibility to bool
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (!(value is Visibility visibility))
+                return false;
+
+            bool result = visibility == Visibility.Visible;
+
+            if (parameter is string param && param.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+            {
+                return !result;
+            }
+
+            return result;
+        }
+    }
+
     public class DueStateTypesToForegroundConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
