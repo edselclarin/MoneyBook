@@ -4,7 +4,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:MoneyBook2.Views"
         xmlns:viewModels="clr-namespace:MoneyBook2.ViewModels"
-        Title="MoneyBook" Height="610" Width="900"
+        Title="MoneyBook" Height="610" Width="1000"
         Background="#FF505050"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -169,12 +169,12 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header="Final" 
+                    <GridViewColumn Header="Remaining" 
                                     Width="90"
                                     HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding FinalBalance}"
+                                <TextBlock Text="{Binding RemainingBalance}"
                                            Style="{StaticResource TextBlockStyle}"
                                            TextAlignment="Right"/>
                             </DataTemplate>
@@ -210,6 +210,17 @@
                                           CommandParameter="{Binding}"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Account" 
+                                    Width="100"
+                                    HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding AccountName}"
+                                           Style="{StaticResource TextBlockStyle}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
