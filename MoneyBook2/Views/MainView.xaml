@@ -73,7 +73,7 @@
                TargetType="GridViewColumnHeader">
             <Setter Property="FontSize" Value="{StaticResource FontSizeMedium}"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="6 3 6 3"/>
+            <Setter Property="Padding" Value="9 3 6 3"/>
             <Setter Property="Foreground" Value="{StaticResource DeepTransparentBlack}"/>
             <Setter Property="Background" Value="{StaticResource DarkGhostWhite}"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
