@@ -31,6 +31,7 @@ namespace MoneyBook.Data
         void DeleteAllTransactions();
         void AddTransactions(IEnumerable<Transaction> transactions);
         void ImportTransactions();
+        Task ImportTransactionsAsync();
         void AddTransaction(Transaction transaction);
         void UpdateTransaction(Transaction transaction);
     }
@@ -59,6 +60,8 @@ namespace MoneyBook.Data
     public interface IDatabaseManagementProxy
     {
         void BackupDatabase(string backupDir);
+        Task BackupDatabaseAsync(string backupDir);
         void RestoreDatabase(string filename);
+        Task RestoreDatabaseAsync(string filename);
     }
 }

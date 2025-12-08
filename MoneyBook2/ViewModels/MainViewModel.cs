@@ -1,11 +1,14 @@
 ﻿using Autofac;
 using Caliburn.Micro;
+using Microsoft.Win32;
 using MoneyBook;
 using MoneyBook.Data;
+using MoneyBook.DataProviders;
 using MoneyBook2.DataModels;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Account = MoneyBook2.DataModels.Account;
@@ -47,13 +50,29 @@ namespace MoneyBook2.ViewModels
             set
             {
                 _areDuesSelected = value;
+
                 NotifyOfPropertyChange(() => AreDuesSelected);
+            }
+        }
+
+        private Cursor _currentCursor;
+        public Cursor CurrentCursor
+        {
+            get => _currentCursor;
+            set
+            {
+                _currentCursor = value;
+
+                NotifyOfPropertyChange(() => CurrentCursor);
             }
         }
 
         public ICommand RefreshViewCommand { get; }
         public ICommand ToggleSelectedDueCommand { get; }
         public ICommand ClearSelectionCommand { get; }
+        public ICommand ImportTransactionsCommand { get; }
+        public ICommand BackupDatabaseCommand { get; }
+        public ICommand RestoreDatabaseCommand { get; }
 
         public MainViewModel()
         {
@@ -62,6 +81,9 @@ namespace MoneyBook2.ViewModels
             RefreshViewCommand = new RelayCommand<object>(RefreshView);
             ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
             ClearSelectionCommand = new RelayCommand<Due>(ClearSelection);
+            ImportTransactionsCommand = new RelayCommand<object>(async (_) => await ImportTransactionsAsync(_));
+            BackupDatabaseCommand = new RelayCommand<object>(async (_) => await BackupDatabaseAsync(_));
+            RestoreDatabaseCommand = new RelayCommand<object>(async (_) => await RestoreDatabaseAsync(_));
 
             this.Activated += OnActivated;
         }
@@ -170,6 +192,71 @@ namespace MoneyBook2.ViewModels
 
             SaveDuesToFile();
 
+        }
+
+        private async Task ImportTransactionsAsync(object obj)
+        {
+            CurrentCursor = Cursors.Wait;
+
+            await _dbProxy.ImportTransactionsAsync();
+
+            RefreshView(null);
+
+            CurrentCursor = Cursors.Arrow;
+
+            MessageBox.Show("Import complete.", Resources.AppTitle);
+        }
+
+        private async Task BackupDatabaseAsync(object obj)
+        {
+            var ofd = new OpenFolderDialog()
+            {
+                InitialDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
+            };
+
+            var result = ofd.ShowDialog();
+            if (result.Equals(false))
+            {
+                return;
+            }
+
+            CurrentCursor = Cursors.Wait;
+
+            await _dbProxy.BackupDatabaseAsync(ofd.FolderName);
+
+            RefreshView(null);
+
+            CurrentCursor = Cursors.Arrow;
+
+            MessageBox.Show("Backup complete.", Resources.AppTitle);
+        }
+
+        private async Task RestoreDatabaseAsync(object obj)
+        {
+            var ofd = new OpenFileDialog()
+            {
+                InitialDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
+                Filter = "Data Files|*.json;*.json|All Files|*.*",
+                Multiselect = false
+            };
+
+            var result = ofd.ShowDialog();
+            if (result.Equals(false))
+            {
+                return;
+            }
+
+            CurrentCursor = Cursors.Wait;
+
+            await _dbProxy.RestoreDatabaseAsync(ofd.FileName);
+
+            RefreshView(null);
+
+            CurrentCursor = Cursors.Arrow;
+
+            MessageBox.Show("Restore complete.", Resources.AppTitle);
         }
 
         #region File Operations

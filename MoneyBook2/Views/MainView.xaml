@@ -4,6 +4,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:MoneyBook2.Views"
         xmlns:viewModels="clr-namespace:MoneyBook2.ViewModels"
+        local:CursorHelper.Cursor="{Binding CurrentCursor}"
         Title="MoneyBook" Height="620" Width="1000"
         Background="#FF505050"
         WindowStartupLocation="CenterScreen">
@@ -139,8 +140,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="450"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
         <!-- Accounts Table -->
         <GroupBox Grid.Row="0"
+                  Grid.Column="0"
                   Width="450"
                   BorderThickness="0"
                   HorizontalAlignment="Left"
@@ -210,8 +217,33 @@
             </ListView>
         </GroupBox>
 
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0 25 0 0">
+            <Button Content="Import Transactions"
+                    Height="30"
+                    Width="120"
+                    Margin="5"
+                    Command="{Binding ImportTransactionsCommand}"/>
+            <Button Content="Backup Database"
+                    Height="30"
+                    Width="120"
+                    Margin="5"
+                    Command="{Binding BackupDatabaseCommand}"/>
+            <Button Content="Restore Database"
+                    Height="30"
+                    Width="120"
+                    Margin="5"
+                    Command="{Binding RestoreDatabaseCommand}"/>
+        </StackPanel>
+
         <!-- Dues Table-->
         <GroupBox Grid.Row="1"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
                   BorderThickness="0"
                   HorizontalAlignment="Left"
                   Margin="0 0 0 10">

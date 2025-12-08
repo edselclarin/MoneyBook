@@ -165,8 +165,14 @@ namespace MoneyBook.Data
 
         public void ImportTransactions()
         {
-            var importer = new OfxTransactionImporter();
+            var importer = new OfxTransactionImporter(this);
             importer.Import();
+        }
+
+        public async Task ImportTransactionsAsync()
+        {
+            var importer = new OfxTransactionImporter(this);
+            await importer.ImportAsync();
         }
 
         public void AddTransaction(Transaction transaction)
@@ -464,6 +470,11 @@ namespace MoneyBook.Data
             }
         }
 
+        public Task BackupDatabaseAsync(string filename)
+        {
+            return Task.Run(() => BackupDatabase(filename));
+        }
+
         public void RestoreDatabase(string filename)
         {
             if (File.Exists(filename))
@@ -626,6 +637,11 @@ namespace MoneyBook.Data
 
                 tr.Commit();
             }
+        }
+
+        public Task RestoreDatabaseAsync(string filename)
+        {
+            return Task.Run(() => RestoreDatabase(filename));
         }
 
         #endregion
