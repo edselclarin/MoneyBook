@@ -69,7 +69,7 @@ namespace MoneyBook2.ViewModels
 
         public ICommand RefreshViewCommand { get; }
         public ICommand ToggleSelectedDueCommand { get; }
-        public ICommand ClearSelectionCommand { get; }
+        public ICommand UncheckAllCommand { get; }
         public ICommand ImportTransactionsCommand { get; }
         public ICommand BackupDatabaseCommand { get; }
         public ICommand RestoreDatabaseCommand { get; }
@@ -80,7 +80,7 @@ namespace MoneyBook2.ViewModels
 
             RefreshViewCommand = new RelayCommand<object>(async (_) => await RefreshViewAsync());
             ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
-            ClearSelectionCommand = new RelayCommand<Due>(ClearSelection);
+            UncheckAllCommand = new RelayCommand<Due>(UncheckAll);
             ImportTransactionsCommand = new RelayCommand<object>(async (_) => await ImportTransactionsAsync(_));
             BackupDatabaseCommand = new RelayCommand<object>(async (_) => await BackupDatabaseAsync(_));
             RestoreDatabaseCommand = new RelayCommand<object>(async (_) => await RestoreDatabaseAsync(_));
@@ -139,15 +139,15 @@ namespace MoneyBook2.ViewModels
                     due.AccountName = accounts
                         .SingleOrDefault(a => a.AcctId == reminder.AcctId)?.Name ?? string.Empty;
 
-                    due.IsSelected = savedDues
-                        ?.SingleOrDefault(d => d.RmdrId == reminder.RmdrId)?.IsSelected ?? false;
+                    due.IsChecked = savedDues
+                        ?.SingleOrDefault(d => d.RmdrId == reminder.RmdrId)?.IsChecked ?? false;
 
-                    if (due.IsSelected)
+                    if (due.IsChecked)
                     {
                         var account = accounts.FirstOrDefault(a => a.AcctId == due.AcctId);
                         if (account is not null)
                         {
-                            if (due.IsSelected)
+                            if (due.IsChecked)
                             {
                                 account.TotalDues += due.Amount;
                             }
@@ -169,7 +169,7 @@ namespace MoneyBook2.ViewModels
         {
             Accounts = new ObservableCollection<Account>(data.Accounts);
             Dues = new ObservableCollection<Due>(data.Dues);
-            AreDuesSelected = Dues.Any(d => d.IsSelected);
+            AreDuesSelected = Dues.Any(d => d.IsChecked);
         }
 
         private void ToggleSelectedDue(Due due)
@@ -182,7 +182,7 @@ namespace MoneyBook2.ViewModels
             }
 
             // Update account.
-            if (due.IsSelected)
+            if (due.IsChecked)
             {
                 account.TotalDues += due.Amount;
             }
@@ -192,12 +192,12 @@ namespace MoneyBook2.ViewModels
             }
             Accounts = new ObservableCollection<Account>(accounts);
 
-            AreDuesSelected = Dues.Any(d => d.IsSelected);
+            AreDuesSelected = Dues.Any(d => d.IsChecked);
 
             SaveDuesToFile();
         }
 
-        private void ClearSelection(Due due)
+        private void UncheckAll(Due due)
         {
             var accounts = Accounts.ToList();
             var dues = Dues.ToList();
@@ -206,9 +206,9 @@ namespace MoneyBook2.ViewModels
                 var account = accounts.FirstOrDefault(a => a.AcctId == due.AcctId);
                 if (account is not null)
                 {
-                    if (due.IsSelected)
+                    if (due.IsChecked)
                     {
-                        due.IsSelected = false;
+                        due.IsChecked = false;
                         account.TotalDues -= due.Amount;
                     }
                 }
@@ -216,7 +216,7 @@ namespace MoneyBook2.ViewModels
 
             Accounts = new ObservableCollection<Account>(accounts);
             Dues = new ObservableCollection<Due>(dues);
-            AreDuesSelected = Dues.Any(d => d.IsSelected);
+            AreDuesSelected = Dues.Any(d => d.IsChecked);
 
             SaveDuesToFile();
         }

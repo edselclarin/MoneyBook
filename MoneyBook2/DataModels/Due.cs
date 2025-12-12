@@ -6,7 +6,7 @@ namespace MoneyBook2.DataModels
 {
     public class Due : Reminder
     {
-        public bool IsSelected { get; set; }
+        public bool IsChecked { get; set; }
 
         public string AccountName { get; set; }
 

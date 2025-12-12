@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:MoneyBook2.Views"
         xmlns:viewModels="clr-namespace:MoneyBook2.ViewModels"
         local:CursorHelper.Cursor="{Binding CurrentCursor}"
-        Title="MoneyBook" Height="620" Width="1000"
+        Title="MoneyBook" Height="695" Width="1000"
         Background="#FF505050"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -257,7 +257,7 @@
                         <TextBlock VerticalAlignment="Top"
                                    Visibility="{Binding AreDuesSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Hyperlink Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.ClearSelectionCommand, ElementName=RootGrid}">Clear Selection</Hyperlink>
+                                       Command="{Binding DataContext.UncheckAllCommand, ElementName=RootGrid}">Uncheck All</Hyperlink>
                         </TextBlock>
                     </StackPanel>
                 </StackPanel>
@@ -273,7 +273,7 @@
                                         HeaderContainerStyle="{StaticResource CenterJustifiedGridViewColumnHeaderStyle}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsSelected}"
+                                    <CheckBox IsChecked="{Binding IsChecked}"
                                               Command="{Binding DataContext.ToggleSelectedDueCommand, ElementName=RootGrid}"
                                               CommandParameter="{Binding}"
                                               HorizontalAlignment="Center"
