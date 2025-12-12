@@ -3,18 +3,18 @@ using Caliburn.Micro;
 using Microsoft.Win32;
 using MoneyBook;
 using MoneyBook.Data;
-using MoneyBook.DataProviders;
 using MoneyBook2.DataModels;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Account = MoneyBook2.DataModels.Account;
 
 namespace MoneyBook2.ViewModels
 {
+    public record ViewData(List<Account> Accounts, List<Due> Dues);
+
     public class MainViewModel : Screen
     {
         private IDbContextProxy _dbProxy;
@@ -78,27 +78,49 @@ namespace MoneyBook2.ViewModels
         {
             _dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
 
-            RefreshViewCommand = new RelayCommand<object>(RefreshView);
+            RefreshViewCommand = new RelayCommand<object>(async (_) => await RefreshViewAsync());
             ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
             ClearSelectionCommand = new RelayCommand<Due>(ClearSelection);
             ImportTransactionsCommand = new RelayCommand<object>(async (_) => await ImportTransactionsAsync(_));
             BackupDatabaseCommand = new RelayCommand<object>(async (_) => await BackupDatabaseAsync(_));
             RestoreDatabaseCommand = new RelayCommand<object>(async (_) => await RestoreDatabaseAsync(_));
-
-            this.Activated += OnActivated;
         }
 
-        private async Task OnActivated(object sender, ActivationEventArgs e)
+        protected override async void OnViewLoaded(object view)
         {
-            RefreshView(null);
+            base.OnViewLoaded(view);
+
+            await RefreshViewAsync();
         }
 
-        private void RefreshView(object obj)
+        public async Task RefreshViewAsync()
+        {
+            try
+            {
+                CurrentCursor = Cursors.Wait;
+
+                // Fetch data in the background.
+                var data = await Task.Run(() => LoadViewData());
+
+                // Apply data on the UI thread.
+                ApplyViewData(data);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception during refresh. {ex.Message}", Resources.AppTitle);
+            }
+            finally
+            {
+                CurrentCursor = Cursors.Arrow;
+            }
+        }
+
+        private ViewData LoadViewData()
         {
             // Get accounts.
             var accountSummaries = _dbProxy.GetAccountSummaries().ToList();
             var accounts = accountSummaries
-                .Select(summary => 
+                .Select(summary =>
                 {
                     var account = Account.FromAccountSummary(summary);
                     account.TotalDues = 0.00m;
@@ -110,7 +132,7 @@ namespace MoneyBook2.ViewModels
             var savedDues = GetDuesFromFile();
             var reminders = _dbProxy.GetReminders(SortMode.Ascending).ToList();
             var dues = reminders
-                .Select(reminder => 
+                .Select(reminder =>
                 {
                     var due = Due.FromReminder(reminder);
 
@@ -135,12 +157,18 @@ namespace MoneyBook2.ViewModels
                             }
                         }
                     }
+
                     return due;
                 })
                 .ToList();
 
-            Accounts = new ObservableCollection<Account>(accounts);
-            Dues = new ObservableCollection<Due>(dues);
+            return new ViewData(accounts, dues);
+        }
+
+        private void ApplyViewData(ViewData data)
+        {
+            Accounts = new ObservableCollection<Account>(data.Accounts);
+            Dues = new ObservableCollection<Due>(data.Dues);
             AreDuesSelected = Dues.Any(d => d.IsSelected);
         }
 
@@ -191,72 +219,98 @@ namespace MoneyBook2.ViewModels
             AreDuesSelected = Dues.Any(d => d.IsSelected);
 
             SaveDuesToFile();
-
         }
 
         private async Task ImportTransactionsAsync(object obj)
         {
-            CurrentCursor = Cursors.Wait;
+            try
+            {
+                CurrentCursor = Cursors.Wait;
 
-            await _dbProxy.ImportTransactionsAsync();
+                await _dbProxy.ImportTransactionsAsync();
 
-            RefreshView(null);
+                await RefreshViewAsync();
 
-            CurrentCursor = Cursors.Arrow;
+                CurrentCursor = Cursors.Arrow;
 
-            MessageBox.Show("Import complete.", Resources.AppTitle);
+                MessageBox.Show("Import complete.", Resources.AppTitle);
+            }
+            catch (Exception ex)
+            {
+                CurrentCursor = Cursors.Arrow;
+
+                MessageBox.Show($"Exception during import. {ex.Message}", Resources.AppTitle);
+            }
         }
 
         private async Task BackupDatabaseAsync(object obj)
         {
-            var ofd = new OpenFolderDialog()
+            try
             {
-                InitialDirectory = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
-            };
+                var ofd = new OpenFolderDialog()
+                {
+                    InitialDirectory = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
+                };
 
-            var result = ofd.ShowDialog();
-            if (result.Equals(false))
-            {
-                return;
+                var result = ofd.ShowDialog();
+                if (result.Equals(false))
+                {
+                    return;
+                }
+
+                CurrentCursor = Cursors.Wait;
+
+                await _dbProxy.BackupDatabaseAsync(ofd.FolderName);
+
+                CurrentCursor = Cursors.Arrow;
+
+                await RefreshViewAsync();
+
+                MessageBox.Show("Backup complete.", Resources.AppTitle);
             }
+            catch (Exception ex)
+            {
+                CurrentCursor = Cursors.Arrow;
 
-            CurrentCursor = Cursors.Wait;
-
-            await _dbProxy.BackupDatabaseAsync(ofd.FolderName);
-
-            RefreshView(null);
-
-            CurrentCursor = Cursors.Arrow;
-
-            MessageBox.Show("Backup complete.", Resources.AppTitle);
+                MessageBox.Show($"Exception during backup. {ex.Message}", Resources.AppTitle);
+            }
         }
 
         private async Task RestoreDatabaseAsync(object obj)
         {
-            var ofd = new OpenFileDialog()
+            try
             {
-                InitialDirectory = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
-                Filter = "Data Files|*.json;*.json|All Files|*.*",
-                Multiselect = false
-            };
+                var ofd = new OpenFileDialog()
+                {
+                    InitialDirectory = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
+                    Filter = "Data Files|*.json;*.json|All Files|*.*",
+                    Multiselect = false
+                };
 
-            var result = ofd.ShowDialog();
-            if (result.Equals(false))
-            {
-                return;
+                var result = ofd.ShowDialog();
+                if (result.Equals(false))
+                {
+                    return;
+                }
+
+                CurrentCursor = Cursors.Wait;
+
+                await _dbProxy.RestoreDatabaseAsync(ofd.FileName);
+
+                await RefreshViewAsync();
+
+                CurrentCursor = Cursors.Arrow;
+
+                MessageBox.Show("Restore complete.", Resources.AppTitle);
             }
+            catch (Exception ex)
+            {
+                CurrentCursor = Cursors.Arrow;
 
-            CurrentCursor = Cursors.Wait;
-
-            await _dbProxy.RestoreDatabaseAsync(ofd.FileName);
-
-            RefreshView(null);
-
-            CurrentCursor = Cursors.Arrow;
-
-            MessageBox.Show("Restore complete.", Resources.AppTitle);
+                MessageBox.Show($"Exception during restore. {ex.Message}", Resources.AppTitle);
+            }
         }
 
         #region File Operations

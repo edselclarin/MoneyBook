@@ -13,10 +13,6 @@
     </Window.DataContext>
     
     <Window.Resources>
-        <!-- Converters -->
-        <local:DueStateTypesToForegroundConverter x:Key="DueStateTypesToForegroundConverter"/>
-        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-
         <!-- Font Sizes -->
         <System:Double x:Key="FontSizeMedium">12</System:Double>
         <System:Double x:Key="FontSizeLarge">14</System:Double>
@@ -133,7 +129,8 @@
 
     <!-- Body -->
     <Grid x:Name="RootGrid" 
-          Margin="5">
+          Margin="5"
+          IsEnabled="{Binding IsRefreshing, Converter={StaticResource InverseBooleanConverter}}">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
