@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using MoneyBook.Models;
+using MoneyBook.Monads;
 
 namespace MoneyBook.Data
 {
@@ -59,9 +60,9 @@ namespace MoneyBook.Data
 
     public interface IDatabaseManagementProxy
     {
-        void BackupDatabase(string backupDir);
-        Task BackupDatabaseAsync(string backupDir);
-        void RestoreDatabase(string filename);
-        Task RestoreDatabaseAsync(string filename);
+        Result<List<string>, string> BackupDatabase(string backupDir);
+        Task<Result<List<string>, string>> BackupDatabaseAsync(string backupDir);
+        Result<string> RestoreDatabase(string filename);
+        Task<Result<string>> RestoreDatabaseAsync(string filename);
     }
 }

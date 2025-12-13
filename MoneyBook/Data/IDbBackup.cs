@@ -1,7 +1,9 @@
-﻿namespace MoneyBook.Data
+﻿using MoneyBook.Monads;
+
+namespace MoneyBook.Data
 {
     public interface IDbBackup
     {
-        void Save();
+        Result<string, string> Save();
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using MoneyBook.DataProviders;
 using MoneyBook.Extensions;
 using MoneyBook.Models;
+using MoneyBook.Monads;
 using Newtonsoft.Json;
 
 namespace MoneyBook.Data
@@ -454,31 +455,52 @@ namespace MoneyBook.Data
 
         #region DatabaseManagement
 
-        public void BackupDatabase(string backupDir)
+        public Result<List<string>, string> BackupDatabase(string backupDir)
         {
-            Directory.CreateDirectory(backupDir);
-
-            var dbBackups = new IDbBackup[]
+            try
             {
-                MoneyBookDbTextBackup.Create(m_db, backupDir),
-                MoneyBookDbTapeBackup.Create(m_db, backupDir)
-            };
+                Directory.CreateDirectory(backupDir);
 
-            foreach (var backup in dbBackups)
+                var dbBackups = new IDbBackup[]
+                {
+                    MoneyBookDbTextBackup.Create(m_db, backupDir),
+                    MoneyBookDbTapeBackup.Create(m_db, backupDir)
+                };
+
+                var backupFilenames = new List<string>();
+                foreach (var backup in dbBackups)
+                {
+                    var saveResult = backup.Save();
+                    if (saveResult.IsFailure)
+                    {
+                        continue;
+                    }
+
+                    backupFilenames.Add(saveResult.Value);
+                }
+
+                return Result<List<string>, string>.Success(backupFilenames);
+            }
+            catch (Exception ex)
             {
-                backup.Save();
+                return Result<List<string>, string>.Failure($"Database backup failed: {ex.Message}");
             }
         }
 
-        public Task BackupDatabaseAsync(string filename)
+        public Task<Result<List<string>, string>> BackupDatabaseAsync(string filename)
         {
             return Task.Run(() => BackupDatabase(filename));
         }
 
-        public void RestoreDatabase(string filename)
+        public Result<string> RestoreDatabase(string filename)
         {
-            if (File.Exists(filename))
+            try
             {
+                if (!File.Exists(filename))
+                {
+                    return Result<string>.Failure($"Failed to restore database from {filename}.");
+                }
+
                 string json = File.ReadAllText(filename);
 
                 var backup = JsonConvert.DeserializeObject<BackupContext>(json);
@@ -636,10 +658,16 @@ namespace MoneyBook.Data
                 m_db.SaveChanges();
 
                 tr.Commit();
+
+                return Result<string>.Success();
+            }
+            catch (Exception ex)
+            {
+                return Result<string>.Failure($"Restore database failed: {ex.Message}");
             }
         }
 
-        public Task RestoreDatabaseAsync(string filename)
+        public Task<Result<string>> RestoreDatabaseAsync(string filename)
         {
             return Task.Run(() => RestoreDatabase(filename));
         }

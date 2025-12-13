@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using MoneyBook.Monads;
 
 namespace MoneyBook.Data
 {
@@ -24,22 +25,31 @@ namespace MoneyBook.Data
             return new(dbContext, backupDir);
         }
         
-        public void Save()
+        public Result<string, string> Save()
         {
-            using SqlConnection conn = new SqlConnection(_dbContext.Database.GetConnectionString());
-            
-            conn.Open();
-
-            string databaseName = new SqlConnectionStringBuilder(conn.ConnectionString).InitialCatalog;
-            string filePath = Path.Combine(_backupDir, $"MoneyBook-v2-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.bak");
-
-            using var cmd = new SqlCommand()
+            try
             {
-                Connection = conn,
-                CommandText = $"BACKUP DATABASE {databaseName} TO DISK='{filePath}'"
-            };
+                using SqlConnection conn = new SqlConnection(_dbContext.Database.GetConnectionString());
 
-            cmd.ExecuteNonQuery();
+                conn.Open();
+
+                string databaseName = new SqlConnectionStringBuilder(conn.ConnectionString).InitialCatalog;
+                string filePath = Path.Combine(_backupDir, $"MoneyBook-v2-{DateTime.Now.ToString("yyyy-MMdd-HHmmss")}.bak");
+
+                using var cmd = new SqlCommand()
+                {
+                    Connection = conn,
+                    CommandText = $"BACKUP DATABASE {databaseName} TO DISK='{filePath}'"
+                };
+
+                cmd.ExecuteNonQuery();
+
+                return Result<string, string>.Success(filePath);
+            }
+            catch (Exception ex)
+            {
+                return Result<string, string>.Failure($"Database tape backup failed: {ex.Message}");
+            }
         }
     }
 }
