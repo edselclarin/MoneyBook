@@ -129,7 +129,7 @@ namespace MoneyBook2.ViewModels
                 .ToList();
 
             // Generate dues from reminders, and restore reminders previously selected.
-            var savedDues = GetDuesFromFile();
+            var savedDues = GetDuesFromFile(_duesFilesname);
             var reminders = _dbProxy.GetReminders(SortMode.Ascending).ToList();
             var dues = reminders
                 .Select(reminder =>
@@ -140,7 +140,7 @@ namespace MoneyBook2.ViewModels
                         .SingleOrDefault(a => a.AcctId == reminder.AcctId)?.Name ?? string.Empty;
 
                     due.IsChecked = savedDues
-                        ?.SingleOrDefault(d => d.RmdrId == reminder.RmdrId)?.IsChecked ?? false;
+                        ?.SingleOrDefault(d => d.Matches(reminder))?.IsChecked ?? false;
 
                     if (due.IsChecked)
                     {
@@ -194,7 +194,7 @@ namespace MoneyBook2.ViewModels
 
             AreDuesSelected = Dues.Any(d => d.IsChecked);
 
-            SaveDuesToFile();
+            SaveDuesToFile(_duesFilesname);
         }
 
         private void UncheckAll(Due due)
@@ -218,7 +218,7 @@ namespace MoneyBook2.ViewModels
             Dues = new ObservableCollection<Due>(dues);
             AreDuesSelected = Dues.Any(d => d.IsChecked);
 
-            SaveDuesToFile();
+            SaveDuesToFile(_duesFilesname);
         }
 
         private async Task ImportTransactionsAsync(object obj)
@@ -243,14 +243,18 @@ namespace MoneyBook2.ViewModels
             }
         }
 
+        private static readonly string _backupFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook");
+        private static readonly string _dataFolder = @"C:\ProgramData\MoneyBook";
+        private static readonly string _duesFilesname = Path.Combine(_dataFolder, "dues.json");
+
         private async Task BackupDatabaseAsync(object obj)
         {
             try
             {
                 var ofd = new OpenFolderDialog()
                 {
-                    InitialDirectory = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
+                    InitialDirectory = _backupFolder,
                 };
 
                 var result = ofd.ShowDialog();
@@ -261,9 +265,27 @@ namespace MoneyBook2.ViewModels
 
                 CurrentCursor = Cursors.Wait;
 
-                await _dbProxy.BackupDatabaseAsync(ofd.FolderName);
+                var backupResult = await _dbProxy.BackupDatabaseAsync(ofd.FolderName);
+                if (backupResult.IsFailure)
+                {
+                    MessageBox.Show(backupResult.Error, Resources.AppTitle);
+                    return;
+                }
 
                 CurrentCursor = Cursors.Arrow;
+
+                var textBackupFilename = backupResult.Value
+                    .SingleOrDefault(f => f.Contains("json", StringComparison.OrdinalIgnoreCase));
+                if (string.IsNullOrEmpty(textBackupFilename))
+                {
+                    MessageBox.Show($"Backup failed. No text backup file found.", Resources.AppTitle);
+                    return;
+                }
+
+                string backupDuesFilename = Path.Combine(
+                    _backupFolder, 
+                    $"{Path.GetFileNameWithoutExtension(textBackupFilename)}-Dues{Path.GetExtension(textBackupFilename)}");
+                SaveDuesToFile(backupDuesFilename);
 
                 await RefreshViewAsync();
 
@@ -283,8 +305,7 @@ namespace MoneyBook2.ViewModels
             {
                 var ofd = new OpenFileDialog()
                 {
-                    InitialDirectory = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Backup", "MoneyBook"),
+                    InitialDirectory = _backupFolder,
                     Filter = "Data Files|*.json;*.json|All Files|*.*",
                     Multiselect = false
                 };
@@ -297,11 +318,24 @@ namespace MoneyBook2.ViewModels
 
                 CurrentCursor = Cursors.Wait;
 
-                await _dbProxy.RestoreDatabaseAsync(ofd.FileName);
-
-                await RefreshViewAsync();
+                var restoreResult = await _dbProxy.RestoreDatabaseAsync(ofd.FileName);
+                if (restoreResult.IsFailure)
+                {
+                    MessageBox.Show(restoreResult.Error, Resources.AppTitle);
+                    return;
+                }
 
                 CurrentCursor = Cursors.Arrow;
+
+                string backupDuesFilename = Path.Combine(
+                    _backupFolder,
+                    $"{Path.GetFileNameWithoutExtension(ofd.FileName)}-Dues{Path.GetExtension(ofd.FileName)}");
+                if (File.Exists(backupDuesFilename))
+                {
+                    File.Copy(backupDuesFilename, _duesFilesname, overwrite: true);
+                }
+
+                await RefreshViewAsync();
 
                 MessageBox.Show("Restore complete.", Resources.AppTitle);
             }
@@ -313,41 +347,44 @@ namespace MoneyBook2.ViewModels
             }
         }
 
-        #region File Operations
+        #region File Operations for Dues
 
-        private string _duesFilesname = @"C:\ProgramData\MoneyBook\dues.json";
-
-        private List<Due>? GetDuesFromFile()
+        private List<Due>? GetDuesFromFile(string? filepath)
         {
             try
             {
-                if (!File.Exists(_duesFilesname))
+                if (!File.Exists(filepath))
                 {
                     return null;
                 }
 
-                string json = File.ReadAllText(_duesFilesname);
+                string json = File.ReadAllText(filepath);
                 return JsonConvert.DeserializeObject<List<Due>>(json);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Exception while getting dues. {ex.Message}");
+                MessageBox.Show($"Exception while getting dues from{filepath}. {ex.Message}");
             }
 
             return null;
         }
 
-        private void SaveDuesToFile()
+        private void SaveDuesToFile(string? filepath)
         {
             try
             {
+                if(string.IsNullOrWhiteSpace(filepath))
+                {
+                    return;
+                }
+
                 var dues = Dues.ToList();
                 string json = JsonConvert.SerializeObject(dues, Formatting.Indented);
-                File.WriteAllText(_duesFilesname, json);
+                File.WriteAllText(filepath ?? filepath, json);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Exception while saving dues. {ex.Message}");
+                MessageBox.Show($"Exception while saving dues to {filepath}. {ex.Message}");
             }
         }
 
