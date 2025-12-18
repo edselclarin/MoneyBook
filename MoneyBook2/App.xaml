@@ -11,5 +11,6 @@
         <views:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
         <views:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <views:DueStateTypesToForegroundConverter x:Key="DueStateTypesToForegroundConverter"/>
+        <views:TextWithCountConverter x:Key="TextWithCountConverter"/>
     </Application.Resources>
 </Application>

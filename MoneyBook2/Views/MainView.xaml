@@ -117,7 +117,15 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="Orange"/>
                 </Trigger>
+                <!-- Disabled -->
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="Gray"/>
+                </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="HyperlinkTextBlock">
+            <Setter Property="Margin" Value="5 0 5 0"/>
         </Style>
         
     </Window.Resources>
@@ -255,9 +263,44 @@
                     <StackPanel Orientation="Horizontal"
                                 Margin="0 3 0 0">
                         <TextBlock VerticalAlignment="Top"
-                                   Visibility="{Binding AreDuesSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Hyperlink Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.UncheckAllCommand, ElementName=RootGrid}">Uncheck All</Hyperlink>
+                                   Style="{StaticResource HyperlinkTextBlock}">
+                            <Hyperlink ToolTip="Uncheck all dues" 
+                                       Style="{StaticResource HyperlinkHighlightStyle}"
+                                       Command="{Binding DataContext.UncheckAllDuesCommand, ElementName=RootGrid}">
+                                Uncheck All
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                                   Style="{StaticResource HyperlinkTextBlock}">
+                            <Hyperlink ToolTip="Deselect dues" 
+                                       Style="{StaticResource HyperlinkHighlightStyle}"
+                                       Command="{Binding DataContext.DeselectDuesCommand, ElementName=RootGrid}">
+                                <Run Text="{Binding SelectedCount, Converter={StaticResource TextWithCountConverter}, ConverterParameter=Deselect}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                                   Style="{StaticResource HyperlinkTextBlock}">
+                            <Hyperlink ToolTip="Skip selected due(s)"
+                                       Style="{StaticResource HyperlinkHighlightStyle}"
+                                       Command="{Binding DataContext.SkipDueCommand, ElementName=RootGrid}">
+                                <Run Text="{Binding SelectedCount, Converter={StaticResource TextWithCountConverter}, ConverterParameter=Skip}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                                   Style="{StaticResource HyperlinkTextBlock}">
+                            <Hyperlink ToolTip="Delete selected due(s)"
+                                       Style="{StaticResource HyperlinkHighlightStyle}"
+                                       Command="{Binding DataContext.DeleteDueCommand, ElementName=RootGrid}">
+                                <Run Text="{Binding SelectedCount, Converter={StaticResource TextWithCountConverter}, ConverterParameter=Delete}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                                   Style="{StaticResource HyperlinkTextBlock}">
+                            <Hyperlink ToolTip="Create a due" 
+                                       Style="{StaticResource HyperlinkHighlightStyle}"
+                                       Command="{Binding DataContext.CreateDueCommand, ElementName=RootGrid}">
+                                Create
+                            </Hyperlink>
                         </TextBlock>
                     </StackPanel>
                 </StackPanel>
@@ -265,7 +308,9 @@
             <ListView HorizontalAlignment="Stretch"
                       Background="{StaticResource DarkDimGray}"                      
                       ItemContainerStyle="{StaticResource DuesListViewItemStyle}"
-                      ItemsSource="{Binding Dues}">
+                      ItemsSource="{Binding Dues}"
+                      SelectionMode="Multiple"
+                      local:ListViewSelectedItemsBehavior.SelectedItems="{Binding SelectedDues}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="" 

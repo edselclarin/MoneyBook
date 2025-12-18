@@ -90,4 +90,17 @@ namespace MoneyBook2.Views
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
+
+    public class TextWithCountConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int count = value as int? ?? 0;
+            string text = parameter as string ?? string.Empty;
+            return count > 0 ? $"{text} ({count})" : $"{text}";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
 }

@@ -6,6 +6,7 @@ using MoneyBook.Data;
 using MoneyBook2.DataModels;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -43,15 +44,51 @@ namespace MoneyBook2.ViewModels
             }
         }
 
-        private bool _areDuesSelected;
-        public bool AreDuesSelected
+        private bool _hasDuesChecked;
+        public bool HasDuesChecked
         {
-            get { return _areDuesSelected; }
+            get { return _hasDuesChecked; }
             set
             {
-                _areDuesSelected = value;
+                _hasDuesChecked = value;
 
-                NotifyOfPropertyChange(() => AreDuesSelected);
+                NotifyOfPropertyChange(() => HasDuesChecked);
+            }
+        }
+
+        private ObservableCollection<Due> _selectedDues = new();
+        public ObservableCollection<Due> SelectedDues
+        {
+            get { return _selectedDues; }
+            set
+            {
+                _selectedDues = value;
+
+                NotifyOfPropertyChange(() => SelectedDues);
+            }
+        }
+
+        private int _selectedCount;
+        public int SelectedCount
+        {
+            get => _selectedCount;
+            set
+            {
+                _selectedCount = value;
+
+                NotifyOfPropertyChange(() => SelectedCount);
+            }
+        }
+
+        private bool _hasSelectedDues;
+        public bool HasSelectedDues
+        {
+            get { return _hasSelectedDues; }
+            set
+            {
+                _hasSelectedDues = value;
+
+                NotifyOfPropertyChange(() => HasSelectedDues);
             }
         }
 
@@ -68,23 +105,39 @@ namespace MoneyBook2.ViewModels
         }
 
         public ICommand RefreshViewCommand { get; }
-        public ICommand ToggleSelectedDueCommand { get; }
-        public ICommand UncheckAllCommand { get; }
+
         public ICommand ImportTransactionsCommand { get; }
         public ICommand BackupDatabaseCommand { get; }
         public ICommand RestoreDatabaseCommand { get; }
+
+        public ICommand ToggleSelectedDueCommand { get; }
+        public ICommand UncheckAllDuesCommand { get; }
+        public ICommand DeselectDuesCommand { get; }
+        public ICommand SkipDueCommand { get; }
+        public ICommand DeleteDueCommand { get; }
+        public ICommand CreateDueCommand { get; }
 
         public MainViewModel()
         {
             _dbProxy = MoneyBookContainerBuilder.Container.Resolve<IDbContextProxy>();
 
+            _selectedDues.CollectionChanged += SelectedDues_CollectionChanged;
+
             RefreshViewCommand = new RelayCommand<object>(async (_) => await RefreshViewAsync());
-            ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
-            UncheckAllCommand = new RelayCommand<Due>(UncheckAll);
+
             ImportTransactionsCommand = new RelayCommand<object>(async (_) => await ImportTransactionsAsync(_));
             BackupDatabaseCommand = new RelayCommand<object>(async (_) => await BackupDatabaseAsync(_));
             RestoreDatabaseCommand = new RelayCommand<object>(async (_) => await RestoreDatabaseAsync(_));
+
+            ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
+            UncheckAllDuesCommand = new RelayCommand<Due>(UncheckAllDues, (_) => HasDuesChecked);
+            DeselectDuesCommand = new RelayCommand<object>((_) => DeselectDues(), (_) => HasSelectedDues);
+            SkipDueCommand = new RelayCommand<object>(async (_) => await SkipDueAsync(_), (_) => HasSelectedDues);
+            DeleteDueCommand = new RelayCommand<object>(async (_) => await DeleteDueAsync(_), (_) => HasSelectedDues);
+            CreateDueCommand = new RelayCommand<object>(async (_) => await CreateDueAsync(_), (_) => !HasSelectedDues);
         }
+
+        #region View Operations
 
         protected override async void OnViewLoaded(object view)
         {
@@ -170,57 +223,12 @@ namespace MoneyBook2.ViewModels
         {
             Accounts = new ObservableCollection<Account>(data.Accounts);
             Dues = new ObservableCollection<Due>(data.Dues);
-            AreDuesSelected = Dues.Any(d => d.IsChecked);
+            HasDuesChecked = Dues.Any(d => d.IsChecked);
         }
 
-        private void ToggleSelectedDue(Due due)
-        {
-            var accounts = Accounts.ToList();
-            var account = accounts.FirstOrDefault(a => a.AcctId == due.AcctId);
-            if (account is null)
-            {
-                return;
-            }
+        #endregion
 
-            // Update account.
-            if (due.IsChecked)
-            {
-                account.TotalDues += due.Amount;
-            }
-            else
-            {
-                account.TotalDues -= due.Amount;
-            }
-            Accounts = new ObservableCollection<Account>(accounts);
-
-            AreDuesSelected = Dues.Any(d => d.IsChecked);
-
-            SaveDuesToFile(_duesFilesname);
-        }
-
-        private void UncheckAll(Due due)
-        {
-            var accounts = Accounts.ToList();
-            var dues = Dues.ToList();
-            dues.ForEach(due =>
-            {
-                var account = accounts.FirstOrDefault(a => a.AcctId == due.AcctId);
-                if (account is not null)
-                {
-                    if (due.IsChecked)
-                    {
-                        due.IsChecked = false;
-                        account.TotalDues -= due.Amount;
-                    }
-                }
-            });
-
-            Accounts = new ObservableCollection<Account>(accounts);
-            Dues = new ObservableCollection<Due>(dues);
-            AreDuesSelected = Dues.Any(d => d.IsChecked);
-
-            SaveDuesToFile(_duesFilesname);
-        }
+        #region Database Operations
 
         private async Task ImportTransactionsAsync(object obj)
         {
@@ -347,6 +355,85 @@ namespace MoneyBook2.ViewModels
                 MessageBox.Show($"Exception during restore. {ex.Message}", Resources.AppTitle);
             }
         }
+
+        #endregion
+
+        #region Operations on Dues
+
+        private void ToggleSelectedDue(Due due)
+        {
+            var accounts = Accounts.ToList();
+            var account = accounts.FirstOrDefault(a => a.AcctId == due.AcctId);
+            if (account is null)
+            {
+                return;
+            }
+
+            // Update account.
+            if (due.IsChecked)
+            {
+                account.TotalDues += due.Amount;
+            }
+            else
+            {
+                account.TotalDues -= due.Amount;
+            }
+            Accounts = new ObservableCollection<Account>(accounts);
+
+            HasDuesChecked = Dues.Any(d => d.IsChecked);
+
+            SaveDuesToFile(_duesFilesname);
+        }
+
+        private void UncheckAllDues(Due due)
+        {
+            var accounts = Accounts.ToList();
+            var dues = Dues.ToList();
+            dues.ForEach(due =>
+            {
+                var account = accounts.FirstOrDefault(a => a.AcctId == due.AcctId);
+                if (account is not null)
+                {
+                    if (due.IsChecked)
+                    {
+                        due.IsChecked = false;
+                        account.TotalDues -= due.Amount;
+                    }
+                }
+            });
+
+            Accounts = new ObservableCollection<Account>(accounts);
+            Dues = new ObservableCollection<Due>(dues);
+            HasDuesChecked = Dues.Any(d => d.IsChecked);
+
+            SaveDuesToFile(_duesFilesname);
+        }
+
+        private void SelectedDues_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            // Raise HasSelectedDues whenever selection changes
+            SelectedCount = _selectedDues is not null ? _selectedDues.Count() : 0;
+            HasSelectedDues = SelectedCount > 0;
+        }
+
+        private void DeselectDues()
+        {
+            SelectedDues.Clear();
+        }
+
+        private async Task SkipDueAsync(object _)
+        {
+        }
+
+        private async Task DeleteDueAsync(object _)
+        {
+        }
+
+        private async Task CreateDueAsync(object _)
+        {
+        }
+
+        #endregion
 
         #region File Operations for Dues
 
