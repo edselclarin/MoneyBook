@@ -40,8 +40,10 @@ namespace MoneyBook2.DataModels
         /// </summary>
         /// <param name="reminder">The <see cref="Reminder"/> to compare with the current reminder. Cannot be <c>null</c>.</param>
         /// <returns><see langword="true"/> if all properties of the current reminder, except RmdrId, AcctId and CatId, match those of the specified <paramref
-        /// name="reminder"/>; otherwise, <see langword="false"/>. NOTE: RmdrId, AcctId and CatId are excluded because 
-        /// they change during restoring database.</returns>
+        /// name="reminder"/>; otherwise, <see langword="false"/>. 
+        /// NOTE: RmdrId, AcctId and CatId are ignored because they change during restoring database. 
+        /// Amount is also ignored because it may change by another process.
+        /// </returns>
         public bool Matches(Reminder reminder)
         {
             return DueDate == reminder.DueDate
@@ -49,7 +51,6 @@ namespace MoneyBook2.DataModels
                 && Payee == reminder.Payee
                 && Memo == reminder.Memo
                 && Website == reminder.Website
-                && Amount == (reminder.TrnsType == TransactionTypes.DEBIT.ToString() ? -reminder.Amount : reminder.Amount)
                 && Frequency == reminder.Frequency
                 && DateAdded == reminder.DateAdded
                 && DateModified == reminder.DateModified

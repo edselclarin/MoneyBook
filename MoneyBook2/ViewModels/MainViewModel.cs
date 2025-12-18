@@ -130,7 +130,8 @@ namespace MoneyBook2.ViewModels
 
             // Generate dues from reminders, and restore reminders previously selected.
             var savedDues = GetDuesFromFile(_duesFilesname);
-            var reminders = _dbProxy.GetReminders(SortMode.Ascending).ToList();
+            var reminders = _dbProxy.GetReminders(SortMode.Ascending)
+                .ToList();
             var dues = reminders
                 .Select(reminder =>
                 {
