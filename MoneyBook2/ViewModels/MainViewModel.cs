@@ -440,6 +440,8 @@ namespace MoneyBook2.ViewModels
 
                 _dbProxy.SkipReminders(reminders);
 
+                SelectedDues.Clear();
+
                 await RefreshViewAsync();
             }
             catch (Exception ex)
@@ -465,6 +467,8 @@ namespace MoneyBook2.ViewModels
                     .ToList();
 
                 _dbProxy.DeleteReminders(reminders);
+
+                SelectedDues.Clear();
 
                 await RefreshViewAsync();
             }
@@ -493,6 +497,8 @@ namespace MoneyBook2.ViewModels
                 var reminder = vmForm.Due as Reminder;
 
                 _dbProxy.AddReminder(reminder);
+
+                SelectedDues.Clear();
 
                 await RefreshViewAsync();
             }
