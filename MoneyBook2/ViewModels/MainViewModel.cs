@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Microsoft.Win32;
 using MoneyBook;
 using MoneyBook.Data;
+using MoneyBook.Models;
 using MoneyBook2.DataModels;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
@@ -423,14 +424,82 @@ namespace MoneyBook2.ViewModels
 
         private async Task SkipDueAsync(object _)
         {
+            var answer = MessageBox.Show(
+                "Are you sure you want to skip the selected due(s)?",
+                Resources.AppTitle, MessageBoxButton.YesNo);
+            if (answer != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                var reminders = _selectedDues
+                    .Select(due => due as Reminder)
+                    .ToList();
+
+                _dbProxy.SkipReminders(reminders);
+
+                await RefreshViewAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception while skipping due(s). {ex.Message}");
+            }
         }
 
         private async Task DeleteDueAsync(object _)
         {
+            var answer = MessageBox.Show(
+                "Are you sure you want to delete the selected dues?", 
+                Resources.AppTitle, MessageBoxButton.YesNo);
+            if (answer != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                var reminders = _selectedDues
+                    .Select(due => due as Reminder)
+                    .ToList();
+
+                _dbProxy.DeleteReminders(reminders);
+
+                await RefreshViewAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception while deleting dues. {ex.Message}");
+            }
         }
 
         private async Task CreateDueAsync(object _)
         {
+            try
+            {
+                var vmForm = IoC.Get<DueFormViewModel>();
+
+                vmForm.Title = "Create Due";
+                vmForm.Accounts = new ReadOnlyCollection<Account>(Accounts);
+
+                var windowManager = IoC.Get<IWindowManager>();
+                var result = await windowManager.ShowDialogAsync(vmForm);
+                if (result == false)
+                {
+                    return;
+                }
+
+                var reminder = vmForm.Due as Reminder;
+
+                _dbProxy.AddReminder(reminder);
+
+                await RefreshViewAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception while creating due. {ex.Message}");
+            }
         }
 
         #endregion

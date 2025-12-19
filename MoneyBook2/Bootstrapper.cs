@@ -23,6 +23,7 @@ namespace MoneyBook2
 
             // Register viewmodels
             _container.Singleton<MainViewModel>();
+            _container.PerRequest<DueFormViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)
