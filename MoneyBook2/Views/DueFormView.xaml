@@ -1,7 +1,8 @@
 ﻿<Window x:Class="MoneyBook2.Views.DueFormView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="{Binding Title}"
+        Title="{Binding Title}" 
+        Background="#FF505050"
         Height="300"
         Width="400"
         WindowStartupLocation="CenterOwner">
@@ -25,32 +26,38 @@
 
         <!-- Due Date -->
         <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 0 5"
+                   Foreground="GhostWhite"
                    Text="Due Date" VerticalAlignment="Center"/>
         <DatePicker Grid.Row="0" Grid.Column="1" Margin="0 0 0 5" 
                     SelectedDate="{Binding Due.DueDate, Mode=TwoWay}"/>
 
         <!-- Account -->
         <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 0 5"
+                   Foreground="GhostWhite"
                    Text="Account" VerticalAlignment="Center"/>
         <ComboBox Grid.Row="1" Grid.Column="1" Margin="0 0 0 5"
+                  Foreground="GhostWhite"
                   ItemsSource="{Binding Accounts}"
                   DisplayMemberPath="Name"
                   SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" />
 
         <!-- Payee -->
         <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 0 5"
+                   Foreground="GhostWhite"
                    Text="Payee" VerticalAlignment="Center"/>
         <TextBox Grid.Row="2" Grid.Column="1" Height="22" Margin="0 0 0 5" Padding="2 0 2 0"
                  Text="{Binding Due.Payee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Amount -->
         <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 0 5"
+                   Foreground="GhostWhite"
                    Text="Amount" VerticalAlignment="Center"/>
         <TextBox Grid.Row="3" Grid.Column="1" Height="22" Margin="0 0 0 5" Padding="2 0 2 0"
              Text="{Binding Due.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
 
         <!-- Frequency -->
         <TextBlock Grid.Row="4" Grid.Column="0" Margin="0 0 0 5"
+                   Foreground="GhostWhite"
                    Text="Frequency" VerticalAlignment="Center"/>
         <ComboBox Grid.Row="4" Grid.Column="1" Margin="0 0 0 5"
                   ItemsSource="{Binding TransactionFrequencyValues}" 
@@ -58,6 +65,7 @@
         
         <!-- Memo -->
         <TextBlock Grid.Row="5" Grid.Column="0" Margin="0 0 0 5"
+                   Foreground="GhostWhite"
                    Text="Memo" VerticalAlignment="Center"/>
         <TextBox Grid.Row="5" Grid.Column="1" Height="22" Margin="0 0 0 5"  Padding="2 0 2 0"
                  VerticalAlignment="Top"
@@ -67,6 +75,7 @@
 
         <!-- Website -->
         <TextBlock Grid.Row="6" Grid.Column="0" Margin="0 0 0 5"
+                   Foreground="GhostWhite"
                    Text="Website" VerticalAlignment="Center"/>
         <TextBox Grid.Row="6" Grid.Column="1" Height="22" Margin="0 0 0 5" Padding="2 0 2 0"
                  Text="{Binding Due.Website, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -79,11 +88,13 @@
                     Margin="0 15 0 0">
 
             <Button Content="OK"
+                    Height="30"
                     Width="80"
                     Margin="0,0,10,0"
                     Command="{Binding OkCommand}"/>
 
             <Button Content="Cancel"
+                    Height="30"
                     Width="80"
                     Command="{Binding CancelCommand}"/>
         </StackPanel>
