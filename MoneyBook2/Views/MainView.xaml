@@ -302,6 +302,14 @@
                                 Create
                             </Hyperlink>
                         </TextBlock>
+                        <TextBlock VerticalAlignment="Top"
+                                   Style="{StaticResource HyperlinkTextBlock}">
+                            <Hyperlink ToolTip="Modify selected due"
+                                       Style="{StaticResource HyperlinkHighlightStyle}"
+                                       Command="{Binding DataContext.EditDueCommand, ElementName=RootGrid}">
+                                Edit
+                            </Hyperlink>
+                        </TextBlock>
                     </StackPanel>
                 </StackPanel>
             </GroupBox.Header>

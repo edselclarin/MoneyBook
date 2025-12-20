@@ -117,6 +117,7 @@ namespace MoneyBook2.ViewModels
         public ICommand SkipDueCommand { get; }
         public ICommand DeleteDueCommand { get; }
         public ICommand CreateDueCommand { get; }
+        public ICommand EditDueCommand { get; }
 
         public MainViewModel()
         {
@@ -132,10 +133,11 @@ namespace MoneyBook2.ViewModels
 
             ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
             UncheckAllDuesCommand = new RelayCommand<Due>(UncheckAllDues, (_) => HasDuesChecked);
-            DeselectDuesCommand = new RelayCommand<object>((_) => DeselectDues(), (_) => HasSelectedDues);
-            SkipDueCommand = new RelayCommand<object>(async (_) => await SkipDueAsync(_), (_) => HasSelectedDues);
-            DeleteDueCommand = new RelayCommand<object>(async (_) => await DeleteDueAsync(_), (_) => HasSelectedDues);
-            CreateDueCommand = new RelayCommand<object>(async (_) => await CreateDueAsync(_), (_) => !HasSelectedDues);
+            DeselectDuesCommand = new RelayCommand<object>((_) => DeselectDues(), (_) => SelectedDues.Count > 0);
+            SkipDueCommand = new RelayCommand<object>(async (_) => await SkipDueAsync(_), (_) => SelectedDues.Count > 0);
+            DeleteDueCommand = new RelayCommand<object>(async (_) => await DeleteDueAsync(_), (_) => SelectedDues.Count > 0);
+            CreateDueCommand = new RelayCommand<object>(async (_) => await CreateDueAsync(_), (_) => SelectedDues.Count == 0);
+            EditDueCommand = new RelayCommand<object>(async (_) => await EditDueAsync(_), (_) => SelectedDues.Count == 1);
         }
 
         #region View Operations
@@ -505,6 +507,37 @@ namespace MoneyBook2.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show($"Exception while creating due. {ex.Message}");
+            }
+        }
+
+        private async Task EditDueAsync(object _)
+        {
+            try
+            {
+                var vmForm = IoC.Get<DueFormViewModel>();
+
+                vmForm.Title = "Edit Due";
+                vmForm.Accounts = new ReadOnlyCollection<Account>(Accounts);
+                vmForm.SetDue(SelectedDues.FirstOrDefault());
+
+                var windowManager = IoC.Get<IWindowManager>();
+                var result = await windowManager.ShowDialogAsync(vmForm);
+                if (result == false)
+                {
+                    return;
+                }
+
+                var reminder = vmForm.Due as Reminder;
+
+                _dbProxy.UpdateReminder(reminder);
+
+                SelectedDues.Clear();
+
+                await RefreshViewAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Exception while updating due. {ex.Message}");
             }
         }
 

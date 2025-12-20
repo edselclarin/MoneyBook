@@ -63,14 +63,20 @@ namespace MoneyBook2.ViewModels
         {
             SelectedTransactionFrequency = TransactionFrequency.Weekly;
 
-            Due = new Due()
-            {
-                DueDate = System.DateTime.Now,
-                Frequency = SelectedTransactionFrequency.ToString()
-            };
+            Due.DueDate = System.DateTime.Now;
+            Due.Frequency = SelectedTransactionFrequency.ToString();
 
             OkCommand = new RelayCommand<object>(async (_) => await OkAsync());
             CancelCommand = new RelayCommand<object>(async (_) => await CancelAsync());
+        }
+
+        public void SetDue(Due due)
+        {
+            Due = due;
+
+            SelectedAccount = Accounts.FirstOrDefault(a => a.AcctId == Due.AcctId);
+            SelectedTransactionFrequency = Enum.GetValues<TransactionFrequency>()
+                .SingleOrDefault(tf => tf.ToString() == Due.Frequency);
         }
 
         private async Task OkAsync()
