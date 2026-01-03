@@ -49,6 +49,7 @@ namespace MoneyBook2.ViewModels
             {
                 var transactions = _dbProxy.GetAccountTransactions(_account.AcctId)
                     .Select(t => Transaction.FromTransaction(t))
+                    .OrderByDescending(t => t.Date)
                     .ToList();
                 Transactions = new ObservableCollection<Transaction>(transactions);
 
