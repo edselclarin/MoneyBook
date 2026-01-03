@@ -416,7 +416,7 @@ namespace MoneyBook2.ViewModels
             vmTransactions.Initialize(account, ref _dbProxy);
             
             var windowManager = IoC.Get<IWindowManager>();            
-            windowManager.ShowDialogAsync(vmTransactions);
+            windowManager.ShowWindowAsync(vmTransactions);
         }
 
         #endregion
