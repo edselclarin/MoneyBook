@@ -176,16 +176,19 @@
                     Height="30"
                     Width="120"
                     Margin="5"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Command="{Binding ImportTransactionsCommand}"/>
             <Button Content="Backup Database"
                     Height="30"
                     Width="120"
                     Margin="5"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Command="{Binding BackupDatabaseCommand}"/>
             <Button Content="Restore Database"
                     Height="30"
                     Width="120"
                     Margin="5"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Command="{Binding RestoreDatabaseCommand}"/>
         </StackPanel>
 
