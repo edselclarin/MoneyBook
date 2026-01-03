@@ -36,7 +36,6 @@
                    Foreground="GhostWhite"
                    Text="Account" VerticalAlignment="Center"/>
         <ComboBox Grid.Row="1" Grid.Column="1" Margin="0 0 0 5"
-                  Foreground="GhostWhite"
                   ItemsSource="{Binding Accounts}"
                   DisplayMemberPath="Name"
                   SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" />
