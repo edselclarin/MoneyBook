@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace MoneyBook2.Views
 {
@@ -10,6 +12,18 @@ namespace MoneyBook2.Views
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            if (item != null && !item.IsSelected)
+            {
+                item.IsSelected = true;
+            }
+
+            item?.Focus();
+            e.Handled = true;
         }
     }
 }

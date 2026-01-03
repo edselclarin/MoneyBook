@@ -6,6 +6,7 @@ using MoneyBook.Data;
 using MoneyBook.Models;
 using MoneyBook2.DataModels;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
@@ -111,6 +112,7 @@ namespace MoneyBook2.ViewModels
         public ICommand BackupDatabaseCommand { get; }
         public ICommand RestoreDatabaseCommand { get; }
 
+        // Hyperlink Commands
         public ICommand ToggleSelectedDueCommand { get; }
         public ICommand UncheckAllDuesCommand { get; }
         public ICommand DeselectDuesCommand { get; }
@@ -118,6 +120,12 @@ namespace MoneyBook2.ViewModels
         public ICommand DeleteDueCommand { get; }
         public ICommand CreateDueCommand { get; }
         public ICommand EditDueCommand { get; }
+
+        // Context Menu Commands
+        public ICommand SkipSelectedDuesCommand { get; }
+        public ICommand DeleteSelectedDuesCommand { get; }
+        public ICommand EditSelectedDueCommand { get; }
+        public ICommand CreateNewDueCommand { get; }
 
         public MainViewModel()
         {
@@ -138,6 +146,11 @@ namespace MoneyBook2.ViewModels
             DeleteDueCommand = new RelayCommand<object>(async (_) => await DeleteDueAsync(_), (_) => SelectedDues.Count > 0);
             CreateDueCommand = new RelayCommand<object>(async (_) => await CreateDueAsync(_), (_) => SelectedDues.Count == 0);
             EditDueCommand = new RelayCommand<object>(async (_) => await EditDueAsync(_), (_) => SelectedDues.Count == 1);
+
+            SkipSelectedDuesCommand = new RelayCommand<IList>(SkipSelectedDues, (_) => SelectedDues.Count > 0);
+            DeleteSelectedDuesCommand = new RelayCommand<IList>(DeleteSelectedDues, (_) => SelectedDues.Count > 0);
+            EditSelectedDueCommand = new RelayCommand<IList>(EditSelectedDue, (_) => SelectedDues.Count == 1);
+            CreateNewDueCommand = new RelayCommand<object>(CreateNewDue);
         }
 
         #region View Operations
@@ -426,9 +439,10 @@ namespace MoneyBook2.ViewModels
 
         private async Task SkipDueAsync(object _)
         {
-            var answer = MessageBox.Show(
-                "Are you sure you want to skip the selected due(s)?",
-                Resources.AppTitle, MessageBoxButton.YesNo);
+            string question = SelectedDues.Count == 1
+                ? "Are you sure you want to skip the selected due?"
+                : $"Are you sure you want to skip the {SelectedDues.Count} selected dues?";
+            var answer = MessageBox.Show(question, Resources.AppTitle, MessageBoxButton.YesNo);
             if (answer != MessageBoxResult.Yes)
             {
                 return;
@@ -448,15 +462,16 @@ namespace MoneyBook2.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Exception while skipping due(s). {ex.Message}");
+                MessageBox.Show("Exception while skipping dues. {ex.Message}");
             }
         }
 
         private async Task DeleteDueAsync(object _)
         {
-            var answer = MessageBox.Show(
-                "Are you sure you want to delete the selected dues?", 
-                Resources.AppTitle, MessageBoxButton.YesNo);
+            string question = SelectedDues.Count == 1
+                ? "Are you sure you want to delete the selected due?"
+                : $"Are you sure you want to delete the {SelectedDues.Count} selected dues?";
+            var answer = MessageBox.Show(question, Resources.AppTitle, MessageBoxButton.YesNo);
             if (answer != MessageBoxResult.Yes)
             {
                 return;
@@ -539,6 +554,41 @@ namespace MoneyBook2.ViewModels
             {
                 MessageBox.Show($"Exception while updating due. {ex.Message}");
             }
+        }
+
+        private async void SkipSelectedDues(IList selectedItems)
+        {
+            if (selectedItems == null || selectedItems.Count == 0)
+            {
+                return;
+            }
+
+            await SkipDueAsync(null);
+        }
+
+        private async void DeleteSelectedDues(IList selectedItems)
+        {
+            if (selectedItems == null || selectedItems.Count == 0)
+            {
+                return;
+            }
+
+            await DeleteDueAsync(null);
+        }
+
+        private async void EditSelectedDue(IList selectedItems)
+        {
+            if (selectedItems == null || selectedItems.Count != 1)
+            {
+                return;
+            }
+
+            await EditDueAsync(null);
+        }
+
+        private async void CreateNewDue(object _)
+        {
+            await CreateDueAsync(_);
         }
 
         #endregion

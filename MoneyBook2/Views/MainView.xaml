@@ -271,7 +271,8 @@
                             </Hyperlink>
                         </TextBlock>
                         <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}">
+                                   Style="{StaticResource HyperlinkTextBlock}"
+                                   Visibility="Collapsed"> // Hide for now
                             <Hyperlink ToolTip="Deselect dues" 
                                        Style="{StaticResource HyperlinkHighlightStyle}"
                                        Command="{Binding DataContext.DeselectDuesCommand, ElementName=RootGrid}">
@@ -279,7 +280,8 @@
                             </Hyperlink>
                         </TextBlock>
                         <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}">
+                                   Style="{StaticResource HyperlinkTextBlock}"
+                                   Visibility="Collapsed"> // Hide for now
                             <Hyperlink ToolTip="Skip selected due(s)"
                                        Style="{StaticResource HyperlinkHighlightStyle}"
                                        Command="{Binding DataContext.SkipDueCommand, ElementName=RootGrid}">
@@ -287,7 +289,8 @@
                             </Hyperlink>
                         </TextBlock>
                         <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}">
+                                   Style="{StaticResource HyperlinkTextBlock}"
+                                   Visibility="Collapsed"> // Hide for now
                             <Hyperlink ToolTip="Delete selected due(s)"
                                        Style="{StaticResource HyperlinkHighlightStyle}"
                                        Command="{Binding DataContext.DeleteDueCommand, ElementName=RootGrid}">
@@ -295,7 +298,8 @@
                             </Hyperlink>
                         </TextBlock>
                         <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}">
+                                   Style="{StaticResource HyperlinkTextBlock}"
+                                   Visibility="Collapsed"> // Hide for now
                             <Hyperlink ToolTip="Create a due" 
                                        Style="{StaticResource HyperlinkHighlightStyle}"
                                        Command="{Binding DataContext.CreateDueCommand, ElementName=RootGrid}">
@@ -303,7 +307,8 @@
                             </Hyperlink>
                         </TextBlock>
                         <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}">
+                                   Style="{StaticResource HyperlinkTextBlock}"
+                                   Visibility="Collapsed"> // Hide for now
                             <Hyperlink ToolTip="Modify selected due"
                                        Style="{StaticResource HyperlinkHighlightStyle}"
                                        Command="{Binding DataContext.EditDueCommand, ElementName=RootGrid}">
@@ -315,7 +320,6 @@
             </GroupBox.Header>
             <ListView HorizontalAlignment="Stretch"
                       Background="{StaticResource DarkDimGray}"                      
-                      ItemContainerStyle="{StaticResource DuesListViewItemStyle}"
                       ItemsSource="{Binding Dues}"
                       SelectionMode="Multiple"
                       local:ListViewSelectedItemsBehavior.SelectedItems="{Binding SelectedDues}">
@@ -416,6 +420,34 @@
 
                     </GridView>
                 </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="Skip" 
+                                  ToolTip="Skip selected dues"
+                                  Command="{Binding Path=DataContext.SkipSelectedDuesCommand}"
+                                  CommandParameter="{Binding Path=SelectedItems}" />
+                        <MenuItem Header="Delete" 
+                                  ToolTip="Delete selected dues"
+                                  Command="{Binding Path=DataContext.DeleteSelectedDuesCommand}"
+                                  CommandParameter="{Binding Path=SelectedItems}" />
+                        <Separator/>
+                        <MenuItem Header="Edit" 
+                                  ToolTip="Edit selected due"
+                                  Command="{Binding Path=DataContext.EditSelectedDueCommand}"
+                                  CommandParameter="{Binding Path=SelectedItems}" />
+                        <Separator/>
+                        <MenuItem Header="Create" 
+                                  ToolTip="Create a new due"
+                                  Command="{Binding Path=DataContext.CreateNewDueCommand}"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" 
+                           BasedOn="{StaticResource DuesListViewItemStyle}">
+                        <EventSetter Event="PreviewMouseRightButtonDown"
+                                     Handler="ListViewItem_PreviewMouseRightButtonDown"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
         </GroupBox>
     </Grid>
