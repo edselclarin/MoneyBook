@@ -123,7 +123,7 @@
                                     HeaderContainerStyle="{StaticResource RightJustifiedGridViewColumnHeaderStyle}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Amount}"
+                                <TextBlock Text="{Binding ActualAmount}"
                                            Style="{StaticResource MediumTextBlockStyle}"
                                            TextAlignment="Right"/>
                             </DataTemplate>

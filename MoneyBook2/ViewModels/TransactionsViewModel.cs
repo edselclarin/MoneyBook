@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Account = MoneyBook2.DataModels.Account;
-using Transaction = MoneyBook.Models.Transaction;
+using Transaction = MoneyBook2.DataModels.Transaction;
 
 namespace MoneyBook2.ViewModels
 {
@@ -47,7 +47,10 @@ namespace MoneyBook2.ViewModels
         {
             try
             {
-                Transactions = new ObservableCollection<Transaction>(_dbProxy.GetAccountTransactions(_account.AcctId));
+                var transactions = _dbProxy.GetAccountTransactions(_account.AcctId)
+                    .Select(t => Transaction.FromTransaction(t))
+                    .ToList();
+                Transactions = new ObservableCollection<Transaction>(transactions);
 
                 (ReconcileNewTransactionsCommand as RelayCommand<object>).RaiseCanExecuteChanged();
             }
