@@ -35,6 +35,18 @@ namespace MoneyBook2.ViewModels
             }
         }
 
+        private ObservableCollection<Account> _selectedAccounts = new();
+        public ObservableCollection<Account> SelectedAccounts
+        {
+            get { return _selectedAccounts; }
+            set
+            {
+                _selectedAccounts = value;
+
+                NotifyOfPropertyChange(() => SelectedAccounts);
+            }
+        }
+
         private ObservableCollection<Due> _dues;
         public ObservableCollection<Due> Dues
         {
@@ -113,6 +125,9 @@ namespace MoneyBook2.ViewModels
         public ICommand BackupDatabaseCommand { get; }
         public ICommand RestoreDatabaseCommand { get; }
 
+        // Account Commands
+        public ICommand OpenTransactionsViewCommand { get; }
+
         // Hyperlink Commands
         public ICommand ToggleSelectedDueCommand { get; }
         public ICommand UncheckAllDuesCommand { get; }
@@ -140,6 +155,8 @@ namespace MoneyBook2.ViewModels
             ImportTransactionsCommand = new RelayCommand<object>(async (_) => await ImportTransactionsAsync(_));
             BackupDatabaseCommand = new RelayCommand<object>(async (_) => await BackupDatabaseAsync(_));
             RestoreDatabaseCommand = new RelayCommand<object>(async (_) => await RestoreDatabaseAsync(_));
+
+            OpenTransactionsViewCommand = new RelayCommand<IList>(OpenTransactions, (_) => SelectedAccounts.Count == 1);
 
             ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
             UncheckAllDuesCommand = new RelayCommand<Due>(UncheckAllDues, (_) => HasDuesChecked);
@@ -373,6 +390,33 @@ namespace MoneyBook2.ViewModels
 
                 MessageBox.Show($"Exception during restore. {ex.Message}", Resources.AppTitle);
             }
+        }
+
+        #endregion
+
+        #region Operations on Accounts
+
+        private void OpenTransactions(IList accounts)
+        {
+            if (accounts is null || accounts.Count != 1)
+            {
+                return;
+            }
+
+            var account = accounts
+                .Cast<Account>()
+                .FirstOrDefault();
+
+            if (account is null)
+            {
+                return;
+            }
+
+            var vmTransactions = IoC.Get<TransactionsViewModel>();
+            vmTransactions.Initialize(account, _dbProxy.GetAccountTransactions(account.AcctId));
+            
+            var windowManager = IoC.Get<IWindowManager>();            
+            windowManager.ShowDialogAsync(vmTransactions);
         }
 
         #endregion

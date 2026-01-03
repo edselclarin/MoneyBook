@@ -166,8 +166,9 @@
             </GroupBox.Header>
             <ListView HorizontalAlignment="Left"
                       Background="{StaticResource DarkDimGray}"
-                      ItemContainerStyle="{StaticResource AccountsListViewItemStyle}"
-                      ItemsSource="{Binding Accounts}">
+                      ItemsSource="{Binding Accounts}"
+                      SelectionMode="Single"
+                      local:ListViewSelectedItemsBehavior.SelectedItems="{Binding SelectedAccounts}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Name" 
@@ -219,6 +220,21 @@
 
                     </GridView>
                 </ListView.View>
+                <ListView.ContextMenu>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}">
+                        <MenuItem Header="Transactions" 
+                                  ToolTip="Open transactions window"
+                                  Command="{Binding Path=DataContext.OpenTransactionsViewCommand}"
+                                  CommandParameter="{Binding Path=SelectedItems}" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" 
+                           BasedOn="{StaticResource AccountsListViewItemStyle}">
+                        <EventSetter Event="PreviewMouseRightButtonDown"
+                                     Handler="ListViewItem_PreviewMouseRightButtonDown"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
         </GroupBox>
 
