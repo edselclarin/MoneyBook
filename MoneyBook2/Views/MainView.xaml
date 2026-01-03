@@ -436,6 +436,11 @@
                                   Command="{Binding Path=DataContext.EditSelectedDueCommand}"
                                   CommandParameter="{Binding Path=SelectedItems}" />
                         <Separator/>
+                        <MenuItem Header="Open website" 
+                                  ToolTip="Open website"
+                                  Command="{Binding Path=DataContext.OpenWebsiteCommand}"
+                                  CommandParameter="{Binding Path=SelectedItems}" />
+                        <Separator/>
                         <MenuItem Header="Create" 
                                   ToolTip="Create a new due"
                                   Command="{Binding Path=DataContext.CreateNewDueCommand}"/>

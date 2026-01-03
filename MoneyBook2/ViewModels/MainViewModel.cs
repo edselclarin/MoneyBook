@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -125,6 +126,7 @@ namespace MoneyBook2.ViewModels
         public ICommand SkipSelectedDuesCommand { get; }
         public ICommand DeleteSelectedDuesCommand { get; }
         public ICommand EditSelectedDueCommand { get; }
+        public ICommand OpenWebsiteCommand { get; }
         public ICommand CreateNewDueCommand { get; }
 
         public MainViewModel()
@@ -150,6 +152,7 @@ namespace MoneyBook2.ViewModels
             SkipSelectedDuesCommand = new RelayCommand<IList>(SkipSelectedDues, (_) => SelectedDues.Count > 0);
             DeleteSelectedDuesCommand = new RelayCommand<IList>(DeleteSelectedDues, (_) => SelectedDues.Count > 0);
             EditSelectedDueCommand = new RelayCommand<IList>(EditSelectedDue, (_) => SelectedDues.Count == 1);
+            OpenWebsiteCommand = new RelayCommand<IList>(OpenWebsite, (_) => SelectedDues.Count == 1);
             CreateNewDueCommand = new RelayCommand<object>(CreateNewDue);
         }
 
@@ -584,6 +587,26 @@ namespace MoneyBook2.ViewModels
             }
 
             await EditDueAsync(null);
+        }
+
+        private void OpenWebsite(IList selectedItems)
+        {
+            if (selectedItems == null || selectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var due = selectedItems
+                .Cast<Due>()
+                .FirstOrDefault();
+
+            if (due is null || string.IsNullOrWhiteSpace(due.Website))
+            {
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo(due.Website) { UseShellExecute = true });
+
         }
 
         private async void CreateNewDue(object _)
