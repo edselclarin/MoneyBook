@@ -36,8 +36,28 @@
 
     </Window.Resources>
 
-    <Grid>
-        <ListView HorizontalAlignment="Left"
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" 
+                    Orientation="Horizontal" 
+                    VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Top"
+                       Padding="10"
+                       Style="{StaticResource HyperlinkTextBlock}">
+                <Hyperlink ToolTip="Reconcile New Transactions" 
+                           Style="{StaticResource HyperlinkHighlightStyle}"
+                           Command="{Binding DataContext.ReconcileNewTransactionsCommand, ElementName=RootGrid}">
+                    Reconcile
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <ListView Grid.Row="1" 
+                  HorizontalAlignment="Left"
                   ItemContainerStyle="{StaticResource TransactionsListViewItemStyle}"
                   Background="{StaticResource DarkDimGray}"
                   ItemsSource="{Binding Transactions}">

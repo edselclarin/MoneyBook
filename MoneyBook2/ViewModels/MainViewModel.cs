@@ -396,7 +396,7 @@ namespace MoneyBook2.ViewModels
 
         #region Operations on Accounts
 
-        private void OpenTransactions(IList accounts)
+        private async void OpenTransactions(IList accounts)
         {
             if (accounts is null || accounts.Count != 1)
             {
@@ -413,7 +413,7 @@ namespace MoneyBook2.ViewModels
             }
 
             var vmTransactions = IoC.Get<TransactionsViewModel>();
-            vmTransactions.Initialize(account, _dbProxy.GetAccountTransactions(account.AcctId));
+            vmTransactions.Initialize(account, ref _dbProxy);
             
             var windowManager = IoC.Get<IWindowManager>();            
             windowManager.ShowDialogAsync(vmTransactions);
