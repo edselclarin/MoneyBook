@@ -497,10 +497,20 @@ namespace MoneyBook2.ViewModels
 
             try
             {
-                var reminders = _selectedDues
+                // Unchecked dues from the file.
+                var checkedDues = SelectedDues
+                    .Where(due => due.IsChecked)
+                    .ToList();
+                foreach (var due in checkedDues)
+                {
+                    due.IsChecked = false;
+                }
+                SaveDuesToFile(_duesFilesname);
+
+                // Update database.
+                var reminders = SelectedDues
                     .Select(due => due as Reminder)
                     .ToList();
-
                 _dbProxy.SkipReminders(reminders);
 
                 SelectedDues.Clear();
