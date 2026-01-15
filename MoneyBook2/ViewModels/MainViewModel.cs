@@ -96,14 +96,26 @@ namespace MoneyBook2.ViewModels
         }
 
         private bool _hasSelectedDues;
-        public bool HasSelectedDues
+        public bool HasDuesSelected
         {
             get { return _hasSelectedDues; }
             set
             {
                 _hasSelectedDues = value;
 
-                NotifyOfPropertyChange(() => HasSelectedDues);
+                NotifyOfPropertyChange(() => HasDuesSelected);
+            }
+        }
+
+        private decimal _selectedDuesTotal;
+        public decimal SelectedDuesTotal
+        {
+            get => _selectedDuesTotal;
+            set
+            {
+                _selectedDuesTotal = value;
+
+                NotifyOfPropertyChange(() => SelectedDuesTotal);
             }
         }
 
@@ -131,11 +143,6 @@ namespace MoneyBook2.ViewModels
         // Hyperlink Commands
         public ICommand ToggleSelectedDueCommand { get; }
         public ICommand UncheckAllDuesCommand { get; }
-        public ICommand DeselectDuesCommand { get; }
-        public ICommand SkipDueCommand { get; }
-        public ICommand DeleteDueCommand { get; }
-        public ICommand CreateDueCommand { get; }
-        public ICommand EditDueCommand { get; }
 
         // Context Menu Commands
         public ICommand SkipSelectedDuesCommand { get; }
@@ -160,11 +167,6 @@ namespace MoneyBook2.ViewModels
 
             ToggleSelectedDueCommand = new RelayCommand<Due>(ToggleSelectedDue);
             UncheckAllDuesCommand = new RelayCommand<Due>(UncheckAllDues, (_) => HasDuesChecked);
-            DeselectDuesCommand = new RelayCommand<object>((_) => DeselectDues(), (_) => SelectedDues.Count > 0);
-            SkipDueCommand = new RelayCommand<object>(async (_) => await SkipDueAsync(_), (_) => SelectedDues.Count > 0);
-            DeleteDueCommand = new RelayCommand<object>(async (_) => await DeleteDueAsync(_), (_) => SelectedDues.Count > 0);
-            CreateDueCommand = new RelayCommand<object>(async (_) => await CreateDueAsync(_), (_) => SelectedDues.Count == 0);
-            EditDueCommand = new RelayCommand<object>(async (_) => await EditDueAsync(_), (_) => SelectedDues.Count == 1);
 
             SkipSelectedDuesCommand = new RelayCommand<IList>(SkipSelectedDues, (_) => SelectedDues.Count > 0);
             DeleteSelectedDuesCommand = new RelayCommand<IList>(DeleteSelectedDues, (_) => SelectedDues.Count > 0);
@@ -476,7 +478,8 @@ namespace MoneyBook2.ViewModels
         {
             // Raise HasSelectedDues whenever selection changes
             SelectedCount = _selectedDues is not null ? _selectedDues.Count() : 0;
-            HasSelectedDues = SelectedCount > 0;
+            SelectedDuesTotal = _selectedDues?.Sum(due => due.Amount) ?? 0.00m;
+            HasDuesSelected = SelectedCount > 0;
         }
 
         private void DeselectDues()

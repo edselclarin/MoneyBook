@@ -200,72 +200,42 @@
                   HorizontalAlignment="Left"
                   Margin="0 0 0 10">
             <GroupBox.Header>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Dues"
+                <Grid Margin="0 0 0 8"
+                      Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=GroupBox}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Width="60"
+                               VerticalAlignment="Center"
+                               Text="Dues"
                                Style="{StaticResource LargeTextBlockStyle}"
                                FontWeight="Bold"
-                               Foreground="White"
-                               Margin="0 0 0 7"/>
-                    <Border Width="20"/>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="0 3 0 0">
-                        <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}">
-                            <Hyperlink ToolTip="Uncheck all dues" 
-                                       Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.UncheckAllDuesCommand, ElementName=RootGrid}">
-                                Uncheck All
-                            </Hyperlink>
-                        </TextBlock>
-                        <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}"
-                                   Visibility="Collapsed"> // Hide for now
-                            <Hyperlink ToolTip="Deselect dues" 
-                                       Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.DeselectDuesCommand, ElementName=RootGrid}">
-                                <Run Text="{Binding SelectedCount, Converter={StaticResource TextWithCountConverter}, ConverterParameter=Deselect}"/>
-                            </Hyperlink>
-                        </TextBlock>
-                        <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}"
-                                   Visibility="Collapsed"> // Hide for now
-                            <Hyperlink ToolTip="Skip selected due(s)"
-                                       Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.SkipDueCommand, ElementName=RootGrid}">
-                                <Run Text="{Binding SelectedCount, Converter={StaticResource TextWithCountConverter}, ConverterParameter=Skip}"/>
-                            </Hyperlink>
-                        </TextBlock>
-                        <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}"
-                                   Visibility="Collapsed"> // Hide for now
-                            <Hyperlink ToolTip="Delete selected due(s)"
-                                       Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.DeleteDueCommand, ElementName=RootGrid}">
-                                <Run Text="{Binding SelectedCount, Converter={StaticResource TextWithCountConverter}, ConverterParameter=Delete}"/>
-                            </Hyperlink>
-                        </TextBlock>
-                        <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}"
-                                   Visibility="Collapsed"> // Hide for now
-                            <Hyperlink ToolTip="Create a due" 
-                                       Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.CreateDueCommand, ElementName=RootGrid}">
-                                Create
-                            </Hyperlink>
-                        </TextBlock>
-                        <TextBlock VerticalAlignment="Top"
-                                   Style="{StaticResource HyperlinkTextBlock}"
-                                   Visibility="Collapsed"> // Hide for now
-                            <Hyperlink ToolTip="Modify selected due"
-                                       Style="{StaticResource HyperlinkHighlightStyle}"
-                                       Command="{Binding DataContext.EditDueCommand, ElementName=RootGrid}">
-                                Edit
-                            </Hyperlink>
-                        </TextBlock>
-                    </StackPanel>
-                </StackPanel>
+                               Foreground="White"/>
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource HyperlinkTextBlock}">
+                        <Hyperlink ToolTip="Uncheck all dues" 
+                                   Style="{StaticResource HyperlinkHighlightStyle}"
+                                   Command="{Binding DataContext.UncheckAllDuesCommand, ElementName=RootGrid}">
+                            Uncheck All
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2"
+                               Margin="0 0 50 0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource MediumTextBlockStyle}"
+                               Foreground="Silver"
+                               FontWeight="SemiBold"
+                               Text="{Binding SelectedDuesTotal, StringFormat=Selected Total:   {0:F2}}"
+                               Visibility="{Binding HasDuesSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
             </GroupBox.Header>
             <ListView HorizontalAlignment="Stretch"
+                      Margin="0 0 18 0"
                       Background="{StaticResource DarkDimGray}"                      
                       ItemsSource="{Binding Dues}"
                       SelectionMode="Multiple"
@@ -309,22 +279,24 @@
                         </GridViewColumn>
 
                         <GridViewColumn Header="Payee" 
-                                        Width="250"
+                                        Width="230"
                                         HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Payee}"
+                                               ToolTip="{Binding Payee}"
                                                Style="{StaticResource MediumTextBlockStyle}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
                         <GridViewColumn Header="Memo" 
-                                        Width="150"
+                                        Width="170"
                                         HeaderContainerStyle="{StaticResource LeftJustifiedGridViewColumnHeaderStyle}">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Memo}"
+                                               ToolTip="{Binding Memo}"
                                                Style="{StaticResource MediumTextBlockStyle}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
@@ -336,6 +308,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Website}"
+                                               ToolTip="{Binding Website}"
                                                Style="{StaticResource MediumTextBlockStyle}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
