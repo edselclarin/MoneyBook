@@ -15,7 +15,7 @@ namespace TransactionsTool.Readers
             {
                 var tran = new Transaction()
                 {
-                    Date = ofxTran.DateAvailable,
+                    Date = ofxTran.DatePosted,
                     PostDate = ofxTran.DatePosted,
                     Description = ofxTran.Memo,
                     Type = ofxTran.TransactionType,

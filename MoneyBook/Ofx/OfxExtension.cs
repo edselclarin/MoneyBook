@@ -25,11 +25,6 @@
             
             foreach (var trn in trns)
             {
-                var dtAvailable = new DateTime(
-                    Convert.ToInt32(trn.DTAVAIL[0..4]),
-                    Convert.ToInt32(trn.DTAVAIL[4..6]),
-                    Convert.ToInt32(trn.DTAVAIL[6..8]));
-
                 var dtPosted = new DateTime(
                     Convert.ToInt32(trn.DTPOSTED[0..4]),
                     Convert.ToInt32(trn.DTPOSTED[4..6]),
@@ -40,11 +35,10 @@
                 var otr = new OfxTransaction
                 {
                     TransactionType = trn.TRNTYPE.Trim(),
-                    DateAvailable = dtAvailable,
                     DatePosted = dtPosted,
                     TransactionAmount = amt,
                     TransactionId = trn.FITID.Trim(),
-                    Memo = trn.MEMO.Trim()
+                    Memo = trn.NAME.Trim()
                 };
 
                 transactions.Add(otr);

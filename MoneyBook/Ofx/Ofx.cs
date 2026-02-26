@@ -66,14 +66,12 @@ namespace Ofx
 		public string TRNTYPE { get; set; }
 		[XmlElement(ElementName = "DTPOSTED")]
 		public string DTPOSTED { get; set; }
-		[XmlElement(ElementName = "DTAVAIL")]
-		public string DTAVAIL { get; set; }
 		[XmlElement(ElementName = "TRNAMT")]
 		public string TRNAMT { get; set; }
 		[XmlElement(ElementName = "FITID")]
 		public string FITID { get; set; }
-		[XmlElement(ElementName = "MEMO")]
-		public string MEMO { get; set; }
+		[XmlElement(ElementName = "NAME")]
+		public string NAME { get; set; }
 	}
 
 	[XmlRoot(ElementName = "BANKTRANLIST")]
@@ -188,12 +186,10 @@ namespace Ofx
         public CCSTMTTRNRS CCSTMTTRNRS { get; set; }
     }
 
-    // The XmlTypeAttribute.Namespace below must be initialized to something if it is also initialized on the derived type.
-    // However, the actual value does not need to be the same as the child's namespace, so modify to be something more appropriate
-    // based on additional XML samples.
-    [XmlType("OFX", Namespace = "")]
-	[XmlInclude(typeof(OFX))]
-	[XmlRoot(ElementName = "OFX", Namespace = "http://ofx.net/types/2003/04")]
+	// The XmlTypeAttribute.Namespace below must be initialized to something if it is also initialized on the derived type.
+	// However, the actual value does not need to be the same as the child's namespace, so modify to be something more appropriate
+	// based on additional XML samples.
+	[XmlType("OFX", Namespace = "")]
 	public class OFX
 	{
 		[XmlElement(ElementName = "SIGNONMSGSRSV1")]
@@ -202,7 +198,5 @@ namespace Ofx
 		public BANKMSGSRSV1 BANKMSGSRSV1 { get; set; }
         [XmlElement(ElementName = "CREDITCARDMSGSRSV1")]
         public CREDITCARDMSGSRSV1 CREDITCARDMSGSRSV1 { get; set; }
-        [XmlAttribute(AttributeName = "ofx", Namespace = "http://www.w3.org/2000/xmlns/")]
-        public string Ofx { get; set; }
     }
 }
